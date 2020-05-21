@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,11 +16,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    appsettings.cpp \
+    devicecommand.cpp \
+    devicemodel.cpp \
+    devicesignedcommand.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    modbus/modbus.cpp \
+    xmlreader.cpp
 
 HEADERS += \
-    mainwindow.h
+    appsettings.h \
+    devicecommand.h \
+    devicemodel.h \
+    devicesignedcommand.h \
+    globals.h \
+    interfaces/DeviceModelInterface.h \
+    interfaces/device/DeviceBinaryOption.h \
+    interfaces/device/DeviceParameter.h \
+    interfaces/device/devicedescription.h \
+    interfaces/modbusobserverinterface.h \
+    mainwindow.h \
+    modbus/modbus.h \
+    xmlreader.h
 
 FORMS += \
     mainwindow.ui

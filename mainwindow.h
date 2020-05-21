@@ -15,7 +15,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+    void networkConnectButtonSignal();
+    void mainWindowReady();
+
 private:
     Ui::MainWindow *ui;
+
+    void setConnections();
+    void refreshMenuPortList();
+    void refreshMenuPortBaudsList();
 };
 #endif // MAINWINDOW_H
