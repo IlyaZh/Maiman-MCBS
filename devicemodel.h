@@ -5,8 +5,8 @@
 #include <QPointer>
 #include "devicecommand.h"
 #include "interfaces/DeviceModelInterface.h"
-#include "interfaces/device/devicedescription.h"
-#include "interfaces/device/DeviceBinaryOption.h"
+#include "devicedescription.h"
+#include "DeviceBinaryOption.h"
 
 class DeviceModel : DeviceModelInterface
 {

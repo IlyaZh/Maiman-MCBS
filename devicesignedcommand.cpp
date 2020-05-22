@@ -13,7 +13,7 @@ int DeviceSignedCommand::getRawValue() {
     return static_cast<qint16>(rawValue.toInt());
 }
 
-int DeviceSignedCommand::getRawFromValue(double value) {
+quint16 DeviceSignedCommand::getRawFromValue(double value) { // it was int
     QVariant var;
     var.setValue(qRound(value*Divider));
     return static_cast<quint16>(var.toInt()); // test it. Im not sure about this conversion is correct

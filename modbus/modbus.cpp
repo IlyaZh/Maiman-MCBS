@@ -20,7 +20,7 @@ void Modbus::setDevice(QIODevice* device, QString deviceName, int timeoutMSecs) 
     closeDevice();
 
     if(m_Device) {
-        disconnect(m_Device, nullptr, nullptr, nullptr);
+        m_Device->disconnect();
     }
     m_Device = device;
     m_DeviceName = deviceName;

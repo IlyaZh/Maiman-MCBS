@@ -54,7 +54,7 @@ int DeviceCommand::getIValue() {
     }
 }
 
-int DeviceCommand::getRawValue() {
+quint16 DeviceCommand::getRawValue() { // it was int
     return static_cast<quint16>(rawValue.toUInt());
 }
 

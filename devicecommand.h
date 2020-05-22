@@ -16,7 +16,7 @@ public:
     QString getCode();
     virtual double getValue();
     virtual int getIValue();
-    virtual int getRawValue();
+    virtual quint16 getRawValue();
     bool needToRequest();
     void resetInterval();
     double getDivider();

@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     appsettings.cpp \
     devicecommand.cpp \
+    deviceled.cpp \
     devicemodel.cpp \
     devicesignedcommand.cpp \
     main.cpp \
@@ -27,14 +28,16 @@ SOURCES += \
 
 HEADERS += \
     appsettings.h \
+    devicebinaryoption.h \
+    devicecalibrationkoefs.h \
     devicecommand.h \
+    deviceled.h \
     devicemodel.h \
+    deviceparameter.h \
     devicesignedcommand.h \
     globals.h \
-    interfaces/DeviceModelInterface.h \
-    interfaces/device/DeviceBinaryOption.h \
-    interfaces/device/DeviceParameter.h \
-    interfaces/device/devicedescription.h \
+    devicedescription.h \
+    interfaces/devicemodelinterface.h \
     interfaces/modbusobserverinterface.h \
     mainwindow.h \
     modbus/modbus.h \

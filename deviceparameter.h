@@ -15,10 +15,10 @@ public:
     bool hasValue() { return !m_Value.isNull(); }
     bool hasRealValue() { return !m_RealValue.isNull(); }
     QString name() { return m_Name; }
-    DeviceCommand* minCmd() { return m_Min; }
-    DeviceCommand* maxCmd() { return m_Max; }
-    DeviceCommand* valueCmd() { return m_Value; }
-    DeviceCommand* realValueCmd() { return m_RealValue; }
+    const DeviceCommand* minCmd() { return m_Min; }
+    const DeviceCommand* maxCmd() { return m_Max; }
+    const DeviceCommand* valueCmd() { return m_Value; }
+    const DeviceCommand* realValueCmd() { return m_RealValue; }
 private:
     QString m_Name;
     QPointer<DeviceCommand> m_Min;
