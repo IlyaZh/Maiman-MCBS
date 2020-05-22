@@ -1,7 +1,7 @@
 #include "modbus.h"
 
-const quint8 Modbus::MODBUS_MAX_ADDRESS_CONST = 32;
-const quint8 Modbus::MODBUS_TIMEOUT_DEFAULT = 100;
+const quint8 Modbus::MAX_ADDRESS = 32;
+const quint8 Modbus::TIMEOUT_DEFAULT = 100;
 
 Modbus::Modbus(QIODevice* device, QString deviceName, int timeoutMSecs,  QObject *parent) : QObject(parent)
 {
@@ -12,38 +12,31 @@ Modbus::Modbus(QIODevice* device, QString deviceName, int timeoutMSecs,  QObject
     });
 }
 
-Modbus::~Modbus() {
-    closeDevice();
-}
-
 void Modbus::setDevice(QIODevice* device, QString deviceName, int timeoutMSecs) {
-    closeDevice();
-
-    if(m_Device) {
-        m_Device->disconnect();
-    }
+//    closeDevice();
+    if(m_Device) m_Device->disconnect();
     m_Device = device;
     m_DeviceName = deviceName;
     setTimeout(timeoutMSecs);
     connect(m_Device, &QIODevice::readyRead, this, &Modbus::readyRead);
     connect(m_Device, &QIODevice::bytesWritten, this, &Modbus::bytesWritten);
 
-    openDevice();
+//    openDevice();
 }
 
 void Modbus::setTimeout(int MSecs) {
     m_TimeoutMSecs = MSecs;
 }
 
-void Modbus::setEnable(bool bNewState) {
-    if(m_Device) {
-        if(bNewState) {
-            openDevice();
-        } else {
-            closeDevice();
-        }
-    }
-}
+//void Modbus::setEnable(bool bNewState) {
+//    if(m_Device) {
+//        if(bNewState) {
+//            openDevice();
+//        } else {
+//            closeDevice();
+//        }
+//    }
+//}
 
 bool Modbus::isEnable() {
     if(m_Device) {
@@ -53,8 +46,8 @@ bool Modbus::isEnable() {
     }
 }
 
-void Modbus::addObserver(ModbusObserverInterface& newObserver) {
-    m_ObserverVector.append(&newObserver);
+void Modbus::addObserver(ModbusObserverInterface* newObserver) {
+    m_ObserverVector.append(newObserver);
 }
 
 void Modbus::setDataValue(quint8 addr, quint16 reg, quint16 value) {
@@ -68,7 +61,7 @@ void Modbus::setDataValue(quint8 addr, quint16 reg, quint16 value) {
 
     m_lastWriteReg = reg;
 
-    prepareToWrite(package);
+    prepareAndWrite(package);
 }
 
 void Modbus::getDataValue(quint8 addr, quint16 reg, quint8 count) {
@@ -82,7 +75,7 @@ void Modbus::getDataValue(quint8 addr, quint16 reg, quint8 count) {
 
     m_lastWriteReg = reg;
 
-    prepareToWrite(package);
+    prepareAndWrite(package);
 }
 
 // private slots
@@ -92,10 +85,6 @@ void Modbus::readyRead() {
         rxPacketHandler(&rxPacket);
     } else {
         emit errorOccured("Wrong CRC. Ignore packet");
-        if(!m_Queue.isEmpty()) {
-            m_lastTxPackage = m_Queue.dequeue();
-            m_Device->write((*m_lastTxPackage));
-        }
     }
 
 }
@@ -104,10 +93,7 @@ void Modbus::bytesWritten(qint64 bytes) {
     m_bytesWritten += bytes;
     if(m_bytesWritten >= m_lastTxPackage->size()) {
         if(m_lastTxPackage->at(0) == 0) {
-            if(!m_Queue.isEmpty()) {
-                m_lastTxPackage = m_Queue.dequeue();
-                m_Device->write((*m_lastTxPackage));
-            }
+            tryToSend();
         } else {
             timeoutTimer.start(m_TimeoutMSecs);
         }
@@ -115,20 +101,20 @@ void Modbus::bytesWritten(qint64 bytes) {
 }
 
 // private methods
-bool Modbus::openDevice() {
-    if(!m_Device->isOpen()) {
-        if(!m_Device->open(QIODevice::ReadWrite)) {
-            emit errorOccured("Can't open device");
-        }
-    }
-    return m_Device->isOpen();
-}
+//bool Modbus::openDevice() {
+//    if(!m_Device->isOpen()) {
+//        if(!m_Device->open(QIODevice::ReadWrite)) {
+//            emit errorOccured("Can't open device");
+//        }
+//    }
+//    return m_Device->isOpen();
+//}
 
-void Modbus::closeDevice() {
-    if(m_Device) {
-        if(m_Device->isOpen()) m_Device->close();
-    }
-}
+//void Modbus::closeDevice() {
+//    if(m_Device) {
+//        if(m_Device->isOpen()) m_Device->close();
+//    }
+//}
 
 quint8 Modbus::hiBYTE(quint16 value) {
     return ((value >> 8) & 0xff);
@@ -198,7 +184,7 @@ quint16 Modbus::calcCrc(QByteArray *byteArray) {
     return RetCRC;
 }
 
-void Modbus::prepareToWrite(QByteArray *byteArray) {
+void Modbus::prepareAndWrite(QByteArray *byteArray) {
     m_bytesWritten = 0;
 
     if(m_Device->isOpen()) {
@@ -207,10 +193,7 @@ void Modbus::prepareToWrite(QByteArray *byteArray) {
         byteArray->append(static_cast<qint8>(loBYTE(crc)));
         m_Queue.enqueue(byteArray);
 
-        if(m_Queue.size() == 1) {
-            m_lastTxPackage = m_Queue.dequeue();
-            m_Device->write((*m_lastTxPackage));
-        }
+        tryToSend();
     } else {
         emit errorOccured(QString("Device [%1] isn't open!").arg(m_DeviceName));
     }
@@ -254,6 +237,21 @@ void Modbus::rxPacketHandler(QByteArray *rxPacket) {
 
 void Modbus::makeNotify(quint8 addr, quint16 reg, quint16 value) {
     for(ModbusObserverInterface* item : m_ObserverVector) {
-        item->notify(addr, reg, value);
+        item->modbusNotify(addr, reg, value);
+    }
+}
+
+void Modbus::nothingToSend() {
+    for(ModbusObserverInterface* item : m_ObserverVector) {
+        item->modbusReady();
+    }
+}
+
+void Modbus::tryToSend() {
+    if(m_Queue.isEmpty()) {
+        nothingToSend();
+    } else {
+        m_lastTxPackage = m_Queue.dequeue();
+        m_Device->write((*m_lastTxPackage));
     }
 }

@@ -13,16 +13,15 @@ class Modbus : public QObject
 {
     Q_OBJECT
 public:
-    static const quint8 MODBUS_MAX_ADDRESS_CONST;
-    static const quint8 MODBUS_TIMEOUT_DEFAULT;
+    static const quint8 MAX_ADDRESS;
+    static const quint8 TIMEOUT_DEFAULT;
     static const enum modbus_regs {READ = 0x03, WRITE_ONE = 0x06} modbus_regs;
-    explicit Modbus(QIODevice *device, QString deviceName, int m_TimeoutMSecs = MODBUS_TIMEOUT_DEFAULT, QObject *parent = nullptr);
-    ~Modbus();
-    void setDevice(QIODevice* device, QString deviceName, int m_TimeoutMSecs = MODBUS_TIMEOUT_DEFAULT);
+    explicit Modbus(QIODevice *device, QString deviceName, int m_TimeoutMSecs = TIMEOUT_DEFAULT, QObject *parent = nullptr);
+    void setDevice(QIODevice* device, QString deviceName, int m_TimeoutMSecs = TIMEOUT_DEFAULT);
     void setTimeout(int);
-    void setEnable(bool);
+//    void setEnable(bool);
     bool isEnable();
-    void addObserver(ModbusObserverInterface& newObserver);
+    void addObserver(ModbusObserverInterface* newObserver);
     void setDataValue(quint8 addr, quint16 reg, quint16 value);
     void getDataValue(quint8 addr, quint16 reg, quint8 count = 1);
 
@@ -47,14 +46,16 @@ private:
     int m_bytesWritten;
     quint16 m_lastWriteReg;
 
-    bool openDevice();
-    void closeDevice();
+//    bool openDevice();
+//    void closeDevice();
     quint8 hiBYTE(quint16 value);
     quint8 loBYTE(quint16 value);
     quint16 calcCrc(QByteArray* byteArray);
-    void prepareToWrite(QByteArray* byteArray);
+    void prepareAndWrite(QByteArray* byteArray);
     void rxPacketHandler(QByteArray *rxPacket);
     void makeNotify(quint8 addr, quint16 reg, quint16 value);
+    void nothingToSend();
+    void tryToSend();
 };
 
 #endif // MODBUS_H

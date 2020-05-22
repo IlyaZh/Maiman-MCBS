@@ -24,6 +24,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     modbus/modbus.cpp \
+    network/networkmodel.cpp \
     xmlreader.cpp
 
 HEADERS += \
@@ -41,6 +42,7 @@ HEADERS += \
     interfaces/modbusobserverinterface.h \
     mainwindow.h \
     modbus/modbus.h \
+    network/networkmodel.h \
     xmlreader.h
 
 FORMS += \

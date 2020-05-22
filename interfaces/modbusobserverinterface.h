@@ -19,7 +19,8 @@ class ModbusObserverInterface {
 public:
     ModbusObserverInterface();
     virtual ~ModbusObserverInterface();
-    virtual void notify(quint8 addr, quint16 reg, quint16 value) = 0;
+    virtual void modbusNotify(quint8 addr, quint16 reg, quint16 value) = 0;
+    virtual void modbusReady() = 0;
 };
 
 #endif // MODBUSOBSERVERINTERFACE_H

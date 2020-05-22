@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     QSerialPort comPort;
 
-    Modbus modbus(&comPort, "ComPort", Modbus::MODBUS_TIMEOUT_DEFAULT);
+    Modbus modbus(&comPort, "ComPort", Modbus::TIMEOUT_DEFAULT);
 
     return a.exec();
 }

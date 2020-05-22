@@ -4,9 +4,9 @@
 #include <QObject>
 #include <QPointer>
 #include "devicecommand.h"
-#include "interfaces/DeviceModelInterface.h"
+#include "interfaces/devicemodelinterface.h"
 #include "devicedescription.h"
-#include "DeviceBinaryOption.h"
+#include "devicebinaryoption.h"
 
 class DeviceModel : DeviceModelInterface
 {
