@@ -15,13 +15,14 @@ class Modbus : public QObject
 public:
     static const quint8 MAX_ADDRESS;
     static const quint8 TIMEOUT_DEFAULT;
-    static const enum modbus_regs {READ = 0x03, WRITE_ONE = 0x06} modbus_regs;
-    explicit Modbus(QIODevice *device, QString deviceName, int m_TimeoutMSecs = TIMEOUT_DEFAULT, QObject *parent = nullptr);
-    void setDevice(QIODevice* device, QString deviceName, int m_TimeoutMSecs = TIMEOUT_DEFAULT);
+    static const enum modbus_regs {BROADCAST, READ = 0x03, WRITE_ONE = 0x06} modbus_regs;
+    explicit Modbus(QIODevice *device, int m_TimeoutMSecs = TIMEOUT_DEFAULT, QObject *parent = nullptr);
+    void setDevice(QIODevice* device, int m_TimeoutMSecs = TIMEOUT_DEFAULT);
     void setTimeout(int);
 //    void setEnable(bool);
     bool isEnable();
     void addObserver(ModbusObserverInterface* newObserver);
+    void removeObserver(ModbusObserverInterface* newObserver);
     void setDataValue(quint8 addr, quint16 reg, quint16 value);
     void getDataValue(quint8 addr, quint16 reg, quint8 count = 1);
 
@@ -37,9 +38,8 @@ private slots:
 
 private:
     QPointer<QIODevice> m_Device;
-    QString m_DeviceName;
     QQueue<QByteArray*> m_Queue;
-    QVector<ModbusObserverInterface*> m_ObserverVector;
+    QList<ModbusObserverInterface*> m_vObservers;
     QTimer timeoutTimer;
     int m_TimeoutMSecs;
     QByteArray *m_lastTxPackage;

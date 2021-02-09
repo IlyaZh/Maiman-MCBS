@@ -8,17 +8,17 @@
 #include "modbus/modbus.h"
 #include "interfaces/modbusobserverinterface.h"
 
-class NetworkController2ModelInterface {
+class NetworkModelInInterface {
 public:
-    NetworkController2ModelInterface();
-    virtual ~NetworkController2ModelInterface();
-    virtual void start(QIODevice* networkDevice, QString deviceName) = 0;
+    explicit NetworkModelInInterface() {}
+    ~NetworkModelInInterface() {};
+    virtual void start(QIODevice* networkDevice) = 0;
     virtual void stop() = 0;
-    virtual void setDeviceCommand(quint8 addr, quint16 command, quint16 value);
-    virtual void rescanNetwork();
+    virtual void setDeviceCommand(quint8 addr, quint16 command, quint16 value) = 0;
+    virtual void rescanNetwork() = 0;
 };
 
-class NetworkModel : public QObject, ModbusObserverInterface, NetworkController2ModelInterface
+class NetworkModel : public QObject, ModbusObserverInterface, public NetworkModelInInterface
 {
     Q_OBJECT
 public:
@@ -26,7 +26,7 @@ public:
     static const quint16 TIMEOUT_MS;
     explicit NetworkModel(QObject *parent = nullptr);
     ~NetworkModel();
-    void start(QIODevice* networkDevice, QString deviceName) override;
+    void start(QIODevice* networkDevice) override;
     void stop() override;
     void setDeviceCommand(quint8 addr, quint16 command, quint16 value) override;
     void rescanNetwork() override;
@@ -34,6 +34,7 @@ public:
     void modbusNotify(quint8 addr, quint16 reg, quint16 value) override;
     void modbusReady() override;
 signals:
+    void modelConnected(bool);
 
 public slots:
 private slots:
@@ -46,5 +47,6 @@ private:
     void clear();
     void initDevice(quint8 addr, quint16 id);
 };
+
 
 #endif // NETWORKMODEL_H

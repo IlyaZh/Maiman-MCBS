@@ -15,7 +15,7 @@ public:
     QString getTemperatureUnit();
     QString getCode();
     virtual double getValue();
-    virtual int getIValue();
+    virtual qint16 getIValue();
     virtual quint16 getRawValue();
     bool needToRequest();
     void resetInterval();
@@ -23,7 +23,7 @@ public:
     virtual bool isSignedValue();
     bool isTemperature();
     QString getUnit();
-    virtual int getRawFromValue(double value);
+    virtual quint16 getRawFromValue(double value);
 
     static double convertCelToFar(double val);
     static double convertFarToCel(double val);

@@ -1,8 +1,9 @@
 #include "mainwindow.h"
+#include "mainwindowcontroller.h"
 
 #include <QApplication>
-#include <QSerialPort>
 #include "modbus/modbus.h"
+#include "network/networkmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,9 +12,11 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    QSerialPort comPort;
+    MainWindowController mwCntrl;
+    w.addController(mwCntrl);
 
-    Modbus modbus(&comPort, "ComPort", Modbus::TIMEOUT_DEFAULT);
+    NetworkModel* model = new NetworkModel();
+    mwCntrl.addModel(model);
 
     return a.exec();
 }

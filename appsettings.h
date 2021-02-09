@@ -7,11 +7,19 @@
 #include <QSize>
 #include <QDir>
 
+typedef struct NetworkData_s {
+    int type;
+    QString host;
+    int port;
+} NetworkData_s;
+
 class AppSettings : public QObject
 {
     Q_OBJECT
 public:
     explicit AppSettings(QObject *parent = nullptr);
+    bool parseFileSettings(QString fileName);
+    QString errorString();
     quint32 getComBaudrate();
     QString getComPort();
     uint getComAutoconnectFlag(bool flag);
@@ -22,10 +30,12 @@ public:
     QString getLastSaveDirectory();
     QPoint getWindowPosition();
     int getComStopBits();
+    NetworkData_s getNetworkData();
 //    QSize getWindowSize();
 
 private:
     QSettings *settings;
+    QString m_errorString;
 
 signals:
 
@@ -41,6 +51,7 @@ public slots:
     void removeRecentOpenFiles(QString str);
     void setWindowPosition(QPoint);
     void setComStopBits(int);
+    void setNetworkData(NetworkData_s netData);
 //    void setWindowSize(QSize);
 };
 

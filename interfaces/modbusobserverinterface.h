@@ -17,9 +17,11 @@
 
 class ModbusObserverInterface {
 public:
-    ModbusObserverInterface();
-    virtual ~ModbusObserverInterface();
+    explicit ModbusObserverInterface() {}
+    virtual ~ModbusObserverInterface() {};
+    // Вызывается, когда пришли данные из модбаса
     virtual void modbusNotify(quint8 addr, quint16 reg, quint16 value) = 0;
+    // Вызывается модбасом, когда он все передал и у него нет работы
     virtual void modbusReady() = 0;
 };
 

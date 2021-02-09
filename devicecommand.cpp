@@ -46,7 +46,7 @@ double DeviceCommand::getValue() {
     }
 }
 
-int DeviceCommand::getIValue() {
+qint16 DeviceCommand::getIValue() {
     if(isTemperature() && temperatureUnit == "F") {
         return qRound(convertCelToFar(value)*getDivider());
     } else {
@@ -74,8 +74,8 @@ QString DeviceCommand::getUnit() {
     }
 }
 
-int DeviceCommand::getRawFromValue(double value) {
-    return qRound(value * Divider);
+quint16 DeviceCommand::getRawFromValue(double value) {
+    return static_cast<quint16>(qRound(value * Divider));
 }
 
 bool DeviceCommand::isSignedValue() {

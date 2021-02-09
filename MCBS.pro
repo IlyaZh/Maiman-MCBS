@@ -1,4 +1,4 @@
-QT       += core gui serialport
+QT       += core gui serialport network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,6 +23,7 @@ SOURCES += \
     devicesignedcommand.cpp \
     main.cpp \
     mainwindow.cpp \
+    mainwindowcontroller.cpp \
     modbus/modbus.cpp \
     network/networkmodel.cpp \
     xmlreader.cpp
@@ -41,6 +42,7 @@ HEADERS += \
     interfaces/devicemodelinterface.h \
     interfaces/modbusobserverinterface.h \
     mainwindow.h \
+    mainwindowcontroller.h \
     modbus/modbus.h \
     network/networkmodel.h \
     xmlreader.h

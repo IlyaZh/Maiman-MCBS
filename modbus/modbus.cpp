@@ -3,20 +3,19 @@
 const quint8 Modbus::MAX_ADDRESS = 32;
 const quint8 Modbus::TIMEOUT_DEFAULT = 100;
 
-Modbus::Modbus(QIODevice* device, QString deviceName, int timeoutMSecs,  QObject *parent) : QObject(parent)
+Modbus::Modbus(QIODevice* device, int timeoutMSecs,  QObject *parent) : QObject(parent)
 {
-    setDevice(device, deviceName, timeoutMSecs);
+    setDevice(device, timeoutMSecs);
     timeoutTimer.setSingleShot(true);
     connect(&timeoutTimer, &QTimer::timeout, [=]{
 
     });
 }
 
-void Modbus::setDevice(QIODevice* device, QString deviceName, int timeoutMSecs) {
+void Modbus::setDevice(QIODevice* device, int timeoutMSecs) {
 //    closeDevice();
     if(m_Device) m_Device->disconnect();
     m_Device = device;
-    m_DeviceName = deviceName;
     setTimeout(timeoutMSecs);
     connect(m_Device, &QIODevice::readyRead, this, &Modbus::readyRead);
     connect(m_Device, &QIODevice::bytesWritten, this, &Modbus::bytesWritten);
@@ -47,7 +46,11 @@ bool Modbus::isEnable() {
 }
 
 void Modbus::addObserver(ModbusObserverInterface* newObserver) {
-    m_ObserverVector.append(newObserver);
+    m_vObservers.append(newObserver);
+}
+
+void Modbus::removeObserver(ModbusObserverInterface* pObserver) {
+    m_vObservers.removeOne(pObserver);
 }
 
 void Modbus::setDataValue(quint8 addr, quint16 reg, quint16 value) {
@@ -58,8 +61,6 @@ void Modbus::setDataValue(quint8 addr, quint16 reg, quint16 value) {
     package->append(static_cast<qint8>(loBYTE(reg)));
     package->append(static_cast<qint8>(hiBYTE(value)));
     package->append(static_cast<qint8>(loBYTE(value)));
-
-    m_lastWriteReg = reg;
 
     prepareAndWrite(package);
 }
@@ -72,8 +73,6 @@ void Modbus::getDataValue(quint8 addr, quint16 reg, quint8 count) {
     package->append(static_cast<qint8>(loBYTE(reg)));
     package->append(static_cast<qint8>(hiBYTE(count)));
     package->append(static_cast<qint8>(loBYTE(count)));
-
-    m_lastWriteReg = reg;
 
     prepareAndWrite(package);
 }
@@ -92,7 +91,7 @@ void Modbus::readyRead() {
 void Modbus::bytesWritten(qint64 bytes) {
     m_bytesWritten += bytes;
     if(m_bytesWritten >= m_lastTxPackage->size()) {
-        if(m_lastTxPackage->at(0) == 0) {
+        if(m_lastTxPackage->at(0) == BROADCAST) {
             tryToSend();
         } else {
             timeoutTimer.start(m_TimeoutMSecs);
@@ -124,7 +123,7 @@ quint8 Modbus::loBYTE(quint16 value) {
     return (value & 0xff);
 }
 
-static const uint8_t CRC_HTable[256] = { 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80,
+static const quint8 CRC_HTable[256] = { 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80,
         0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80,
         0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80,
         0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81,
@@ -147,7 +146,7 @@ static const uint8_t CRC_HTable[256] = { 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x8
         0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80,
         0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40 };
 
-static const uint8_t CRC_LTable[256] = { 0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02,
+static const quint8 CRC_LTable[256] = { 0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02,
         0xC2, 0xC6, 0x06, 0x07, 0xC7, 0x05, 0xC5, 0xC4, 0x04, 0xCC, 0x0C, 0x0D,
         0xCD, 0x0F, 0xCF, 0xCE, 0x0E, 0x0A, 0xCA, 0xCB, 0x0B, 0xC9, 0x09, 0x08,
         0xC8, 0xD8, 0x18, 0x19, 0xD9, 0x1B, 0xDB, 0xDA, 0x1A, 0x1E, 0xDE, 0xDF,
@@ -195,7 +194,7 @@ void Modbus::prepareAndWrite(QByteArray *byteArray) {
 
         tryToSend();
     } else {
-        emit errorOccured(QString("Device [%1] isn't open!").arg(m_DeviceName));
+        emit errorOccured(QString("Modbus device isn't open!"));
     }
 }
 
@@ -236,13 +235,13 @@ void Modbus::rxPacketHandler(QByteArray *rxPacket) {
 }
 
 void Modbus::makeNotify(quint8 addr, quint16 reg, quint16 value) {
-    for(ModbusObserverInterface* item : m_ObserverVector) {
+    for(ModbusObserverInterface* item : m_vObservers) {
         item->modbusNotify(addr, reg, value);
     }
 }
 
 void Modbus::nothingToSend() {
-    for(ModbusObserverInterface* item : m_ObserverVector) {
+    for(ModbusObserverInterface* item : m_vObservers) {
         item->modbusReady();
     }
 }
@@ -252,6 +251,8 @@ void Modbus::tryToSend() {
         nothingToSend();
     } else {
         m_lastTxPackage = m_Queue.dequeue();
+        m_lastWriteReg = (quint8) (m_lastTxPackage->at(2) << 8) | (quint8) (m_lastTxPackage->at(3));
         m_Device->write((*m_lastTxPackage));
+
     }
 }

@@ -2,10 +2,28 @@
 #include "devicecommand.h"
 #include "devicesignedcommand.h"
 
-xmlReader::xmlReader(QObject *parent) : QObject(parent), file(nullptr)
+xmlReader::xmlReader(QObject *parent) : QObject(parent)
 {
 
 }
+
+xmlReader::~xmlReader() {
+    m_baudList.clear();
+}
+
+bool xmlReader::parseProgramConfig(QString filename) {
+    QFile* file = new QFile();
+}
+
+DeviceModel* xmlReader::createDevice(quint16 id) {
+
+    return nullptr;
+}
+
+
+
+
+/*
 
 void xmlReader::setDeviceOptions(device_t &device, quint16 dev_id) {
     this->device = &device;
@@ -480,8 +498,16 @@ void xmlReader::parseBinaryOptions() {
         device->binOptions.append(binOption);
 
     }
-}
+}*/
 
 void xmlReader::writeToLog(QString msg) {
     emit logger("[INFO][xmlReader] " + msg);
+}
+
+void xmlReader::process() {
+
+}
+
+void xmlReader::stop() {
+
 }

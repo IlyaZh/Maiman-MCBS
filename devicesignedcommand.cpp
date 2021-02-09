@@ -9,8 +9,8 @@ bool DeviceSignedCommand::isSignedValue() {
     return true;
 }
 
-int DeviceSignedCommand::getRawValue() {
-    return static_cast<qint16>(rawValue.toInt());
+quint16 DeviceSignedCommand::getRawValue() {
+    return static_cast<quint16>(rawValue.toInt());
 }
 
 quint16 DeviceSignedCommand::getRawFromValue(double value) { // it was int

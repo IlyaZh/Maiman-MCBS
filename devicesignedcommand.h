@@ -11,7 +11,7 @@ public:
     explicit DeviceSignedCommand(QString code, QString unit = "", double divider = 1, quint8 interval = 1, bool isTemperature = false, QObject* parent = nullptr);
     bool isSignedValue() override;
     quint16 getRawValue() override;
-    int getRawFromValue(double value) override;
+    quint16 getRawFromValue(double value) override;
 //    double getValue() override;
 
 public slots:
