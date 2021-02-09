@@ -14,7 +14,10 @@ Modbus::Modbus(QIODevice* device, int timeoutMSecs,  QObject *parent) : QObject(
 
 void Modbus::setDevice(QIODevice* device, int timeoutMSecs) {
 //    closeDevice();
-    if(m_Device) m_Device->disconnect();
+    if(m_Device) {
+        m_Device->disconnect();
+        m_Device.clear();
+    }
     m_Device = device;
     setTimeout(timeoutMSecs);
     connect(m_Device, &QIODevice::readyRead, this, &Modbus::readyRead);
