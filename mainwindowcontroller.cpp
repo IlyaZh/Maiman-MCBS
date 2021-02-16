@@ -28,21 +28,29 @@ void MainWindowController::networkConnectClicked(CONNECT_PROTOCOL protocol, QStr
         return;
     }
 
-    switch(protocol) {
-    case TCP_PROTOCOL:
-        tcpSocket = new QTcpSocket();
-        tcpSocket->connectToHost(QHostAddress(host), port, QIODevice::ReadWrite);
-        m_model->start(tcpSocket);
-        emit connected(tcpSocket->isOpen());
-        break;
-    case COM_PORT_PROTOCOL:
-        serialPort = new QSerialPort();
-        serialPort->setPortName(host);
-        serialPort->setBaudRate(port);
-        serialPort->open(QIODevice::ReadWrite);
-        emit connected(serialPort->isOpen());
-        m_model->start(serialPort);
-        break;
+    if(m_model->isStart()) {
+        m_model->stop();
+        emit connected(false);
+    } else {
+        switch(protocol) {
+        case TCP_PROTOCOL:
+            tcpSocket = new QTcpSocket();
+            tcpSocket->connectToHost(QHostAddress(host), port, QIODevice::ReadWrite);
+            m_model->start(tcpSocket);
+            emit connected(tcpSocket->isOpen());
+            break;
+        case COM_PORT_PROTOCOL:
+            serialPort = new QSerialPort();
+            serialPort->setPortName(host);
+            serialPort->setBaudRate(port);
+            serialPort->open(QIODevice::ReadWrite);
+            emit connected(serialPort->isOpen());
+            m_model->start(serialPort);
+            break;
+        case UNKNOWN_PROTOCOL:
+        default:
+            break;
+        }
     }
 
 }

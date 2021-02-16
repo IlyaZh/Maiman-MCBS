@@ -1,15 +1,19 @@
 #include "modbus.h"
+#include <QDebug>
 
 const quint8 Modbus::MAX_ADDRESS = 32;
-const quint8 Modbus::TIMEOUT_DEFAULT = 100;
+const int Modbus::TIMEOUT_DEFAULT = 100;
 
 Modbus::Modbus(QIODevice* device, int timeoutMSecs,  QObject *parent) : QObject(parent)
 {
     setDevice(device, timeoutMSecs);
     timeoutTimer.setSingleShot(true);
-    connect(&timeoutTimer, &QTimer::timeout, [=]{
+    connect(&timeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
+    bPortIsBusy = false;
+}
 
-    });
+Modbus::~Modbus() {
+    qDebug() << "Modbus destroyed";
 }
 
 void Modbus::setDevice(QIODevice* device, int timeoutMSecs) {
@@ -80,15 +84,23 @@ void Modbus::getDataValue(quint8 addr, quint16 reg, quint8 count) {
     prepareAndWrite(package);
 }
 
+void Modbus::stop() {
+    m_Queue.clear();
+}
+
 // private slots
 void Modbus::readyRead() {
     QByteArray rxPacket = m_Device->readAll();
+    timeoutTimer.stop();
     if(calcCrc(&rxPacket) == 0) {
         rxPacketHandler(&rxPacket);
     } else {
         emit errorOccured("Wrong CRC. Ignore packet");
     }
+    qDebug() << "rx packet: " << rxPacket;
+    bPortIsBusy = false;
 
+    tryToSend();
 }
 
 void Modbus::bytesWritten(qint64 bytes) {
@@ -211,10 +223,10 @@ void Modbus::rxPacketHandler(QByteArray *rxPacket) {
         switch(comm) {
             case Modbus::READ:
             bytesCount = rxPacket->at(2);
-            if(rxPacket->size() == 6+bytesCount) {
+            if(rxPacket->size() == 5+bytesCount) {
                 for(quint16 i = 0; i < bytesCount/2; ++i) {
                     reg = m_lastWriteReg+i;
-                    value = static_cast<quint16>((static_cast<quint16>(rxPacket->at(4+2*i)) << 8) + static_cast<quint16>(rxPacket->at(5+2*i)));
+                    value = static_cast<quint16>((static_cast<quint16>(rxPacket->at(3+2*i)) << 8) + static_cast<quint16>(rxPacket->at(4+2*i)));
                     makeNotify(addr, reg, value);
                 }
             } else {
@@ -241,6 +253,7 @@ void Modbus::makeNotify(quint8 addr, quint16 reg, quint16 value) {
     for(ModbusObserverInterface* item : m_vObservers) {
         item->modbusNotify(addr, reg, value);
     }
+    qDebug() << "Modbus rx: " << addr << reg << value;
 }
 
 void Modbus::nothingToSend() {
@@ -252,10 +265,18 @@ void Modbus::nothingToSend() {
 void Modbus::tryToSend() {
     if(m_Queue.isEmpty()) {
         nothingToSend();
-    } else {
+    } else if(!bPortIsBusy) {
         m_lastTxPackage = m_Queue.dequeue();
-        m_lastWriteReg = (quint8) (m_lastTxPackage->at(2) << 8) | (quint8) (m_lastTxPackage->at(3));
+        m_lastWriteReg = (quint16) (m_lastTxPackage->at(2) << 8) | (quint16) (m_lastTxPackage->at(3));
         m_Device->write((*m_lastTxPackage));
+        qDebug() << "write: " << m_lastTxPackage->toHex(' ');
+        timeoutTimer.start(m_TimeoutMSecs);
+        bPortIsBusy = true;
 
     }
+}
+
+void Modbus::timeout() {
+    bPortIsBusy = false;
+    tryToSend();
 }

@@ -14,9 +14,10 @@ class Modbus : public QObject
     Q_OBJECT
 public:
     static const quint8 MAX_ADDRESS;
-    static const quint8 TIMEOUT_DEFAULT;
+    static const int TIMEOUT_DEFAULT;
     static const enum modbus_regs {BROADCAST, READ = 0x03, WRITE_ONE = 0x06} modbus_regs;
     explicit Modbus(QIODevice *device, int m_TimeoutMSecs = TIMEOUT_DEFAULT, QObject *parent = nullptr);
+    ~Modbus();
     void setDevice(QIODevice* device, int m_TimeoutMSecs = TIMEOUT_DEFAULT);
     void setTimeout(int);
 //    void setEnable(bool);
@@ -25,6 +26,7 @@ public:
     void removeObserver(ModbusObserverInterface* newObserver);
     void setDataValue(quint8 addr, quint16 reg, quint16 value);
     void getDataValue(quint8 addr, quint16 reg, quint8 count = 1);
+    void stop();
 
 signals:
     void errorOccured(QString);
@@ -35,6 +37,7 @@ public slots:
 private slots:
     void readyRead();
     void bytesWritten(qint64 bytes);
+    void timeout();
 
 private:
     QPointer<QIODevice> m_Device;
@@ -45,6 +48,7 @@ private:
     QByteArray *m_lastTxPackage;
     int m_bytesWritten;
     quint16 m_lastWriteReg;
+    bool bPortIsBusy;
 
 //    bool openDevice();
 //    void closeDevice();

@@ -13,6 +13,7 @@ public:
     explicit NetworkModelInInterface() {}
     ~NetworkModelInInterface() {};
     virtual void start(QIODevice* networkDevice) = 0;
+    virtual bool isStart() { return false; }
     virtual void stop() = 0;
     virtual void setDeviceCommand(quint8 addr, quint16 command, quint16 value) = 0;
     virtual void rescanNetwork() = 0;
@@ -27,6 +28,7 @@ public:
     explicit NetworkModel(QObject *parent = nullptr);
     ~NetworkModel();
     void start(QIODevice* networkDevice) override;
+    bool isStart() override;
     void stop() override;
     void setDeviceCommand(quint8 addr, quint16 command, quint16 value) override;
     void rescanNetwork() override;
@@ -43,6 +45,8 @@ private slots:
 private:
     QPointer<Modbus> m_netDevice;
     QVector<void*> m_devices; // device models. Change the type of
+    bool m_bIsStart;
+
 
     void clear();
     void initDevice(quint8 addr, quint16 id);

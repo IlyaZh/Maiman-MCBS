@@ -1,11 +1,11 @@
 #include "networkmodel.h"
 
-const quint16 NetworkModel::TIMEOUT_MS = 50;
-const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0702;
+const quint16 NetworkModel::TIMEOUT_MS = 50*10;
+const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0702; // debug замени
 
 NetworkModel::NetworkModel(QObject *parent) : QObject(parent), ModbusObserverInterface(), NetworkModelInInterface()
 {
-
+    m_bIsStart = false;
 }
 
 NetworkModel::~NetworkModel() {
@@ -18,6 +18,7 @@ void NetworkModel::start(QIODevice *networkDevice)
 {
     m_netDevice = new Modbus(networkDevice, TIMEOUT_MS, this);
     m_netDevice->addObserver(this);
+    m_bIsStart = true;
 
     rescanNetwork();
 
@@ -25,10 +26,16 @@ void NetworkModel::start(QIODevice *networkDevice)
 
 }
 
+bool NetworkModel::isStart() {
+    return m_bIsStart;
+}
+
 void NetworkModel::stop()
 {
    m_netDevice->removeObserver(this);
+   m_netDevice->stop();
    m_netDevice.clear();
+   m_bIsStart = false;
 }
 
 void NetworkModel::setDeviceCommand(quint8 addr, quint16 command, quint16 value)
