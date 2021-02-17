@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include "network/networkmodel.h"
+#include "model/ModelCommandInterface.h"
+#include "enums.h"
 
 class MainWindowController : public QObject
 {
@@ -13,13 +15,14 @@ public:
     void removeModel();
 
 public slots:
-    void networkConnectClicked(ModelInterface::CONNECT_PROTOCOL protocol, QString host, int port);
+    void networkConnectClicked(CONNECT_PROTOCOL protocol, QString host, int port);
 
 signals:
     void connected(bool);
 
 private:
     ModelInterface* m_model;
+    ModelCommand* m_connectCommand;
 
 };
 

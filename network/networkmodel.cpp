@@ -14,21 +14,21 @@ NetworkModel::~NetworkModel() {
 
 // controller to model interface overrides
 
-void NetworkModel::start(int protocol, QString host, int port)
+void NetworkModel::start(CONNECT_PROTOCOL protocol, QString host, int port)
 {
-    if (protocol == ModelInterface::UNKNOWN_PROTOCOL || host.isEmpty() || port == 0) {
+    if (protocol == UNKNOWN_PROTOCOL || host.isEmpty() || port == 0) {
         return;
     }
 
     QIODevice *networkDevice = nullptr;
 
     switch (protocol) {
-    case ModelInterface::COM_PORT_PROTOCOL:
+    case COM_PORT_PROTOCOL:
 
         break;
-    case ModelInterface::TCP_PROTOCOL:
+    case TCP_PROTOCOL:
         break;
-    case ModelInterface::UNKNOWN_PROTOCOL:
+    case UNKNOWN_PROTOCOL:
     default:
         return;
     }

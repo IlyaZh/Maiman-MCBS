@@ -4,22 +4,29 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 #include <QSerialPort>
+#include "model/ModelCommands.h"
 
 MainWindowController::MainWindowController(QObject *parent) : QObject(parent)
 {
-
+    removeModel();
 }
 
 void MainWindowController::addModel(ModelInterface *model) {
     m_model = model;
+
+    m_connectCommand = new ConnectModelCommand(model);
 }
 
 void MainWindowController::removeModel() {
     m_model = nullptr;
+    m_connectCommand = nullptr;
 }
 
 // public slots
-void MainWindowController::networkConnectClicked(ModelInterface::CONNECT_PROTOCOL protocol, QString host, int port) {
+void MainWindowController::networkConnectClicked(CONNECT_PROTOCOL protocol, QString host, int port) {
+    if(m_connectCommand != nullptr) {
+        m_connectCommand->
+    }
 //    QTcpSocket* tcpSocket;
 //    QSerialPort *serialPort;
 

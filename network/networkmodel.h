@@ -8,6 +8,7 @@
 #include "modbus/modbus.h"
 #include "interfaces/modbusobserverinterface.h"
 #include "model/ModelInterface.h"
+//#include "enums.h"
 
 class NetworkModel : public QObject, ModbusObserverInterface, public ModelInterface
 {
@@ -16,8 +17,8 @@ public:
     static const quint16 IDENTIFY_REG_ID_DEFAULT;
     static const quint16 TIMEOUT_MS;
     explicit NetworkModel(QObject *parent = nullptr);
-    ~NetworkModel() override;
-    void start(int protocol, QString host, int port) override;
+    ~NetworkModel();
+    void start(CONNECT_PROTOCOL protocol, QString host, int port) override;
     bool isStart() override;
     void stop() override;
     void setDeviceCommand(quint8 addr, quint16 command, quint16 value) override;

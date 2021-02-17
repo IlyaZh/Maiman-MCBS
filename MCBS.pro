@@ -38,6 +38,7 @@ HEADERS += \
     devicemodel.h \
     deviceparameter.h \
     devicesignedcommand.h \
+    enums.h \
     globals.h \
     devicedescription.h \
     interfaces/DevCommand.h \
@@ -48,6 +49,7 @@ HEADERS += \
     mainwindow.h \
     mainwindowcontroller.h \
     modbus/modbus.h \
+    model/ModelCommandInterface.h \
     model/ModelCommands.h \
     model/ModelInterface.h \
     network/networkmodel.h \
