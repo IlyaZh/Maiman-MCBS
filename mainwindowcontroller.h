@@ -8,19 +8,18 @@ class MainWindowController : public QObject
 {
     Q_OBJECT
 public:
-    enum CONNECT_PROTOCOL { UNKNOWN_PROTOCOL, TCP_PROTOCOL, COM_PORT_PROTOCOL };
     explicit MainWindowController(QObject *parent = nullptr);
-    void addModel(NetworkModelInInterface* model);
+    void addModel(ModelInterface* model);
     void removeModel();
 
 public slots:
-    void networkConnectClicked(CONNECT_PROTOCOL protocol, QString host, int port);
+    void networkConnectClicked(ModelInterface::CONNECT_PROTOCOL protocol, QString host, int port);
 
 signals:
     void connected(bool);
 
 private:
-    NetworkModelInInterface* m_model;
+    ModelInterface* m_model;
 
 };
 

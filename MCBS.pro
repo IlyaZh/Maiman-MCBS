@@ -25,6 +25,7 @@ SOURCES += \
     mainwindow.cpp \
     mainwindowcontroller.cpp \
     modbus/modbus.cpp \
+    model/ModelCommands.cpp \
     network/networkmodel.cpp \
     xmlreader.cpp
 
@@ -39,11 +40,16 @@ HEADERS += \
     devicesignedcommand.h \
     globals.h \
     devicedescription.h \
+    interfaces/DevCommand.h \
+    interfaces/ModelCommands/ModelCmd.h \
+    interfaces/ViewInterface.h \
     interfaces/devicemodelinterface.h \
     interfaces/modbusobserverinterface.h \
     mainwindow.h \
     mainwindowcontroller.h \
     modbus/modbus.h \
+    model/ModelCommands.h \
+    model/ModelInterface.h \
     network/networkmodel.h \
     xmlreader.h
 

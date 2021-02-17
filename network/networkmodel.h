@@ -7,27 +7,17 @@
 #include <QVector>
 #include "modbus/modbus.h"
 #include "interfaces/modbusobserverinterface.h"
+#include "model/ModelInterface.h"
 
-class NetworkModelInInterface {
-public:
-    explicit NetworkModelInInterface() {}
-    ~NetworkModelInInterface() {};
-    virtual void start(QIODevice* networkDevice) = 0;
-    virtual bool isStart() { return false; }
-    virtual void stop() = 0;
-    virtual void setDeviceCommand(quint8 addr, quint16 command, quint16 value) = 0;
-    virtual void rescanNetwork() = 0;
-};
-
-class NetworkModel : public QObject, ModbusObserverInterface, public NetworkModelInInterface
+class NetworkModel : public QObject, ModbusObserverInterface, public ModelInterface
 {
     Q_OBJECT
 public:
     static const quint16 IDENTIFY_REG_ID_DEFAULT;
     static const quint16 TIMEOUT_MS;
     explicit NetworkModel(QObject *parent = nullptr);
-    ~NetworkModel();
-    void start(QIODevice* networkDevice) override;
+    ~NetworkModel() override;
+    void start(int protocol, QString host, int port) override;
     bool isStart() override;
     void stop() override;
     void setDeviceCommand(quint8 addr, quint16 command, quint16 value) override;
