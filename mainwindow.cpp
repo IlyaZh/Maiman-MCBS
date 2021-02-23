@@ -52,15 +52,13 @@ MainWindow::~MainWindow()
 //    m_settings = settings;
 //}
 
-void MainWindow::addController(MainWindowController& cntrl) {
+void MainWindow::addController(MainWindowControllerInterface& cntrl) {
     clearController();
     m_cntrl = &cntrl;
-    connect(m_cntrl, SIGNAL(connected(bool)), this, SLOT(setConnected(bool)));
 }
 
 void MainWindow::clearController() {
     if(m_cntrl != nullptr) {
-        m_cntrl->disconnect();
         delete m_cntrl;
         m_cntrl = nullptr;
     }

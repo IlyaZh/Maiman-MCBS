@@ -1,9 +1,9 @@
 #include "mainwindow.h"
-#include "mainwindowcontroller.h"
+#include "interfaces/mainwindowcontrollerinterface.h"
 
 #include <QApplication>
-#include "modbus/modbus.h"
 #include "network/networkmodel.h"
+#include "network/protocols/modbus.h"
 
 #include <QDebug>
 
@@ -23,15 +23,12 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    MainWindowController mwCntrl;
-    w.addController(mwCntrl);
+//    MainWindowController mwCntrl;
+//    w.addController(mwCntrl);
 
-    NetworkModel* model = new NetworkModel();
-    mwCntrl.addModel(model);
-    QVariant var;
-    var.setValue((double) 0xfffe/10);
-
-    qDebug() << var.toUInt() << var.toDouble();
+    Modbus* modbus = new Modbus("modbus");
+    NetworkModel* model = new NetworkModel(modbus);
+//    mwCntrl.addModel(model);
 
     return a.exec();
 }

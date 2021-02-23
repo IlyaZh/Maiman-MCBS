@@ -22,11 +22,11 @@ SOURCES += \
     devicemodel.cpp \
     devicesignedcommand.cpp \
     main.cpp \
+    mainviewfacade.cpp \
     mainwindow.cpp \
-    mainwindowcontroller.cpp \
-    modbus/modbus.cpp \
-    model/ModelCommands.cpp \
+    network/SoftProtocol.cpp \
     network/networkmodel.cpp \
+    network/protocols/modbus.cpp \
     xmlreader.cpp
 
 HEADERS += \
@@ -43,16 +43,17 @@ HEADERS += \
     devicedescription.h \
     interfaces/DevCommand.h \
     interfaces/ModelCommands/ModelCmd.h \
+    interfaces/ProtocolObserverInterface.h \
     interfaces/ViewInterface.h \
     interfaces/devicemodelinterface.h \
-    interfaces/modbusobserverinterface.h \
+    interfaces/mainwindowcontrollerinterface.h \
+    mainviewfacade.h \
     mainwindow.h \
     mainwindowcontroller.h \
-    modbus/modbus.h \
-    model/ModelCommandInterface.h \
-    model/ModelCommands.h \
     model/ModelInterface.h \
+    network/SoftProtocol.h \
     network/networkmodel.h \
+    network/protocols/modbus.h \
     xmlreader.h
 
 FORMS += \

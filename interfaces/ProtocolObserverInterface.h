@@ -1,5 +1,5 @@
-#ifndef MODBUSOBSERVERINTERFACE_H
-#define MODBUSOBSERVERINTERFACE_H
+#ifndef PROTOCOLOBSERVERINTERFACE_H
+#define PROTOCOLOBSERVERINTERFACE_H
 
 #include <QObject>
 
@@ -15,14 +15,14 @@
 //    void notify(quint16 reg, quint16 value);
 //};
 
-class ModbusObserverInterface {
+class ProtocolObserverInterface {
 public:
-    explicit ModbusObserverInterface() {}
-    virtual ~ModbusObserverInterface() {};
+    explicit ProtocolObserverInterface() {}
+    virtual ~ProtocolObserverInterface() {};
     // Вызывается, когда пришли данные из модбаса
-    virtual void modbusNotify(quint8 addr, quint16 reg, quint16 value) = 0;
+    virtual void dataNotify(quint8 addr, quint16 reg, quint16 value) = 0;
     // Вызывается модбасом, когда он все передал и у него нет работы
-    virtual void modbusReady() = 0;
+    virtual void dataReady() = 0;
 };
 
-#endif // MODBUSOBSERVERINTERFACE_H
+#endif // PROTOCOLOBSERVERINTERFACE_H

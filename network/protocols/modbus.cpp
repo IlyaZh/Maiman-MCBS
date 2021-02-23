@@ -1,63 +1,14 @@
 #include "modbus.h"
 #include <QDebug>
 
-const quint8 Modbus::MAX_ADDRESS = 32;
-const int Modbus::TIMEOUT_DEFAULT = 100;
-
-Modbus::Modbus(QIODevice* device, int timeoutMSecs,  QObject *parent) : QObject(parent)
+Modbus::Modbus(QString name, QIODevice* device, int timeoutMSecs, QObject *parent)
+    : SoftProtocol(name, device, timeoutMSecs, parent)
 {
-    setDevice(device, timeoutMSecs);
-    timeoutTimer.setSingleShot(true);
-    connect(&timeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
-    bPortIsBusy = false;
+
 }
 
 Modbus::~Modbus() {
-    qDebug() << "Modbus destroyed";
-}
 
-void Modbus::setDevice(QIODevice* device, int timeoutMSecs) {
-//    closeDevice();
-    if(m_Device) {
-        m_Device->disconnect();
-        m_Device.clear();
-    }
-    m_Device = device;
-    setTimeout(timeoutMSecs);
-    connect(m_Device, &QIODevice::readyRead, this, &Modbus::readyRead);
-    connect(m_Device, &QIODevice::bytesWritten, this, &Modbus::bytesWritten);
-
-//    openDevice();
-}
-
-void Modbus::setTimeout(int MSecs) {
-    m_TimeoutMSecs = MSecs;
-}
-
-//void Modbus::setEnable(bool bNewState) {
-//    if(m_Device) {
-//        if(bNewState) {
-//            openDevice();
-//        } else {
-//            closeDevice();
-//        }
-//    }
-//}
-
-bool Modbus::isEnable() {
-    if(m_Device) {
-        return m_Device->isOpen();
-    } else {
-        return false;
-    }
-}
-
-void Modbus::addObserver(ModbusObserverInterface* newObserver) {
-    m_vObservers.append(newObserver);
-}
-
-void Modbus::removeObserver(ModbusObserverInterface* pObserver) {
-    m_vObservers.removeOne(pObserver);
 }
 
 void Modbus::setDataValue(quint8 addr, quint16 reg, quint16 value) {
@@ -84,10 +35,6 @@ void Modbus::getDataValue(quint8 addr, quint16 reg, quint8 count) {
     prepareAndWrite(package);
 }
 
-void Modbus::stop() {
-    m_Queue.clear();
-}
-
 // private slots
 void Modbus::readyRead() {
     QByteArray rxPacket = m_Device->readAll();
@@ -95,7 +42,7 @@ void Modbus::readyRead() {
     if(calcCrc(&rxPacket) == 0) {
         rxPacketHandler(&rxPacket);
     } else {
-        emit errorOccured("Wrong CRC. Ignore packet");
+        emit errorOccured(QString("[%1] Wrong CRC. Ignore packet").arg(m_name));
     }
     qDebug() << "rx packet: " << rxPacket;
     bPortIsBusy = false;
@@ -112,30 +59,6 @@ void Modbus::bytesWritten(qint64 bytes) {
             timeoutTimer.start(m_TimeoutMSecs);
         }
     }
-}
-
-// private methods
-//bool Modbus::openDevice() {
-//    if(!m_Device->isOpen()) {
-//        if(!m_Device->open(QIODevice::ReadWrite)) {
-//            emit errorOccured("Can't open device");
-//        }
-//    }
-//    return m_Device->isOpen();
-//}
-
-//void Modbus::closeDevice() {
-//    if(m_Device) {
-//        if(m_Device->isOpen()) m_Device->close();
-//    }
-//}
-
-quint8 Modbus::hiBYTE(quint16 value) {
-    return ((value >> 8) & 0xff);
-}
-
-quint8 Modbus::loBYTE(quint16 value) {
-    return (value & 0xff);
 }
 
 static const quint8 CRC_HTable[256] = { 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80,
@@ -209,7 +132,7 @@ void Modbus::prepareAndWrite(QByteArray *byteArray) {
 
         tryToSend();
     } else {
-        emit errorOccured(QString("Modbus device isn't open!"));
+        emit errorOccured(QString("[%] device isn't open!").arg(m_name));
     }
 }
 
@@ -230,7 +153,7 @@ void Modbus::rxPacketHandler(QByteArray *rxPacket) {
                     makeNotify(addr, reg, value);
                 }
             } else {
-                errorMessage = "Wrong size of packet";
+                errorMessage = QString("[%1} Wrong size of packet").arg(m_name);
             }
             break;
         case Modbus::WRITE_ONE:
@@ -239,27 +162,14 @@ void Modbus::rxPacketHandler(QByteArray *rxPacket) {
              makeNotify(addr, reg, value);
             break;
         default:
-            errorMessage = "Wrong command";
+            errorMessage = QString("[%1] Wrong command").arg(m_name);
         }
     } else {
-        errorMessage = "Wrong size of packet";
+        errorMessage = QString("[%1] Wrong size of packet").arg(m_name);
     }
 
     if(!errorMessage.isEmpty()) emit errorOccured(QString("%1 [%2]").arg(errorMessage).arg(QString().fromLocal8Bit(*rxPacket)));
 
-}
-
-void Modbus::makeNotify(quint8 addr, quint16 reg, quint16 value) {
-    for(ModbusObserverInterface* item : m_vObservers) {
-        item->modbusNotify(addr, reg, value);
-    }
-    qDebug() << "Modbus rx: " << addr << reg << value;
-}
-
-void Modbus::nothingToSend() {
-    for(ModbusObserverInterface* item : m_vObservers) {
-        item->modbusReady();
-    }
 }
 
 void Modbus::tryToSend() {
@@ -269,14 +179,9 @@ void Modbus::tryToSend() {
         m_lastTxPackage = m_Queue.dequeue();
         m_lastWriteReg = (quint16) (m_lastTxPackage->at(2) << 8) | (quint16) (m_lastTxPackage->at(3));
         m_Device->write((*m_lastTxPackage));
-        qDebug() << "write: " << m_lastTxPackage->toHex(' ');
+//        qDebug() << "write: " << m_lastTxPackage->toHex(' ');
         timeoutTimer.start(m_TimeoutMSecs);
         bPortIsBusy = true;
 
     }
-}
-
-void Modbus::timeout() {
-    bPortIsBusy = false;
-    tryToSend();
 }

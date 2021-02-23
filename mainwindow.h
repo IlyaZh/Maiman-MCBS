@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "mainwindowcontroller.h"
+#include "interfaces/mainwindowcontrollerinterface.h"
 #include "appsettings.h"
 
 QT_BEGIN_NAMESPACE
@@ -18,7 +18,7 @@ public:
 
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void addController(MainWindowController& cntrl);
+    void addController(MainWindowControllerInterface& cntrl);
     void clearController();
     void setNetworkMessage(QString msg);
     void setPortList(QVector<QString> *portList);
@@ -37,7 +37,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    MainWindowController* m_cntrl;
+    MainWindowControllerInterface* m_cntrl;
     QVector<QString> *m_portList;
     QVector<int> *m_baudList;
     AppSettings* m_settings;

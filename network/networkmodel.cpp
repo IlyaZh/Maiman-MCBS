@@ -1,11 +1,13 @@
 #include "networkmodel.h"
+#include <QDebug>
 
 const quint16 NetworkModel::TIMEOUT_MS = 50*10;
 const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0702; // debug замени
 
-NetworkModel::NetworkModel(QObject *parent) : QObject(parent), ModbusObserverInterface(), ModelInterface()
+NetworkModel::NetworkModel(SoftProtocol* protocol, QObject *parent) : QObject(parent), ProtocolObserverInterface(), ModelInterface()
 {
     m_bIsStart = false;
+    m_netDevice = protocol;
 }
 
 NetworkModel::~NetworkModel() {
@@ -14,26 +16,11 @@ NetworkModel::~NetworkModel() {
 
 // controller to model interface overrides
 
-void NetworkModel::start(CONNECT_PROTOCOL protocol, QString host, int port)
+void NetworkModel::start(QIODevice* networkDevice)
 {
-    if (protocol == UNKNOWN_PROTOCOL || host.isEmpty() || port == 0) {
-        return;
-    }
+    if(networkDevice == nullptr) return;
 
-    QIODevice *networkDevice = nullptr;
-
-    switch (protocol) {
-    case COM_PORT_PROTOCOL:
-
-        break;
-    case TCP_PROTOCOL:
-        break;
-    case UNKNOWN_PROTOCOL:
-    default:
-        return;
-    }
-
-    m_netDevice = new Modbus(networkDevice, TIMEOUT_MS, this);
+    m_netDevice->setDevice(networkDevice);
     m_netDevice->addObserver(this);
     m_bIsStart = true;
 
@@ -51,7 +38,6 @@ void NetworkModel::stop()
 {
    m_netDevice->removeObserver(this);
    m_netDevice->stop();
-   m_netDevice.clear();
    m_bIsStart = false;
 }
 
@@ -63,20 +49,20 @@ void NetworkModel::setDeviceCommand(quint8 addr, quint16 command, quint16 value)
 void NetworkModel::rescanNetwork()
 {
     clear();
-    for(quint8 iAddr = 1; iAddr <= Modbus::MAX_ADDRESS; ++iAddr) {
+    for(quint8 iAddr = 1; iAddr <= SoftProtocol::MAX_ADDRESS; ++iAddr) {
         m_netDevice->getDataValue(iAddr, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
     }
 }
 
 // modbus interface overrides
 
-void NetworkModel::modbusNotify(quint8 addr, quint16 reg, quint16 value)
+void NetworkModel::dataNotify(quint8 addr, quint16 reg, quint16 value)
 {
     if(reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) initDevice(addr, value);
-    modbusReady();
+    dataReady();
 }
 
-void NetworkModel::modbusReady()
+void NetworkModel::dataReady()
 {
     // request a new value
 }
@@ -91,5 +77,5 @@ void NetworkModel::clear() {
 
 void NetworkModel::initDevice(quint8 addr, quint16 id)
 {
-
+    qDebug() << "Init device " << addr << " with id " << id;
 }

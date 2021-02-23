@@ -5,27 +5,28 @@
 #include <QPointer>
 #include <QIODevice>
 #include <QVector>
-#include "modbus/modbus.h"
-#include "interfaces/modbusobserverinterface.h"
+#include "protocols/modbus.h"
+#include "interfaces/ProtocolObserverInterface.h"
 #include "model/ModelInterface.h"
+#include "SoftProtocol.h"
 //#include "enums.h"
 
-class NetworkModel : public QObject, ModbusObserverInterface, public ModelInterface
+class NetworkModel : public QObject, ProtocolObserverInterface, public ModelInterface
 {
     Q_OBJECT
 public:
     static const quint16 IDENTIFY_REG_ID_DEFAULT;
     static const quint16 TIMEOUT_MS;
-    explicit NetworkModel(QObject *parent = nullptr);
+    explicit NetworkModel(SoftProtocol* protocol, QObject *parent = nullptr);
     ~NetworkModel();
-    void start(CONNECT_PROTOCOL protocol, QString host, int port) override;
+    void start(QIODevice* iodevice) override;
     bool isStart() override;
     void stop() override;
     void setDeviceCommand(quint8 addr, quint16 command, quint16 value) override;
     void rescanNetwork() override;
 
-    void modbusNotify(quint8 addr, quint16 reg, quint16 value) override;
-    void modbusReady() override;
+    void dataNotify(quint8 addr, quint16 reg, quint16 value) override;
+    void dataReady() override;
 signals:
     void modelConnected(bool);
 
@@ -34,7 +35,7 @@ private slots:
 
 
 private:
-    QPointer<Modbus> m_netDevice;
+    QPointer<SoftProtocol> m_netDevice;
     QVector<void*> m_devices; // device models. Change the type of
     bool m_bIsStart;
 
