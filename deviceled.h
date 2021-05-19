@@ -6,7 +6,7 @@
 #include <QVector>
 #include <QPointer>
 #include <QColor>
-#include "devicecommand.h"
+#include "device/devicecommand.h"
 
 class LedMask;
 

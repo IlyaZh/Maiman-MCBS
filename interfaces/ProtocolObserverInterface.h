@@ -20,7 +20,7 @@ public:
     explicit ProtocolObserverInterface() {}
     virtual ~ProtocolObserverInterface() {};
     // Вызывается, когда пришли данные из модбаса
-    virtual void dataNotify(quint8 addr, quint16 reg, quint16 value) = 0;
+    virtual void dataIncome(quint8 addr, quint16 reg, quint16 value) = 0;
     // Вызывается модбасом, когда он все передал и у него нет работы
     virtual void dataReady() = 0;
 };

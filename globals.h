@@ -21,7 +21,7 @@ const QString APP_NAME_TITLE = "Maiman BenchSoft Multichannel";
 const QPoint WINDOW_DEFAULT_POSITION = QPoint(-1, -1);
 //const QSize WINDOW_DEFAULT_SIZE = QSize(-1,-1);
 
-const QString DEVICE_STATUS_COMMAND = "0700";
+const QString DEVICE_STATUS_COMMAND = "0004";
 const QString TEC_STATUS_COMMAND = "0A1A";
 const QString FREQUENCY_COMMAND = "0100";
 const QString DURATION_COMMAND = "0200";
@@ -45,7 +45,7 @@ const int STATUSBAR_MESSAGE_TIMEOUT = 5000; // ms
 
 // Длительность "покраснения" поля ввода параметров при неверном значении
 const int CURR_VALUE_BG_ERROR_TIMEOUT = 1000; // ms
-const quint16 IDENTIFY_DEVICE_COMMAND = 0x0702;
+const quint16 IDENTIFY_DEVICE_COMMAND = 0x0001;
 
 const unsigned int DEFAULT_BAUD_RATE = 115200;
 

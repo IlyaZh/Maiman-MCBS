@@ -4,12 +4,40 @@
 #include <QApplication>
 #include "network/networkmodel.h"
 #include "network/protocols/modbus.h"
+#include "mainviewfacade.h"
+#include "model/devicefactory.h"
+#include <QTcpSocket>
+#include "globals.h"
+#include <QCommandLineParser>
+#include <QCommandLineOption>
+#include "factories/parser.h"
 
 #include <QDebug>
 
+QLocale wlocale;
+bool debugMode = false;
+
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
+    QApplication::setApplicationVersion(QString::number(MAJOR_VERSION) + "." + QString::number(MINOR_VERSION) + "." + QString::number(PATCH_VERSION));
+    QApplication::setFont(APPLICATION_DEFAULT_FONT);
+
+    AppSettings *settings = new AppSettings();
+
+#ifdef QT_DEBUG
+    debugMode = true;
+#endif
+
+    QCommandLineParser cliParser;
+    QCommandLineOption debugOption(QStringList() << "d" << "debug");
+    cliParser.addOption(debugOption);
+    cliParser.parse(QCoreApplication::arguments());
+    if(cliParser.isSet(debugOption)) {
+        debugMode = true;
+    }
+
+    wlocale = QLocale(QLocale::system());
 
     ////========================
     /// 1. создаем экземпляры парсеров
@@ -20,15 +48,17 @@ int main(int argc, char *argv[])
     /// 4. передаем данные gui в MainWindow и в DeviceModel
     ////========================
 
-    MainWindow w;
+    MainWindow w(settings);
+    w.setFont(APPLICATION_DEFAULT_FONT);
     w.show();
 
-//    MainWindowController mwCntrl;
-//    w.addController(mwCntrl);
+    MainViewFacade* mvCntrl = new MainViewFacade();
 
-    Modbus* modbus = new Modbus("modbus");
-    NetworkModel* model = new NetworkModel(modbus);
-//    mwCntrl.addModel(model);
+    mvCntrl->addView(&w);
 
-    return a.exec();
+    Parser* parser = new Parser("DeviceDB.xml");
+    NetworkModel* model = new NetworkModel(new DeviceFactory(parser, settings), new Modbus("modbus"));
+    model->addFacade(mvCntrl);
+
+    return app.exec();
 }

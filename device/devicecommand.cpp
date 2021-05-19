@@ -1,20 +1,28 @@
 #include "devicecommand.h"
 #include "globals.h"
+#include <QtMath>
 
 const quint16 DeviceCommand::MAX_COM_INTERVAL_COUNTER = 100;
 
-DeviceCommand::DeviceCommand(QString code, QString unit, double divider, quint8 interval, bool isTemperatureFlag, QObject *parent) : QObject(parent)
+DeviceCommand::DeviceCommand(QString code, QString unit, double divider, quint8 interval, quint8 tol, bool isTemperatureFlag, quint16 maxInterval, QObject *parent) : QObject(parent)
 {
-    this->Code = code;
+    this->codeStr = code;
+    this->code = code.toUInt(nullptr, 16);
     this->interval = (interval < MAX_COM_INTERVAL_COUNTER) ? interval : MAX_COM_INTERVAL_COUNTER;
     if(this->interval < 1) this->interval = 1;
     this->Divider = divider;
+    this->tol = tol;
     this->isTemperatureFlag = isTemperatureFlag;
     this->unit = unit;
+    this->maxInterval = maxInterval;
     rawValue.setValue(-1);
     tick = 0;
 
 //    setTemperatureUnit(settings.getTemperatureSymbol());
+}
+
+DeviceCommand* DeviceCommand::copy() {
+    return new DeviceCommand(codeStr, unit, Divider, interval, isTemperatureFlag, maxInterval);
 }
 
 double DeviceCommand::convertCelToFar(double val) {
@@ -27,26 +35,30 @@ double DeviceCommand::convertFarToCel(double val) {
 
 void DeviceCommand::setTemperatureUnit(QString unit) {
     temperatureUnit = unit;
-    emit valueChanged();
+    emit valueChanged(getValue());
 }
 
-QString DeviceCommand::getTemperatureUnit() {
+QString DeviceCommand::getTemperatureUnit() const {
     return temperatureUnit;
 }
 
-QString DeviceCommand::getCode() {
-    return Code;
+QString DeviceCommand::getCodeStr() const {
+    return codeStr;
 }
 
-double DeviceCommand::getValue() {
+quint16 DeviceCommand::getCode() const {
+    return code;
+}
+
+double DeviceCommand::getValue() const {
     if(isTemperature() && temperatureUnit == "F") {
-        return convertCelToFar(value);
+        return qRound(convertCelToFar(value)*qPow(10,tol)-0.5)/qPow(10,tol);
     } else {
-        return value;
+        return qRound(value*qPow(10,tol)-0.5)/qPow(10,tol);
     }
 }
 
-qint16 DeviceCommand::getIValue() {
+qint16 DeviceCommand::getIValue() const {
     if(isTemperature() && temperatureUnit == "F") {
         return qRound(convertCelToFar(value)*getDivider());
     } else {
@@ -54,19 +66,23 @@ qint16 DeviceCommand::getIValue() {
     }
 }
 
-quint16 DeviceCommand::getRawValue() { // it was int
+quint16 DeviceCommand::getRawValue() const { // it was int
     return static_cast<quint16>(rawValue.toUInt());
 }
 
-double DeviceCommand::getDivider() {
+double DeviceCommand::getDivider() const {
     return Divider;
 }
 
-bool DeviceCommand::isTemperature() {
+quint8 DeviceCommand::getTol() const {
+    return tol;
+};
+
+bool DeviceCommand::isTemperature() const {
     return isTemperatureFlag;
 }
 
-QString DeviceCommand::getUnit() {
+QString DeviceCommand::getUnit() const {
     if(isTemperature()) {
         return unit+temperatureUnit;
     } else {
@@ -78,7 +94,8 @@ quint16 DeviceCommand::getRawFromValue(double value) {
     return static_cast<quint16>(qRound(value * Divider));
 }
 
-bool DeviceCommand::isSignedValue() {
+
+bool DeviceCommand::isSignedValue() const {
     return false;
 }
 
@@ -90,7 +107,7 @@ void DeviceCommand::setRawValue(quint16 iValue) {
         this->iValue = static_cast<quint16>(rawValue.toUInt());
         this->value = rawValue.toDouble() / Divider;
 
-        emit valueChanged();
+        emit valueChanged(getValue());
 //    }
 }
 
@@ -104,6 +121,10 @@ bool DeviceCommand::needToRequest() {
     if(tick > MAX_COM_INTERVAL_COUNTER) tick = 0;
 
     return result;
+}
+
+quint8 DeviceCommand::getInterval() const {
+    return interval;
 }
 
 void DeviceCommand::resetInterval() {

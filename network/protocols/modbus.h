@@ -18,6 +18,9 @@ public:
 public slots:
 
 private slots:
+    static const quint8 CRC_HTable[256];
+    static const quint8 CRC_LTable[256];
+
     void readyRead() override;
     void bytesWritten(qint64 bytes) override;
 

@@ -39,7 +39,7 @@ private slots:
 
 protected:
     QByteArray *m_lastTxPackage;
-    QPointer<QIODevice> m_Device;
+    QIODevice* m_Device;
     QQueue<QByteArray*> m_Queue;
     QList<ProtocolObserverInterface*> m_vObservers;
     QTimer timeoutTimer;

@@ -1,4 +1,4 @@
-QT       += core gui serialport network
+QT       += core gui serialport network xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,49 +17,65 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     appsettings.cpp \
-    devicecommand.cpp \
+    device/devcommand.cpp \
+    device/device.cpp \
+    device/devicemodel.cpp \
+    devicebinaryoption.cpp \
     deviceled.cpp \
-    devicemodel.cpp \
-    devicesignedcommand.cpp \
+    factories/guifactory.cpp \
+    factories/parseitem.cpp \
+    factories/parser.cpp \
     main.cpp \
     mainviewfacade.cpp \
     mainwindow.cpp \
+    model/device/binarywidget.cpp \
+    model/device/devicewidget.cpp \
+    model/device/parameterwidget.cpp \
+    model/devicefactory.cpp \
     network/SoftProtocol.cpp \
     network/networkmodel.cpp \
-    network/protocols/modbus.cpp \
-    xmlreader.cpp
+    network/protocols/modbus.cpp
 
 HEADERS += \
     appsettings.h \
+    device/devcommand.h \
+    device/device.h \
+    device/devicemodel.h \
     devicebinaryoption.h \
     devicecalibrationkoefs.h \
-    devicecommand.h \
     deviceled.h \
-    devicemodel.h \
     deviceparameter.h \
-    devicesignedcommand.h \
     enums.h \
+    factories/guifactory.h \
+    factories/parseitem.h \
+    factories/parser.h \
     globals.h \
-    devicedescription.h \
     interfaces/DevCommand.h \
     interfaces/ModelCommands/ModelCmd.h \
     interfaces/ProtocolObserverInterface.h \
     interfaces/ViewInterface.h \
-    interfaces/devicemodelinterface.h \
     interfaces/mainwindowcontrollerinterface.h \
     mainviewfacade.h \
     mainwindow.h \
     mainwindowcontroller.h \
     model/ModelInterface.h \
+    model/device/binarywidget.h \
+    model/device/devicepollrequest.h \
+    model/device/devicewidget.h \
+    model/device/parameterwidget.h \
+    model/devicefactory.h \
     network/SoftProtocol.h \
     network/networkmodel.h \
-    network/protocols/modbus.h \
-    xmlreader.h
+    network/protocols/modbus.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    model/device/parameterwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc

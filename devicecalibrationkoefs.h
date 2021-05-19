@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QPointer>
 #include <QString>
-#include "devicecommand.h"
+#include "device/devicecommand.h"
 
 class DeviceCalibrationKoef : public QObject {
     Q_OBJECT

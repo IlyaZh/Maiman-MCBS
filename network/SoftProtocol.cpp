@@ -4,7 +4,7 @@
 const quint8 SoftProtocol::MAX_ADDRESS = 32;
 const int SoftProtocol::TIMEOUT_DEFAULT = 100;
 
-SoftProtocol::SoftProtocol(QString name, QIODevice* device, int timeoutMSecs, QObject *parent) : QObject(parent) {
+SoftProtocol::SoftProtocol(QString name, QIODevice* device, int timeoutMSecs, QObject *parent) : QObject(parent), m_Device(nullptr) {
     m_name = name;
     setDevice(device, timeoutMSecs);
     timeoutTimer.setSingleShot(true);
@@ -13,15 +13,15 @@ SoftProtocol::SoftProtocol(QString name, QIODevice* device, int timeoutMSecs, QO
 }
 
 SoftProtocol::~SoftProtocol() {
-    if(!m_Device.isNull()) m_Device.data()->deleteLater();
+    if(m_Device != nullptr) m_Device->deleteLater();
 }
 
 void SoftProtocol::setDevice(QIODevice* device, int timeoutMSecs) {
 //    closeDevice();
     if(m_Device) {
         m_Device->disconnect();
-        m_Device.data()->deleteLater();
-        m_Device.clear();
+        delete m_Device;
+        m_Device = nullptr;
     }
 
     if(device != nullptr) {
@@ -78,10 +78,10 @@ void SoftProtocol::getDataValue(quint8 addr, quint16 reg, quint8 count) {
 }
 
 void SoftProtocol::stop() {
-    if(!m_Device.isNull()) {
+    if(m_Device != nullptr) {
         m_Device->disconnect();
-        m_Device.data()->deleteLater();
-        m_Device.clear();
+        delete m_Device;
+        m_Device = nullptr;
     }
     m_Queue.clear();
 }
@@ -118,7 +118,7 @@ quint16 SoftProtocol::calcCrc(QByteArray *byteArray) {
 void SoftProtocol::prepareAndWrite(QByteArray *byteArray) {
     m_bytesWritten = 0;
 
-    if(m_Device.isNull()) {
+    if(m_Device == nullptr) {
         qDebug() << "[" << m_name << "] device pointer is nullptr";
         return;
     }
@@ -138,7 +138,7 @@ void SoftProtocol::rxPacketHandler(QByteArray *rxPacket) {
 
 void SoftProtocol::makeNotify(quint8 addr, quint16 reg, quint16 value) {
     for(ProtocolObserverInterface* item : m_vObservers) {
-        item->dataNotify(addr, reg, value);
+        item->dataIncome(addr, reg, value);
     }
 //    qDebug() << m_name << " rx: " << addr << reg << value;
 }

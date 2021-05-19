@@ -11,7 +11,7 @@ public:
     virtual void start(QIODevice* iodevice) = 0;
     virtual bool isStart() { return false; }
     virtual void stop() = 0;
-    virtual void setDeviceCommand(quint8 addr, quint16 command, quint16 value) = 0;
+//    virtual void setDeviceCommand(quint8 addr, quint16 command, quint16 value) = 0;
     virtual void rescanNetwork() = 0;
 };
 

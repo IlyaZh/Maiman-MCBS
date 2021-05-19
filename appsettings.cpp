@@ -40,6 +40,10 @@ NetworkData_s AppSettings::getNetworkData() {
     return netData;
 }
 
+uint AppSettings::getDeviceTimeout() {
+    settings->value("deviceDefaultTimeout", 1000).toUInt();
+}
+
 // slots
 
 void AppSettings::setComBaudrate(quint32 BR) { settings->setValue("userSettings/comPort/baudRate", BR); }
@@ -68,4 +72,8 @@ void AppSettings::setNetworkData(NetworkData_s netData) {
     settings->setValue("network/type", netData.type);
     settings->setValue("network/host", netData.host);
     settings->setValue("network/port", netData.port);
+}
+
+void AppSettings::setDeviceTimeout(quint16 timeoutMs) {
+    settings->setValue("deviceDefaultTimeout", timeoutMs);
 }

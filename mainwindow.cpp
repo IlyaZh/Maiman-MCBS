@@ -1,14 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "enums.h"
+#include "globals.h"
 
-MainWindow::MainWindow(QWidget *parent)
+#include <QDebug>
+
+MainWindow::MainWindow(AppSettings* settings, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow),
-      m_cntrl(nullptr),
+//      m_cntrl(nullptr),
       m_portList(nullptr),
       m_baudList(nullptr),
-      m_settings(new AppSettings(this))
+      m_settings(settings)
 {
     ui->setupUi(this);
 
@@ -36,12 +39,18 @@ MainWindow::MainWindow(QWidget *parent)
 //    refreshMenuPortList();
 //    refreshMenuPortBaudsList();
 
+    setWindowTitle(appTitle);
+    setWindowIcon(QIcon(":/images/logo-minimal.png"));
+
+    m_workFieldLayout = new QGridLayout();
+    ui->workFieldWidget->setLayout(m_workFieldLayout);
+
     emit mainWindowReady();
 }
 
 MainWindow::~MainWindow()
 {
-    if(m_cntrl != nullptr) delete m_cntrl;
+//    if(m_cntrl != nullptr) delete m_cntrl;
     if(m_portList != nullptr) delete m_portList;
     if(m_baudList != nullptr) delete m_baudList;
 
@@ -52,17 +61,17 @@ MainWindow::~MainWindow()
 //    m_settings = settings;
 //}
 
-void MainWindow::addController(MainWindowControllerInterface& cntrl) {
+/*void MainWindow::addController(MainWindowControllerInterface* cntrl) {
     clearController();
-    m_cntrl = &cntrl;
-}
+    m_cntrl = cntrl;
+}*/
 
-void MainWindow::clearController() {
+/*void MainWindow::clearController() {
     if(m_cntrl != nullptr) {
         delete m_cntrl;
         m_cntrl = nullptr;
     }
-}
+}*/
 
 void MainWindow::setConnected(bool isConnected) {
     if(isConnected) {
@@ -102,7 +111,16 @@ void MainWindow::setConnections() {
 
 void MainWindow::on_networkConnectButton_clicked()
 {
-    if(m_cntrl != nullptr) {
+    emit networkConnectClicked(TCP_PROTOCOL, ui->ipLineEdit->text(), ui->portSpinBox->value());
+
+    if(m_settings != nullptr) {
+        NetworkData_s netData;
+        netData.type = TCP_PROTOCOL;
+        netData.host = ui->ipLineEdit->text();
+        netData.port = ui->portSpinBox->value();
+        m_settings->setNetworkData(netData);
+    }
+    /*if(m_cntrl != nullptr) {
         m_cntrl->networkConnectClicked(TCP_PROTOCOL, ui->ipLineEdit->text(), ui->portSpinBox->value());
 
         if(m_settings != nullptr) {
@@ -112,5 +130,14 @@ void MainWindow::on_networkConnectButton_clicked()
             netData.port = ui->portSpinBox->value();
             m_settings->setNetworkData(netData);
         }
+    }*/
+}
+
+void MainWindow::addToWorkField(QWidget* widget) {
+    if(!m_workWidgets.contains(widget)) {
+        m_workWidgets.append(widget);
+        int count = m_workFieldLayout->layout()->count();
+        qDebug() << "addToWorkField, widgets count = " << count;
+        m_workFieldLayout->addWidget(widget, count / 10, count % 10);
     }
 }

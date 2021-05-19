@@ -31,6 +31,7 @@ public:
     QPoint getWindowPosition();
     int getComStopBits();
     NetworkData_s getNetworkData();
+    uint getDeviceTimeout();
 //    QSize getWindowSize();
 
 private:
@@ -52,6 +53,7 @@ public slots:
     void setWindowPosition(QPoint);
     void setComStopBits(int);
     void setNetworkData(NetworkData_s netData);
+    void setDeviceTimeout(quint16 timeoutMs);
 //    void setWindowSize(QSize);
 };
 

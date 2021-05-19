@@ -1,15 +1,20 @@
 #include "devicesignedcommand.h"
 
-DeviceSignedCommand::DeviceSignedCommand(QString code, QString sUnit, double divider, quint8 cInterval, bool isTemperature, QObject* parent) : DeviceCommand(code, sUnit, divider, cInterval, isTemperature, parent)
+DeviceSignedCommand::DeviceSignedCommand(QString code, QString unit, double divider, quint8 interval, quint8 tol, bool isTemperature, quint16 maxInterval, QObject* parent)
+    : DeviceCommand(code, unit, divider, interval, tol, isTemperature, maxInterval, parent)
 {
 
 }
 
-bool DeviceSignedCommand::isSignedValue() {
+DeviceSignedCommand* DeviceSignedCommand::copy() {
+    return new DeviceSignedCommand(codeStr, unit, Divider, interval, isTemperatureFlag, maxInterval);
+}
+
+bool DeviceSignedCommand::isSignedValue() const {
     return true;
 }
 
-quint16 DeviceSignedCommand::getRawValue() {
+quint16 DeviceSignedCommand::getRawValue() const {
     return static_cast<quint16>(rawValue.toInt());
 }
 
@@ -25,6 +30,6 @@ void DeviceSignedCommand::setRawValue(quint16 inValue) {
         this->iValue = static_cast<qint16>(rawValue.toUInt());
         this->value = static_cast<double>(this->iValue) / Divider;
 
-        emit valueChanged();
+        emit valueChanged(getValue());
     }
 }

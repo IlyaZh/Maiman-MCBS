@@ -9,7 +9,13 @@
 #include "interfaces/ProtocolObserverInterface.h"
 #include "model/ModelInterface.h"
 #include "SoftProtocol.h"
+#include "device/devicemodel.h"
+#include "model/devicefactory.h"
+#include "mainviewfacade.h"
+
 //#include "enums.h"
+
+class MainViewFacade;
 
 class NetworkModel : public QObject, ProtocolObserverInterface, public ModelInterface
 {
@@ -17,31 +23,38 @@ class NetworkModel : public QObject, ProtocolObserverInterface, public ModelInte
 public:
     static const quint16 IDENTIFY_REG_ID_DEFAULT;
     static const quint16 TIMEOUT_MS;
-    explicit NetworkModel(SoftProtocol* protocol, QObject *parent = nullptr);
+    explicit NetworkModel(DeviceFactory *deviceModelFactory, SoftProtocol* protocol, QObject *parent = nullptr);
     ~NetworkModel();
     void start(QIODevice* iodevice) override;
     bool isStart() override;
     void stop() override;
-    void setDeviceCommand(quint8 addr, quint16 command, quint16 value) override;
+//    void setDeviceCommand(quint8 addr, quint16 command, quint16 value) override;
     void rescanNetwork() override;
+    void addFacade(MainViewFacade* facade);
 
-    void dataNotify(quint8 addr, quint16 reg, quint16 value) override;
-    void dataReady() override;
+
 signals:
     void modelConnected(bool);
 
 public slots:
+    void dataIncome(quint8 addr, quint16 reg, quint16 value) override;
+    void dataReady() override;
+    void dataOutcome(quint8 addr, quint16 reg, quint16 value);
 private slots:
 
 
 private:
-    QPointer<SoftProtocol> m_netDevice;
-    QVector<void*> m_devices; // device models. Change the type of
+    DeviceFactory *m_deviceModelFactory;
+    MainViewFacade* m_view;
+    SoftProtocol* m_netDevice;
+    QMap<quint8, Device*> m_devices;
     bool m_bIsStart;
+    bool m_pollEnabled;
 
 
     void clear();
     void initDevice(quint8 addr, quint16 id);
+    void pollDevices();
 };
 
 
