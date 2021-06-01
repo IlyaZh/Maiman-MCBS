@@ -7,13 +7,14 @@
 #include <QObject>
 #include "factories/parser.h"
 #include "appsettings.h"
+#include <QSharedPointer>
 
 
 class DeviceFactory : public QObject
 {
     Q_OBJECT
 public:
-    DeviceFactory(Parser* parser, AppSettings* settings, QObject *parent = nullptr);
+    DeviceFactory(Parser* parser, QSharedPointer<AppSettings> settings, QObject *parent = nullptr);
     ~DeviceFactory();
     void start();
     Device* createDevice(quint8 addr, quint16 id);
@@ -24,12 +25,12 @@ private slots:
     void threadError(QString);
 private:
     QThread* m_thread;
-    AppSettings* m_settings;
+    QSharedPointer<AppSettings> m_settings;
 
     DeviceModel* findModel(quint16 id);
 
-    Parser *m_parser;
-    QVector<DeviceModel*> m_DeviceModels;
+    QSharedPointer<Parser> m_parser;
+    QVector<QSharedPointer<DeviceModel>> m_DeviceModels;
 //    QVector<device_t> m_device;
     QStringList baudrate;
 //    QMap<QString, QString> IDDevice;

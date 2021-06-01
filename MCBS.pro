@@ -21,7 +21,6 @@ SOURCES += \
     device/device.cpp \
     device/devicemodel.cpp \
     devicebinaryoption.cpp \
-    deviceled.cpp \
     factories/guifactory.cpp \
     factories/parseitem.cpp \
     factories/parser.cpp \
@@ -30,7 +29,6 @@ SOURCES += \
     mainwindow.cpp \
     model/device/binarywidget.cpp \
     model/device/devicewidget.cpp \
-    model/device/parameterwidget.cpp \
     model/devicefactory.cpp \
     network/SoftProtocol.cpp \
     network/networkmodel.cpp \
@@ -43,7 +41,6 @@ HEADERS += \
     device/devicemodel.h \
     devicebinaryoption.h \
     devicecalibrationkoefs.h \
-    deviceled.h \
     deviceparameter.h \
     enums.h \
     factories/guifactory.h \
@@ -62,15 +59,13 @@ HEADERS += \
     model/device/binarywidget.h \
     model/device/devicepollrequest.h \
     model/device/devicewidget.h \
-    model/device/parameterwidget.h \
     model/devicefactory.h \
     network/SoftProtocol.h \
     network/networkmodel.h \
     network/protocols/modbus.h
 
 FORMS += \
-    mainwindow.ui \
-    model/device/parameterwidget.ui
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

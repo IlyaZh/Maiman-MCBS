@@ -23,6 +23,7 @@ public:
     virtual void dataIncome(quint8 addr, quint16 reg, quint16 value) = 0;
     // Вызывается модбасом, когда он все передал и у него нет работы
     virtual void dataReady() = 0;
+    virtual void timeout(quint8 code) = 0;
 };
 
 #endif // PROTOCOLOBSERVERINTERFACE_H

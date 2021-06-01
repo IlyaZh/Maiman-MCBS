@@ -1,35 +1,47 @@
 #include "device.h"
 #include <QMapIterator>
 
-Device::Device(quint16 id, quint8 addr, QString name, DeviceDelays *delays, QVector<DevCommand*> *commands, QObject *parent)
+Device::Device(quint16 id, quint8 addr, QString name, DeviceDelays *delays, QVector<DevCommandBuilder*> *commandsBld, QObject *parent)
     : QObject(parent),
     m_addr(addr),
     m_Id(id),
     m_Name(name),
     m_Delays(delays)
 {
-    m_Commands = new QMap<quint16, DevCommand*>();
-    for(DevCommand* cmd : *commands) {
-        m_Commands->insert(cmd->code(), cmd);
+    for(DevCommandBuilder* cmdBldr : *commandsBld) {
+        m_Commands.insert(cmdBldr->code(), cmdBldr->makeCommand(this));
     }
 
     createCommandsRequests();
 
-    timeoutTimer = new QTimer();
-    timeoutTimer->singleShot(m_Delays->timeoutMs(), this, SLOT(timeout()));
+//    timeoutTimer = new QTimer();
+//    timeoutTimer->singleShot(m_Delays->timeoutMs(), this, SLOT(timeout()));
 }
 
 void Device::dataIncome(quint16 reg, quint16 value) {
-    for(DevCommand* cmd : *m_Commands) {
+    for(DevCommand* cmd : m_Commands) {
         if(cmd->code() == reg) {
-            timeoutTimer->stop();
+//            timeoutTimer->stop();
             m_isLink = true;
-            timeoutTimer->singleShot(m_Delays->timeoutMs(), this, SLOT(timeout()));
+            emit link(m_isLink);
+//            timeoutTimer->singleShot(m_Delays->timeoutMs(), this, SLOT(timeout()));
 
             cmd->setRawValue(value);
 //            emit dataToView(reg, cmd.va());
         }
     }
+}
+
+Device::~Device() {
+    QMap<quint16, QPointer<DevCommand>>::iterator cmd = m_Commands.begin();
+    while(cmd != m_Commands.end()) {
+        DevCommand *pCmd = (cmd).value();
+        pCmd->deleteLater();
+    }
+    m_Commands.clear();
+
+    if(m_deviceWidget) m_deviceWidget->deleteLater();
+
 }
 
 void Device::dataOutcome(quint16 reg, quint16 value) {
@@ -39,6 +51,15 @@ void Device::dataOutcome(quint16 reg, quint16 value) {
         emit dataToModel(m_addr, reg, value);
 //    }
 
+}
+
+void Device::setWidget(QWidget* widget) {
+    if(m_deviceWidget) {
+        m_deviceWidget->disconnect();
+        m_deviceWidget->deleteLater();
+    }
+
+    m_deviceWidget = widget;
 }
 
 QString Device::name() {
@@ -66,19 +87,23 @@ DevicePollRequest* Device::nextPollRequest() {
 }
 
 bool Device::isLink() {
-    bool m_isLink;
+    return m_isLink;
 }
 
-//QVector<const DeviceCommand*>* Device::getCommands() {
-//    QVector<const DeviceCommand*>* vector = new QVector<const DeviceCommand*>(m_Commands->size());
+void Device::clearLink() {
+    m_isLink = false;
+    emit link(m_isLink);
+}
 
+QVector<const DevCommand*>* Device::getCommands() {
+    QVector<const DevCommand*>* vector = new QVector<const DevCommand*>(m_Commands.size());
 
-//    QMap<quint16, DeviceCommand*>::iterator i;
-//    for(i = m_Commands->begin(); i != m_Commands->end(); i++)
-//        vector->append(qAsConst(*i));
+    QMap<quint16, QPointer<DevCommand>>::iterator i;
+    for(i = m_Commands.begin(); i != m_Commands.end(); i++)
+        vector->append(qAsConst(i.value()));
 
-//    return vector;
-//}
+    return vector;
+}
 
 /*void Device::connectWidget(DeviceWidget* widget, int code) {
     if(m_deviceWidgets.contains(code)) {}
@@ -113,11 +138,12 @@ void Device::disconnectWidget(DeviceWidget* widget, int code) {
 void Device::createCommandsRequests() {
     m_cmdRequests.clear();
     int startCode = -1;
+    uint minInterval = 1;
     int count = 0;
     DevCommand* cmd = nullptr;
     DevCommand* prevCmd = nullptr;
 
-    QMapIterator<quint16, DevCommand*> i(*m_Commands);
+    QMapIterator<quint16, QPointer<DevCommand>> i(m_Commands);
     while(i.hasNext()) {
         if(cmd != nullptr)
             prevCmd = cmd;
@@ -126,14 +152,17 @@ void Device::createCommandsRequests() {
         cmd = i.value();
         if(startCode == -1) {
             startCode = cmd->code();
+            minInterval = cmd->interval();
             count++;
         } else {
             if(prevCmd->code()+1 == cmd->code()) {
                 count++;
+                if(minInterval > cmd->interval()) minInterval = cmd->interval();
             } else {
-               m_cmdRequests.append(new DevicePollRequest(m_addr, startCode, count));
+               m_cmdRequests.append(new DevicePollRequest(m_addr, startCode, count, minInterval));
                qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
                startCode = cmd->code();
+               minInterval = cmd->interval();
                count = 1;
             }
         }
@@ -141,7 +170,6 @@ void Device::createCommandsRequests() {
     m_cmdReqItt = m_cmdRequests.begin();
 }
 
-void Device::timeout() {
-    m_isLink = false;
-
-}
+//void Device::timeout() {
+//    m_isLink = false;
+//}

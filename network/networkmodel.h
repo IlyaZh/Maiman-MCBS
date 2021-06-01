@@ -12,6 +12,7 @@
 #include "device/devicemodel.h"
 #include "model/devicefactory.h"
 #include "mainviewfacade.h"
+#include <QPointer>
 
 //#include "enums.h"
 
@@ -31,6 +32,7 @@ public:
 //    void setDeviceCommand(quint8 addr, quint16 command, quint16 value) override;
     void rescanNetwork() override;
     void addFacade(MainViewFacade* facade);
+    void timeout(quint8 code) override;
 
 
 signals:

@@ -5,6 +5,7 @@
 #include <QGridLayout>
 //#include "interfaces/mainwindowco1ntrollerinterface.h"
 #include "appsettings.h"
+#include <QSharedPointer>
 
 //class MainWindowControllerInterface;
 
@@ -19,7 +20,7 @@ class MainWindow : public QMainWindow
 public:
     const QString SETTINGS_PATH = "window/";
 
-    MainWindow(AppSettings* settings, QWidget *parent = nullptr);
+    MainWindow(QSharedPointer<AppSettings> settings, QWidget *parent = nullptr);
     ~MainWindow();
 //    void addController(MainWindowControllerInterface* cntrl);
 //    void clearController();
@@ -43,7 +44,7 @@ private:
 //    MainWindowControllerInterface* m_cntrl;
     QVector<QString> *m_portList;
     QVector<int> *m_baudList;
-    AppSettings* m_settings;
+    QSharedPointer<AppSettings> m_settings;
     QVector<QWidget*> m_workWidgets;
     QGridLayout* m_workFieldLayout;
 

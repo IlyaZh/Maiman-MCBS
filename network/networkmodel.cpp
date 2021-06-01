@@ -12,6 +12,7 @@ NetworkModel::NetworkModel(DeviceFactory *deviceModelFactory, SoftProtocol* prot
     m_netDevice = protocol;
     m_deviceModelFactory = deviceModelFactory;
     m_deviceModelFactory->start();
+
 //    m_view = vi;
 //    m_view->addModel(this);
 }
@@ -94,6 +95,7 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
         oldDev->disconnect();
         oldDev->deleteLater();
     }
+
     m_devices.insert(addr, newDevice);
     connect(newDevice, &Device::dataToModel, this, &NetworkModel::dataOutcome);
 
@@ -138,3 +140,10 @@ void NetworkModel::dataOutcome(quint8 addr, quint16 reg, quint16 value)
         m_netDevice->setDataValue(addr, reg, value);
     }
 }
+
+void NetworkModel::timeout(quint8 code) {
+    if(m_devices.contains(code)) {
+        m_devices[code]->clearLink();
+    }
+}
+

@@ -23,6 +23,7 @@ private slots:
 
     void readyRead() override;
     void bytesWritten(qint64 bytes) override;
+    void timeout() override;
 
 private:
     quint16 m_lastWriteReg;

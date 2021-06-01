@@ -1,15 +1,17 @@
 #include "devicefactory.h"
 #include <QDebug>
-#include "device/devicesignedcommand.h"
+#include "../device/devcommand.h"
 
-bool sortCmdsByCode(const DeviceCommand* p1, const DeviceCommand* p2) {
-    return p1->getCode() < p2->getCode();
+bool sortCmdsByCode(const DevCommandBuilder* p1, const DevCommandBuilder* p2) {
+    return p1->code() < p2->code();
 }
 
-DeviceFactory::DeviceFactory(Parser* parser, AppSettings* settings, QObject* parent) :
+DeviceFactory::DeviceFactory(Parser* parser, QSharedPointer<AppSettings> settings, QObject* parent) :
     QObject(parent),
-    m_parser(parser),
-    m_settings(settings) {
+    m_settings(settings),
+    m_parser(parser)
+
+{
 
 }
 
@@ -22,15 +24,15 @@ void DeviceFactory::start() {
 
     m_parser->moveToThread(m_thread);
 
-    connect(m_thread, SIGNAL(started()), m_parser, SLOT(process()));
-    connect(m_parser, SIGNAL(finished()), m_thread, SLOT(quit()));
-    connect(m_parser, SIGNAL(finished()), this, SLOT(parsingFinished()));
+    connect(m_thread, SIGNAL(started()), m_parser.get(), SLOT(process()));
+    connect(m_parser.get(), SIGNAL(finished()), m_thread, SLOT(quit()));
+    connect(m_parser.get(), SIGNAL(finished()), this, SLOT(parsingFinished()));
 //    //connect(...,m_parser, SLOT(stop()));
 //    connect(m_parser, SIGNAL(finished()), m_parser, SLOT(deleteLater()));
 //    connect(m_thread, SIGNAL(finished()), m_thread, SLOT(deleteLater()));
-    connect(m_parser, SIGNAL(errorOccured(QString)), this, SLOT(threadError(QString)));
-    connect(m_parser, SIGNAL(errorOccured(QString)), m_thread, SLOT(quit()));
-    connect(m_parser, SIGNAL(errorOccured(QString)), m_thread, SLOT(deleteLater()));
+    connect(m_parser.get(), SIGNAL(errorOccured(QString)), this, SLOT(threadError(QString)));
+    connect(m_parser.get(), SIGNAL(errorOccured(QString)), m_thread, SLOT(quit()));
+    connect(m_parser.get(), SIGNAL(errorOccured(QString)), m_thread, SLOT(deleteLater()));
     m_thread->start();
 }
 
@@ -71,9 +73,9 @@ void DeviceFactory::threadError(QString str) {
 
 // private methods
 DeviceModel* DeviceFactory::findModel(quint16 id) {
-    for(DeviceModel *device : m_DeviceModels) {
+    for(auto device : m_DeviceModels) {
         if(device->id() == id) {
-            return device;
+            return device.data();
         }
     }
 
@@ -94,35 +96,35 @@ void DeviceFactory::CommandReader(int row)
 
     DeviceDelays* delay = new DeviceDelays(stopCommandDelay, minCommDelay, maxCommDelay, timeoutMs);
 
-    QVector<DeviceCommand*>* cmdVector = new QVector<DeviceCommand*>();
+    QVector<DevCommandBuilder*>* cmdVector = new QVector<DevCommandBuilder*>();
 
     Command fastCommand;
     for (int iCount=0 ;iCount<=(m_parser->rowCount(indexCommands));iCount++ ) {
         QModelIndex indexCommand = SForward(iCount,0,indexCommands);
         if(indexCommand.data().toString() == "Command"){
-            QString code = AttributesValue("code",indexCommand).toString();
-            uint divider = AttributesValue("divider",indexCommand).toUInt();
-            uint interval = AttributesValue("interval",indexCommand).toUInt();
-            QString unit = AttributesValue("unit",indexCommand).toString();
-            uint tol = AttributesValue("tol",indexCommand).toUInt();
-            bool isTemperature = AttributesValue("isTemperature",indexCommand).toBool();
-
+            quint16 code = 0;
+            uint divider = 0;
+            uint interval = 1;
+            QString unit = "";
+            uint tol = 0;
+            bool isTemperature = false;
             bool isSigned = false;
-//            bool isSigned = AttributesValue("isTemperature",indexCommand).toBool();
 
-            DeviceCommand* cmd = nullptr;
+            code = AttributesValue("code",indexCommand).toUInt();
+            divider = AttributesValue("divider",indexCommand).toUInt();
+            interval = AttributesValue("interval",indexCommand).toUInt();
+            unit = AttributesValue("unit",indexCommand).toString();
+            tol = AttributesValue("tol",indexCommand).toUInt();
+            isTemperature = AttributesValue("isTemperature",indexCommand).toBool();
+            isSigned = AttributesValue("isSigned",indexCommand).toBool();
 
-            if(!code.isEmpty() && divider) {
+            if(code == 0 && divider == 0) {
                 continue;
             }
 
-            if(isSigned) {
-                cmd = new DeviceSignedCommand(code, unit, divider, interval, tol, isTemperature);
-            } else {
-                cmd = new DeviceCommand(code, unit, divider, interval, tol, isTemperature);
-            }
+            DevCommandBuilder* cmdBuilder = new DevCommandBuilder(code, unit, divider, tol, interval, isSigned, isTemperature);
 
-            if(cmd != nullptr) cmdVector->append(cmd);
+            if(cmdBuilder != nullptr) cmdVector->append(cmdBuilder);
         }
     }
 
@@ -131,7 +133,7 @@ void DeviceFactory::CommandReader(int row)
                                        devName,
                                        delay,
                                        cmdVector);
-    m_DeviceModels.append(dev);
+    m_DeviceModels.append(QSharedPointer<DeviceModel>(dev));
 }
 
 QVariant DeviceFactory::AttributesValue(QString attribName,QModelIndex index)

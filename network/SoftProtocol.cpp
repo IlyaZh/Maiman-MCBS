@@ -161,8 +161,13 @@ void SoftProtocol::tryToSend() {
     }
 }
 
-void SoftProtocol::timeout() {
+/*void SoftProtocol::timeout() {
     bPortIsBusy = false;
-    emit timeoutOccured();
+//    emit timeoutOccured(m_lastTxPackage->at(0));
+
+    for(auto *obsrv : m_vObservers) {
+        obsrv->timeout(m_lastTxPackage->at(0));
+    }
+
     tryToSend();
-}
+}*/

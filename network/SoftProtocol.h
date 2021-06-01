@@ -28,14 +28,14 @@ public:
 
 signals:
     void errorOccured(QString);
-    void timeoutOccured();
+//    void timeoutOccured(quint8 code);
 
 public slots:
 
 private slots:
     virtual void readyRead() = 0;
     virtual void bytesWritten(qint64 bytes);
-    virtual void timeout();
+    virtual void timeout() = 0;
 
 protected:
     QByteArray *m_lastTxPackage;

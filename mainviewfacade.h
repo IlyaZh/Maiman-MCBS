@@ -8,6 +8,7 @@
 #include <QVector>
 #include "model/ModelInterface.h"
 #include "enums.h"
+#include "factories/guifactory.h"
 
 class ModelInterface;
 
@@ -15,7 +16,7 @@ class MainViewFacade : public QObject, public ViewInterface//, public MainWindow
 {
     Q_OBJECT
 public:
-    explicit MainViewFacade(QObject *parent = nullptr);
+    explicit MainViewFacade(GUIfactory* pGuiFactory, QObject *parent = nullptr);
     // View Interface
     virtual void createdDevice( Device* pDev) override;
     virtual void removeDevice( Device* pDev) override;
@@ -43,6 +44,7 @@ private:
     QVector<ModelInterface*> m_models;
     QMainWindow* m_mainWindow;
     QMap<quint16, Device*> m_devices;
+    QSharedPointer<GUIfactory> m_guiFactory;
 
 };
 

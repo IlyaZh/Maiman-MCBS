@@ -2,11 +2,13 @@
 #define DEVICEMODEL_H
 
 #include <QObject>
-#include "devcommand.h"
+#include "../device/devcommand.h"
 #include "devicebinaryoption.h"
 #include "device.h"
 
 class Device;
+class DevCommand;
+class DevCommandBuilder;
 
 class DeviceDelays {
 public:
@@ -46,7 +48,7 @@ private:
 class DeviceModel
 {
 public:
-    DeviceModel(quint16 id, QString name, DeviceDelays *delays, QVector<DevCommand*> *commands);
+    DeviceModel(quint16 id, QString name, DeviceDelays *delays, QVector<DevCommandBuilder*> *cmdBuilders);
     ~DeviceModel();
     Device* createDevice(quint8 addr);
     QString name();
@@ -57,7 +59,7 @@ private:
     QString m_Name;
     DeviceDelays* m_Delays;
 //    DeviceDescription* m_Description;
-    QVector<DevCommand*> *m_Commands;
+    QVector<DevCommandBuilder*> *m_Commands;
 //    QVector<DeviceBinaryOption*> *m_BinaryOptions;
 };
 

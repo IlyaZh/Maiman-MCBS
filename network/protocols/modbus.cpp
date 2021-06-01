@@ -60,6 +60,29 @@ void Modbus::bytesWritten(qint64 bytes) {
     }
 }
 
+void Modbus::timeout() {
+    bPortIsBusy = false;
+//    emit timeoutOccured(m_lastTxPackage->at(0));
+
+    switch(m_lastTxPackage->at(1)) {
+    case 0x01:
+    case 0x02:
+    case 0x03:
+    case 0x04:
+        for(auto *obsrv : m_vObservers) {
+            obsrv->timeout(m_lastTxPackage->at(0));
+        }
+        break;
+    case 0x05:
+    case 0x06:
+    case 0x10:
+    case 0x0F:
+        break;
+    }
+
+    tryToSend();
+}
+
 quint16 Modbus::calcCrc(QByteArray *byteArray) {
     quint16 RetCRC = 0xffff;	// CRC initialization
     quint8 i = 0;

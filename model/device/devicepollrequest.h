@@ -7,7 +7,7 @@
 class DevicePollRequest
 {
 public:
-    DevicePollRequest(quint8 addr, quint16 code, quint8 count, quint8 interval = 1) {
+    DevicePollRequest(quint8 addr, quint16 code, quint8 count, quint8 interval) {
         if(interval >= 1) {
             m_code = code;
             m_addr = addr;

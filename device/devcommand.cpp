@@ -1,6 +1,31 @@
 #include "devcommand.h"
 #include <QtMath>
 
+// DevCommandBuilder class
+DevCommandBuilder::DevCommandBuilder(quint16 code, QString unit, double divider, quint8 tol, uint interval, bool isSigned, bool isTemperature)
+{
+    m_code = code;
+    m_unit = unit;
+    m_divider = divider;
+    m_tol = tol;
+    m_isSigned = isSigned;
+    m_isTemperature = isTemperature;
+    m_interval = interval;
+}
+
+DevCommand* DevCommandBuilder::makeCommand(Device* pDevice) {
+    return new DevCommand(pDevice, m_code, m_unit, m_divider, m_tol, m_interval, m_isSigned, m_isTemperature);
+}
+
+quint16 DevCommandBuilder::code() const {
+    return m_code;
+}
+
+uint DevCommandBuilder::interval() const {
+    return m_interval;
+}
+
+// DevCommand class
 // static methods
 
 double DevCommand::convertCelToFar(double value) {
@@ -12,16 +37,19 @@ double DevCommand::convertFarToCel(double value) {
 }
 
 // public methods
-DevCommand::DevCommand(Device* device, quint16 code, QString unit, double divider, quint8 tol, bool isSigned, QObject *parent) :
+DevCommand::DevCommand(Device* device, quint16 code, QString unit, double divider, quint8 tol, uint interval, bool isSigned, bool isTemperature, QObject *parent) :
     QObject(parent),
     m_device(device),
     m_code(code),
     m_unit(unit),
     m_tol(tol),
     m_divider(divider),
-    m_isSigned(isSigned)
+    m_isSigned(isSigned),
+    m_isTemperature(isTemperature)
 {
     m_rawValue = 0;
+
+    m_unit.replace("(deg)", QString('\370'), Qt::CaseInsensitive);
 }
 
 void DevCommand::execute(int value) {
@@ -54,13 +82,31 @@ QString DevCommand::unit() {
     return m_unit;
 }
 
-double DevCommand::getDivider() {
+double DevCommand::divider() {
     return m_divider;
 }
 
-quint8 DevCommand::getTol() {
+quint8 DevCommand::tolerance() {
     return m_tol;
 }
+
+uint DevCommand::interval() {
+    return m_interval;
+}
+
+//uint DevCommand::stepInterval() {
+//    return m_stepInterval;
+//}
+
+//bool DevCommand::nextInterval() {
+//    m_stepInterval++;
+//    bool state = (m_stepInterval == m_interval);
+
+//    if(state) {
+//        m_stepInterval = 0;
+//    }
+//    return state;
+//}
 
 bool DevCommand::isSigned() {
     return m_isSigned;

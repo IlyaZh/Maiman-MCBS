@@ -5,7 +5,7 @@
 
 #include <QDebug>
 
-MainWindow::MainWindow(AppSettings* settings, QWidget *parent)
+MainWindow::MainWindow(QSharedPointer<AppSettings> settings, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow),
 //      m_cntrl(nullptr),

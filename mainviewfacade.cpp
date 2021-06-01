@@ -5,10 +5,15 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 #include "model/device/devicewidget.h"
+#include <QSharedPointer>
 
-MainViewFacade::MainViewFacade(QObject *parent) : QObject(parent), ViewInterface()//, MainWindowControllerInterface()
+MainViewFacade::MainViewFacade(GUIfactory* pGuiFactory, QObject *parent) :
+    QObject(parent), ViewInterface(), //MainWindowControllerInterface(),
+    m_guiFactory(pGuiFactory)
 {
     m_mainWindow = nullptr;
+
+    pGuiFactory->start();
 }
 
 // View Interface
@@ -19,6 +24,9 @@ void MainViewFacade::createdDevice(Device* pDev) {
         qDebug() << "Facade created device with addr = " << pDev->addr();
 
         // make a device widget and link it with device;
+        QVector<const DevCommand*>* commands = pDev->getCommands();
+        QWidget* deviceWidget = m_guiFactory->createWidget(pDev->id(), commands);
+
     }
 }
 

@@ -11,6 +11,8 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include "factories/parser.h"
+#include "factories/guifactory.h"
+#include <QSharedPointer>
 
 #include <QDebug>
 
@@ -23,7 +25,7 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion(QString::number(MAJOR_VERSION) + "." + QString::number(MINOR_VERSION) + "." + QString::number(PATCH_VERSION));
     QApplication::setFont(APPLICATION_DEFAULT_FONT);
 
-    AppSettings *settings = new AppSettings();
+    QSharedPointer<AppSettings> settings = QSharedPointer<AppSettings>(new AppSettings());
 
 #ifdef QT_DEBUG
     debugMode = true;
@@ -52,12 +54,12 @@ int main(int argc, char *argv[])
     w.setFont(APPLICATION_DEFAULT_FONT);
     w.show();
 
-    MainViewFacade* mvCntrl = new MainViewFacade();
+    MainViewFacade* mvCntrl = new MainViewFacade(new GUIfactory(/*new Parser(""), */settings));
 
     mvCntrl->addView(&w);
 
-    Parser* parser = new Parser("DeviceDB.xml");
-    NetworkModel* model = new NetworkModel(new DeviceFactory(parser, settings), new Modbus("modbus"));
+    DeviceFactory* deviceFactory = new DeviceFactory(new Parser("DeviceDB.xml"), settings);
+    NetworkModel* model = new NetworkModel(deviceFactory, new Modbus("modbus"));
     model->addFacade(mvCntrl);
 
     return app.exec();

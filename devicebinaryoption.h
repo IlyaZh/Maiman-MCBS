@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QAbstractButton>
 #include <QCheckBox>
-#include <QPointer>
 
 #include "device/devicecommand.h"
 

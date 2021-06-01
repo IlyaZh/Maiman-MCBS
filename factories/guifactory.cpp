@@ -1,8 +1,9 @@
 #include "guifactory.h"
 
-GUIfactory::GUIfactory(Parser *model)
+GUIfactory::GUIfactory(/*Parser* parser, */QSharedPointer<AppSettings> settings) :
+//    m_parser(parser),
+    m_settings(settings)
 {
-    m_parser = model;
     start();
 }
 
@@ -12,7 +13,7 @@ GUIfactory::~GUIfactory(){
 
 void GUIfactory::start()
 {
-    if (m_parser != nullptr){
+    if (m_parser){
         QModelIndex indexFirst = m_parser->index(1, 0);
         QString check = indexFirst.data().toString();
         if (check == "GUI"){
@@ -23,6 +24,11 @@ void GUIfactory::start()
             }
         }
     }
+}
+
+QWidget* GUIfactory::createWidget(quint16 devId, QVector<const DevCommand*>* pCommands) {
+//    do it!
+    return nullptr;
 }
 
 void GUIfactory::GUIReader(int row){
