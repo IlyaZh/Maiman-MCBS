@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include "../device/devcommand.h"
-#include "devicebinaryoption.h"
 #include "device.h"
 
 class Device;

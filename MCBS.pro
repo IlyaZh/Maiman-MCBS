@@ -20,7 +20,6 @@ SOURCES += \
     device/devcommand.cpp \
     device/device.cpp \
     device/devicemodel.cpp \
-    devicebinaryoption.cpp \
     factories/guifactory.cpp \
     factories/parseitem.cpp \
     factories/parser.cpp \
@@ -39,9 +38,6 @@ HEADERS += \
     device/devcommand.h \
     device/device.h \
     device/devicemodel.h \
-    devicebinaryoption.h \
-    devicecalibrationkoefs.h \
-    deviceparameter.h \
     enums.h \
     factories/guifactory.h \
     factories/parseitem.h \
