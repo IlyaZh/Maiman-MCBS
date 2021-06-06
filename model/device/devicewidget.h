@@ -4,14 +4,15 @@
 #include <QWidget>
 #include <QMap>
 #include <QVariant>
-//#include "../../device/device.h"
-
+#include <QPointer>
+#include "device/device.h"
 
 class DeviceWidget : public QWidget
 {
     Q_OBJECT
 public:
-    DeviceWidget(/*Device* device*/);
+    DeviceWidget(Device *pDev);
+    QString devName();
 
 public slots:
     virtual void setValue(quint16 reg, double value);
@@ -22,9 +23,8 @@ signals:
     void dataChanged(quint16 reg, int value);
 
 private:
-//    Device* m_device;
     QMap<quint16, QVariant> m_values;
-//    Q_Map<quint16, >
+    Device* m_device;
 
 };
 

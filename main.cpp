@@ -10,9 +10,11 @@
 #include "globals.h"
 #include <QCommandLineParser>
 #include <QCommandLineOption>
-#include "factories/parser.h"
-#include "factories/guifactory.h"
+#include "factories/Parser.h"
+#include "factories/xmlparser.h"
 #include <QSharedPointer>
+
+#include "factories/xmlparser.h"
 
 #include <QDebug>
 
@@ -54,13 +56,16 @@ int main(int argc, char *argv[])
     w.setFont(APPLICATION_DEFAULT_FONT);
     w.show();
 
-    MainViewFacade* mvCntrl = new MainViewFacade(new GUIfactory(/*new Parser(""), */settings));
+    MainViewFacade* mvCntrl = new MainViewFacade(/*new GUIfactory(new Parser(""), */settings/*)*/);
 
     mvCntrl->addView(&w);
 
-    DeviceFactory* deviceFactory = new DeviceFactory(new Parser("DeviceDB.xml"), settings);
+    DeviceFactory* deviceFactory = new DeviceFactory(new XmlParser("DeviceDB.xml"), settings);
     NetworkModel* model = new NetworkModel(deviceFactory, new Modbus("modbus"));
     model->addFacade(mvCntrl);
+
+    XmlParser *parser = new XmlParser("DeviceDB.xml");
+    parser->process();
 
     return app.exec();
 }

@@ -7,13 +7,14 @@
 #include "model/device/devicewidget.h"
 #include <QSharedPointer>
 
-MainViewFacade::MainViewFacade(GUIfactory* pGuiFactory, QObject *parent) :
+MainViewFacade::MainViewFacade(/*GUIfactory* pGuiFactory,*/ QSharedPointer<AppSettings> settings, QObject *parent) :
     QObject(parent), ViewInterface(), //MainWindowControllerInterface(),
-    m_guiFactory(pGuiFactory)
+//    m_guiFactory(pGuiFactory),
+    m_settings(settings)
 {
     m_mainWindow = nullptr;
 
-    pGuiFactory->start();
+//    pGuiFactory->start();
 }
 
 // View Interface
@@ -24,9 +25,9 @@ void MainViewFacade::createdDevice(Device* pDev) {
         qDebug() << "Facade created device with addr = " << pDev->addr();
 
         // make a device widget and link it with device;
-        QVector<const DevCommand*>* commands = pDev->getCommands();
-        QWidget* deviceWidget = m_guiFactory->createWidget(pDev->id(), commands);
+//        QWidget* deviceWidget = m_guiFactory->createWidget(pDev);
 
+        // attach deviceWidget to main window
     }
 }
 

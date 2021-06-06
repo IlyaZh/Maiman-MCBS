@@ -18,6 +18,18 @@ Device::Device(quint16 id, quint8 addr, QString name, DeviceDelays *delays, QVec
 //    timeoutTimer->singleShot(m_Delays->timeoutMs(), this, SLOT(timeout()));
 }
 
+Device::~Device() {
+    QMap<quint16, QPointer<DevCommand>>::iterator cmd = m_Commands.begin();
+    while(cmd != m_Commands.end()) {
+        DevCommand *pCmd = (cmd).value();
+        pCmd->deleteLater();
+    }
+    m_Commands.clear();
+
+    if(m_deviceWidget) m_deviceWidget->deleteLater();
+
+}
+
 void Device::dataIncome(quint16 reg, quint16 value) {
     for(DevCommand* cmd : m_Commands) {
         if(cmd->code() == reg) {
@@ -30,18 +42,6 @@ void Device::dataIncome(quint16 reg, quint16 value) {
 //            emit dataToView(reg, cmd.va());
         }
     }
-}
-
-Device::~Device() {
-    QMap<quint16, QPointer<DevCommand>>::iterator cmd = m_Commands.begin();
-    while(cmd != m_Commands.end()) {
-        DevCommand *pCmd = (cmd).value();
-        pCmd->deleteLater();
-    }
-    m_Commands.clear();
-
-    if(m_deviceWidget) m_deviceWidget->deleteLater();
-
 }
 
 void Device::dataOutcome(quint16 reg, quint16 value) {
@@ -95,7 +95,7 @@ void Device::clearLink() {
     emit link(m_isLink);
 }
 
-QVector<const DevCommand*>* Device::getCommands() {
+/*QVector<const DevCommand*>* Device::getCommands() {
     QVector<const DevCommand*>* vector = new QVector<const DevCommand*>(m_Commands.size());
 
     QMap<quint16, QPointer<DevCommand>>::iterator i;
@@ -103,7 +103,7 @@ QVector<const DevCommand*>* Device::getCommands() {
         vector->append(qAsConst(i.value()));
 
     return vector;
-}
+}*/
 
 /*void Device::connectWidget(DeviceWidget* widget, int code) {
     if(m_deviceWidgets.contains(code)) {}

@@ -20,13 +20,13 @@ SOURCES += \
     device/devcommand.cpp \
     device/device.cpp \
     device/devicemodel.cpp \
-    factories/guifactory.cpp \
+    factories/Parser.cpp \
     factories/parseitem.cpp \
-    factories/parser.cpp \
+    factories/treeitem.cpp \
+    factories/xmlparser.cpp \
     main.cpp \
     mainviewfacade.cpp \
     mainwindow.cpp \
-    model/device/binarywidget.cpp \
     model/device/devicewidget.cpp \
     model/devicefactory.cpp \
     network/SoftProtocol.cpp \
@@ -39,9 +39,10 @@ HEADERS += \
     device/device.h \
     device/devicemodel.h \
     enums.h \
-    factories/guifactory.h \
+    factories/Parser.h \
     factories/parseitem.h \
-    factories/parser.h \
+    factories/treeitem.h \
+    factories/xmlparser.h \
     globals.h \
     interfaces/DevCommand.h \
     interfaces/ModelCommands/ModelCmd.h \
@@ -52,7 +53,6 @@ HEADERS += \
     mainwindow.h \
     mainwindowcontroller.h \
     model/ModelInterface.h \
-    model/device/binarywidget.h \
     model/device/devicepollrequest.h \
     model/device/devicewidget.h \
     model/devicefactory.h \

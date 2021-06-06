@@ -31,7 +31,7 @@ public:
     DevicePollRequest* nextPollRequest();
     bool isLink();
     void clearLink();
-    QVector<const DevCommand*>* getCommands();
+//    QVector<const DevCommand*>* getCommands();
 //    void connectWidget(DeviceWidget* widget, int code);
 //    void disconnectWidget(DeviceWidget* widget, int code = -1);
 
@@ -57,7 +57,7 @@ private:
 signals:
     void dataToModel(quint8 addr, quint16 reg, quint16 value);
     void link(bool);
-//    void dataToView(quint16 reg, quint16 value);
+    void dataToView(quint16 reg, int value);
     void dataToView(quint16 reg, double value);
 
 };

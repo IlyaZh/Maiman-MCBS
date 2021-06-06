@@ -5,7 +5,7 @@
 #include "device/device.h"
 #include <QThread>
 #include <QObject>
-#include "factories/parser.h"
+#include "factories/Parser.h"
 #include "appsettings.h"
 #include <QSharedPointer>
 
@@ -34,13 +34,6 @@ private:
 //    QVector<device_t> m_device;
     QStringList baudrate;
 //    QMap<QString, QString> IDDevice;
-
-    void CommandReader(int row);
-    QModelIndex indexStepBack(int row,int column);
-    QModelIndex SForward(int row,int column,QModelIndex parent);
-    QString findDeviceID(QString id,int* row);
-    QModelIndex findTag(QString tag, QModelIndex parent);
-    QVariant AttributesValue(QString attribName, QModelIndex index);
 
 
 };
