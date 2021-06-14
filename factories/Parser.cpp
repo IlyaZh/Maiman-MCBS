@@ -1,27 +1,33 @@
 #include "Parser.h"
+#include <QDebug>
 
-Parser::Parser(QString fileName, QObject* parent) :
+Parser::Parser(QByteArray dataArray, QObject* parent) :
     QObject(parent),
-    m_fileName(fileName)
+    m_data(dataArray)
 {
-    m_file = new QFile(m_fileName);
-    if(!m_file->exists()) {
-        makeError(QString("File %1 is not exists!").arg(m_fileName));
-    }
+
 }
 
 Parser::~Parser() {
-    m_file->deleteLater();
+    m_data.clear();
 }
 
 TreeItem* Parser::data() {
     return m_tree;
 }
 
+void Parser::stop() {
+    m_stop = true;
+}
+
+QString Parser::errorString() {
+    return m_errorString;
+}
 
 // protected methods
 void Parser::makeError(QString msg) {
-    emit errorOccured("[XmlParser] "+msg);
+    if(!m_errorString.isEmpty()) m_errorString.append("; ");
+    m_errorString.append("[XmlParser] "+msg);
 }
 
 /*

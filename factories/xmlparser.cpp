@@ -1,26 +1,26 @@
 #include "xmlparser.h"
 #include <QDebug>
 
-XmlParser::XmlParser(QString filename, QObject *parent) :
-    Parser(filename, parent)
+XmlParser::XmlParser(QByteArray dataArray, QObject *parent) :
+    Parser(dataArray, parent)
 {
-
 }
 
-XmlParser::~XmlParser() {}
+XmlParser::~XmlParser() {
+}
 
 
-// public clots
-
-void XmlParser::process() {
-    if(m_file->open(QIODevice::ReadOnly)) {
-        QByteArray dataBytes = m_file->readAll();
-        QXmlStreamReader* xml = new QXmlStreamReader(dataBytes);
+bool XmlParser::start() {
+        QXmlStreamReader* xml = new QXmlStreamReader(m_data);
 
         while(!xml->atEnd() && !xml->hasError()) {
+            if(m_stop) {
+                if(m_tree != nullptr) delete m_tree;
+                return false;
+            }
+
             QXmlStreamReader::TokenType token = xml->readNext();
             if(token == QXmlStreamReader::StartElement) {
-
                 if(m_tree == nullptr) {
                     m_tree = parseTag(xml);
                 } else {
@@ -32,18 +32,16 @@ void XmlParser::process() {
 
         if(xml->hasError()) {
             makeError(xml->errorString());
+            xml->clear();
+            delete xml;
+            return false;
         }
 
 //        readData(m_tree); // debug only
 
         xml->clear();
-        m_file->close();
         delete xml;
-    } else {
-        makeError(QString("File %1 can't be open!").arg(m_file->fileName()));
-    }
-
-
+        return true;
 }
 
 // private methods
@@ -57,9 +55,14 @@ TreeItem* XmlParser::parseTag(QXmlStreamReader* xml) {
     }
 
     while(!xml->atEnd() && !xml->hasError()) {
+        if(m_stop) {
+            break;
+        }
+
         QXmlStreamReader::TokenType token = xml->readNext();
 
         if(token == QXmlStreamReader::StartElement) {
+//            qDebug() << tagName.toString() << xml->readElementText(/*QXmlStreamReader::SkipChildElements*/);
             if(xml->name() == tagName) {
                 break;
             }
@@ -69,6 +72,11 @@ TreeItem* XmlParser::parseTag(QXmlStreamReader* xml) {
             if(xml->name() == tagName) {
                 break;
             }
+        } else if (token == QXmlStreamReader::Characters) {
+            qDebug() << tagName.toString() << xml->text();
+            QString st = xml->readElementText(QXmlStreamReader::SkipChildElements);
+//            if(!st.isEmpty())
+//            qDebug() << tagName.toString() << st;
         }
     }
 

@@ -22,6 +22,7 @@ SOURCES += \
     device/devicemodel.cpp \
     factories/Parser.cpp \
     factories/parseitem.cpp \
+    factories/parserworker.cpp \
     factories/treeitem.cpp \
     factories/xmlparser.cpp \
     main.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     enums.h \
     factories/Parser.h \
     factories/parseitem.h \
+    factories/parserworker.h \
     factories/treeitem.h \
     factories/xmlparser.h \
     globals.h \

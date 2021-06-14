@@ -11,11 +11,9 @@ class XmlParser : public Parser
 {
     Q_OBJECT
 public:
-    explicit XmlParser(QString filename, QObject *parent = nullptr);
+    explicit XmlParser(QByteArray dataArray, QObject *parent = nullptr);
     ~XmlParser();
-
-public slots:
-    virtual void process() override;
+    virtual bool start() override;
 
 private:
 //    TreeItem* m_lastTree = nullptr;

@@ -11,10 +11,7 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include "factories/Parser.h"
-#include "factories/xmlparser.h"
 #include <QSharedPointer>
-
-#include "factories/xmlparser.h"
 
 #include <QDebug>
 
@@ -60,12 +57,9 @@ int main(int argc, char *argv[])
 
     mvCntrl->addView(&w);
 
-    DeviceFactory* deviceFactory = new DeviceFactory(new XmlParser("DeviceDB.xml"), settings);
+    DeviceFactory* deviceFactory = new DeviceFactory("DeviceDB.xml", settings);
     NetworkModel* model = new NetworkModel(deviceFactory, new Modbus("modbus"));
     model->addFacade(mvCntrl);
-
-    XmlParser *parser = new XmlParser("DeviceDB.xml");
-    parser->process();
 
     return app.exec();
 }
