@@ -49,15 +49,12 @@ const quint16 IDENTIFY_DEVICE_COMMAND = 0x0001;
 
 const unsigned int DEFAULT_BAUD_RATE = 115200;
 
-const unsigned int COM_PORT_TIMEOUT = 1000; // [ms]
+const unsigned int COM_PORT_TIMEOUT = 100; // [ms]
 
 const QString DEFAULT_TEMPERATURE_SYMBOL = "C";
 
-const unsigned int COM_COMMAND_SEND_DELAY = 150; // ms
-const uint COM_COMMAND_MIN_SEND_DELAY = 50;
-const uint COM_COMMAND_MAX_SEND_DELAY = 1000;
+const quint16 COM_COMMAND_SEND_DELAY = 150; // ms
 
-const unsigned int STOP_COMMAND_DELAY_DEFAULT = COM_PORT_TIMEOUT-100; // [ms]
 
 const QString DEFAULT_LOG_FILENAME = "consoleLog " + QDate::currentDate().toString("dd.MM.yyyy") + ".log";
 const QString DEFAULT_LOG_FILEPATH = QDir::currentPath()+"/logs/";

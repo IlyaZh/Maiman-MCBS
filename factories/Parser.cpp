@@ -5,7 +5,7 @@ Parser::Parser(QByteArray dataArray, QObject* parent) :
     QObject(parent),
     m_data(dataArray)
 {
-
+    m_data = m_data.simplified();
 }
 
 Parser::~Parser() {

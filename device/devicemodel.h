@@ -4,6 +4,7 @@
 #include <QObject>
 #include "../device/devcommand.h"
 #include "device.h"
+#include "globals.h"
 
 class Device;
 class DevCommand;
@@ -11,7 +12,11 @@ class DevCommandBuilder;
 
 class DeviceDelays {
 public:
-    DeviceDelays(quint16 stopDelayMs, quint16 minCommandDelayMs, quint16 maxCommandDelayMs, quint16 timeout_ms)
+    static const quint16 COM_COMMAND_MIN_SEND_DELAY = 50;
+    static const quint16 COM_COMMAND_MAX_SEND_DELAY = 1000;
+    static const quint16 COM_STOP_DELAY_MS = 300;
+
+    DeviceDelays(quint16 stopDelayMs = COM_STOP_DELAY_MS, quint16 minCommandDelayMs = COM_COMMAND_MIN_SEND_DELAY, quint16 maxCommandDelayMs = COM_COMMAND_MAX_SEND_DELAY, quint16 timeout_ms = COM_PORT_TIMEOUT)
         : m_stopDelayMs(stopDelayMs),
           m_minCommandDelayMs(minCommandDelayMs),
           m_maxCommandDelayMs(maxCommandDelayMs),

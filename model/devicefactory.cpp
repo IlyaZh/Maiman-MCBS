@@ -17,24 +17,24 @@ DeviceFactory::DeviceFactory(QString fileName, QSharedPointer<AppSettings> setti
 
 DeviceFactory::~DeviceFactory() {
 //    m_parser->stop();
-    if(m_parseWorker) m_parseWorker->deleteLater();
+//    if(m_parseWorker) m_parseWorker->deleteLater();
 }
 
 void DeviceFactory::start() {
-    m_parseWorker = new ParserWorker(m_fileName, ParserType::XmlParser);
+    m_parseWorker = QSharedPointer<ParserWorker>(new ParserWorker(m_fileName, ParserType::XmlParser));
     m_thread = new QThread();
     m_parseWorker->moveToThread(m_thread);
 
-    connect(m_thread, SIGNAL(started()), m_parseWorker, SLOT(process()));
-    connect(m_parseWorker, SIGNAL(finished()), m_thread, SLOT(quit()));
-    connect(m_parseWorker, SIGNAL(finished()), this, SLOT(parsingFinished()));
+    connect(m_thread, SIGNAL(started()), m_parseWorker.data(), SLOT(process()));
+    connect(m_parseWorker.data(), SIGNAL(finished()), m_thread, SLOT(quit()));
+    connect(m_parseWorker.data(), SIGNAL(finished()), this, SLOT(parsingFinished()));
 //    //connect(...,m_parser, SLOT(stop()));
     // проверь сигналы по статье
 //    connect(m_parseWorker, SIGNAL(finished()), m_parseWorker, SLOT(deleteLater()));
     connect(m_thread, SIGNAL(finished()), m_thread, SLOT(deleteLater()));
-    connect(m_parseWorker, SIGNAL(errorOccured(QString)), this, SLOT(threadError(QString)));
-    connect(m_parseWorker, SIGNAL(errorOccured(QString)), m_thread, SLOT(quit()));
-    connect(m_parseWorker, SIGNAL(errorOccured(QString)), m_thread, SLOT(deleteLater()));
+    connect(m_parseWorker.data(), SIGNAL(errorOccured(QString)), this, SLOT(threadError(QString)));
+    connect(m_parseWorker.data(), SIGNAL(errorOccured(QString)), m_thread, SLOT(quit()));
+    connect(m_parseWorker.data(), SIGNAL(errorOccured(QString)), m_thread, SLOT(deleteLater()));
     m_thread->start();
 }
 
@@ -84,38 +84,158 @@ bool DeviceFactory::parseTree(TreeItem* tree) {
 
                 QString tagName = childDb->name();
                 if(tagName == "BaudRate") {
-                    m_baudrates << parseBaudRates(childDb);
+                    m_baudrates << parseBaudRate(childDb);
                 }
                 if(tagName == "CommonIDDevices") {
-                    parseCommonDevId(childDb);
+                    m_commondDevicesId = parseCommonDevId(childDb);
+                }
+                if(tagName == "Device") {
+                    DeviceModel* devModel = parseDevice(childDb);
+                    if(devModel != nullptr)
+                        m_DeviceModels << QSharedPointer<DeviceModel>(devModel);
                 }
 
             }
+            return true;
         }
     }
 
     return false;
 }
 
-QStringList DeviceFactory::parseBaudRates(TreeItem* item) {
-    QStringList list;
-
+QString DeviceFactory::parseBaudRate(TreeItem* item) {
     for(int i = 0; i < item->childCount(); i++) {
         TreeItem* child = item->child(i);
         if(child->name() == "value") {
-            list.append(child->value().toString());
+            return child->value().toString();
         }
     }
-
-    return list;
+    return QString("");
 }
 
 QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(TreeItem* item) {
     QVector<QPair<uint, QString>> list;
 
     for(int i = 0; i < item->childCount(); i++) {
-        TreeItem* child = item->child(i);
+        TreeItem* tagItem = item->child(i);
+        QString devName = tagItem->value().toString();
+        uint devId = 0;
+        for(int j = 0; j < tagItem->childCount(); j++) {
+            TreeItem* attr = tagItem->child(j);
+            if(attr->name() == "id") {
+                devId = attr->value().toUInt();
+                break;
+            }
+        }
+        if(devId != 0)
+            list << qMakePair(devId, devName);
     }
+
+    return list;
+}
+
+DeviceModel* DeviceFactory::parseDevice(TreeItem* item) {
+    quint16 id = 0;
+    QString name = "";
+    DeviceDelays *delays = nullptr;
+    QVector<DevCommandBuilder*> *cmdBuilders = nullptr;
+    quint16 stopDelayMs = DeviceDelays::COM_STOP_DELAY_MS;
+    quint16 minCommandDelayMs = DeviceDelays::COM_COMMAND_MIN_SEND_DELAY;
+    quint16 maxCommandDelayMs = DeviceDelays::COM_COMMAND_MAX_SEND_DELAY;
+
+    bool hasId = false;
+    bool hasName = false;
+    bool hasCommands = false;
+
+
+    for(int i = 0; i < item->childCount(); i++) {
+        TreeItem* child = item->child(i);
+
+        if(child->name() == "id") {
+            id = child->value().toString().toUInt(nullptr, 16);
+            hasId = true;
+        }
+
+        if(child->name() == "name") {
+            name = child->value().toString();
+            hasName = true;
+        }
+
+        if(child->name() == "stopCommandDelayMs")
+            stopDelayMs = child->value().toUInt();
+
+        if(child->name() == "minCommandDelayMs")
+            minCommandDelayMs = child->value().toUInt();
+
+        if(child->name() == "maxCommandDelayMs")
+            maxCommandDelayMs = child->value().toUInt();
+
+        if(child->name() == "Commands") {
+            cmdBuilders = parseCommands(child);
+            if(!cmdBuilders->isEmpty()) hasCommands = true;
+        }
+    }
+    if(hasCommands && hasId && hasName) {
+        delays = new DeviceDelays(stopDelayMs, minCommandDelayMs, maxCommandDelayMs);
+        return new DeviceModel(id, name, delays, cmdBuilders);
+    } else {
+        return nullptr;
+    }
+}
+
+QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(TreeItem* item) {
+    quint16 code = 0;
+    QString unit = "";
+    double divider = 1;
+    quint8 tol = 0;
+    uint interval = 1;
+    bool isSigned = false;
+    bool isTemperature = false;
+
+    QVector<DevCommandBuilder*>* list = new QVector<DevCommandBuilder*>();
+
+    bool hasCode = false;
+
+    for(int c = 0; c < item->childCount(); c++) {
+        TreeItem* cmd = item->child(c);
+
+        for(int i = 0; i < cmd->childCount(); i++) {
+            TreeItem* child = cmd->child(i);
+
+            if(child->name() == "code") {
+                code = child->value().toUInt();
+                hasCode = true;
+            }
+
+            if(child->name() == "unit") {
+                unit = child->value().toString();
+                unit.replace("(deg)", QString::fromRawData(new QChar('\260'), 1));
+            }
+
+            if(child->name() == "divider")
+                divider = child->value().toDouble();
+
+            if(child->name() == "tol")
+                tol = child->value().toUInt();
+
+            if(child->name() == "interval")
+                interval = child->value().toUInt();
+
+            if(child->name() == "isSigned")
+                isSigned = true;
+
+            if(child->name() == "isTemperature")
+                isTemperature = true;
+
+        }
+
+        if(hasCode) {
+            list->append(new DevCommandBuilder(code, unit, divider, tol, interval, isSigned, isTemperature));
+        }
+    }
+
+
+
 
     return list;
 }

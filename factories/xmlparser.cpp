@@ -21,6 +21,7 @@ bool XmlParser::start() {
 
             QXmlStreamReader::TokenType token = xml->readNext();
             if(token == QXmlStreamReader::StartElement) {
+                 //xml->readElementText(QXmlStreamReader::SkipChildElements);
                 if(m_tree == nullptr) {
                     m_tree = parseTag(xml);
                 } else {
@@ -48,7 +49,8 @@ bool XmlParser::start() {
 TreeItem* XmlParser::parseTag(QXmlStreamReader* xml) {
     QVector<TreeItem*> *items = new QVector<TreeItem*>();
     QStringRef tagName = xml->name();
-    TreeItem* item = new TreeItem(tagName.toString(), QVariant(xml->text().toString()), items);
+    QVariant* variant = new QVariant(0);
+    TreeItem* item = new TreeItem(tagName.toString(), variant, items);
 
     for(auto attr : xml->attributes()) {
         items->append(parseAttribs(attr.name().toString(), attr.value().toString()));
@@ -62,7 +64,6 @@ TreeItem* XmlParser::parseTag(QXmlStreamReader* xml) {
         QXmlStreamReader::TokenType token = xml->readNext();
 
         if(token == QXmlStreamReader::StartElement) {
-//            qDebug() << tagName.toString() << xml->readElementText(/*QXmlStreamReader::SkipChildElements*/);
             if(xml->name() == tagName) {
                 break;
             }
@@ -73,8 +74,12 @@ TreeItem* XmlParser::parseTag(QXmlStreamReader* xml) {
                 break;
             }
         } else if (token == QXmlStreamReader::Characters) {
-            qDebug() << tagName.toString() << xml->text();
-            QString st = xml->readElementText(QXmlStreamReader::SkipChildElements);
+            QString tagText = xml->text().toString();
+            if(tagText.compare(" ") != 0) {
+                variant->setValue(tagText);
+            }
+//            items->append(new TreeItem("value", QVariant(xml)));
+//            QString st = xml->readElementText(QXmlStreamReader::IncludeChildElements);
 //            if(!st.isEmpty())
 //            qDebug() << tagName.toString() << st;
         }
@@ -88,5 +93,5 @@ TreeItem* XmlParser::parseTag(QXmlStreamReader* xml) {
 }
 
 TreeItem* XmlParser::parseAttribs(QString name, QVariant value) {
-    return new TreeItem(name, value, new QVector<TreeItem*>(0));
+    return new TreeItem(name, new QVariant(value), new QVector<TreeItem*>(0));
 }

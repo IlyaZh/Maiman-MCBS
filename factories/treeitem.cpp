@@ -1,15 +1,15 @@
 #include "treeitem.h"
 
-TreeItem::TreeItem(QString name, QVariant value, QVector<TreeItem*>* pChilds) : m_name(name), m_value(value), m_childs(pChilds) {
-
+TreeItem::TreeItem(QString name, QVariant* value, QVector<TreeItem*>* pChilds) : m_name(name), m_value(value), m_childs(pChilds) {
 }
 
 TreeItem::~TreeItem() {
     qDeleteAll(*m_childs);
+    delete m_value;
 }
 
 QVariant TreeItem::value() {
-    return m_value;
+    return (*m_value);
 }
 
 QString TreeItem::name() {

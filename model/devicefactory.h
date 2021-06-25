@@ -30,10 +30,13 @@ private:
 
     DeviceModel* findModel(quint16 id);
     bool parseTree(TreeItem* tree);
-    QStringList parseBaudRates(TreeItem* item);
+    QString parseBaudRate(TreeItem* item);
     QVector<QPair<uint, QString>> parseCommonDevId(TreeItem* item);
+    DeviceModel* parseDevice(TreeItem* item);
+    QVector<DevCommandBuilder*>* parseCommands(TreeItem* item);
 
-    QPointer<ParserWorker> m_parseWorker;
+
+    QSharedPointer<ParserWorker> m_parseWorker;
     QVector<QSharedPointer<DeviceModel>> m_DeviceModels;
 //    QVector<device_t> m_device;
     QStringList m_baudrates;
