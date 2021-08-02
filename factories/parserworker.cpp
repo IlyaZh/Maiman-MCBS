@@ -9,7 +9,7 @@ ParserWorker::ParserWorker(QString fileName, ParserType type, QObject *parent) :
 }
 
 ParserWorker::~ParserWorker() {
-    if(m_parser) delete m_parser;
+    qDebug() << "Delet ParserWorker";
 }
 
 TreeItem* ParserWorker::data() {
@@ -25,7 +25,7 @@ void ParserWorker::process() {
 
             switch(m_type) {
                 case ParserType::XmlParser:
-                m_parser = new XmlParser(dataArray);
+                m_parser.reset(new XmlParser(dataArray));
                 break;
             default:
                 break;

@@ -1,11 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "enums.h"
 #include "globals.h"
+#include <QVariant>
 
 #include <QDebug>
 
-MainWindow::MainWindow(QSharedPointer<AppSettings> settings, QWidget *parent)
+MainWindow::MainWindow(AppSettings& settings, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow),
 //      m_cntrl(nullptr),
@@ -15,11 +15,11 @@ MainWindow::MainWindow(QSharedPointer<AppSettings> settings, QWidget *parent)
 {
     ui->setupUi(this);
 
-    this->move(m_settings->getWindowPosition());
+    this->move(m_settings.getWindowPosition());
 
     NetworkData_s netData;
-    netData = m_settings->getNetworkData();
-    if(netData.type != UNKNOWN_PROTOCOL) {
+    netData = m_settings.getNetworkData();
+    if(netData.type != NetworkType::NONE) {
         ui->ipLineEdit->setText(netData.host);
         ui->portSpinBox->setValue(netData.port);
     }
@@ -39,7 +39,7 @@ MainWindow::MainWindow(QSharedPointer<AppSettings> settings, QWidget *parent)
 //    refreshMenuPortList();
 //    refreshMenuPortBaudsList();
 
-    setWindowTitle(appTitle);
+    setWindowTitle(Constants::AppTitle);
     setWindowIcon(QIcon(":/images/logo-minimal.png"));
 
     m_workFieldLayout = new QGridLayout();
@@ -73,7 +73,12 @@ MainWindow::~MainWindow()
     }
 }*/
 
+void MainWindow::setConnectMessage(QString msg) {
+    ui->networkStateLabel->setText(msg);;
+}
+
 void MainWindow::setConnected(bool isConnected) {
+    qDebug() << "MainWindow::setConnected" << isConnected;
     if(isConnected) {
         ui->networkConnectButton->setText(tr("Disconnect"));
     } else {
@@ -111,15 +116,17 @@ void MainWindow::setConnections() {
 
 void MainWindow::on_networkConnectButton_clicked()
 {
-    emit networkConnectClicked(TCP_PROTOCOL, ui->ipLineEdit->text(), ui->portSpinBox->value());
+//    emit networkConnectClicked(NetworkType::TCP, ui->ipLineEdit->text(), ui->portSpinBox->value());
 
-    if(m_settings != nullptr) {
-        NetworkData_s netData;
-        netData.type = TCP_PROTOCOL;
-        netData.host = ui->ipLineEdit->text();
-        netData.port = ui->portSpinBox->value();
-        m_settings->setNetworkData(netData);
-    }
+//    NetworkData_s netData;
+//    netData.type = NetworkType::TCP;
+//    netData.host = ui->ipLineEdit->text();
+//    netData.port = ui->portSpinBox->value();
+    QVariantHash networkMap;
+    networkMap.insert("type", static_cast<quint8>(NetworkType::TCP));
+    networkMap.insert("host", ui->ipLineEdit->text());
+    networkMap.insert("port", ui->portSpinBox->value());
+    m_mediator->Notify(this, "NetworkConnectClicked", networkMap);
     /*if(m_cntrl != nullptr) {
         m_cntrl->networkConnectClicked(TCP_PROTOCOL, ui->ipLineEdit->text(), ui->portSpinBox->value());
 

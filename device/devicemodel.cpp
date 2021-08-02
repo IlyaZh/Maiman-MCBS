@@ -20,9 +20,9 @@ DeviceModel::~DeviceModel() {
 //    if(m_BinaryOptions != nullptr) delete m_BinaryOptions;
 }
 
-Device* DeviceModel::createDevice(quint8 addr)
+Device* DeviceModel::createDevice(quint8 addr, QObject* parent)
 {
-    return new Device(m_Id, addr, m_Name, m_Delays, m_Commands);
+    return new Device(m_Id, addr, m_Name, *m_Delays, *m_Commands, parent);
 }
 
 QString DeviceModel::name() { return m_Name; }

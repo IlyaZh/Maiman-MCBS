@@ -54,7 +54,7 @@ class DeviceModel
 public:
     DeviceModel(quint16 id, QString name, DeviceDelays *delays, QVector<DevCommandBuilder*> *cmdBuilders);
     ~DeviceModel();
-    Device* createDevice(quint8 addr);
+    Device* createDevice(quint8 addr, QObject *parent = nullptr);
     QString name();
     quint16 id();
 

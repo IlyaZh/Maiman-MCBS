@@ -32,7 +32,7 @@ signals:
 
 private:
     TreeItem* m_data = nullptr;
-    QPointer<Parser> m_parser;
+    QScopedPointer<Parser> m_parser;
     QString m_fileName;
     ParserType m_type;
 

@@ -24,6 +24,9 @@ public:
     // Вызывается модбасом, когда он все передал и у него нет работы
     virtual void dataReady() = 0;
     virtual void timeout(quint8 code) = 0;
+
+    virtual void errorOccured(QString msg) = 0;
+    virtual void deviceOpen(bool state) = 0;
 };
 
 #endif // PROTOCOLOBSERVERINTERFACE_H

@@ -9,7 +9,7 @@
 
 class ViewInterface {
 public:
-    ViewInterface() { m_devices.resize(MAX_DEVICES); m_devices.fill(nullptr); }
+    ViewInterface() { m_devices.resize(Constants::MaxDevices); m_devices.fill(nullptr); }
 //    virtual ~ViewInterface() = 0;
 
     virtual void createdDevice( Device* pDev) = 0;

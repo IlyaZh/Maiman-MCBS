@@ -5,14 +5,21 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 #include "model/device/devicewidget.h"
-#include <QSharedPointer>
 
-MainViewFacade::MainViewFacade(/*GUIfactory* pGuiFactory,*/ QSharedPointer<AppSettings> settings, QObject *parent) :
+MainViewFacade::MainViewFacade(DataSourceInterface &dataSource, AppSettings &settings, GuiFactory& factory, QObject *parent) :
     QObject(parent), ViewInterface(), //MainWindowControllerInterface(),
-//    m_guiFactory(pGuiFactory),
+    m_factory(factory),
+    m_dataSource(dataSource),
     m_settings(settings)
 {
     m_mainWindow = nullptr;
+
+    m_factory.start();
+
+    // uncomment
+    connect(&m_dataSource, &DataSourceInterface::errorOccured, [=](QString msg){
+        m_mainWindow->setConnectMessage(msg);
+    });
 
 //    pGuiFactory->start();
 }
@@ -90,70 +97,79 @@ void MainViewFacade::setDeviceData(quint8 addr, quint16 cmd, quint16 value) {
 
 // MainWindowController Interface
 void MainViewFacade::addModel(ModelInterface* model) {
-    m_models.removeAll(model);
-    m_models.append(model);
+//    m_models.removeAll(model);
+//    m_models.append(model);
+    m_models = model;
 }
 
 void MainViewFacade::removeModel(ModelInterface* model) {
-    m_models.removeAll(model);
+//    m_models.removeAll(model);
+    m_models = nullptr;
 }
 
 void MainViewFacade::clearModels() {
-    m_models.clear();
+//    m_models.clear();
+    m_models = nullptr;
 }
 
-void MainViewFacade::addView(QMainWindow* mainWindow) {
+void MainViewFacade::addView(MainWindow* mainWindow) {
     if(m_mainWindow != nullptr) m_mainWindow->disconnect();
 
     m_mainWindow = mainWindow;
 //    m_mainWindow->addController(this);
     connect(this, SIGNAL(connected(bool)), m_mainWindow, SLOT(setConnected(bool)));
-    connect(m_mainWindow, SIGNAL(networkConnectClicked(int, QString, int)), this, SLOT(networkConnectClicked(int, QString, int)));
+    connect(m_mainWindow, SIGNAL(networkConnectClicked(NetworkType, QVariant, QVariant)), this, SLOT(networkConnectClicked(NetworkType, QVariant, QVariant)));
 
 }
 
-void MainViewFacade::networkConnectClicked(int protocol, QString host, int port) {
-    if(m_models.isEmpty()) {
+void MainViewFacade::networkConnectClicked(NetworkType protocol, QVariant host, QVariant port) {
+    if(m_models == nullptr) {
         qDebug() << "[DEBUG](MainViewFacade) models list is empty";
         return;
     }
-    qDebug() << protocol << host << port; //
+    qDebug() << static_cast<uint>(protocol) << host << port; //
 
-    QTcpSocket* tcpSocket = nullptr;
-    QSerialPort* serialPort = nullptr;
+    if(m_models->isStart()) {
+        if(m_dataSource.isOpen()) m_dataSource.close();
+        m_models->stop();
+    } else {
+        m_dataSource.setSettings(protocol, host, port);
+        if(m_dataSource.open())
+            m_models->start(m_dataSource);
 
-    for (ModelInterface* model : m_models) {
+    }
+    qDebug() << "emit connected = " << m_dataSource.isOpen();
+    emit connected(m_dataSource.isOpen());
+
+//    QTcpSocket* tcpSocket = nullptr;
+//    QSerialPort* serialPort = nullptr;
+
+    /*for (ModelInterface* model : m_models) {
+        qDebug() << "networkConnectClicked" << model->isStart();
         if(model->isStart()) {
             model->stop();
             emit connected(false);
+            qDebug() << "emit connected = false";
         } else {
-            switch(protocol) {
-            case TCP_PROTOCOL:
-                if(tcpSocket == nullptr) {
-                    tcpSocket = new QTcpSocket();
-                    tcpSocket->connectToHost(host, port, QIODevice::ReadWrite);
-                    emit connected(tcpSocket->isOpen());
-                }
+
+            if(protocol == NetworkType::TCP) {
+                tcpSocket = new QTcpSocket();
+                tcpSocket->connectToHost(host.toString(), port.toUInt(), QIODevice::ReadWrite);
+                emit connected(tcpSocket->isOpen());
+                qDebug() << "emit connected = " << tcpSocket->isOpen();
                 model->start(tcpSocket);
-                break;
-            case COM_PORT_PROTOCOL:
-                if(serialPort == nullptr) {
-                    serialPort = new QSerialPort();
-                    serialPort->setPortName(host);
-                    serialPort->setBaudRate(port);
-                    serialPort->open(QIODevice::ReadWrite);
-                    emit connected(serialPort->isOpen());
-                }
+            } else if (protocol == NetworkType::COM_PORT) {
+                serialPort = new QSerialPort();
+                serialPort->setPortName(host.toString());
+                serialPort->setBaudRate(port.toInt());
+                serialPort->open(QIODevice::ReadWrite);
+                emit connected(serialPort->isOpen());
                 model->start(serialPort);
-                break;
-            case UNKNOWN_PROTOCOL:
-            default:
+            } else {
                 qDebug() << "[DEBUG](MainViewFacade) unknown protocol";
-//                return;
-                break;
             }
         }
-    }
+    }*/
 
 
 

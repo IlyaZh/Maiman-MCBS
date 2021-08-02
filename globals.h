@@ -3,7 +3,6 @@
 #include <QMap>
 #include <QDate>
 #include <QDir>
-#include <QSerialPortInfo>
 #include <QPointer>
 #include <QFont>
 #include <QPoint>
@@ -12,12 +11,35 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-// Название организации
-const QString ORG_NAME = "MaimanElectronics";
-// Название (заголовок) ПО для служебных путей (без пробелов)
-const QString APP_NAME = "BenchSoft_Multichannel";
-// Человекопонятное название (заголовок_ ПО
-const QString APP_NAME_TITLE = "Maiman BenchSoft Multichannel";
+namespace Constants {
+    // Название организации
+    const QString OrgName = "MaimanElectronics";
+    // Название (заголовок) ПО для служебных путей (без пробелов)
+    const QString AppName = "BenchSoft_Multichannel";
+    // Человекопонятное название (заголовок_ ПО
+    const QString AppNameTitle = "Maiman BenchSoft Multichannel";
+
+    const quint8 MajorVersion = 1;
+    const quint8 MinorVersion = 0;
+    const quint8 PatchVersion = 0;
+    const QString AppTitle = QString("%1 v.%2.%3.%4").arg(Constants::AppNameTitle).arg(Constants::MajorVersion).arg(Constants::MinorVersion).arg(Constants::PatchVersion);
+
+    const quint8 MaxDevices = 32;
+    const QString SecretCodeCombination = "3.1415926";
+    const QFont ApplicationDefaultFont(":/fonts/ShareTechMono.ttf", 9);
+    const QString DeviceConfigFile = QDir::currentPath()+"/DDBconfig.xml";
+    const QString LogTimestampDefaultFormat = "dd.MM.yyyy HH:mm:ss";
+    const int LogMaxQueueSize = 10;
+    const unsigned int ConsoleMaxLinesToShow = 1000;
+    const int MaxFilesInMenu = 5;
+    const int StatusbarMessageTimeout = 5000; // ms
+
+    const quint16 IdentifyDeviceCommand = 0x0001;
+    const QString TemperatureUnitDefault = "C";
+
+    const unsigned int BaudRateDefault = 115200;
+};
+
 const QPoint WINDOW_DEFAULT_POSITION = QPoint(-1, -1);
 //const QSize WINDOW_DEFAULT_SIZE = QSize(-1,-1);
 
@@ -26,32 +48,17 @@ const QString TEC_STATUS_COMMAND = "0A1A";
 const QString FREQUENCY_COMMAND = "0100";
 const QString DURATION_COMMAND = "0200";
 
-const quint8 MAJOR_VERSION = 1;
-const quint8 MINOR_VERSION = 0;
-const quint8 PATCH_VERSION = 0;
 
-const quint8 MAX_DEVICES = 32;
-
-const QString SECRET_CODE_COMBINATION = "3.1415926";
-
-const QFont APPLICATION_DEFAULT_FONT(":/fonts/ShareTechMono.ttf", 9);
-
-const QString CONFIG_FILE = QDir::currentPath()+"/DDBconfig.xml";
-const QString LOG_TIMESTAMP_DEFAULT_FORMAT = "dd.MM.yyyy HH:mm:ss";
-const int LOG_MAX_QUEUE_SIZE = 10;
-const unsigned int CONSOLE_MAX_LINES_TO_SHOW = 1000;
-const int MAX_FILES_IN_MENU = 5;
-const int STATUSBAR_MESSAGE_TIMEOUT = 5000; // ms
 
 // Длительность "покраснения" поля ввода параметров при неверном значении
 const int CURR_VALUE_BG_ERROR_TIMEOUT = 1000; // ms
-const quint16 IDENTIFY_DEVICE_COMMAND = 0x0001;
 
-const unsigned int DEFAULT_BAUD_RATE = 115200;
+
+
 
 const unsigned int COM_PORT_TIMEOUT = 100; // [ms]
 
-const QString DEFAULT_TEMPERATURE_SYMBOL = "C";
+
 
 const quint16 COM_COMMAND_SEND_DELAY = 150; // ms
 
@@ -63,17 +70,7 @@ const int DEFAULT_DIGITS_AFTER_POINT = 2;
 #define DEFAULT_FORMAT_FOR_PARAMETERS 'f', DEFAULT_DIGITS_AFTER_POINT
 const char DOUBLE_FORMAT = 'f';
 
-inline const QStringList getAvailablePorts() {
-    QStringList ports;
-    foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
-       ports.append(info.portName());
-    }
-    return ports;
-}
-inline QString getDefaultPort() { return getAvailablePorts().value(0); }
-
-enum deviceStatusMask {START_STOP_MASK = 0x2, CURRENT_EXT_INT_MASK = 0x4, START_EXT_INT_MASK = 0x10, BLOCK_THERMO_MASK = 0x40, BLOCK_USE_IGNORE_MASK = 0x80};
-const QString appTitle = QString("%1 v.%2.%3.%4").arg(APP_NAME_TITLE).arg(MAJOR_VERSION).arg(MINOR_VERSION).arg(PATCH_VERSION);
+//enum deviceStatusMask {START_STOP_MASK = 0x2, CURRENT_EXT_INT_MASK = 0x4, START_EXT_INT_MASK = 0x10, BLOCK_THERMO_MASK = 0x40, BLOCK_USE_IGNORE_MASK = 0x80};
 
 
 #endif // GLOBALS_H

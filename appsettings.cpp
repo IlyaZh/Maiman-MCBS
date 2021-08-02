@@ -1,9 +1,11 @@
 #include "appsettings.h"
 #include "globals.h"
+#include <QJsonDocument>
+#include <QDebug>
 
 AppSettings::AppSettings(QObject *parent) : QObject(parent)
 {
-    settings = new QSettings(QSettings::NativeFormat, QSettings::UserScope, ORG_NAME, APP_NAME);
+    settings = new QSettings(QSettings::NativeFormat, QSettings::UserScope, Constants::OrgName, Constants::AppName);
 }
 
 bool AppSettings::parseFileSettings(QString fileName) {
@@ -18,12 +20,19 @@ bool AppSettings::parseFileSettings(QString fileName) {
     }
     // Считываем файл настроек и передаем в главное окно
 
+    QJsonParseError jParseErrorObj;
+    QJsonDocument jDoc = QJsonDocument::fromJson(file->readAll(), &jParseErrorObj);
+    if(jDoc.isNull()) {
+        qDebug() << "[E][AppSettings] Can't parse settings file:" << jParseErrorObj.errorString();
+    } else {
+        // debug do it
+    }
 }
 
-quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", DEFAULT_BAUD_RATE).toUInt(); }
-QString AppSettings::getComPort() { return settings->value("userSettings/comPort/port", getDefaultPort()).toString(); }
+quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", Constants::BaudRateDefault).toUInt(); }
+QString AppSettings::getComPort() { return settings->value("userSettings/comPort/port", "").toString(); }
 bool AppSettings::getComAutoconnectFlag() { return settings->value("userSettings/comPort/autoConnect", false).toBool(); }
-QString AppSettings::getTemperatureSymbol() { return settings->value("userSettings/temperatureSymbol", DEFAULT_TEMPERATURE_SYMBOL).toString(); }
+QString AppSettings::getTemperatureSymbol() { return settings->value("userSettings/temperatureSymbol", Constants::TemperatureUnitDefault).toString(); }
 const QList<QVariant> AppSettings::getRecentOpenFiles() { return settings->value("lastOpenedFiles").toList(); }
 QString AppSettings::getLastSaveDirectory() { return settings->value("lastUsedDirectory", QDir::homePath()).toString(); }
 uint AppSettings::getComCommandsDelay() { return settings->value("userSettings/comPort/commandsDelay", COM_COMMAND_SEND_DELAY).toUInt(); }
@@ -32,8 +41,8 @@ int AppSettings::getComStopBits() { return settings->value("userSettings/comPort
 
 NetworkData_s AppSettings::getNetworkData() {
     NetworkData_s netData;
-
-    netData.type = settings->value("network/type", 0).toInt();
+    // TODO: refactoring there
+    netData.type = static_cast<NetworkType>(settings->value("network/type", 0).toUInt());
     netData.host = settings->value("network/host", "").toString();
     netData.port = settings->value("network/port", 0).toInt();
 
@@ -41,7 +50,7 @@ NetworkData_s AppSettings::getNetworkData() {
 }
 
 uint AppSettings::getDeviceTimeout() {
-    settings->value("deviceDefaultTimeout", 1000).toUInt();
+    return settings->value("deviceDefaultTimeout", 1000).toUInt();
 }
 
 // slots
@@ -68,10 +77,11 @@ void AppSettings::setWindowPosition(QPoint pos) { settings->setValue("window/pos
 
 void AppSettings::setComStopBits(int value) { settings->setValue("userSettings/comPort/stopBits", value); }
 
-void AppSettings::setNetworkData(NetworkData_s netData) {
-    settings->setValue("network/type", netData.type);
+void AppSettings::setNetworkData(/*NetworkData_s*/QVariant netData) {
+    /*settings->setValue("network/type", static_cast<uint>(netData.type));
     settings->setValue("network/host", netData.host);
-    settings->setValue("network/port", netData.port);
+    settings->setValue("network/port", netData.port);*/
+    settings->setValue("network", netData);
 }
 
 void AppSettings::setDeviceTimeout(quint16 timeoutMs) {

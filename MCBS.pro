@@ -1,6 +1,8 @@
-QT       += core gui serialport network xml
+QT       += core gui network xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+lessThan(QT_MAJOR_VERSION, 6): QT += serialport
+greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
 
 CONFIG += c++11
 
@@ -17,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     appsettings.cpp \
+    datasource.cpp \
     device/devcommand.cpp \
     device/device.cpp \
     device/devicemodel.cpp \
@@ -30,16 +33,19 @@ SOURCES += \
     mainwindow.cpp \
     model/device/devicewidget.cpp \
     model/devicefactory.cpp \
+    model/guifactory.cpp \
     network/SoftProtocol.cpp \
     network/networkmodel.cpp \
-    network/protocols/modbus.cpp
+    network/protocols/modbus.cpp \
+    windownetworkmediator.cpp
 
 HEADERS += \
+    MediatorPattern.h \
     appsettings.h \
+    datasource.h \
     device/devcommand.h \
     device/device.h \
     device/devicemodel.h \
-    enums.h \
     factories/Parser.h \
     factories/parseitem.h \
     factories/parserworker.h \
@@ -58,9 +64,11 @@ HEADERS += \
     model/device/devicepollrequest.h \
     model/device/devicewidget.h \
     model/devicefactory.h \
+    model/guifactory.h \
     network/SoftProtocol.h \
     network/networkmodel.h \
-    network/protocols/modbus.h
+    network/protocols/modbus.h \
+    windownetworkmediator.h
 
 FORMS += \
     mainwindow.ui

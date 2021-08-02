@@ -6,12 +6,14 @@
 #include "network/protocols/modbus.h"
 #include "mainviewfacade.h"
 #include "model/devicefactory.h"
+#include "model/guifactory.h"
 #include <QTcpSocket>
 #include "globals.h"
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include "factories/Parser.h"
-#include <QSharedPointer>
+#include "datasource.h"
+#include "windownetworkmediator.h"
 
 #include <QDebug>
 
@@ -21,10 +23,10 @@ bool debugMode = false;
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    QApplication::setApplicationVersion(QString::number(MAJOR_VERSION) + "." + QString::number(MINOR_VERSION) + "." + QString::number(PATCH_VERSION));
-    QApplication::setFont(APPLICATION_DEFAULT_FONT);
+    QApplication::setApplicationVersion(QString::number(Constants::MajorVersion) + "." + QString::number(Constants::MinorVersion) + "." + QString::number(Constants::PatchVersion));
+    QApplication::setFont(Constants::ApplicationDefaultFont);
 
-    QSharedPointer<AppSettings> settings = QSharedPointer<AppSettings>(new AppSettings());
+  AppSettings settings;
 
 #ifdef QT_DEBUG
     debugMode = true;
@@ -50,16 +52,22 @@ int main(int argc, char *argv[])
     ////========================
 
     MainWindow w(settings);
-    w.setFont(APPLICATION_DEFAULT_FONT);
+    w.setFont(Constants::ApplicationDefaultFont);
     w.show();
 
-    MainViewFacade* mvCntrl = new MainViewFacade(/*new GUIfactory(new Parser(""), */settings/*)*/);
+    DataSource dataSource;
 
-    mvCntrl->addView(&w);
+    GuiFactory guiFactory("DeviceGUI.xml", settings);
+    MainViewFacade mvCntrl(dataSource, settings, guiFactory);
+    mvCntrl.addView(&w);
 
-    DeviceFactory* deviceFactory = new DeviceFactory("DeviceDB.xml", settings);
-    NetworkModel* model = new NetworkModel(deviceFactory, new Modbus("modbus"));
-    model->addFacade(mvCntrl);
+    DeviceFactory deviceFactory("DeviceDB.xml", settings);
+    Modbus modbus("modbus", SoftProtocol::TIMEOUT_DEFAULT, 500);
+
+    NetworkModel model(deviceFactory, modbus);
+    model.addFacade(mvCntrl);
+
+    WindowNetworkMediator windowNetworkMediator(&w, &model, settings);
 
     return app.exec();
 }

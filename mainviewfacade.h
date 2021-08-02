@@ -4,12 +4,13 @@
 #include <QObject>
 #include "interfaces/ViewInterface.h"
 //#include "interfaces/mainwindowcontrollerinterface.h"
-#include <QMainWindow>
+#include "mainwindow.h"
 #include <QVector>
 #include "model/ModelInterface.h"
-#include "enums.h"
+#include "globals.h"
 #include "appsettings.h"
-#include <QSharedPointer>
+#include "datasource.h"
+#include "model/guifactory.h"
 
 class ModelInterface;
 
@@ -17,7 +18,7 @@ class MainViewFacade : public QObject, public ViewInterface//, public MainWindow
 {
     Q_OBJECT
 public:
-    explicit MainViewFacade(/*GUIfactory* pGuiFactory,*/ QSharedPointer<AppSettings> settings, QObject *parent = nullptr);
+    explicit MainViewFacade(DataSourceInterface& dataSource, AppSettings& settings, GuiFactory& factory, QObject *parent = nullptr);
     // View Interface
     virtual void createdDevice( Device* pDev) override;
     virtual void removeDevice( Device* pDev) override;
@@ -33,20 +34,22 @@ public:
     void addModel(ModelInterface* model);// override;
     void removeModel(ModelInterface* model);// override;
     void clearModels();// override;
-    void addView(QMainWindow* mainWindow);// override;
+    void addView(MainWindow* mainWindow);// override;
 
 private slots:
-    void networkConnectClicked(int protocol, QString host, int port);// override;
+    void networkConnectClicked(NetworkType protocol, QVariant host, QVariant port);// override;
 
 signals:
     void connected(bool);
 
 private:
-    QVector<ModelInterface*> m_models;
-    QMainWindow* m_mainWindow;
+//    QVector<ModelInterface*> m_models;
+    GuiFactory& m_factory;
+    ModelInterface* m_models;
+    DataSourceInterface& m_dataSource;
+    MainWindow* m_mainWindow;
     QMap<quint16, Device*> m_devices;
-    QSharedPointer<AppSettings> m_settings;
-//    QSharedPointer<GUIfactory> m_guiFactory;
+    AppSettings& m_settings;
 
 };
 

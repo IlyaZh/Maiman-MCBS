@@ -1,77 +1,91 @@
 #include "modbus.h"
 #include <QDebug>
+#include <QDateTime>
 
-Modbus::Modbus(QString name, QIODevice* device, int timeoutMSecs, QObject *parent)
-    : SoftProtocol(name, device, timeoutMSecs, parent)
+Modbus::Modbus(QString name, int timeoutMSecs, int delayMSecs, QObject *parent)
+    : SoftProtocol(name, timeoutMSecs, delayMSecs, parent)
 {
+    qDebug() << "Constr Set bPortIsBusy = " << bPortIsBusy;
 }
 
 Modbus::~Modbus() {
 
 }
 
+void Modbus::stop() {
+    m_Queue.clear();
+    m_PriorityQueue.clear();
+    bPortIsBusy = false;
+    qDebug() << "Modbus::stop(). Clear queues";
+    emit deviceOpen(m_DataSource->isOpen());
+}
+
 void Modbus::setDataValue(quint8 addr, quint16 reg, quint16 value) {
-    QByteArray* package = new QByteArray();
-    package->append(static_cast<qint8>(addr));
-    package->append(static_cast<qint8>(WRITE_ONE));
-    package->append(static_cast<qint8>(hiBYTE(reg)));
-    package->append(static_cast<qint8>(loBYTE(reg)));
-    package->append(static_cast<qint8>(hiBYTE(value)));
-    package->append(static_cast<qint8>(loBYTE(value)));
+    QByteArray package = QByteArray();
+    package.append(static_cast<qint8>(addr));
+    package.append(static_cast<qint8>(WRITE_ONE));
+    package.append(static_cast<qint8>(hiBYTE(reg)));
+    package.append(static_cast<qint8>(loBYTE(reg)));
+    package.append(static_cast<qint8>(hiBYTE(value)));
+    package.append(static_cast<qint8>(loBYTE(value)));
 
     prepareAndWrite(package);
 }
 
 void Modbus::getDataValue(quint8 addr, quint16 reg, quint8 count) {
-    QByteArray* package = new QByteArray();
-    package->append(static_cast<qint8>(addr));
-    package->append(static_cast<qint8>(READ));
-    package->append(static_cast<qint8>(hiBYTE(reg)));
-    package->append(static_cast<qint8>(loBYTE(reg)));
-    package->append(static_cast<qint8>(hiBYTE(count)));
-    package->append(static_cast<qint8>(loBYTE(count)));
+    QByteArray package = QByteArray();
+    package.append(static_cast<qint8>(addr));
+    package.append(static_cast<qint8>(READ));
+    package.append(static_cast<qint8>(hiBYTE(reg)));
+    package.append(static_cast<qint8>(loBYTE(reg)));
+    package.append(static_cast<qint8>(hiBYTE(count)));
+    package.append(static_cast<qint8>(loBYTE(count)));
 
     prepareAndWrite(package);
 }
 
 // private slots
 void Modbus::readyRead() {
-    QByteArray rxPacket = m_Device->readAll();
-    timeoutTimer.stop();
-    if(calcCrc(&rxPacket) == 0) {
-        rxPacketHandler(&rxPacket);
+    QByteArray rxPacket = m_DataSource->readAll();
+    qDebug() << "Modbus::readyRead() ";
+    m_timeoutTimer.stop();
+    if(calcCrc(rxPacket) == 0) {
+        rxPacketHandler(rxPacket);
     } else {
         emit errorOccured(QString("[%1] Wrong CRC. Ignore packet").arg(m_name));
     }
 //    qDebug() << "rx packet: " << rxPacket;
     bPortIsBusy = false;
+    qDebug() << "Set bPortIsBusy = " << bPortIsBusy;
 
     tryToSend();
 }
 
 void Modbus::bytesWritten(qint64 bytes) {
     m_bytesWritten += bytes;
-    if(m_bytesWritten >= m_lastTxPackage->size()) {
-        if(m_lastTxPackage->at(0) == BROADCAST) {
+    if(m_bytesWritten >= m_lastTxPackage.size()) {
+        if(m_lastTxPackage.at(0) == BROADCAST) {
             tryToSend();
         } else {
-            timeoutTimer.start(m_TimeoutMSecs);
+            m_timeoutTimer.start(m_TimeoutMSecs);
+            qDebug() << "start send timeout" << m_TimeoutMSecs;
         }
     }
 }
 
 void Modbus::timeout() {
     bPortIsBusy = false;
+    qDebug() << "timeout() Set bPortIsBusy = " << bPortIsBusy;
 //    emit timeoutOccured(m_lastTxPackage->at(0));
+    qDebug() << "Timeout occured" << m_lastTxPackage.toHex(' ');
 
-    switch(m_lastTxPackage->at(1)) {
+    switch(m_lastTxPackage.at(1)) {
     case 0x01:
     case 0x02:
     case 0x03:
     case 0x04:
-        for(auto *obsrv : m_vObservers) {
-            obsrv->timeout(m_lastTxPackage->at(0));
-        }
+        if(m_observer != nullptr)
+        m_observer->timeout(m_lastTxPackage.at(0));
         break;
     case 0x05:
     case 0x06:
@@ -83,13 +97,34 @@ void Modbus::timeout() {
     tryToSend();
 }
 
-quint16 Modbus::calcCrc(QByteArray *byteArray) {
+void Modbus::delayBeforeSendCallback() {
+    if(!m_PriorityQueue.isEmpty()) {
+        m_lastTxPackage = m_PriorityQueue.dequeue();
+        qDebug() << "m_PriorityQueue size" << m_PriorityQueue.size();
+    } else if (!m_Queue.isEmpty()) {
+        m_lastTxPackage = m_Queue.dequeue();
+        qDebug() << "m_Queue size" << m_Queue.size();
+    } else {
+        nothingToSend();
+        return;
+    }
+    qDebug() << "bPortIsBusy=" << bPortIsBusy;
+
+//    if(!bPortIsBusy) {
+        m_lastWriteReg = (quint16) (m_lastTxPackage.at(2) << 8) | (quint16) (m_lastTxPackage.at(3));
+        SoftProtocol::m_DataSource->write(m_lastTxPackage);
+        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "write: " << m_lastTxPackage.toHex(' ');
+        m_timeoutTimer.start(m_TimeoutMSecs);
+//    }
+}
+
+quint16 Modbus::calcCrc(QByteArray &byteArray) {
     quint16 RetCRC = 0xffff;	// CRC initialization
     quint8 i = 0;
     quint8 index = 0;
 
-    while (i < byteArray->size()) {
-        index = hiBYTE(RetCRC) ^ static_cast<quint8>(byteArray->at(i));
+    while (i < byteArray.size()) {
+        index = hiBYTE(RetCRC) ^ static_cast<quint8>(byteArray.at(i));
         RetCRC = static_cast<quint16> (((loBYTE(RetCRC) ^ CRC_HTable[index]) << 8)
                 | (CRC_LTable[index]));
         i++;
@@ -97,35 +132,52 @@ quint16 Modbus::calcCrc(QByteArray *byteArray) {
     return RetCRC;
 }
 
-void Modbus::prepareAndWrite(QByteArray *byteArray) {
+void Modbus::prepareAndWrite(QByteArray &byteArray) {
     m_bytesWritten = 0;
 
-    if(m_Device->isOpen()) {
+    if(m_DataSource->isOpen()) {
         quint16 crc = calcCrc(byteArray);
-        byteArray->append(static_cast<qint8>(hiBYTE(crc)));
-        byteArray->append(static_cast<qint8>(loBYTE(crc)));
-        m_Queue.enqueue(byteArray);
+        byteArray.append(static_cast<qint8>(hiBYTE(crc)));
+        byteArray.append(static_cast<qint8>(loBYTE(crc)));
+
+        switch(byteArray.at(1)) {
+        case 0x01:
+        case 0x02:
+        case 0x03:
+        case 0x04:
+            // read commands
+            m_Queue.enqueue(byteArray);
+            break;
+        case 0x05:
+        case 0x06:
+        case 0x10:
+        case 0x0F:
+            m_PriorityQueue.enqueue(byteArray);
+            // write commands
+            break;
+        }
 
         tryToSend();
     } else {
-        emit errorOccured(QString("[%] device isn't open!").arg(m_name));
+        emit errorOccured(QString("[%1] device isn't open!").arg(m_name));
     }
 }
 
-void Modbus::rxPacketHandler(QByteArray *rxPacket) {
+void Modbus::rxPacketHandler(QByteArray &rxPacket) {
     QString errorMessage = QString();
-    if(rxPacket->size() >= 6) {
-        quint8 addr = static_cast<quint8>(rxPacket->at(0));
-        int comm = rxPacket->at(1);
+    qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "RX" << rxPacket.toHex(' ');
+    if(rxPacket.size() >= 6) {
+        quint8 addr = static_cast<quint8>(rxPacket.at(0));
+        int comm = rxPacket.at(1);
         int bytesCount = 0;
         quint16 reg = 0, value = 0;
         switch(comm) {
             case Modbus::READ:
-            bytesCount = rxPacket->at(2);
-            if(rxPacket->size() == 5+bytesCount) {
+            bytesCount = rxPacket.at(2);
+            if(rxPacket.size() == 5+bytesCount) {
                 for(quint16 i = 0; i < bytesCount/2; ++i) {
                     reg = m_lastWriteReg+i;
-                    value = static_cast<quint16>((static_cast<quint16>(rxPacket->at(3+2*i)) << 8) + static_cast<quint16>(rxPacket->at(4+2*i)));
+                    value = static_cast<quint16>((static_cast<quint16>(rxPacket.at(3+2*i)) << 8) + static_cast<quint16>(rxPacket.at(4+2*i)));
                     makeNotify(addr, reg, value);
                 }
             } else {
@@ -133,8 +185,8 @@ void Modbus::rxPacketHandler(QByteArray *rxPacket) {
             }
             break;
         case Modbus::WRITE_ONE:
-             reg = static_cast<quint16>((static_cast<quint16>(rxPacket->at(2)) << 8) + static_cast<quint16>(rxPacket->at(3)));
-             value = static_cast<quint16>((static_cast<quint16>(rxPacket->at(4)) << 8) + static_cast<quint16>(rxPacket->at(5)));
+             reg = static_cast<quint16>((static_cast<quint16>(rxPacket.at(2)) << 8) + static_cast<quint16>(rxPacket.at(3)));
+             value = static_cast<quint16>((static_cast<quint16>(rxPacket.at(4)) << 8) + static_cast<quint16>(rxPacket.at(5)));
              makeNotify(addr, reg, value);
             break;
         default:
@@ -144,21 +196,16 @@ void Modbus::rxPacketHandler(QByteArray *rxPacket) {
         errorMessage = QString("[%1] Wrong size of packet").arg(m_name);
     }
 
-    if(!errorMessage.isEmpty()) emit errorOccured(QString("%1 [%2]").arg(errorMessage).arg(QString().fromLocal8Bit(*rxPacket)));
+    if(!errorMessage.isEmpty()) emit errorOccured(QString("%1 [%2]").arg(errorMessage).arg(QString().fromLocal8Bit(rxPacket)));
 
 }
 
 void Modbus::tryToSend() {
-    if(m_Queue.isEmpty()) {
-        nothingToSend();
-    } else if(!bPortIsBusy) {
-        m_lastTxPackage = m_Queue.dequeue();
-        m_lastWriteReg = (quint16) (m_lastTxPackage->at(2) << 8) | (quint16) (m_lastTxPackage->at(3));
-        SoftProtocol::m_Device->write((*m_lastTxPackage));
-//        qDebug() << m_Device << "write: " << m_lastTxPackage->toHex(' ');
-        timeoutTimer.start(m_TimeoutMSecs);
+    qDebug() << "Try to send" << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "bPortIsBusy=" << bPortIsBusy;
+    if(!bPortIsBusy) {
         bPortIsBusy = true;
-
+        qDebug() << "Set bPortIsBusy = " << bPortIsBusy;
+        m_delayTimer.singleShot(m_delayMSecs, this, SLOT(delayBeforeSendCallback()));
     }
 }
 

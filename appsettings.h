@@ -6,9 +6,11 @@
 #include <QPoint>
 #include <QSize>
 #include <QDir>
+#include "globals.h"
+#include "datasource.h"
 
 typedef struct NetworkData_s {
-    int type;
+    NetworkType type;
     QString host;
     int port;
 } NetworkData_s;
@@ -52,7 +54,7 @@ public slots:
     void removeRecentOpenFiles(QString str);
     void setWindowPosition(QPoint);
     void setComStopBits(int);
-    void setNetworkData(NetworkData_s netData);
+    void setNetworkData(/*NetworkData_s*/QVariant netData);
     void setDeviceTimeout(quint16 timeoutMs);
 //    void setWindowSize(QSize);
 };

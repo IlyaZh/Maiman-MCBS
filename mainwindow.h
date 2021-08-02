@@ -5,7 +5,7 @@
 #include <QGridLayout>
 //#include "interfaces/mainwindowco1ntrollerinterface.h"
 #include "appsettings.h"
-#include <QSharedPointer>
+#include "MediatorPattern.h"
 
 //class MainWindowControllerInterface;
 
@@ -13,14 +13,14 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow, public BaseComponent
 {
     Q_OBJECT
 
 public:
     const QString SETTINGS_PATH = "window/";
 
-    MainWindow(QSharedPointer<AppSettings> settings, QWidget *parent = nullptr);
+    MainWindow(AppSettings& settings, QWidget *parent = nullptr);
     ~MainWindow();
 //    void addController(MainWindowControllerInterface* cntrl);
 //    void clearController();
@@ -31,9 +31,11 @@ public:
     void addToWorkField(QWidget* widget);
 
 signals:
-    void networkConnectClicked(int type, QString host, int port);
+//    void networkConnectClicked(NetworkType type, QVariant host, QVariant port);
 //    void networkConnectClicked(int, QString, int);
     void mainWindowReady();
+public slots:
+    void setConnectMessage(QString msg);
 
 private slots:
     void setConnected(bool flag);
@@ -44,7 +46,7 @@ private:
 //    MainWindowControllerInterface* m_cntrl;
     QVector<QString> *m_portList;
     QVector<int> *m_baudList;
-    QSharedPointer<AppSettings> m_settings;
+    AppSettings& m_settings;
     QVector<QWidget*> m_workWidgets;
     QGridLayout* m_workFieldLayout;
 

@@ -20,17 +20,19 @@ class Device : public QObject
 {
     Q_OBJECT
 public:
-    explicit Device(quint16 id, quint8 addr, QString name, DeviceDelays *delays, QVector<DevCommandBuilder*> *commandsBld, QObject *parent = nullptr);
+    explicit Device(quint16 id, quint8 addr, QString name, DeviceDelays &delays, QVector<DevCommandBuilder*> &commandsBld, QObject *parent = nullptr);
     ~Device();
     void dataIncome(quint16 reg, quint16 value);
     void dataOutcome(quint16 reg, quint16 value);
-    void setWidget(QWidget* widget);
+    void setWidget(QWidget& widget);
+    void destroy();
     QString name();
     quint16 id();
     quint8 addr();
     DevicePollRequest* nextPollRequest();
     bool isLink();
     void clearLink();
+    static int counter;
 //    QVector<const DevCommand*>* getCommands();
 //    void connectWidget(DeviceWidget* widget, int code);
 //    void disconnectWidget(DeviceWidget* widget, int code = -1);
@@ -41,9 +43,9 @@ private:
     quint8 m_addr = 0;
     quint16 m_Id;
     QString m_Name;
-    DeviceDelays* m_Delays;
-    QPointer<QWidget> m_deviceWidget;
-    QMap<quint16, QPointer<DevCommand>> m_Commands;
+    DeviceDelays& m_Delays;
+    QWidget* m_deviceWidget = nullptr;
+    QMap<quint16, DevCommand*> m_Commands;
     QVector<DevicePollRequest*> m_cmdRequests;
     QVector<DevicePollRequest*>::iterator m_cmdReqItt;
     QVector<QPointer<Device>> m_childDevices;

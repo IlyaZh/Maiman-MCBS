@@ -6,7 +6,7 @@ bool sortCmdsByCode(const DevCommandBuilder* p1, const DevCommandBuilder* p2) {
     return p1->code() < p2->code();
 }
 
-DeviceFactory::DeviceFactory(QString fileName, QSharedPointer<AppSettings> settings, QObject* parent) :
+DeviceFactory::DeviceFactory(QString fileName, AppSettings& settings, QObject* parent) :
     QObject(parent),
     m_settings(settings),
     m_fileName(fileName)
@@ -16,25 +16,26 @@ DeviceFactory::DeviceFactory(QString fileName, QSharedPointer<AppSettings> setti
 }
 
 DeviceFactory::~DeviceFactory() {
-//    m_parser->stop();
-//    if(m_parseWorker) m_parseWorker->deleteLater();
+    //    m_parser->stop();
+    //    if(m_parseWorker) m_parseWorker->deleteLater();
 }
 
 void DeviceFactory::start() {
-    m_parseWorker = QSharedPointer<ParserWorker>(new ParserWorker(m_fileName, ParserType::XmlParser));
+    if(!m_parseWorker.isNull()) m_parseWorker->deleteLater();
+    m_parseWorker = new ParserWorker(m_fileName, ParserType::XmlParser);
     m_thread = new QThread();
     m_parseWorker->moveToThread(m_thread);
 
-    connect(m_thread, SIGNAL(started()), m_parseWorker.data(), SLOT(process()));
-    connect(m_parseWorker.data(), SIGNAL(finished()), m_thread, SLOT(quit()));
-    connect(m_parseWorker.data(), SIGNAL(finished()), this, SLOT(parsingFinished()));
-//    //connect(...,m_parser, SLOT(stop()));
+    connect(m_thread, SIGNAL(started()), m_parseWorker, SLOT(process()));
+    connect(m_parseWorker, SIGNAL(finished()), m_thread, SLOT(quit()));
+    connect(m_parseWorker, SIGNAL(finished()), this, SLOT(parsingFinished()));
+    //    //connect(...,m_parser, SLOT(stop()));
     // проверь сигналы по статье
-//    connect(m_parseWorker, SIGNAL(finished()), m_parseWorker, SLOT(deleteLater()));
+    //    connect(m_parseWorker, SIGNAL(finished()), m_parseWorker, SLOT(deleteLater()));
     connect(m_thread, SIGNAL(finished()), m_thread, SLOT(deleteLater()));
-    connect(m_parseWorker.data(), SIGNAL(errorOccured(QString)), this, SLOT(threadError(QString)));
-    connect(m_parseWorker.data(), SIGNAL(errorOccured(QString)), m_thread, SLOT(quit()));
-    connect(m_parseWorker.data(), SIGNAL(errorOccured(QString)), m_thread, SLOT(deleteLater()));
+    connect(m_parseWorker, SIGNAL(errorOccured(QString)), this, SLOT(threadError(QString)));
+    connect(m_parseWorker, SIGNAL(errorOccured(QString)), m_thread, SLOT(quit()));
+    connect(m_parseWorker, SIGNAL(errorOccured(QString)), m_thread, SLOT(deleteLater()));
     m_thread->start();
 }
 
@@ -44,24 +45,34 @@ Device* DeviceFactory::createDevice(quint8 addr, quint16 id) {
         qDebug() << "Device model with id =" << id << "has not found!";
         return nullptr;
     } else {
-        return devModel->createDevice(addr);
+        return devModel->createDevice(addr, this);
     }
+}
+
+QStringList DeviceFactory::getBaudrate() {
+    return m_baudrates;
+}
+
+QVector<QPair<uint, QString>> DeviceFactory::getCommonDeviceIDs() {
+    return m_commondDevicesId;
 }
 
 
 // private slots
 void DeviceFactory::parsingFinished() {
     TreeItem* parserTree = m_parseWorker->data();
-    m_parseWorker->deleteLater();
-    m_parseWorker.clear();
-    if(parseTree(parserTree)) {
+    qDebug() << "m_parseWorker.reset();";
+//    m_parseWorker->deleteLater();
+    if(parseTree(*parserTree)) {
         qDebug() << "Parse tree is ok!";
     } else {
         qDebug() << "Can't parse tree";
     }
+    m_parseWorker->deleteLater();
+    delete parserTree;
 }
 
-void DeviceFactory::threadError(QString str) {
+void DeviceFactory::threadError(const QString& str) {
     qDebug() << "Error while parsing. " << str;
 }
 
@@ -69,43 +80,41 @@ void DeviceFactory::threadError(QString str) {
 DeviceModel* DeviceFactory::findModel(quint16 id) {
     for(auto device : m_DeviceModels) {
         if(device->id() == id) {
-            return device.data();
+            return device;
         }
     }
 
     return nullptr;
 }
 
-bool DeviceFactory::parseTree(TreeItem* tree) {
-    if(tree != nullptr) {
-        if(tree->name() == "DB") {
-            for(int i = 0; i < tree->childCount(); i++) {
-                TreeItem* childDb = tree->child(i);
+bool DeviceFactory::parseTree(TreeItem& tree) {
+    if(tree.name() == "DB") {
+        for(int i = 0; i < tree.childCount(); i++) {
+            TreeItem& childDb = *tree.child(i);
 
-                QString tagName = childDb->name();
-                if(tagName == "BaudRate") {
-                    m_baudrates << parseBaudRate(childDb);
-                }
-                if(tagName == "CommonIDDevices") {
-                    m_commondDevicesId = parseCommonDevId(childDb);
-                }
-                if(tagName == "Device") {
-                    DeviceModel* devModel = parseDevice(childDb);
-                    if(devModel != nullptr)
-                        m_DeviceModels << QSharedPointer<DeviceModel>(devModel);
-                }
-
+            QString tagName = childDb.name();
+            if(tagName == "BaudRate") {
+                m_baudrates << parseBaudRate(childDb);
             }
-            return true;
+            if(tagName == "CommonIDDevices") {
+                m_commondDevicesId = parseCommonDevId(childDb);
+            }
+            if(tagName == "Device") {
+                DeviceModel* devModel = parseDevice(childDb);
+                if(devModel != nullptr)
+                    m_DeviceModels << devModel;
+            }
+
         }
+        return true;
     }
 
     return false;
 }
 
-QString DeviceFactory::parseBaudRate(TreeItem* item) {
-    for(int i = 0; i < item->childCount(); i++) {
-        TreeItem* child = item->child(i);
+QString DeviceFactory::parseBaudRate(TreeItem& item) {
+    for(int i = 0; i < item.childCount(); i++) {
+        TreeItem* child = item.child(i);
         if(child->name() == "value") {
             return child->value().toString();
         }
@@ -113,11 +122,11 @@ QString DeviceFactory::parseBaudRate(TreeItem* item) {
     return QString("");
 }
 
-QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(TreeItem* item) {
+QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(TreeItem& item) {
     QVector<QPair<uint, QString>> list;
 
-    for(int i = 0; i < item->childCount(); i++) {
-        TreeItem* tagItem = item->child(i);
+    for(int i = 0; i < item.childCount(); i++) {
+        TreeItem* tagItem = item.child(i);
         QString devName = tagItem->value().toString();
         uint devId = 0;
         for(int j = 0; j < tagItem->childCount(); j++) {
@@ -134,7 +143,7 @@ QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(TreeItem* item) {
     return list;
 }
 
-DeviceModel* DeviceFactory::parseDevice(TreeItem* item) {
+DeviceModel* DeviceFactory::parseDevice(TreeItem& item) {
     quint16 id = 0;
     QString name = "";
     DeviceDelays *delays = nullptr;
@@ -148,8 +157,8 @@ DeviceModel* DeviceFactory::parseDevice(TreeItem* item) {
     bool hasCommands = false;
 
 
-    for(int i = 0; i < item->childCount(); i++) {
-        TreeItem* child = item->child(i);
+    for(int i = 0; i < item.childCount(); i++) {
+        TreeItem* child = item.child(i);
 
         if(child->name() == "id") {
             id = child->value().toString().toUInt(nullptr, 16);
@@ -171,7 +180,7 @@ DeviceModel* DeviceFactory::parseDevice(TreeItem* item) {
             maxCommandDelayMs = child->value().toUInt();
 
         if(child->name() == "Commands") {
-            cmdBuilders = parseCommands(child);
+            cmdBuilders = parseCommands(*child);
             if(!cmdBuilders->isEmpty()) hasCommands = true;
         }
     }
@@ -183,7 +192,7 @@ DeviceModel* DeviceFactory::parseDevice(TreeItem* item) {
     }
 }
 
-QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(TreeItem* item) {
+QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(TreeItem& item) {
     quint16 code = 0;
     QString unit = "";
     double divider = 1;
@@ -196,8 +205,8 @@ QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(TreeItem* item) {
 
     bool hasCode = false;
 
-    for(int c = 0; c < item->childCount(); c++) {
-        TreeItem* cmd = item->child(c);
+    for(int c = 0; c < item.childCount(); c++) {
+        TreeItem* cmd = item.child(c);
 
         for(int i = 0; i < cmd->childCount(); i++) {
             TreeItem* child = cmd->child(i);
@@ -235,7 +244,8 @@ QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(TreeItem* item) {
     }
 
 
-
+    std::sort(list->begin(), list->end(), sortCmdsByCode);
+    // test it
 
     return list;
 }

@@ -1,32 +1,36 @@
 #include "device.h"
 #include <QMapIterator>
 
-Device::Device(quint16 id, quint8 addr, QString name, DeviceDelays *delays, QVector<DevCommandBuilder*> *commandsBld, QObject *parent)
+int Device::counter = 0;
+
+Device::Device(quint16 id, quint8 addr, QString name, DeviceDelays &delays, QVector<DevCommandBuilder*> &commandsBld, QObject *parent)
     : QObject(parent),
     m_addr(addr),
     m_Id(id),
     m_Name(name),
     m_Delays(delays)
 {
-    for(DevCommandBuilder* cmdBldr : *commandsBld) {
+    for(DevCommandBuilder* cmdBldr : commandsBld) {
         m_Commands.insert(cmdBldr->code(), cmdBldr->makeCommand(this));
     }
 
     createCommandsRequests();
+
+    qDebug() << "Create device" << addr << name << id << "Counter =" << ++counter;
 
 //    timeoutTimer = new QTimer();
 //    timeoutTimer->singleShot(m_Delays->timeoutMs(), this, SLOT(timeout()));
 }
 
 Device::~Device() {
-    QMap<quint16, QPointer<DevCommand>>::iterator cmd = m_Commands.begin();
-    while(cmd != m_Commands.end()) {
-        DevCommand *pCmd = (cmd).value();
-        pCmd->deleteLater();
-    }
-    m_Commands.clear();
+    qDebug() << "Delete device" << m_addr << m_Name << m_Id << "Counter =" << --counter;
 
-    if(m_deviceWidget) m_deviceWidget->deleteLater();
+    for(auto *item : m_cmdRequests) {
+        delete item;
+    }
+    m_cmdRequests.clear();
+
+    if(m_deviceWidget != nullptr) m_deviceWidget->deleteLater();
 
 }
 
@@ -53,13 +57,18 @@ void Device::dataOutcome(quint16 reg, quint16 value) {
 
 }
 
-void Device::setWidget(QWidget* widget) {
+void Device::setWidget(QWidget& widget) {
     if(m_deviceWidget) {
         m_deviceWidget->disconnect();
         m_deviceWidget->deleteLater();
     }
 
-    m_deviceWidget = widget;
+    m_deviceWidget = &widget;
+}
+
+void Device::destroy() {
+    this->disconnect();
+//    this->deleteLater();
 }
 
 QString Device::name() {
@@ -77,7 +86,7 @@ quint8 Device::addr() {
 DevicePollRequest* Device::nextPollRequest() {
     if(m_cmdReqItt == m_cmdRequests.end())  m_cmdReqItt = m_cmdRequests.begin();
     while(m_cmdReqItt != m_cmdRequests.end()) {
-        DevicePollRequest* request = *(m_cmdReqItt);
+        DevicePollRequest* request = *m_cmdReqItt;
         m_cmdReqItt++;
         if(request->isRequestReady()) {
             return request;
@@ -142,9 +151,11 @@ void Device::createCommandsRequests() {
     int count = 0;
     DevCommand* cmd = nullptr;
     DevCommand* prevCmd = nullptr;
+    bool bHasCommands = false;
 
-    QMapIterator<quint16, QPointer<DevCommand>> i(m_Commands);
+    QMapIterator<quint16, DevCommand*> i(m_Commands);
     while(i.hasNext()) {
+        bHasCommands = true;
         if(cmd != nullptr)
             prevCmd = cmd;
 
@@ -160,12 +171,16 @@ void Device::createCommandsRequests() {
                 if(minInterval > cmd->interval()) minInterval = cmd->interval();
             } else {
                m_cmdRequests.append(new DevicePollRequest(m_addr, startCode, count, minInterval));
-               qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
+//               qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
                startCode = cmd->code();
                minInterval = cmd->interval();
                count = 1;
             }
         }
+    }
+    if(bHasCommands) {
+        m_cmdRequests.append(new DevicePollRequest(m_addr, startCode, count, minInterval));
+//        qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
     }
     m_cmdReqItt = m_cmdRequests.begin();
 }
