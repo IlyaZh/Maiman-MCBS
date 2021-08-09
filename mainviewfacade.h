@@ -18,7 +18,7 @@ class MainViewFacade : public QObject, public ViewInterface//, public MainWindow
 {
     Q_OBJECT
 public:
-    explicit MainViewFacade(DataSourceInterface& dataSource, AppSettings& settings, GuiFactory& factory, QObject *parent = nullptr);
+    explicit MainViewFacade(IDataSource& dataSource, AppSettings& settings, GuiFactory& factory, QObject *parent = nullptr);
     // View Interface
     virtual void createdDevice( Device* pDev) override;
     virtual void removeDevice( Device* pDev) override;
@@ -46,7 +46,7 @@ private:
 //    QVector<ModelInterface*> m_models;
     GuiFactory& m_factory;
     ModelInterface* m_models;
-    DataSourceInterface& m_dataSource;
+    IDataSource& m_dataSource;
     MainWindow* m_mainWindow;
     QMap<quint16, Device*> m_devices;
     AppSettings& m_settings;

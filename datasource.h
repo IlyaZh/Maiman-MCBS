@@ -6,12 +6,12 @@
 #include <QTcpSocket>
 #include <QIODevice>
 
-enum class NetworkType { NONE, TCP, COM_PORT };
+enum class NetworkType { NONE, Tcp, SerialPort };
 
-class DataSourceInterface : public QObject {
+class IDataSource : public QObject {
     Q_OBJECT
 public:
-    DataSourceInterface(QObject *parent = nullptr) : QObject(parent) {}
+    IDataSource(QObject *parent = nullptr) : QObject(parent) {}
     virtual void setSettings(NetworkType type, QVariant host, QVariant port) = 0;
     virtual QIODevice* device() = 0;
     virtual bool open() = 0;
@@ -26,16 +26,17 @@ public:
     virtual QString errorString() = 0;
 
 signals:
+    void deviceOpen(bool isOpen);
     void errorOccured(QString msg);
     void bytesWritten(qint64 bytes);
     void readyRead();
 };
 
-class DataSource : public DataSourceInterface
+class DataSource : public IDataSource
 {
 
 public:
-    explicit DataSource();
+    explicit DataSource(QObject* parent = nullptr);
     ~DataSource();
 //    static DataSource* create();
     void setSettings(NetworkType type, QVariant host, QVariant port) override;

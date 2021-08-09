@@ -2,19 +2,25 @@
 #define WINDOWNETWORKMEDIATOR_H
 
 #include <QObject>
-#include "MediatorPattern.h"
+#include "interfaces/IMediator.h"
 #include <QDebug>
 #include "appsettings.h"
+#include "mainwindow.h"
+#include "network/networkmodel.h"
 
-class WindowNetworkMediator : public Mediator
+class NetworkModel;
+
+class WindowNetworkMediator : public IMediator
 {
 public:
-    WindowNetworkMediator(BaseComponent* window, BaseComponent* network, AppSettings& settings);
-    void Notify(BaseComponent *sender, QString event, QVariant value = QVariant()) const override;
+    WindowNetworkMediator(MainWindow& window, NetworkModel& network, AppSettings& settings);
+    ~WindowNetworkMediator();
+    void notify(IMediatorBase *sender, QString event, QVariant value = QVariant()) override;
 private:
-    BaseComponent* window;
-    BaseComponent* network;
+    MainWindow& window;
+    NetworkModel& network;
     AppSettings& settings;
+    QPointer<DataSource> device;
 };
 
 #endif // WINDOWNETWORKMEDIATOR_H

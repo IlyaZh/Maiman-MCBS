@@ -5,7 +5,7 @@
 #include <QGridLayout>
 //#include "interfaces/mainwindowco1ntrollerinterface.h"
 #include "appsettings.h"
-#include "MediatorPattern.h"
+#include "interfaces/IMediator.h"
 
 //class MainWindowControllerInterface;
 
@@ -13,7 +13,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow, public BaseComponent
+class MainWindow : public QMainWindow, public IMediatorBase
 {
     Q_OBJECT
 
@@ -37,8 +37,8 @@ signals:
 public slots:
     void setConnectMessage(QString msg);
 
-private slots:
     void setConnected(bool flag);
+private slots:
     void on_networkConnectButton_clicked();
 
 private:

@@ -36,11 +36,10 @@ SOURCES += \
     model/guifactory.cpp \
     network/SoftProtocol.cpp \
     network/networkmodel.cpp \
-    network/protocols/modbus.cpp \
+    network/protocols/modbusprotocol.cpp \
     windownetworkmediator.cpp
 
 HEADERS += \
-    MediatorPattern.h \
     appsettings.h \
     datasource.h \
     device/devcommand.h \
@@ -53,6 +52,7 @@ HEADERS += \
     factories/xmlparser.h \
     globals.h \
     interfaces/DevCommand.h \
+    interfaces/IMediator.h \
     interfaces/ModelCommands/ModelCmd.h \
     interfaces/ProtocolObserverInterface.h \
     interfaces/ViewInterface.h \
@@ -67,7 +67,7 @@ HEADERS += \
     model/guifactory.h \
     network/SoftProtocol.h \
     network/networkmodel.h \
-    network/protocols/modbus.h \
+    network/protocols/modbusprotocol.h \
     windownetworkmediator.h
 
 FORMS += \

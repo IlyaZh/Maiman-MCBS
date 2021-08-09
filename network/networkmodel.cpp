@@ -8,24 +8,14 @@ const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug заме�
 
 NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, QObject *parent) :
     QObject(parent),
-    ProtocolObserverInterface(),
     ModelInterface(),
     m_deviceModelFactory(deviceModelFactory),
-    m_netDevice(protocol)
+    m_protocol(protocol)
 {
     m_bIsStart = false;
-//    m_pollEnabled = false;
     m_deviceModelFactory.start();
 
-    connect(&m_netDevice, &SoftProtocol::errorOccured, [=](QString msg){
-        qDebug() << "NetworkModel error " << msg;
-    });
-    connect(&m_netDevice, &SoftProtocol::deviceOpen, [=](bool state){
-        qDebug() << "NetworkModel protocol state" << state;
-    });
-
-//    m_view = vi;
-//    m_view->addModel(this);
+    m_protocol.Attach(this);
 }
 
 NetworkModel::~NetworkModel() {
@@ -34,22 +24,22 @@ NetworkModel::~NetworkModel() {
 
 // controller to model interface overrides
 
-void NetworkModel::start(DataSourceInterface& networkDevice)
+void NetworkModel::start(IDataSource& networkDevice)
 {
-//    QTcpSocket *tcp = new QTcpSocket();
-//    tcp->connectToHost("127.0.0.1", 502, QIODevice::ReadWrite);
-//    m_netDevice->stop();
-    m_netDevice.start(networkDevice);
+    m_port = &networkDevice;
+    connect(m_port, &IDataSource::errorOccured, this, [=](QString msg){
+        qDebug() << "NetworkModel error " << msg;
+    });
+    connect(m_port, &IDataSource::deviceOpen, this, [=](bool state){
+        qDebug() << "NetworkModel protocol state" << state;
+    });
 
-//    m_netDevice->setDevice(networkDevice);
-    m_netDevice.addObserver(this);
+
+    m_protocol.setDevice(networkDevice);
 
     m_bIsStart = true;
 
     rescanNetwork();
-
-//    m_pollEnabled = true;
-//    pollDevices();
 }
 
 bool NetworkModel::isStart() {
@@ -59,10 +49,7 @@ bool NetworkModel::isStart() {
 void NetworkModel::stop()
 {
     qDebug() << "NetworkModel::stop()";
-   m_netDevice.stop();
-   m_netDevice.removeObserver(this);
    m_bIsStart = false;
-//   m_pollEnabled = false;
    clear();
 }
 
@@ -75,8 +62,8 @@ void NetworkModel::rescanNetwork()
 {
     qDebug() << "rescanNetwork()";
     clear();
-    for(quint8 iAddr = 1; iAddr <= SoftProtocol::MAX_ADDRESS; ++iAddr) {
-        m_netDevice.getDataValue(iAddr, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
+    for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr) {
+        m_protocol.getDataValue(iAddr, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
     }
     if(m_view != nullptr) m_view->removeAllDevices();
     qDebug() << "rescanNetwork()";
@@ -94,7 +81,6 @@ void NetworkModel::clear() {
 
     for(auto item : m_devices) {
         item->disconnect();
-//        item->destroy();
         item->deleteLater();
     }
     qDebug() << "m_devices=" << m_devices.size();
@@ -128,20 +114,10 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
 //        m_view->createdDevice(newDevice);
 }
 
-void NetworkModel::pollDevices() {
-    qDebug() << "pollDevices()";
-    for(auto dev : m_devices) {
-        DevicePollRequest* request = dev->nextPollRequest();
-        if(request != nullptr) {
-            m_netDevice.getDataValue(request->addr(), request->code(), request->count());
-        }
-    }
-}
-
 // public slots
 // modbus interface overrides
 
-void NetworkModel::dataIncome(quint8 addr, quint16 reg, quint16 value)
+void NetworkModel::update(quint8 addr, quint16 reg, quint16 value)
 {
     qDebug() << "READ" << addr << reg << value;
     if(reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
@@ -151,32 +127,35 @@ void NetworkModel::dataIncome(quint8 addr, quint16 reg, quint16 value)
             m_devices[addr]->dataIncome(reg, value);
         }
     }
-
-    /*if(!m_bIsStart) {
-        m_netDevice->stop();
-        m_netDevice->removeObserver(this);
-        clear();
-        qDebug() << "CLOSE PORT";
-    }*/
 }
 
-void NetworkModel::dataReady()
+void NetworkModel::iamReady() {
+    // poll devices state
+    for(auto dev : m_devices) {
+        DevicePollRequest* request = dev->nextPollRequest();
+        if(request != nullptr) {
+            m_protocol.getDataValue(request->addr(), request->code(), request->count());
+        }
+    }
+}
+
+/*void NetworkModel::dataReady()
 {
     qDebug() << "m_bIsStart" << m_bIsStart;
         // request a new value
         pollDevices();
-}
+}*/
 
 void NetworkModel::dataOutcome(quint8 addr, quint16 reg, quint16 value)
 {
-    m_netDevice.setDataValue(addr, reg, value);
+    m_protocol.setDataValue(addr, reg, value);
 }
 
-void NetworkModel::timeout(quint8 code) {
-    /*if(m_devices.contains(code)) {
-        m_devices[code]->clearLink();
-        qDebug() << "Timeout code" << code;
-    }*/
+/*void NetworkModel::timeout(quint8 code) {
+//    if(m_devices.contains(code)) {
+//        m_devices[code]->clearLink();
+//        qDebug() << "Timeout code" << code;
+//    }
 }
 
 void NetworkModel::errorOccured(QString msg) {
@@ -185,4 +164,7 @@ void NetworkModel::errorOccured(QString msg) {
 
 void NetworkModel::deviceOpen(bool state) {
     qDebug() << "Device state = " << state;
-}
+}*/
+// =====================
+
+

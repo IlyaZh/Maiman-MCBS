@@ -3,7 +3,7 @@
 
 #include <QApplication>
 #include "network/networkmodel.h"
-#include "network/protocols/modbus.h"
+#include "network/protocols/modbusprotocol.h"
 #include "mainviewfacade.h"
 #include "model/devicefactory.h"
 #include "model/guifactory.h"
@@ -62,12 +62,12 @@ int main(int argc, char *argv[])
     mvCntrl.addView(&w);
 
     DeviceFactory deviceFactory("DeviceDB.xml", settings);
-    Modbus modbus("modbus", SoftProtocol::TIMEOUT_DEFAULT, 500);
+    ModbusProtocol modbus(&dataSource, SoftProtocol::TimeoutDefault, 500);
 
     NetworkModel model(deviceFactory, modbus);
     model.addFacade(mvCntrl);
 
-    WindowNetworkMediator windowNetworkMediator(&w, &model, settings);
+    WindowNetworkMediator windowNetworkMediator(w, model, settings);
 
     return app.exec();
 }

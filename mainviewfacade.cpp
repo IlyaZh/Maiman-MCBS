@@ -6,7 +6,7 @@
 #include <QHostAddress>
 #include "model/device/devicewidget.h"
 
-MainViewFacade::MainViewFacade(DataSourceInterface &dataSource, AppSettings &settings, GuiFactory& factory, QObject *parent) :
+MainViewFacade::MainViewFacade(IDataSource &dataSource, AppSettings &settings, GuiFactory& factory, QObject *parent) :
     QObject(parent), ViewInterface(), //MainWindowControllerInterface(),
     m_factory(factory),
     m_dataSource(dataSource),
@@ -17,7 +17,7 @@ MainViewFacade::MainViewFacade(DataSourceInterface &dataSource, AppSettings &set
     m_factory.start();
 
     // uncomment
-    connect(&m_dataSource, &DataSourceInterface::errorOccured, [=](QString msg){
+    connect(&m_dataSource, &IDataSource::errorOccured, [=](QString msg){
         m_mainWindow->setConnectMessage(msg);
     });
 
@@ -118,7 +118,7 @@ void MainViewFacade::addView(MainWindow* mainWindow) {
     m_mainWindow = mainWindow;
 //    m_mainWindow->addController(this);
     connect(this, SIGNAL(connected(bool)), m_mainWindow, SLOT(setConnected(bool)));
-    connect(m_mainWindow, SIGNAL(networkConnectClicked(NetworkType, QVariant, QVariant)), this, SLOT(networkConnectClicked(NetworkType, QVariant, QVariant)));
+//    connect(m_mainWindow, SIGNAL(networkConnectClicked(NetworkType, QVariant, QVariant)), this, SLOT(networkConnectClicked(NetworkType, QVariant, QVariant)));
 
 }
 

@@ -123,10 +123,10 @@ void MainWindow::on_networkConnectButton_clicked()
 //    netData.host = ui->ipLineEdit->text();
 //    netData.port = ui->portSpinBox->value();
     QVariantHash networkMap;
-    networkMap.insert("type", static_cast<quint8>(NetworkType::TCP));
+    networkMap.insert("type", static_cast<quint8>(NetworkType::Tcp));
     networkMap.insert("host", ui->ipLineEdit->text());
     networkMap.insert("port", ui->portSpinBox->value());
-    m_mediator->Notify(this, "NetworkConnectClicked", networkMap);
+    m_mediator->notify(this, "NetworkConnectClicked", networkMap);
     /*if(m_cntrl != nullptr) {
         m_cntrl->networkConnectClicked(TCP_PROTOCOL, ui->ipLineEdit->text(), ui->portSpinBox->value());
 
