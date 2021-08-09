@@ -18,7 +18,7 @@ protected:
 
 class IMediator {
 public:
-    virtual void notify(IMediatorBase* sender, QString event, QVariant value) = 0;
+    virtual void notify(IMediatorBase* sender, QString event, QVariant value = QVariant()) = 0;
 };
 
 #endif // IMEDIATOR_H

@@ -59,9 +59,9 @@ public:
 protected:
     QTimer m_delayTmr;
     State m_state = None;
-    QString m_errorString;
+    QString m_errorString = "";
     QPointer<IDataSource> m_device;
-    bool bPortIsBusy;
+    bool bPortIsBusy = false;
     int m_bytesWritten;
     int m_delayMs;
 

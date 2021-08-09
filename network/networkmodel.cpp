@@ -65,14 +65,13 @@ void NetworkModel::rescanNetwork()
     for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr) {
         m_protocol.getDataValue(iAddr, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
     }
-    if(m_view != nullptr) m_view->removeAllDevices();
-    qDebug() << "rescanNetwork()";
+    m_mediator->notify(this, "remove all devices");
 }
 
-void NetworkModel::addFacade(MainViewFacade &facade) {
-    m_view = &facade;
-    m_view->addModel(this);
-}
+//void NetworkModel::addFacade(MainViewFacade &facade) {
+//    m_view = &facade;
+//    m_view->addModel(this);
+//}
 
 // private methods
 void NetworkModel::clear() {

@@ -22,12 +22,14 @@ void WindowNetworkMediator::notify(IMediatorBase *sender, QString event, QVarian
         QVariantMap portSettings = value.toMap();
 
         if(network.isStart()) {
+            qDebug() << "Device stop";
             network.stop();
             device->close();
             device->deleteLater();
         } else {
             NetworkType type = static_cast<NetworkType>(portSettings["type"].toInt());
             if(type == NetworkType::Tcp) {
+                qDebug() << "open device";
                 device = new DataSource();
                 device->setSettings(type, portSettings["host"], portSettings["port"]);
                 device->open();

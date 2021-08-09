@@ -4,7 +4,6 @@
 #include <QApplication>
 #include "network/networkmodel.h"
 #include "network/protocols/modbusprotocol.h"
-#include "mainviewfacade.h"
 #include "model/devicefactory.h"
 #include "model/guifactory.h"
 #include <QTcpSocket>
@@ -58,14 +57,14 @@ int main(int argc, char *argv[])
     DataSource dataSource;
 
     GuiFactory guiFactory("DeviceGUI.xml", settings);
-    MainViewFacade mvCntrl(dataSource, settings, guiFactory);
-    mvCntrl.addView(&w);
+//    MainViewFacade mvCntrl(dataSource, settings, guiFactory);
+//    mvCntrl.addView(&w);
 
     DeviceFactory deviceFactory("DeviceDB.xml", settings);
     ModbusProtocol modbus(&dataSource, SoftProtocol::TimeoutDefault, 500);
 
     NetworkModel model(deviceFactory, modbus);
-    model.addFacade(mvCntrl);
+//    model.addFacade(mvCntrl);
 
     WindowNetworkMediator windowNetworkMediator(w, model, settings);
 

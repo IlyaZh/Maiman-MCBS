@@ -11,7 +11,6 @@
 #include "SoftProtocol.h"
 #include "device/devicemodel.h"
 #include "model/devicefactory.h"
-#include "mainviewfacade.h"
 #include "windownetworkmediator.h"
 #include <QPointer>
 #include "interfaces/IMediator.h"
@@ -37,7 +36,7 @@ public:
     void stop() override;
 //    void setDeviceCommand(quint8 addr, quint16 command, quint16 value) override;
     void rescanNetwork() override;
-    void addFacade(MainViewFacade &facade);
+//    void addFacade(MainViewFacade &facade);
     // ISoftProtocolObserver
     void update(quint8 addr, quint16 reg, quint16 value) override;
     void iamReady() override;

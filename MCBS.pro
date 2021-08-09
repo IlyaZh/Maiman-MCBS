@@ -29,7 +29,6 @@ SOURCES += \
     factories/treeitem.cpp \
     factories/xmlparser.cpp \
     main.cpp \
-    mainviewfacade.cpp \
     mainwindow.cpp \
     model/device/devicewidget.cpp \
     model/devicefactory.cpp \
@@ -57,7 +56,6 @@ HEADERS += \
     interfaces/ProtocolObserverInterface.h \
     interfaces/ViewInterface.h \
     interfaces/mainwindowcontrollerinterface.h \
-    mainviewfacade.h \
     mainwindow.h \
     mainwindowcontroller.h \
     model/ModelInterface.h \
