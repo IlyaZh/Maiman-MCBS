@@ -11,9 +11,8 @@
 #include "SoftProtocol.h"
 #include "device/devicemodel.h"
 #include "model/devicefactory.h"
-#include "windownetworkmediator.h"
 #include <QPointer>
-#include "interfaces/IMediator.h"
+#include "mainfacade.h"
 
 //#include "enums.h"
 
@@ -22,14 +21,13 @@ class MainViewFacade;
 class NetworkModel :
         public QObject,
         public ISoftProtocolObserver,
-        public ModelInterface,
-        public IMediatorBase
+        public ModelInterface
 {
     Q_OBJECT
 public:
     static const quint16 IDENTIFY_REG_ID_DEFAULT;
     static const quint16 TIMEOUT_MS;
-    explicit NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, QObject *parent = nullptr);
+    explicit NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, MainFacade& facade, QObject *parent = nullptr);
     ~NetworkModel();
     void start(IDataSource &iodevice) override;
     bool isStart() override;
@@ -42,10 +40,6 @@ public:
     void iamReady() override;
     // end of ISoftProtocolObserver
 
-
-signals:
-    void modelConnected(bool);
-
 public slots:
     void dataOutcome(quint8 addr, quint16 reg, quint16 value);
 private slots:
@@ -54,7 +48,7 @@ private slots:
 private:
     DeviceFactory& m_deviceModelFactory;
     QPointer<IDataSource> m_port;
-    QPointer<MainViewFacade> m_view;
+    MainFacade& m_facade;
     SoftProtocol& m_protocol;
     QMap<quint8, Device*> m_devices;
     bool m_bIsStart;

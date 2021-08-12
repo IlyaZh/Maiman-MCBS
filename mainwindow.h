@@ -5,15 +5,13 @@
 #include <QGridLayout>
 //#include "interfaces/mainwindowco1ntrollerinterface.h"
 #include "appsettings.h"
-#include "interfaces/IMediator.h"
-
 //class MainWindowControllerInterface;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow, public IMediatorBase
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
@@ -31,12 +29,12 @@ public:
     void addToWorkField(QWidget* widget);
 
 signals:
+    void makeEvent(QString event, QVariant value);
 //    void networkConnectClicked(NetworkType type, QVariant host, QVariant port);
 //    void networkConnectClicked(int, QString, int);
     void mainWindowReady();
 public slots:
     void setConnectMessage(QString msg);
-
     void setConnected(bool flag);
 private slots:
     void on_networkConnectButton_clicked();

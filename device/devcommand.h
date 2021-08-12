@@ -43,8 +43,8 @@ public:
     virtual bool isSigned();
 
 signals:
-    virtual void newValue(double value);
-    virtual void newValue(int value);
+    void newValue(double value);
+    void newValue(int value);
 
 public slots:
     void setRawValue(quint16 value);

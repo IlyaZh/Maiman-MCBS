@@ -12,7 +12,8 @@
 #include <QCommandLineOption>
 #include "factories/Parser.h"
 #include "datasource.h"
-#include "windownetworkmediator.h"
+#include "maincontroller.h"
+#include "mainfacade.h"
 
 #include <QDebug>
 
@@ -63,10 +64,14 @@ int main(int argc, char *argv[])
     DeviceFactory deviceFactory("DeviceDB.xml", settings);
     ModbusProtocol modbus(&dataSource, SoftProtocol::TimeoutDefault, 500);
 
-    NetworkModel model(deviceFactory, modbus);
-//    model.addFacade(mvCntrl);
 
-    WindowNetworkMediator windowNetworkMediator(w, model, settings);
+    // Фасад для управления потоками данных от модели к представлению
+    MainFacade mainFacade(w, guiFactory);
+    // Модель данных (подключается к источнику данных и забирает их)
+    NetworkModel model(deviceFactory, modbus, mainFacade);
+
+    // Контроллер главного окна, управляет потоком данных от GUI к моделии
+    MainController mainCtrl(w, model, settings);
 
     return app.exec();
 }

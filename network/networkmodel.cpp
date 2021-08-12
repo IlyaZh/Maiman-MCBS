@@ -6,10 +6,11 @@
 const quint16 NetworkModel::TIMEOUT_MS = 50*10;
 const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug замени
 
-NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, QObject *parent) :
+NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, MainFacade& facade, QObject *parent) :
     QObject(parent),
     ModelInterface(),
     m_deviceModelFactory(deviceModelFactory),
+    m_facade(facade),
     m_protocol(protocol)
 {
     m_bIsStart = false;
@@ -65,7 +66,8 @@ void NetworkModel::rescanNetwork()
     for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr) {
         m_protocol.getDataValue(iAddr, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
     }
-    m_mediator->notify(this, "remove all devices");
+//    m_mediator->notify(this, "remove all devices");
+    m_facade.clear();
 }
 
 //void NetworkModel::addFacade(MainViewFacade &facade) {
@@ -109,8 +111,7 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
     m_devices.insert(addr, newDevice);
     connect(newDevice, SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
 
-//    if(m_view != nullptr)
-//        m_view->createdDevice(newDevice);
+    m_facade.createWidgetFor(*newDevice);
 }
 
 // public slots

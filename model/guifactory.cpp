@@ -36,9 +36,9 @@ void GuiFactory::parsingFinished() {
     qDebug() << "m_parseWorker.reset();";
 //    m_parseWorker->deleteLater();
     if(parseTree(*parserTree)) {
-        qDebug() << "Parse tree is ok!";
+        qDebug() << "Gui Parse tree is ok!";
     } else {
-        qDebug() << "Can't parse tree";
+        qDebug() << "Gui Can't parse tree";
     }
     m_parseWorker->deleteLater();
     delete parserTree;

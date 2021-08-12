@@ -1,22 +1,19 @@
-#include "windownetworkmediator.h"
+#include "maincontroller.h"
 
-WindowNetworkMediator::WindowNetworkMediator(MainWindow& window, NetworkModel& network, AppSettings& settings) :
+MainController::MainController(MainWindow& window, NetworkModel& networkModel, AppSettings& settings, QObject *parent) :
+    QObject(parent),
     window(window),
-    network(network),
+    network(networkModel),
     settings(settings)
-
 {
-    window.setMediator(this);
-    network.setMediator(this);
-
+    connect(&window, &MainWindow::makeEvent, this, &MainController::eventHandle);
 }
 
-WindowNetworkMediator::~WindowNetworkMediator() {
-    if(device) device->deleteLater();
-}
 
-void WindowNetworkMediator::notify(IMediatorBase *sender, QString event, QVariant value) {
-    if(sender == &window && event == "NetworkConnectClicked") {
+// private slots
+
+void MainController::eventHandle(const QString &event, const QVariant &value) {
+    if(event == "NetworkConnectClicked") {
         settings.setNetworkData(value);
 
         QVariantMap portSettings = value.toMap();

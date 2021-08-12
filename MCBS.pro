@@ -24,19 +24,19 @@ SOURCES += \
     device/device.cpp \
     device/devicemodel.cpp \
     factories/Parser.cpp \
-    factories/parseitem.cpp \
     factories/parserworker.cpp \
     factories/treeitem.cpp \
     factories/xmlparser.cpp \
     main.cpp \
+    maincontroller.cpp \
+    mainfacade.cpp \
     mainwindow.cpp \
     model/device/devicewidget.cpp \
     model/devicefactory.cpp \
     model/guifactory.cpp \
     network/SoftProtocol.cpp \
     network/networkmodel.cpp \
-    network/protocols/modbusprotocol.cpp \
-    windownetworkmediator.cpp
+    network/protocols/modbusprotocol.cpp
 
 HEADERS += \
     appsettings.h \
@@ -45,7 +45,6 @@ HEADERS += \
     device/device.h \
     device/devicemodel.h \
     factories/Parser.h \
-    factories/parseitem.h \
     factories/parserworker.h \
     factories/treeitem.h \
     factories/xmlparser.h \
@@ -56,6 +55,8 @@ HEADERS += \
     interfaces/ProtocolObserverInterface.h \
     interfaces/ViewInterface.h \
     interfaces/mainwindowcontrollerinterface.h \
+    maincontroller.h \
+    mainfacade.h \
     mainwindow.h \
     mainwindowcontroller.h \
     model/ModelInterface.h \
@@ -65,8 +66,7 @@ HEADERS += \
     model/guifactory.h \
     network/SoftProtocol.h \
     network/networkmodel.h \
-    network/protocols/modbusprotocol.h \
-    windownetworkmediator.h
+    network/protocols/modbusprotocol.h
 
 FORMS += \
     mainwindow.ui
