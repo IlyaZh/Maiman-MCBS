@@ -29,11 +29,11 @@ private:
     QString m_fileName;
 
     DeviceModel* findModel(quint16 id);
-    bool parseTree(TreeItem& tree);
-    QString parseBaudRate(TreeItem& item);
-    QVector<QPair<uint, QString>> parseCommonDevId(TreeItem& item);
-    DeviceModel* parseDevice(TreeItem& item);
-    QVector<DevCommandBuilder*>* parseCommands(TreeItem& item);
+    bool parseTree(const TreeItem& tree);
+    QString parseBaudRate(const TreeItem& item);
+    QVector<QPair<uint, QString>> parseCommonDevId(const TreeItem& item);
+    DeviceModel* parseDevice(const TreeItem& item);
+    QVector<DevCommandBuilder*>* parseCommands(const TreeItem& item);
 
 
     QPointer<ParserWorker> m_parseWorker;

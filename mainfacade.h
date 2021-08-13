@@ -2,6 +2,7 @@
 #define MAINFACEDE_H
 
 #include <QObject>
+#include <QWidget>
 #include "mainwindow.h"
 #include "model/guifactory.h"
 #include "device/device.h"
@@ -18,6 +19,7 @@ public:
 private:
     MainWindow& window;
     GuiFactory& factory;
+    QVector<QWidget*> widgets;
 
 };
 

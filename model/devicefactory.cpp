@@ -87,20 +87,20 @@ DeviceModel* DeviceFactory::findModel(quint16 id) {
     return nullptr;
 }
 
-bool DeviceFactory::parseTree(TreeItem& tree) {
+bool DeviceFactory::parseTree(const TreeItem& tree) {
     if(tree.name() == "DB") {
         for(int i = 0; i < tree.childCount(); i++) {
-            TreeItem* childDb = tree.child(i);
+            const TreeItem& childDb = tree.child(i);
 
-            QString tagName = childDb->name();
+            QString tagName = childDb.name();
             if(tagName == "BaudRate") {
-                m_baudrates << parseBaudRate(*childDb);
+                m_baudrates << parseBaudRate(childDb);
             }
             if(tagName == "CommonIDDevices") {
-                m_commondDevicesId = parseCommonDevId(*childDb);
+                m_commondDevicesId = parseCommonDevId(childDb);
             }
             if(tagName == "Device") {
-                DeviceModel* devModel = parseDevice(*childDb);
+                DeviceModel* devModel = parseDevice(childDb);
                 if(devModel != nullptr)
                     m_DeviceModels << devModel;
             }
@@ -112,27 +112,27 @@ bool DeviceFactory::parseTree(TreeItem& tree) {
     return false;
 }
 
-QString DeviceFactory::parseBaudRate(TreeItem& item) {
+QString DeviceFactory::parseBaudRate(const TreeItem& item) {
     for(int i = 0; i < item.childCount(); i++) {
-        TreeItem* child = item.child(i);
-        if(child->name() == "value") {
-            return child->value().toString();
+        const TreeItem& child = item.child(i);
+        if(child.name() == "value") {
+            return child.value().toString();
         }
     }
     return QString("");
 }
 
-QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(TreeItem& item) {
+QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(const TreeItem& item) {
     QVector<QPair<uint, QString>> list;
 
     for(int i = 0; i < item.childCount(); i++) {
-        TreeItem* tagItem = item.child(i);
-        QString devName = tagItem->value().toString();
+        const TreeItem& tagItem = item.child(i);
+        QString devName = tagItem.value().toString();
         uint devId = 0;
-        for(int j = 0; j < tagItem->childCount(); j++) {
-            TreeItem* attr = tagItem->child(j);
-            if(attr->name() == "id") {
-                devId = attr->value().toUInt();
+        for(int j = 0; j < tagItem.childCount(); j++) {
+            const TreeItem& attr = tagItem.child(j);
+            if(attr.name() == "id") {
+                devId = attr.value().toUInt();
                 break;
             }
         }
@@ -143,7 +143,7 @@ QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(TreeItem& item) {
     return list;
 }
 
-DeviceModel* DeviceFactory::parseDevice(TreeItem& item) {
+DeviceModel* DeviceFactory::parseDevice(const TreeItem& item) {
     quint16 id = 0;
     QString name = "";
     DeviceDelays *delays = nullptr;
@@ -158,29 +158,29 @@ DeviceModel* DeviceFactory::parseDevice(TreeItem& item) {
 
 
     for(int i = 0; i < item.childCount(); i++) {
-        TreeItem* child = item.child(i);
+        const TreeItem& child = item.child(i);
 
-        if(child->name() == "id") {
-            id = child->value().toString().toUInt(nullptr, 16);
+        if(child.name() == "id") {
+            id = child.value().toString().toUInt(nullptr, 16);
             hasId = true;
         }
 
-        if(child->name() == "name") {
-            name = child->value().toString();
+        if(child.name() == "name") {
+            name = child.value().toString();
             hasName = true;
         }
 
-        if(child->name() == "stopCommandDelayMs")
-            stopDelayMs = child->value().toUInt();
+        if(child.name() == "stopCommandDelayMs")
+            stopDelayMs = child.value().toUInt();
 
-        if(child->name() == "minCommandDelayMs")
-            minCommandDelayMs = child->value().toUInt();
+        if(child.name() == "minCommandDelayMs")
+            minCommandDelayMs = child.value().toUInt();
 
-        if(child->name() == "maxCommandDelayMs")
-            maxCommandDelayMs = child->value().toUInt();
+        if(child.name() == "maxCommandDelayMs")
+            maxCommandDelayMs = child.value().toUInt();
 
-        if(child->name() == "Commands") {
-            cmdBuilders = parseCommands(*child);
+        if(child.name() == "Commands") {
+            cmdBuilders = parseCommands(child);
             if(!cmdBuilders->isEmpty()) hasCommands = true;
         }
     }
@@ -192,7 +192,7 @@ DeviceModel* DeviceFactory::parseDevice(TreeItem& item) {
     }
 }
 
-QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(TreeItem& item) {
+QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(const TreeItem& item) {
     quint16 code = 0;
     QString unit = "";
     double divider = 1;
@@ -206,34 +206,34 @@ QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(TreeItem& item) {
     bool hasCode = false;
 
     for(int c = 0; c < item.childCount(); c++) {
-        TreeItem* cmd = item.child(c);
+        const TreeItem& cmd = item.child(c);
 
-        for(int i = 0; i < cmd->childCount(); i++) {
-            TreeItem* child = cmd->child(i);
+        for(int i = 0; i < cmd.childCount(); i++) {
+            const TreeItem& child = cmd.child(i);
 
-            if(child->name() == "code") {
-                code = child->value().toUInt();
+            if(child.name() == "code") {
+                code = child.value().toUInt();
                 hasCode = true;
             }
 
-            if(child->name() == "unit") {
-                unit = child->value().toString();
+            if(child.name() == "unit") {
+                unit = child.value().toString();
                 unit.replace("(deg)", QString::fromRawData(new QChar('\260'), 1));
             }
 
-            if(child->name() == "divider")
-                divider = child->value().toDouble();
+            if(child.name() == "divider")
+                divider = child.value().toDouble();
 
-            if(child->name() == "tol")
-                tol = child->value().toUInt();
+            if(child.name() == "tol")
+                tol = child.value().toUInt();
 
-            if(child->name() == "interval")
-                interval = child->value().toUInt();
+            if(child.name() == "interval")
+                interval = child.value().toUInt();
 
-            if(child->name() == "isSigned")
+            if(child.name() == "isSigned")
                 isSigned = true;
 
-            if(child->name() == "isTemperature")
+            if(child.name() == "isTemperature")
                 isTemperature = true;
 
         }
@@ -244,8 +244,7 @@ QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(TreeItem& item) {
     }
 
 
-    std::sort(list->begin(), list->end(), sortCmdsByCode);
-    // test it
+    std::sort(list->begin(), list->end(), sortCmdsByCode); // TODO: test sorting
 
     return list;
 }

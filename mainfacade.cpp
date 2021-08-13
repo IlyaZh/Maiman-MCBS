@@ -19,5 +19,8 @@ MainFacade::~MainFacade() {
 void MainFacade::createWidgetFor(Device& device) {}
 
 void MainFacade::clear() {
-    // TODO: сделай функцию очистки созданных виджетов
+    for(auto widget : widgets) {
+        widget->disconnect();
+        widget->deleteLater();
+    }
 }
