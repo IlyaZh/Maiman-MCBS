@@ -13,17 +13,17 @@ public:
     TreeItem(QString name, QVariant* value, QVector<TreeItem*>* pChilds);
     ~TreeItem();
 
-    QVariant value();
-    QString name();
-    bool hasChilds();
-    int childCount();
-    TreeItem* child(int num);
+    const QVariant& value() const;
+    const QString& name() const;
+    bool hasChilds() const;
+    int childCount() const;
+    const TreeItem& child(int num) const;
 
 private:
     QString m_name;
     QVariant* m_value;
 
-    QVector<TreeItem*> *m_childs;
+    QVector<TreeItem*>* m_childs;
 
 };
 
