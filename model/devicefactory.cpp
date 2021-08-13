@@ -90,17 +90,17 @@ DeviceModel* DeviceFactory::findModel(quint16 id) {
 bool DeviceFactory::parseTree(TreeItem& tree) {
     if(tree.name() == "DB") {
         for(int i = 0; i < tree.childCount(); i++) {
-            TreeItem& childDb = *tree.child(i);
+            TreeItem* childDb = tree.child(i);
 
-            QString tagName = childDb.name();
+            QString tagName = childDb->name();
             if(tagName == "BaudRate") {
-                m_baudrates << parseBaudRate(childDb);
+                m_baudrates << parseBaudRate(*childDb);
             }
             if(tagName == "CommonIDDevices") {
-                m_commondDevicesId = parseCommonDevId(childDb);
+                m_commondDevicesId = parseCommonDevId(*childDb);
             }
             if(tagName == "Device") {
-                DeviceModel* devModel = parseDevice(childDb);
+                DeviceModel* devModel = parseDevice(*childDb);
                 if(devModel != nullptr)
                     m_DeviceModels << devModel;
             }
