@@ -6,6 +6,7 @@
 #include <QPointer>
 #include <QFont>
 #include <QPoint>
+#include <QStringView>
 //#include "appsettings.h"
 
 #ifndef GLOBALS_H

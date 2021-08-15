@@ -7,11 +7,83 @@
 #include <QPointer>
 #include "device/device.h"
 
+struct Content {
+    QString fileName;
+    QString description;
+    QString link;
+};
+
+struct Limit {
+    quint16 code;
+    double minValue = 0;
+    double maxValue = 0;
+    quint16 minCode = 0;
+    quint16 maxCode = 0;
+    QString name;
+};
+
+struct CalibrationKoef {
+    quint16 code;
+    double min;
+    double max;
+    QString name;
+};
+
+struct Control {
+    quint16 min = 0;
+    quint16 max = 0;
+    quint16 value = 0;
+    quint16 real = 0;
+    QString name;
+};
+
+struct Checkbox {
+    quint16 code = 0;
+    quint16 onCommand = 0;
+    quint16 offCommand = 0;
+    quint16 mask = 0;
+    QString name;
+};
+
+struct Button {
+    QString name;
+    quint16 code = 0;
+    quint16 mask = 0;
+    quint16 onCommand = 0;
+    quint16 offCommand = 0;
+};
+
+struct LedMask {
+    quint16 code = 0;
+    quint16 mask = 0;
+    QColor defaultColor;
+    QColor maskColor;
+    QString msg;
+};
+
+struct Led {
+    QString name;
+    QVector<LedMask> ledMasks;
+};
+
+struct DeviceWidgetDesc {
+    uint id;
+    QString name = "Unknown device";
+    Content content;
+    QVector<Limit> limits;
+    QVector<CalibrationKoef> calibration;
+    QVector<Control> controls;
+    QVector<Checkbox> checkboxes;
+    QVector<Button> buttons;
+    QVector<Led> leds;
+};
+
+
 class DeviceWidget : public QWidget
 {
     Q_OBJECT
 public:
-    DeviceWidget(Device *pDev);
+    DeviceWidget(const DeviceWidgetDesc& description);
     QString devName();
 
 public slots:
@@ -24,7 +96,6 @@ signals:
 
 private:
     QMap<quint16, QVariant> m_values;
-    Device* m_device;
 
 };
 

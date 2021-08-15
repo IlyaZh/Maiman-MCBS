@@ -29,17 +29,25 @@ void GuiFactory::start() {
     m_thread->start();
 }
 
+DeviceWidget* GuiFactory::createWidget(quint16 id) {
+    if(m_deviceWidgets.contains(id)) {
+        return new DeviceWidget(m_deviceWidgets.value(id));
+    }
+    return nullptr;
+}
+
 // private slots
 
 void GuiFactory::parsingFinished() {
+    m_parseWorker->disconnect();
     TreeItem* parserTree = m_parseWorker->data();
-    qDebug() << "m_parseWorker.reset();";
-//    m_parseWorker->deleteLater();
+    //    m_parseWorker->deleteLater();
     if(parseTree(*parserTree)) {
         qDebug() << "Gui Parse tree is ok!";
     } else {
         qDebug() << "Gui Can't parse tree";
     }
+    qDebug() << "IDS " << m_deviceWidgets.keys();
     m_parseWorker->deleteLater();
     delete parserTree;
 }
@@ -50,9 +58,198 @@ void GuiFactory::threadError(const QString &msg) {
 
 // private methods
 
-bool GuiFactory::parseTree(TreeItem& tree) {
+bool GuiFactory::parseTree(const TreeItem& tree) {
     if(tree.name() == "GUI") {
-        qDebug() << "YEAH!";
+        for(int i = 0; i < tree.childCount(); ++i) {
+            const TreeItem& device = tree.child(i);
+            QString name = device.name();
+            if(name == "Device") {
+                DeviceWidgetDesc devWidget = parseDevice(device);
+                m_deviceWidgets.insert(devWidget.id, devWidget);
+            }
+        }
+        return true;
     }
+    return false;
 }
 
+DeviceWidgetDesc GuiFactory::parseDevice(const TreeItem& item) {
+    DeviceWidgetDesc widgetDesc;
+    for(int i = 0; i < item.childCount(); ++i) {
+        const TreeItem& devOption = item.child(i);
+
+        if(devOption.name() == "id") {
+            widgetDesc.id = devOption.value().toString().toUInt(nullptr, 16);
+        } else if(devOption.name() == "name") {
+            widgetDesc.name = devOption.value().toString();
+        } else if (devOption.name() == "Content") {
+            widgetDesc.content = parseDeviceContent(devOption);
+        } else if (devOption.name() == "Limits") {
+            for(int l = 0; l < devOption.childCount(); ++l) {
+                const TreeItem& limit = devOption.child(l);
+                widgetDesc.limits << parseDeviceLimit(limit);
+            }
+        } else if (devOption.name() == "CalibrationKoefs") {
+            for(int i = 0; i < devOption.childCount(); ++i) {
+                const TreeItem& koef = devOption.child(i);
+                widgetDesc.calibration << parseCalibrationKoef(koef);
+            }
+        } else if (devOption.name() == "ParamControls") {
+            for(int i = 0; i < devOption.childCount(); ++i) {
+                const TreeItem& ctrl = devOption.child(i);
+                widgetDesc.controls << parseParamControls(ctrl);
+            }
+
+        } else if (devOption.name() == "Checkboxes") {
+            for(int i = 0; i < devOption.childCount(); ++i) {
+                const TreeItem& checkbox = devOption.child(i);
+                widgetDesc.checkboxes << parseCheckboxes(checkbox);
+            }
+
+        } else if (devOption.name() == "Buttons") {
+            for(int i = 0; i < devOption.childCount(); ++i) {
+                const TreeItem& button = devOption.child(i);
+                widgetDesc.buttons << parseButtons(button);
+            }
+        } else if (devOption.name() == "Leds") {
+            for(int i = 0; i < devOption.childCount(); ++i) {
+                const TreeItem& led = devOption.child(i);
+                widgetDesc.leds << parseLeds(led);
+            }
+        }
+    }
+    return widgetDesc;
+}
+
+Content GuiFactory::parseDeviceContent(const TreeItem& item) {
+    Content content;
+    for(int i = 0; i <item.childCount(); ++i) {
+        const TreeItem& subContent = item.child(i);
+        if(subContent.name() == "Image") {
+            content.fileName = subContent.value().toString();
+        } else if (subContent.name() == "Description") {
+            content.description = subContent.value().toString();
+        } else if (subContent.name() == "Link") {
+            content.link = subContent.value().toString();
+        }
+    }
+    return content;
+}
+
+Limit GuiFactory::parseDeviceLimit(const TreeItem& item) {
+    Limit limit;
+    limit.name = item.value().toString();
+    for(int i = 0; i < item.childCount(); ++i) {
+        const TreeItem& arg = item.child(i);
+        if(arg.name() == "limitCode") {
+            limit.code = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if (arg.name() == "minValue") {
+            limit.minValue = arg.value().toDouble();
+        } else if (arg.name() == "maxValue") {
+            limit.maxValue = arg.value().toDouble();
+        } else if(arg.name() == "minCode") {
+            limit.minCode = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if (arg.name() == "maxCode") {
+            limit.maxCode = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        }
+    }
+    return limit;
+}
+
+CalibrationKoef GuiFactory::parseCalibrationKoef(const TreeItem& item) {
+    CalibrationKoef koef;
+    koef.name = item.value().toString();
+    for(int i = 0; i < item.childCount(); ++i) {
+        const TreeItem& arg = item.child(i);
+        if(arg.name() == "code") {
+            koef.code = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if(arg.name() == "min") {
+            koef.min = arg.value().toDouble();
+        } else if(arg.name() == "max") {
+            koef.max = arg.value().toDouble();
+        }
+    }
+    return koef;
+}
+
+Control GuiFactory::parseParamControls(const TreeItem& item) {
+    Control control;
+    control.name = item.value().toString();
+    for(int i = 0; i < item.childCount(); ++i) {
+        const TreeItem& arg = item.child(i);
+        if(arg.name() == "min") {
+            control.min = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if(arg.name() == "max") {
+            control.max = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if(arg.name() == "value") {
+            control.value = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if(arg.name() == "real") {
+            control.real = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        }
+    }
+    return control;
+}
+
+Checkbox GuiFactory::parseCheckboxes(const TreeItem& item) {
+    Checkbox checkbox;
+    checkbox.name = item.value().toString();
+    for(int i = 0; i < item.childCount(); ++i) {
+        const TreeItem& arg = item.child(i);
+        if(arg.name() == "code") {
+            checkbox.code = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if(arg.name() == "onCommand") {
+            checkbox.onCommand = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if(arg.name() == "offCommand") {
+            checkbox.offCommand = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if(arg.name() == "mask") {
+            checkbox.mask = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        }
+
+    }
+    return checkbox;
+}
+
+Button GuiFactory::parseButtons(const TreeItem& item) {
+    Button button;
+    button.name = item.value().toString();
+    for(int i = 0; i < item.childCount(); ++i) {
+        const TreeItem& btnItem = item.child(i);
+        if(btnItem.name() == "mask") {
+            button.mask = static_cast<quint16>(btnItem.value().toString().toUInt(nullptr, 16));
+        } else if(btnItem.name() == "code") {
+            button.code = static_cast<quint16>(btnItem.value().toString().toUInt(nullptr, 16));
+        } else if(btnItem.name() == "onCommand") {
+            button.onCommand = static_cast<quint16>(btnItem.value().toString().toUInt(nullptr, 16));
+        } else if(btnItem.name() == "offCommand") {
+            button.offCommand = static_cast<quint16>(btnItem.value().toString().toUInt(nullptr, 16));
+        }
+    }
+    return button;
+}
+
+Led GuiFactory::parseLeds(const TreeItem& item) {
+    Led led;
+    for(int i = 0; i < item.childCount(); ++i) {
+        const TreeItem& ledTag = item.child(i);
+        if(ledTag.name() == "label") {
+            led.name = ledTag.value().toString();
+        } else if (ledTag.name() == "LedMask") {
+            LedMask ledMask;
+            ledMask.msg = ledTag.value().toString();
+            for(int j = 0; j < ledTag.childCount(); ++j) {
+                const TreeItem& ledMaskTag = ledTag.child(j);
+                if(ledMaskTag.name() == "code") {
+                    ledMask.code = static_cast<quint16>(ledMaskTag.value().toString().toUInt(nullptr, 16));
+                } else if (ledMaskTag.name() == "mask") {
+                    ledMask.mask = static_cast<quint16>(ledMaskTag.value().toString().toUInt(nullptr, 16));
+                } else if (ledMaskTag.name() == "maskColor") {
+                    ledMask.maskColor.setNamedColor(ledMaskTag.value().toString());
+                } else if (ledMaskTag.name() == "defaultColor") {
+                    ledMask.defaultColor.setNamedColor(ledMaskTag.value().toString());
+                }
+            }
+            led.ledMasks << ledMask;
+        }
+    }
+    return led;
+}
