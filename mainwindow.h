@@ -5,6 +5,7 @@
 #include <QGridLayout>
 //#include "interfaces/mainwindowco1ntrollerinterface.h"
 #include "appsettings.h"
+#include "model/device/devicewidget.h"
 //class MainWindowControllerInterface;
 
 QT_BEGIN_NAMESPACE
@@ -26,7 +27,7 @@ public:
     void setPortList(QVector<QString> *portList);
     void setBaudList(QVector<int> *baudList);
 //    void addSettingsCntrl(AppSettings* settings);
-    void addToWorkField(QWidget* widget);
+    void addDeviceWidget(DeviceWidget* widget);
 
 signals:
     void makeEvent(QString event, QVariant value);
@@ -45,7 +46,7 @@ private:
     QVector<QString> *m_portList;
     QVector<int> *m_baudList;
     AppSettings& m_settings;
-    QVector<QWidget*> m_workWidgets;
+    QVector<DeviceWidget*> m_workWidgets;
     QGridLayout* m_workFieldLayout;
 
     void setConnections();

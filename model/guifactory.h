@@ -3,7 +3,7 @@
 
 #include <QThread>
 #include <QObject>
-#include <QScopedPointer>
+#include <QSharedPointer>
 #include <QString>
 #include <QVector>
 #include <QColor>
@@ -35,7 +35,7 @@ private:
     AppSettings& m_settings;
     QString m_fileName;
 
-    QMap<quint16, DeviceWidgetDesc> m_deviceWidgets;
+    QMap<quint16, QSharedPointer<DeviceWidgetDesc>> m_deviceWidgets;
 
     bool parseTree(const TreeItem& tree);
     DeviceWidgetDesc parseDevice(const TreeItem& item);

@@ -31,7 +31,8 @@ void GuiFactory::start() {
 
 DeviceWidget* GuiFactory::createWidget(quint16 id) {
     if(m_deviceWidgets.contains(id)) {
-        return new DeviceWidget(m_deviceWidgets.value(id));
+        auto widgetSettings = m_deviceWidgets.value(id).get();
+        return new DeviceWidget(*widgetSettings);
     }
     return nullptr;
 }
@@ -64,8 +65,8 @@ bool GuiFactory::parseTree(const TreeItem& tree) {
             const TreeItem& device = tree.child(i);
             QString name = device.name();
             if(name == "Device") {
-                DeviceWidgetDesc devWidget = parseDevice(device);
-                m_deviceWidgets.insert(devWidget.id, devWidget);
+                auto devWidget = QSharedPointer<DeviceWidgetDesc>::create(parseDevice(device));
+                m_deviceWidgets.insert(devWidget->id, devWidget);
             }
         }
         return true;

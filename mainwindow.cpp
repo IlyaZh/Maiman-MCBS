@@ -141,7 +141,7 @@ void MainWindow::on_networkConnectButton_clicked()
     }*/
 }
 
-void MainWindow::addToWorkField(QWidget* widget) {
+void MainWindow::addDeviceWidget(DeviceWidget* widget) {
     if(!m_workWidgets.contains(widget)) {
         m_workWidgets.append(widget);
         int count = m_workFieldLayout->layout()->count();

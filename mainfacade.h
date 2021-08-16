@@ -3,9 +3,11 @@
 
 #include <QObject>
 #include <QWidget>
+#include <QScopedPointer>
 #include "mainwindow.h"
 #include "model/guifactory.h"
 #include "device/device.h"
+#include "model/device/devicewidget.h"
 
 class MainFacade : public QObject
 {
@@ -17,9 +19,9 @@ public:
     void createWidgetFor(Device& device);
     void clear();
 private:
-    MainWindow& window;
-    GuiFactory& factory;
-    QVector<QWidget*> widgets;
+    MainWindow& m_window;
+    GuiFactory& m_factory;
+    QVector<QSharedPointer<DeviceWidget>> m_widgets;
 
 };
 
