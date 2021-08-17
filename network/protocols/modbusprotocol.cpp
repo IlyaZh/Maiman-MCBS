@@ -21,26 +21,40 @@ ModbusProtocol::~ModbusProtocol() {
 
 void ModbusProtocol::setDataValue(quint8 addr, quint16 reg, quint16 value) {
     QByteArray package = QByteArray();
-    package.append(static_cast<qint8>(addr));
-    package.append(static_cast<qint8>(WriteOne));
-    package.append(static_cast<qint8>(hiBYTE(reg)));
-    package.append(static_cast<qint8>(loBYTE(reg)));
-    package.append(static_cast<qint8>(hiBYTE(value)));
-    package.append(static_cast<qint8>(loBYTE(value)));
+    package.append(static_cast<quint8>(addr));
+    package.append(static_cast<quint8>(WriteOne));
+    package.append(static_cast<quint8>(hiBYTE(reg)));
+    package.append(static_cast<quint8>(loBYTE(reg)));
+    package.append(static_cast<quint8>(hiBYTE(value)));
+    package.append(static_cast<quint8>(loBYTE(value)));
 
     prepareAndWrite(package);
 }
 
 void ModbusProtocol::getDataValue(quint8 addr, quint16 reg, quint8 count) {
     QByteArray package = QByteArray();
-    package.append(static_cast<qint8>(addr));
-    package.append(static_cast<qint8>(Read));
-    package.append(static_cast<qint8>(hiBYTE(reg)));
-    package.append(static_cast<qint8>(loBYTE(reg)));
-    package.append(static_cast<qint8>(hiBYTE(count)));
-    package.append(static_cast<qint8>(loBYTE(count)));
+    package.append(static_cast<quint8>(addr));
+    package.append(static_cast<quint8>(Read));
+    package.append(static_cast<quint8>(hiBYTE(reg)));
+    package.append(static_cast<quint8>(loBYTE(reg)));
+    package.append(static_cast<quint8>(hiBYTE(count)));
+    package.append(static_cast<quint8>(loBYTE(count)));
 
     prepareAndWrite(package);
+}
+
+quint16 ModbusProtocol::calcCrc(const QByteArray &byteArray) {
+    quint16 RetCRC = 0xffff;	// CRC initialization
+    quint8 i = 0;
+    quint8 index = 0;
+
+    while (i < byteArray.size()) {
+        index = hiBYTE(RetCRC) ^ static_cast<quint8>(byteArray.at(i));
+        RetCRC = static_cast<quint16> (((loBYTE(RetCRC) ^ CRC_HTable[index]) << 8)
+                                       | (CRC_LTable[index]));
+        i++;
+    }
+    return RetCRC;
 }
 
 // private methods
@@ -50,7 +64,7 @@ void ModbusProtocol::readyRead_Slot() {
     if(calcCrc(rxPacket) == 0) {
         rxPacketHandler(rxPacket);
     } else {
-        m_errorString = QString("[%1] Wrong CRC. Ignore packet").arg("Modbus");
+        makeError(QString("[%1] Wrong CRC. Ignore packet").arg("Modbus"));
     }
     bPortIsBusy = false;
 
@@ -70,7 +84,6 @@ void ModbusProtocol::bytesWritten_Slot(qint64 bytes) {
 
 void ModbusProtocol::timeout_Slot() {
     bPortIsBusy = false;
-    qDebug() << "timeout_Slot clear portIsBusy";
 //    qDebug() << "timeout() Set bPortIsBusy = " << bPortIsBusy;
     //    emit timeoutOccured(m_lastTxPackage->at(0));
 //    qDebug() << "Timeout occured" << m_lastTxPackage.toHex(' ');
@@ -119,20 +132,6 @@ void ModbusProtocol::delayBeforeSend_Slot() {
 
 // end of private slots
 
-quint16 ModbusProtocol::calcCrc(const QByteArray &byteArray) {
-    quint16 RetCRC = 0xffff;	// CRC initialization
-    quint8 i = 0;
-    quint8 index = 0;
-
-    while (i < byteArray.size()) {
-        index = hiBYTE(RetCRC) ^ static_cast<quint8>(byteArray.at(i));
-        RetCRC = static_cast<quint16> (((loBYTE(RetCRC) ^ CRC_HTable[index]) << 8)
-                                       | (CRC_LTable[index]));
-        i++;
-    }
-    return RetCRC;
-}
-
 void ModbusProtocol::rxPacketHandler(const QByteArray &rxPacket) {
     QString errorMessage = QString();
     qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "RX" << rxPacket.toHex(' ');
@@ -151,7 +150,7 @@ void ModbusProtocol::rxPacketHandler(const QByteArray &rxPacket) {
                     Notify(addr, reg, value);
                 }
             } else {
-                errorMessage = QString("[%1} Wrong size of packet").arg("Modbus");
+                makeError(QString("[%1} Wrong size of packet").arg("Modbus"));
             }
             break;
         case WriteOne:
@@ -160,13 +159,15 @@ void ModbusProtocol::rxPacketHandler(const QByteArray &rxPacket) {
             Notify(addr, reg, value);
             break;
         default:
-            errorMessage = QString("[%1] Wrong command").arg("Modbus");
+            makeError(QString("[%1] Wrong command").arg("Modbus"));
         }
     } else {
-        errorMessage = QString("[%1] Wrong size of packet").arg("Modbus");
+        makeError(QString("[%1] Wrong size of packet").arg("Modbus"));
     }
 
-    if(!errorMessage.isEmpty()) m_errorString = QString("%1 [%2]").arg(errorMessage).arg(QString().fromLocal8Bit(rxPacket));
+    if(!errorMessage.isEmpty()) {
+        makeError(QString("%1 [%2]").arg(errorMessage).arg(QString().fromLocal8Bit(rxPacket)));
+    }
 }
 
 void ModbusProtocol::prepareAndWrite(QByteArray &byteArray) {
@@ -174,8 +175,8 @@ void ModbusProtocol::prepareAndWrite(QByteArray &byteArray) {
 
     if(m_device->isOpen()) {
         quint16 crc = calcCrc(byteArray);
-        byteArray.append(static_cast<qint8>(hiBYTE(crc)));
-        byteArray.append(static_cast<qint8>(loBYTE(crc)));
+        byteArray.append(static_cast<quint8>(hiBYTE(crc)));
+        byteArray.append(static_cast<quint8>(loBYTE(crc)));
 
         qDebug() << "prepareAndWrite()" << byteArray.toHex(' ');
 
@@ -185,22 +186,26 @@ void ModbusProtocol::prepareAndWrite(QByteArray &byteArray) {
         case 0x03:
         case 0x04:
             // read commands
-            qDebug() << "Put to queue";
-            m_Queue.enqueue(byteArray);
+            if(m_Queue.size() < maxQueueSize) {
+                qDebug() << "Put to queue";
+                m_Queue.enqueue(byteArray);
+            }
             break;
         case 0x05:
         case 0x06:
         case 0x10:
         case 0x0F:
-            qDebug() << "Put to prior queue";
-            m_PriorityQueue.enqueue(byteArray);
             // write commands
+            if(m_PriorityQueue.size() < maxQueueSize) {
+                qDebug() << "Put to prior queue";
+                m_PriorityQueue.enqueue(byteArray);
+            }
             break;
         }
 
         tryToSend();
     } else {
-        m_errorString = QString("[%1] device isn't open!").arg("Modbus");
+        makeError(QString("[%1] device isn't open!").arg("Modbus"));
     }
 }
 

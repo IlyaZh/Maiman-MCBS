@@ -33,7 +33,7 @@ signals:
     void makeEvent(QString event, QVariant value);
 //    void networkConnectClicked(NetworkType type, QVariant host, QVariant port);
 //    void networkConnectClicked(int, QString, int);
-    void mainWindowReady();
+//    void mainWindowReady();
 public slots:
     void setConnectMessage(QString msg);
     void setConnected(bool flag);

@@ -212,7 +212,8 @@ QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(const TreeItem& item) 
             const TreeItem& child = cmd.child(i);
 
             if(child.name() == "code") {
-                code = child.value().toUInt();
+//                code = child.value().toUInt();
+                code = child.value().toString().toUInt(nullptr, 16);
                 hasCode = true;
             }
 

@@ -32,6 +32,10 @@ void DataSource::setSettings(NetworkType type, QVariant host, QVariant port) {
     m_port = port;
 }
 
+//QIODevice* DataSource::device() {
+//    return m_currentDevice;
+//}
+
 bool DataSource::open() {
     bool state = false;
 //    if(m_currentDevice == nullptr) {
@@ -56,9 +60,6 @@ bool DataSource::open() {
     return state;
 }
 
-QIODevice* DataSource::device() {
-    return m_currentDevice;
-}
 
 void DataSource::close() {
     if(m_currentDevice != nullptr) {
@@ -76,7 +77,7 @@ bool DataSource::isOpen() {
         return false;
 }
 
-qint64 DataSource::write(const char* data, qint64 maxSize) {
+/*qint64 DataSource::write(const char* data, qint64 maxSize) {
     if(m_currentDevice != nullptr)
         return m_currentDevice->write(data, maxSize);
     else
@@ -88,7 +89,7 @@ qint64 DataSource::write(const char* data) {
         return m_currentDevice->write(data);
     else
         return -1;
-}
+}*/
 
 qint64 DataSource::write(const QByteArray &byteArray) {
     if(m_currentDevice != nullptr)

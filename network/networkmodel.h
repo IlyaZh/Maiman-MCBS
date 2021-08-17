@@ -38,6 +38,7 @@ public:
     // ISoftProtocolObserver
     void update(quint8 addr, quint16 reg, quint16 value) override;
     void iamReady() override;
+    void errorOccured(const QString& msg) override;
     // end of ISoftProtocolObserver
 
 public slots:

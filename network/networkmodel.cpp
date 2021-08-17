@@ -139,6 +139,10 @@ void NetworkModel::iamReady() {
     }
 }
 
+void NetworkModel::errorOccured(const QString &msg) {
+    qDebug() << "Modbus protocol: " << msg;
+}
+
 /*void NetworkModel::dataReady()
 {
     qDebug() << "m_bIsStart" << m_bIsStart;

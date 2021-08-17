@@ -13,12 +13,12 @@ class IDataSource : public QObject {
 public:
     IDataSource(QObject *parent = nullptr) : QObject(parent) {}
     virtual void setSettings(NetworkType type, QVariant host, QVariant port) = 0;
-    virtual QIODevice* device() = 0;
+//    virtual QIODevice* device() = 0;
     virtual bool open() = 0;
     virtual void close() = 0;
     virtual bool isOpen() = 0;
-    virtual qint64 write(const char* data, qint64 maxSize) = 0;
-    virtual qint64 write(const char* data) = 0;
+//    virtual qint64 write(const char* data, qint64 maxSize) = 0;
+//    virtual qint64 write(const char* data) = 0;
     virtual qint64 write(const QByteArray &byteArray) = 0;
     virtual qint64 read(char* data, qint64 maxSize) = 0;
     virtual QByteArray read(qint64 maxSize) = 0;
@@ -40,12 +40,12 @@ public:
     ~DataSource();
 //    static DataSource* create();
     void setSettings(NetworkType type, QVariant host, QVariant port) override;
-    QIODevice* device() override;
+//    QIODevice* device() override;
     bool open() override;
     void close() override;
     bool isOpen() override;
-    qint64 write(const char* data, qint64 maxSize) override;
-    qint64 write(const char* data) override;
+//    qint64 write(const char* data, qint64 maxSize) override;
+//    qint64 write(const char* data) override;
     qint64 write(const QByteArray &byteArray) override;
     qint64 read(char* data, qint64 maxSize) override;
     QByteArray read(qint64 maxSize) override;
