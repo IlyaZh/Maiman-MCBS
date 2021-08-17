@@ -16,6 +16,9 @@
 #include "mainfacade.h"
 
 #include <QDebug>
+#ifdef QT_DEBUG
+#include "tests/globaltest.h"
+#endif
 
 QLocale wlocale;
 bool debugMode = false;
@@ -72,6 +75,10 @@ int main(int argc, char *argv[])
 
     // Контроллер главного окна, управляет потоком данных от GUI к моделии
     MainController mainCtrl(w, model, settings);
+
+#ifdef QT_DEBUG
+    GlobalTest tests(argc, argv);
+#endif
 
     return app.exec();
 }

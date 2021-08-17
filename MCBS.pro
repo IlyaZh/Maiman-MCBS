@@ -1,10 +1,10 @@
-QT       += core gui network xml
+QT       += core gui network xml testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 lessThan(QT_MAJOR_VERSION, 6): QT += serialport
 greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
 
-CONFIG += c++11
+CONFIG += c++11 testcase #warn_on depend_includepath
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -32,11 +32,15 @@ SOURCES += \
     mainfacade.cpp \
     mainwindow.cpp \
     model/device/devicewidget.cpp \
+    model/device/parameterwidget.cpp \
     model/devicefactory.cpp \
     model/guifactory.cpp \
     network/SoftProtocol.cpp \
     network/networkmodel.cpp \
-    network/protocols/modbusprotocol.cpp
+    network/protocols/modbusprotocol.cpp \
+    tests/globaltest.cpp \
+    tests/test_modbus/datasource_mock.cpp \
+    tests/test_modbus/test_modbus.cpp
 
 HEADERS += \
     appsettings.h \
@@ -51,25 +55,29 @@ HEADERS += \
     globals.h \
     interfaces/DevCommand.h \
     interfaces/IMediator.h \
-    interfaces/ModelCommands/ModelCmd.h \
     interfaces/ProtocolObserverInterface.h \
     interfaces/ViewInterface.h \
     interfaces/mainwindowcontrollerinterface.h \
     maincontroller.h \
     mainfacade.h \
     mainwindow.h \
-    mainwindowcontroller.h \
     model/ModelInterface.h \
     model/device/devicepollrequest.h \
     model/device/devicewidget.h \
+    model/device/parameterwidget.h \
     model/devicefactory.h \
     model/guifactory.h \
     network/SoftProtocol.h \
     network/networkmodel.h \
-    network/protocols/modbusprotocol.h
+    network/protocols/modbusprotocol.h \
+    tests/globaltest.h \
+    tests/test_modbus/datasource_mock.h \
+    tests/test_modbus/test_modbus.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    model/device/devicewidget.ui \
+    model/device/parameterwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

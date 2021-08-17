@@ -13,15 +13,23 @@ void ISoftProtocolSubject::Detach(ISoftProtocolObserver* observer) {
 }
 
 void ISoftProtocolSubject::Notify(quint8 addr, quint16 reg, quint16 value) {
-    for(auto it = m_listeners.begin(); it != m_listeners.end(); it++) {
-        (*it)->update(addr, reg, value);
+    for(auto listener : m_listeners) {
+        listener->update(addr, reg, value);
     }
 }
 
 void ISoftProtocolSubject::done() {
-    for(auto it = m_listeners.begin(); it != m_listeners.end(); it++) {
-        (*it)->iamReady();
+    for(auto listener : m_listeners) {
+        listener->iamReady();
     }
+}
+
+void ISoftProtocolSubject::makeError(QString msg) {
+    m_errorString = msg;
+    for(auto listener : m_listeners) {
+        listener->errorOccured(m_errorString);
+    }
+
 }
 
 // ==============================================================================================
@@ -39,7 +47,6 @@ SoftProtocol::SoftProtocol(int delayMs) :
 void SoftProtocol::setDevice(IDataSource &device) {
     if(m_device) m_device->disconnect();
     bPortIsBusy = false;
-    qDebug() << "Clear portIsBusy";
     m_device = &device;
     m_device->connect(m_device, &IDataSource::readyRead, [this](){
         this->readyRead_Slot();
@@ -49,15 +56,16 @@ void SoftProtocol::setDevice(IDataSource &device) {
     });
 }
 
-QString SoftProtocol::errorString() {
+/*QString SoftProtocol::errorString() {
     QString cpy = m_errorString;
     m_errorString.clear();
+    m_state = Error;
     return cpy;
-}
+}*/
 
-SoftProtocol::State SoftProtocol::state() {
+/*SoftProtocol::State SoftProtocol::state() {
     return m_state;
-}
+}*/
 
 quint8 SoftProtocol::hiBYTE(quint16 value) {
     return ((value >> 8) & 0xff);

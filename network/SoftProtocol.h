@@ -16,6 +16,7 @@ public:
     virtual ~ISoftProtocolObserver(){};
     virtual void update(quint8 addr, quint16 reg, quint16 value) = 0;
     virtual void iamReady() = 0;
+    virtual void errorOccured(const QString& msg) = 0;
 };
 
 class ISoftProtocolSubject {
@@ -26,8 +27,10 @@ public:
 protected:
     virtual void Notify(quint8 addr, quint16 reg, quint16 value);
     virtual void done();
+    virtual void makeError(QString msg);
 protected:
     QList<ISoftProtocolObserver*> m_listeners;
+    QString m_errorString = "";
 };
 
 class SoftProtocol :
@@ -39,18 +42,16 @@ public:
     static const quint8 MaxAddress;
     static const int TimeoutDefault;
     static const int DelayDefault;
-    enum StateFlags {None, Ok, Error, Done};
-    Q_DECLARE_FLAGS(State, StateFlags)
 
     SoftProtocol(int delay_ms);
     virtual ~SoftProtocol() = default;
     void setDevice(IDataSource& device);
     virtual void setDataValue(quint8 addr, quint16 reg, quint16 value) = 0;
     virtual void getDataValue(quint8 addr, quint16 reg, quint8 count = 1) = 0;
+    static quint8 hiBYTE(quint16 value);
+    static quint8 loBYTE(quint16 value);
 
 //signals:
-    QString errorString();
-    State state();
 
 //private slots:
     virtual void readyRead_Slot() = 0;
@@ -58,23 +59,16 @@ public:
 //    virtual void CallbackBeforeSend() = 0;
 protected:
     QTimer m_delayTmr;
-    State m_state = None;
-    QString m_errorString = "";
     QPointer<IDataSource> m_device;
     bool bPortIsBusy = false;
     int m_bytesWritten;
     int m_delayMs;
 
-    static quint8 hiBYTE(quint16 value);
-    static quint8 loBYTE(quint16 value);
-    virtual quint16 calcCrc(const QByteArray &byteArray) = 0;
     virtual void rxPacketHandler(const QByteArray &rxPacket) = 0;
     virtual void prepareAndWrite(QByteArray &byteArray) = 0;
     virtual void tryToSend();
     virtual void delayBeforeSend_Slot() = 0;
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS(SoftProtocol::State)
 
 
 
