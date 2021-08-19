@@ -42,9 +42,10 @@ public:
 //    bool nextInterval();
     virtual bool isSigned();
 
+
 signals:
-    void newValue(double value);
-    void newValue(int value);
+    void newValue(quint16 code, double value);
+//    void newValue(quint16 code, int value);
 
 public slots:
     void setRawValue(quint16 value);

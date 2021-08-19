@@ -9,6 +9,8 @@
 class ModelInterface {
 public:
 //    virtual ~ModelInterface() = 0;
+    virtual void setDelay(int delay) = 0;
+    virtual void setTimeout(int timeout) = 0;
     virtual void start(IDataSource& iodevice) = 0;
 //    virtual void start(QIODevice* iodevice) = 0;
     virtual bool isStart() { return false; }

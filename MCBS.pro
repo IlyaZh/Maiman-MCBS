@@ -1,4 +1,4 @@
-QT       += core gui network xml testlib
+QT       += core gui network xml testlib concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 lessThan(QT_MAJOR_VERSION, 6): QT += serialport

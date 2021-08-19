@@ -115,16 +115,15 @@ bool DevCommand::isSigned() {
 
 // public slots
 void DevCommand::setRawValue(quint16 value) {
+    QVariant variant(value);
     m_rawValue = value;
-    double dValue = value;
 
-    if(isSigned()) {
-        emit newValue((int16_t) value);
-        emit newValue((int16_t) value);
-    } else {
-        emit newValue(value);
-        emit newValue(dValue);
-    }
+    int iValue = (isSigned()) ? static_cast<qint16>(variant.toInt()) : static_cast<quint16>(variant.toUInt());
+    double dValue = (static_cast<double>(iValue) / divider());
+    QString tempStr;
+    tempStr.number(dValue, 'g', tolerance());
+
+//    emit newValue(m_code, tempStr.toDouble());
 }
 
 // private methods

@@ -21,6 +21,7 @@ void MainFacade::createWidgetFor(Device& device) {
     auto widget = m_factory.createWidget(device.id());
     if(widget != nullptr) {
         m_widgets.append(QSharedPointer<DeviceWidget>(widget));
+        device.addWidget(*widget);
         m_window.addDeviceWidget(widget);
     } else {
         qWarning() << "Can't find device widget with id=" << device.id();

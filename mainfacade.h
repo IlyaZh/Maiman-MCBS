@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QWidget>
+#include <QVector>
 #include <QScopedPointer>
 #include "mainwindow.h"
 #include "model/guifactory.h"

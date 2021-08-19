@@ -104,6 +104,14 @@ void Device::clearLink() {
     emit link(m_isLink);
 }
 
+void Device::addWidget(DeviceWidget& widget) {
+
+}
+
+void Device::removeWidget(DeviceWidget& widget) {
+
+}
+
 /*QVector<const DevCommand*>* Device::getCommands() {
     QVector<const DevCommand*>* vector = new QVector<const DevCommand*>(m_Commands.size());
 

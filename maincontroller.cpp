@@ -19,7 +19,6 @@ void MainController::eventHandle(const QString &event, const QVariant &value) {
         QVariantMap portSettings = value.toMap();
 
         if(network.isStart()) {
-            qDebug() << "Device stop";
             network.stop();
             device->close();
             device->deleteLater();

@@ -5,7 +5,7 @@
 #include "devcommand.h"
 #include "devicemodel.h"
 #include "model/device/devicepollrequest.h"
-//#include "model/device/devicewidget.h"
+#include "model/device/devicewidget.h"
 #include <QTimer>
 #include <QWidget>
 #include <QPointer>
@@ -33,6 +33,8 @@ public:
     bool isLink();
     void clearLink();
     static int counter;
+    void addWidget(DeviceWidget& widget);
+    void removeWidget(DeviceWidget& widget);
 //    QVector<const DevCommand*>* getCommands();
 //    void connectWidget(DeviceWidget* widget, int code);
 //    void disconnectWidget(DeviceWidget* widget, int code = -1);
@@ -49,7 +51,7 @@ private:
     QVector<DevicePollRequest*> m_cmdRequests;
     QVector<DevicePollRequest*>::iterator m_cmdReqItt;
     QVector<QPointer<Device>> m_childDevices;
-//    QVector<DeviceWidget*> m_deviceWidgets;
+    QVector<DeviceWidget*> m_deviceWidgets;
 
     void createCommandsRequests();
 

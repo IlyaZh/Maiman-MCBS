@@ -3,6 +3,25 @@
 #include <QDateTime>
 
 // ==============================================================================================
+const quint8 NewSoftProtocol::MaxAddress = 32;
+
+quint8 NewSoftProtocol::hiBYTE(quint16 value) {
+    return ((value >> 8) & 0xff);
+}
+
+quint8 NewSoftProtocol::loBYTE(quint16 value) {
+    return (value & 0xff);
+}
+
+NewSoftProtocol::NewSoftProtocol() {
+
+}
+
+bool NewSoftProtocol::isError() { return m_error; }
+
+QString NewSoftProtocol::errorString() { return m_errorString; }
+
+// ==============================================================================================
 
 void ISoftProtocolSubject::Attach(ISoftProtocolObserver* observer) {
     m_listeners.append(observer);

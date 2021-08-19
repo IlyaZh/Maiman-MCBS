@@ -7,8 +7,36 @@
 #include <QPointer>
 #include <QTimer>
 #include <QQueue>
+#include <QVector>
 #include "datasource.h"
 #include "interfaces/ProtocolObserverInterface.h"
+
+struct SoftProtocolData {
+    quint8 addr;
+    quint16 reg;
+    quint16 value;
+};
+
+class NewSoftProtocol {
+public:
+    using DataVector = QVector<SoftProtocolData>;
+    static const quint8 MaxAddress;
+    static quint8 hiBYTE(quint16 value);
+    static quint8 loBYTE(quint16 value);
+
+    NewSoftProtocol();
+    ~NewSoftProtocol() = default;
+    virtual QByteArray setDataValue(quint8 addr, quint16 reg, quint16 value) = 0;
+    virtual QByteArray getDataValue(quint8 addr, quint16 reg, quint8 count = 1) = 0;
+    virtual DataVector execute(const QByteArray& rxPackage, const QByteArray& lastTxPackage) = 0;
+    virtual bool needWaitForAnswer(const QByteArray& package) = 0;
+    bool isError();
+    QString errorString();
+
+protected:
+    QString m_errorString;
+    bool m_error = false;
+};
 
 
 class ISoftProtocolObserver {
