@@ -10,8 +10,8 @@
 #include <QWidget>
 #include <QPointer>
 
-class DeviceDelays;
-class DeviceModel;
+struct DeviceDelays;
+struct DeviceModel;
 class Device;
 class DevCommandBuilder;
 class DevCommand;
@@ -20,7 +20,8 @@ class Device : public QObject
 {
     Q_OBJECT
 public:
-    explicit Device(quint16 id, quint8 addr, QString name, DeviceDelays &delays, QVector<DevCommandBuilder*> &commandsBld, QObject *parent = nullptr);
+//    explicit Device(quint16 id, quint8 addr, const QString& name, const DeviceDelays &delays, const QVector<DevCommandBuilder*> &commandsBld, QObject *parent = nullptr);
+    explicit Device(quint8 addr, const DeviceModel& config, QObject *parent = nullptr);
     ~Device();
     void dataIncome(quint16 reg, quint16 value);
     void dataOutcome(quint16 reg, quint16 value);
@@ -44,8 +45,8 @@ private:
     bool m_isLink = false;
     quint8 m_addr = 0;
     quint16 m_Id;
-    QString m_Name;
-    DeviceDelays& m_Delays;
+    const QString m_Name;
+    const DeviceDelays& m_Delays;
     QWidget* m_deviceWidget = nullptr;
     QMap<quint16, DevCommand*> m_Commands;
     QVector<DevicePollRequest*> m_cmdRequests;

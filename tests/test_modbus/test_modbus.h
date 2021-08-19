@@ -1,10 +1,10 @@
-#ifndef TEST_MODBUS_H
-#define TEST_MODBUS_H
+#pragma once
 
 #include <QObject>
 #include <QPointer>
 #include <QTimer>
 #include <QQueue>
+//#include "network/protocols/modbusprotocol.h"
 #include "network/SoftProtocol.h"
 
 struct Package {
@@ -13,31 +13,24 @@ struct Package {
     quint16 value;
 };
 
-class Test_Modbus : public QObject, public ISoftProtocolObserver
+class Test_Modbus : public QObject
 {
     Q_OBJECT
 public:
     explicit Test_Modbus(QObject *parent = nullptr);
 private slots: // тесты
     void initTestCase(); // типа конструтора, запускается перед тестом, тоже показывается в тесте, т.е. можно проверять, инициализированны ли объекты?
-    void test_DataFromSource();
-    void test_DataToSource();
-    void cleanupTestCase(); // типа деструктора, запускается после, тут чистим всё лишнее
+    void test_GetData();
+    void test_SetData();
+    void test_SetZeroData();
+    void test_Execute();
+    void cleanupTestCase();
 
 private:
-    void update(quint8 addr, quint16 reg, quint16 value) override;
-    void iamReady() override;
-    void errorOccured(const QString& msg) override;
-    void timeoutSlot();
-
-    SoftProtocol* m_protocol = nullptr;
-    QPointer<IDataSource> m_dataSource;
-    QTimer timer;
-    int timeout;
+    QScopedPointer<SoftProtocol> m_protocol;
     bool waitForRx = false;
-    QQueue<Package> m_queue;
+    QVector<Package> m_queue;
+    QVector<QByteArray> m_result;
     Package lastPackage;
 
 };
-
-#endif // TEST_MODBUS_H

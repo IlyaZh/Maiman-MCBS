@@ -39,7 +39,6 @@ SOURCES += \
     network/networkmodel.cpp \
     network/protocols/modbusprotocol.cpp \
     tests/globaltest.cpp \
-    tests/test_modbus/datasource_mock.cpp \
     tests/test_modbus/test_modbus.cpp
 
 HEADERS += \
@@ -71,7 +70,6 @@ HEADERS += \
     network/networkmodel.h \
     network/protocols/modbusprotocol.h \
     tests/globaltest.h \
-    tests/test_modbus/datasource_mock.h \
     tests/test_modbus/test_modbus.h
 
 FORMS += \
@@ -83,6 +81,8 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+#SUBDIRS += tests
 
 RESOURCES += \
     resources.qrc

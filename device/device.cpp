@@ -3,20 +3,21 @@
 
 int Device::counter = 0;
 
-Device::Device(quint16 id, quint8 addr, QString name, DeviceDelays &delays, QVector<DevCommandBuilder*> &commandsBld, QObject *parent)
+//Device::Device(quint16 id, quint8 addr, const QString& name, const DeviceDelays &delays, const QVector<DevCommandBuilder*> &commandsBld, QObject *parent)
+Device::Device(quint8 addr, const DeviceModel& config, QObject *parent)
     : QObject(parent),
     m_addr(addr),
-    m_Id(id),
-    m_Name(name),
-    m_Delays(delays)
+    m_Id(config.id),
+    m_Name(config.name),
+    m_Delays(config.delays)
 {
-    for(DevCommandBuilder* cmdBldr : commandsBld) {
+    for(auto cmdBldr : config.commands) {
         m_Commands.insert(cmdBldr->code(), cmdBldr->makeCommand(this));
     }
 
     createCommandsRequests();
 
-    qDebug() << "Create device" << addr << name << id << "Counter =" << ++counter;
+    qDebug() << "Create device" << m_addr << m_Name << m_Id << "Counter =" << ++counter;
 
 //    timeoutTimer = new QTimer();
 //    timeoutTimer->singleShot(m_Delays->timeoutMs(), this, SLOT(timeout()));

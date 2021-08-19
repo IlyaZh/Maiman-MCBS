@@ -10,7 +10,7 @@ const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug заме�
 
 static int timeCount = 0;
 
-NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, NewSoftProtocol& protocol, MainFacade& facade, QObject *parent) :
+NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, MainFacade& facade, QObject *parent) :
     QObject(parent),
     ModelInterface(),
     m_deviceModelFactory(deviceModelFactory),
@@ -94,9 +94,6 @@ void NetworkModel::clear() {
         item->deleteLater();
     }
     m_devices.clear();
-
-
-
 }
 
 void NetworkModel::initDevice(quint8 addr, quint16 id)
@@ -151,7 +148,7 @@ void NetworkModel::readyRead() {
     QByteArray rxPacket = m_port->readAll();
     qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")  << "RX" << rxPacket.toHex(' ');
     m_timeoutTimer.stop();
-    NewSoftProtocol::DataVector result = m_protocol.execute(rxPacket, m_lastTxPackage);
+    SoftProtocol::DataVector result = m_protocol.execute(rxPacket, m_lastTxPackage);
     m_lastTxPackage.clear();
     for(auto item : result) {
         qDebug() << "READ" << item.addr << item.reg << item.value;

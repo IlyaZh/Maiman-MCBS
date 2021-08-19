@@ -69,11 +69,11 @@ int main(int argc, char *argv[])
     // Фасад для управления потоками данных от модели к представлению
     MainFacade mainFacade(w, guiFactory);
 
-    NewModbusProtocol modbus;
+    ModbusProtocol modbus;
     // Модель данных (подключается к источнику данных и забирает их)
     NetworkModel model(deviceFactory, modbus, mainFacade);
     model.setDelay(100);
-    model.setTimeout(1000);
+    model.setTimeout(500);
 
     // Контроллер главного окна, управляет потоком данных от GUI к моделии
     MainController mainCtrl(w, model, settings);

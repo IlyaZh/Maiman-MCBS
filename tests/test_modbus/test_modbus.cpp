@@ -1,59 +1,104 @@
 #include "test_modbus.h"
 #include <QtTest/QtTest>
-#include "datasource_mock.h"
 #include "network/protocols/modbusprotocol.h"
 
 Test_Modbus::Test_Modbus(QObject *parent) : QObject(parent)
 {
-    timeout = 1000;
+    m_queue.append({1, 10, 2});
+    m_queue.append({2, 3, 80});
+    m_queue.append({0, 1, 255});
 
-    m_queue.append({1, 1, 10});
+
+    QByteArray res;
+    res.append(static_cast<quint8>(0x01));
+    res.append(static_cast<quint8>(0x03));
+    res.append(static_cast<quint8>(0x00));
+    res.append(static_cast<quint8>(0x0A));
+    res.append(static_cast<quint8>(0x00));
+    res.append(static_cast<quint8>(0x02));
+    res.append(static_cast<quint8>(0xe4));
+    res.append(static_cast<quint8>(0x09));
+    m_result.append(res);
+
+    res.clear();
+    res.append(static_cast<quint8>(0x02));
+    res.append(static_cast<quint8>(0x06));
+    res.append(static_cast<quint8>(0x00));
+    res.append(static_cast<quint8>(0x03));
+    res.append(static_cast<quint8>(0x00));
+    res.append(static_cast<quint8>(0x50));
+    res.append(static_cast<quint8>(0x79));
+    res.append(static_cast<quint8>(0xc5));
+    m_result.append(res);
+
+    res.clear();
+    res.append(static_cast<quint8>(0x00));
+    res.append(static_cast<quint8>(0x06));
+    res.append(static_cast<quint8>(0x00));
+    res.append(static_cast<quint8>(0x01));
+    res.append(static_cast<quint8>(0x00));
+    res.append(static_cast<quint8>(0xff));
+    res.append(static_cast<quint8>(0x99));
+    res.append(static_cast<quint8>(0x9b));
+    m_result.append(res);
 }
 
 void Test_Modbus::initTestCase() {
-    m_dataSource = new DataSource_Mock(20, 300);
-    m_protocol = new  ModbusProtocol(m_dataSource, SoftProtocol::TimeoutDefault, 500);
-    QVERIFY2(!m_dataSource.isNull(), "Can't allocate DataSource_Mock object");
+    m_protocol.reset(new ModbusProtocol(this));
     QVERIFY2(m_protocol != nullptr, "Can't allocate ModbusProtocol object");
-
-    m_protocol->Attach(this);
-    m_protocol->setDevice(*m_dataSource);
 }
 
-void Test_Modbus::test_DataFromSource() {
-    lastPackage = m_queue.dequeue();
-    m_protocol->setDataValue(lastPackage.addr, lastPackage.reg, lastPackage.value);
-    waitForRx = true;
-    timer.singleShot(timeout, this, [=]() {
-        timeoutSlot();
-    });
+void Test_Modbus::test_GetData() {
+    int key = 0;
+    Package pack = m_queue.at(key);
+    QByteArray res = m_protocol->getDataValue(pack.addr, pack.reg, pack.value);
+    QVERIFY(res == m_result.at(key));
 }
 
-void Test_Modbus::test_DataToSource() {}
+void Test_Modbus::test_SetData() {
+    int key = 1;
+    Package pack = m_queue.at(key);
+    QByteArray res = m_protocol->setDataValue(pack.addr, pack.reg, pack.value);
+    QVERIFY(res == m_result.at(key));
+}
+
+void Test_Modbus::test_SetZeroData() {
+    int key = 2;
+    Package pack = m_queue.at(key);
+    QByteArray res = m_protocol->setDataValue(pack.addr, pack.reg, pack.value);
+    QVERIFY(res == m_result.at(key));
+}
+
+void Test_Modbus::test_Execute() {
+    QByteArray toDevice;
+    toDevice.append(static_cast<quint8>(0x03));
+    toDevice.append(static_cast<quint8>(0x03));
+    toDevice.append(static_cast<quint8>(0x00));
+    toDevice.append(static_cast<quint8>(0x40));
+    toDevice.append(static_cast<quint8>(0x00));
+    toDevice.append(static_cast<quint8>(0x02));
+    toDevice.append(static_cast<quint8>(0xc4));
+    toDevice.append(static_cast<quint8>(0x3d));
+
+    QByteArray fromDevice;
+    fromDevice.append(static_cast<quint8>(0x03));
+    fromDevice.append(static_cast<quint8>(0x03));
+    fromDevice.append(static_cast<quint8>(0x04));
+    fromDevice.append(static_cast<quint8>(0x00));
+    fromDevice.append(static_cast<quint8>(0x00));
+    fromDevice.append(static_cast<quint8>(0x00));
+    fromDevice.append(static_cast<quint8>(0x00));
+    fromDevice.append(static_cast<quint8>(0xD9));
+    fromDevice.append(static_cast<quint8>(0xF3));
+
+    ModbusProtocol::DataVector result = m_protocol->execute(fromDevice, toDevice);
+    ModbusProtocol::DataVector temp;
+    temp.push_back({3, 64, 0});
+    temp.push_back({3, 65, 0});
+    QVERIFY2(temp==result, "Data isn't equals!");
+}
 
 void Test_Modbus::cleanupTestCase() {
-    delete m_protocol;
-    m_protocol = nullptr;
-    delete m_dataSource;
-    m_dataSource = nullptr;
-    QVERIFY2(m_protocol == nullptr, "Modbus object wasn't deleted successfull!");
-    QVERIFY2(m_dataSource.isNull(), "DataSource object wasn't deleted successfull!");
-}
-
-// private methods
-
-void Test_Modbus::update(quint8 addr, quint16 reg, quint16 value) {
-    QVERIFY((addr == lastPackage.addr && reg == lastPackage.reg && value == lastPackage.value));
-}
-
-void Test_Modbus::iamReady() {
-
-}
-
-void Test_Modbus::errorOccured(const QString &msg) {
-
-}
-
-void Test_Modbus::timeoutSlot() {
-    waitForRx = false;
+    m_protocol.reset();
+    QVERIFY2(m_protocol == nullptr, "Can't delete ModbusProtocol object");
 }

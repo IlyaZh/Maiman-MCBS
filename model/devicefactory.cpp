@@ -79,7 +79,7 @@ void DeviceFactory::threadError(const QString& str) {
 // private methods
 DeviceModel* DeviceFactory::findModel(quint16 id) {
     for(auto device : m_DeviceModels) {
-        if(device->id() == id) {
+        if(device->id == id) {
             return device;
         }
     }
@@ -146,8 +146,7 @@ QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(const TreeItem& it
 DeviceModel* DeviceFactory::parseDevice(const TreeItem& item) {
     quint16 id = 0;
     QString name = "";
-    DeviceDelays *delays = nullptr;
-    QVector<DevCommandBuilder*> *cmdBuilders = nullptr;
+    QVector<DevCommandBuilder*> cmdBuilders;
     quint16 stopDelayMs = DeviceDelays::COM_STOP_DELAY_MS;
     quint16 minCommandDelayMs = DeviceDelays::COM_COMMAND_MIN_SEND_DELAY;
     quint16 maxCommandDelayMs = DeviceDelays::COM_COMMAND_MAX_SEND_DELAY;
@@ -181,18 +180,18 @@ DeviceModel* DeviceFactory::parseDevice(const TreeItem& item) {
 
         if(child.name() == "Commands") {
             cmdBuilders = parseCommands(child);
-            if(!cmdBuilders->isEmpty()) hasCommands = true;
+            if(!cmdBuilders.isEmpty()) hasCommands = true;
         }
     }
     if(hasCommands && hasId && hasName) {
-        delays = new DeviceDelays(stopDelayMs, minCommandDelayMs, maxCommandDelayMs);
+        DeviceDelays delays = DeviceDelays(stopDelayMs, minCommandDelayMs, maxCommandDelayMs);
         return new DeviceModel(id, name, delays, cmdBuilders);
     } else {
         return nullptr;
     }
 }
 
-QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(const TreeItem& item) {
+const QVector<DevCommandBuilder*> DeviceFactory::parseCommands(const TreeItem& item) {
     quint16 code = 0;
     QString unit = "";
     double divider = 1;
@@ -201,7 +200,7 @@ QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(const TreeItem& item) 
     bool isSigned = false;
     bool isTemperature = false;
 
-    QVector<DevCommandBuilder*>* list = new QVector<DevCommandBuilder*>();
+    QVector<DevCommandBuilder*> list = QVector<DevCommandBuilder*>();
 
     bool hasCode = false;
 
@@ -240,12 +239,12 @@ QVector<DevCommandBuilder*>* DeviceFactory::parseCommands(const TreeItem& item) 
         }
 
         if(hasCode) {
-            list->append(new DevCommandBuilder(code, unit, divider, tol, interval, isSigned, isTemperature));
+            list.append(new DevCommandBuilder(code, unit, divider, tol, interval, isSigned, isTemperature));
         }
     }
 
 
-    std::sort(list->begin(), list->end(), sortCmdsByCode); // TODO: test sorting
+    std::sort(list.begin(), list.end(), sortCmdsByCode); // TODO: test sorting
 
     return list;
 }

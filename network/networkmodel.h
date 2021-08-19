@@ -29,7 +29,7 @@ class NetworkModel :
 public:
     static const quint16 IDENTIFY_REG_ID_DEFAULT;
     static const quint16 TIMEOUT_MS;
-    explicit NetworkModel(DeviceFactory &deviceModelFactory, NewSoftProtocol& protocol, MainFacade& facade, QObject *parent = nullptr);
+    explicit NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, MainFacade& facade, QObject *parent = nullptr);
     ~NetworkModel();
     void setDelay(int delay) override;
     void setTimeout(int timeout) override;
@@ -52,7 +52,7 @@ private:
     DeviceFactory& m_deviceModelFactory;
     QPointer<IDataSource> m_port;
     MainFacade& m_facade;
-    NewSoftProtocol& m_protocol;
+    SoftProtocol& m_protocol;
     QMap<quint8, Device*> m_devices;
     bool m_bIsStart = false;
     bool m_portIsBusy = false;
