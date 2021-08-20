@@ -67,9 +67,9 @@ const quint16 COM_COMMAND_SEND_DELAY = 150; // ms
 const QString DEFAULT_LOG_FILENAME = "consoleLog " + QDate::currentDate().toString("dd.MM.yyyy") + ".log";
 const QString DEFAULT_LOG_FILEPATH = QDir::currentPath()+"/logs/";
 
-const int DEFAULT_DIGITS_AFTER_POINT = 2;
-#define DEFAULT_FORMAT_FOR_PARAMETERS 'f', DEFAULT_DIGITS_AFTER_POINT
-const char DOUBLE_FORMAT = 'f';
+//const int DEFAULT_DIGITS_AFTER_POINT = 2;
+//#define DEFAULT_FORMAT_FOR_PARAMETERS 'f', DEFAULT_DIGITS_AFTER_POINT
+//const char DOUBLE_FORMAT = 'f';
 
 //enum deviceStatusMask {START_STOP_MASK = 0x2, CURRENT_EXT_INT_MASK = 0x4, START_EXT_INT_MASK = 0x10, BLOCK_THERMO_MASK = 0x40, BLOCK_USE_IGNORE_MASK = 0x80};
 

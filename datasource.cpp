@@ -10,7 +10,6 @@ DataSource::DataSource(QObject* parent) : IDataSource(parent)
 }
 
 DataSource::~DataSource() {
-    qDebug() << "DataSOurce smbd kill me!";
     if(m_currentDevice != nullptr) {
         m_currentDevice->disconnect();
 //        m_serialPort->deleteLater();
@@ -48,7 +47,6 @@ bool DataSource::open() {
             m_tcpSocket->connectToHost(m_host.toString(), m_port.toInt());
             m_currentDevice = m_tcpSocket;
             state = m_tcpSocket->isOpen();
-            qDebug() << "DataSource open " << state;
         }
 
         connect(m_currentDevice, SIGNAL(bytesWritten(qint64)), this, SIGNAL(bytesWritten(qint64)));
@@ -66,7 +64,6 @@ void DataSource::close() {
         m_currentDevice->disconnect();
         m_currentDevice->close();
         emit deviceOpen(m_currentDevice->isOpen());
-        qDebug() << "DataSource::close()";
     }
 }
 

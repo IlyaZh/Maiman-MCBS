@@ -2,28 +2,29 @@
 #include <QtMath>
 
 // DevCommandBuilder class
-DevCommandBuilder::DevCommandBuilder(quint16 code, QString unit, double divider, quint8 tol, uint interval, bool isSigned, bool isTemperature)
+DeviceConfig::DeviceConfig(quint16 code, QString unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature) :
+    code(code),
+    unit(unit),
+    divider(divider),
+    tolerance(tolerance),
+    isSigned(isSigned),
+    isTemperature(isTemperature),
+    interval(interval)
 {
-    m_code = code;
-    m_unit = unit;
-    m_divider = divider;
-    m_tol = tol;
-    m_isSigned = isSigned;
-    m_isTemperature = isTemperature;
-    m_interval = interval;
+
 }
 
-DevCommand* DevCommandBuilder::makeCommand(Device* pDevice) {
-    return new DevCommand(pDevice, m_code, m_unit, m_divider, m_tol, m_interval, m_isSigned, m_isTemperature);
+DevCommand* DeviceConfig::makeCommand(Device* pDevice) {
+    return new DevCommand(pDevice, *this);
 }
 
-quint16 DevCommandBuilder::code() const {
-    return m_code;
-}
+//quint16 DeviceConfig::code() const {
+//    return config.code;
+//}
 
-uint DevCommandBuilder::interval() const {
-    return m_interval;
-}
+//uint DeviceConfig::interval() const {
+//    return config.interval;
+//}
 
 // DevCommand class
 // static methods
@@ -37,62 +38,55 @@ double DevCommand::convertFarToCel(double value) {
 }
 
 // public methods
-DevCommand::DevCommand(Device* device, quint16 code, QString unit, double divider, quint8 tol, uint interval, bool isSigned, bool isTemperature, QObject *parent) :
+DevCommand::DevCommand(Device* device, const DeviceConfig& conf, QObject *parent) :
     QObject(parent),
-    m_device(device),
-    m_code(code),
-    m_unit(unit),
-    m_tol(tol),
-    m_divider(divider),
-    m_isSigned(isSigned),
-    m_isTemperature(isTemperature)
+    config(conf),
+    m_device(device)
 {
     m_rawValue = 0;
-
-    m_unit.replace("(deg)", QString('\370'), Qt::CaseInsensitive);
 }
 
-void DevCommand::execute(int value) {
-    quint16 inValue = 0;
-    if(isSigned()) {
-        inValue = (quint16) value;
-    } else {
-        inValue = value;
-    }
+//void DevCommand::execute(int value) {
+//    quint16 inValue = 0;
+//    if(isSigned()) {
+//        inValue = (quint16) value;
+//    } else {
+//        inValue = value;
+//    }
 
-    m_device->dataOutcome(m_code, inValue);
-}
+//    m_device->dataOutcome(config.code, inValue);
+//}
 
-void DevCommand::execute(double value) {
-    quint16 inValue = qRound(value*m_divider);
-    if(isSigned()) {
-        inValue = static_cast<quint16>((qint16) qRound(value*m_divider));
-    } else {
-        inValue = static_cast<quint16>(qRound(value*m_divider));
-    }
+//void DevCommand::execute(double value) {
+//    quint16 inValue = qRound(value*config.divider);
+//    if(isSigned()) {
+//        inValue = static_cast<quint16>((qint16) qRound(value*config.divider));
+//    } else {
+//        inValue = static_cast<quint16>(qRound(value*config.divider));
+//    }
 
-    m_device->dataOutcome(m_code, inValue);
-}
+//    m_device->dataOutcome(config.code, inValue);
+//}
 
-quint16 DevCommand::code() {
-    return m_code;
+/*quint16 DevCommand::code() {
+    return config.code;
 }
 
 QString DevCommand::unit() {
-    return m_unit;
+    return config.unit;
 }
 
 double DevCommand::divider() {
-    return m_divider;
+    return config.divider;
 }
 
 quint8 DevCommand::tolerance() {
-    return m_tol;
+    return config.tolerance;
 }
 
 uint DevCommand::interval() {
-    return m_interval;
-}
+    return config.interval;
+}*/
 
 //uint DevCommand::stepInterval() {
 //    return m_stepInterval;
@@ -100,7 +94,7 @@ uint DevCommand::interval() {
 
 //bool DevCommand::nextInterval() {
 //    m_stepInterval++;
-//    bool state = (m_stepInterval == m_interval);
+//    bool state = (m_stepInterval == config.interval);
 
 //    if(state) {
 //        m_stepInterval = 0;
@@ -109,31 +103,40 @@ uint DevCommand::interval() {
 //}
 
 bool DevCommand::isSigned() {
-    return m_isSigned;
+    return config.isSigned;
+}
+
+double DevCommand::value() {
+    return m_value;
 }
 
 
 // public slots
 void DevCommand::setRawValue(quint16 value) {
-    QVariant variant(value);
+    m_rawValue = value;
+
+    if(isSigned()) {
+        double d = static_cast<double>((int16_t) m_rawValue);
+        m_value = qRound(d/config.divider*qPow(10,config.tolerance)-0.5)/qPow(10,config.tolerance);
+    } else {
+        double d = static_cast<double>(m_rawValue);
+        m_value = qRound(d/config.divider*qPow(10,config.tolerance)-0.5)/qPow(10,config.tolerance);
+    }
+    qDebug() << config.code << "value=" << m_value;
+
+
+    /*QVariant variant(value);
     m_rawValue = value;
 
     int iValue = (isSigned()) ? static_cast<qint16>(variant.toInt()) : static_cast<quint16>(variant.toUInt());
     double dValue = (static_cast<double>(iValue) / divider());
-    QString tempStr;
-    tempStr.number(dValue, 'g', tolerance());
+    double power = qPow(10, config.tolerance);;
+    dValue *= power;
+    dValue = qRound(dValue);
+    dValue /= power;
+    m_value = dValue;*/
+//    QString tempStr;
+//    tempStr.number(dValue, 'g', tolerance());
 
-//    emit newValue(m_code, tempStr.toDouble());
-}
-
-// private methods
-double DevCommand::value() {
-
-    if(isSigned()) {
-        double d = static_cast<double>((int16_t) m_rawValue);
-        return qRound(d/m_divider*qPow(10,m_tol)-0.5)/qPow(10,m_tol);
-    } else {
-        double d = static_cast<double>(m_rawValue);
-        return qRound(d/m_divider*qPow(10,m_tol)-0.5)/qPow(10,m_tol);
-    }
+//    emit newValue(config.code, tempStr.toDouble());
 }

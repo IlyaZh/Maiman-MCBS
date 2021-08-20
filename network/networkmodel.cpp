@@ -8,8 +8,6 @@
 const quint16 NetworkModel::TIMEOUT_MS = 50*10;
 const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug замени
 
-static int timeCount = 0;
-
 NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, MainFacade& facade, QObject *parent) :
     QObject(parent),
     ModelInterface(),
@@ -124,11 +122,9 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
 void NetworkModel::tryToSend() {
     if(!m_portIsBusy) {
         m_portIsBusy = true;
-        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "tryToSend() send delay started";
         m_delayTimer.setInterval(m_delayMs);
         m_delayTimer.start();
     } else {
-        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "portIsBusy == true";
     }
 
 }
@@ -146,7 +142,6 @@ void NetworkModel::dataOutcome(quint8 addr, quint16 reg, quint16 value)
 // private slots
 void NetworkModel::readyRead() {
     QByteArray rxPacket = m_port->readAll();
-    qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz")  << "RX" << rxPacket.toHex(' ');
     m_timeoutTimer.stop();
     SoftProtocol::DataVector result = m_protocol.execute(rxPacket, m_lastTxPackage);
     m_lastTxPackage.clear();
@@ -166,13 +161,11 @@ void NetworkModel::readyRead() {
 
 void NetworkModel::bytesWritten(qint64 bytes) {
     m_bytesWritten += bytes;
-    qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << m_bytesWritten << m_lastTxPackage.size();
     if(m_bytesWritten >= m_lastTxPackage.size()) {
         m_bytesWritten = 0;
         if(m_protocol.needWaitForAnswer(m_lastTxPackage)) {
             m_timeoutTimer.setInterval(m_timeoutMs);
             m_timeoutTimer.start();
-            qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "Start timeout timer" << timeCount;
         } else {
             tryToSend();
         }
@@ -185,7 +178,6 @@ void NetworkModel::errorOccured(const QString& msg) {
 
 void NetworkModel::sendTimeout() {
     m_timeoutTimer.stop();
-    qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "timeout" << timeCount++;
     m_portIsBusy = false;
     m_lastTxPackage.clear();
     tryToSend();
@@ -195,21 +187,17 @@ void NetworkModel::delayTimeout() {
     m_delayTimer.stop();
     if(!m_port.isNull()) {
         if (!m_priorityQueue.isEmpty()) {
-            qDebug()  << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "m_priorityQueue.size()" << m_priorityQueue.size();
             m_lastTxPackage = m_priorityQueue.dequeue();
         } else if (!m_queue.isEmpty()) {
             m_lastTxPackage = m_queue.dequeue();
-            qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "m_queue.size()" << m_queue.size();
         } else {
-            qDebug()  << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "Device request";
             // poll devices state
             for(auto dev : m_devices) {
                 DevicePollRequest* request = dev->nextPollRequest();
                 if(request != nullptr) {
-                    m_queue.enqueue(m_protocol.getDataValue(request->addr(), request->code(), request->count()));
+                    m_queue.enqueue(m_protocol.getDataValue(request->addr, request->code, request->count));
                 }
             }
-            qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "m_queue.size()" << m_queue.size();
             //            tryToSend();
             delayTimeout();
             return;

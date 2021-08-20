@@ -7,6 +7,8 @@
 #include "model/device/devicewidget.h"
 //#include "maimanspinbox.h"
 
+struct Control;
+
 namespace Ui {
 class ParameterWidget;
 }
