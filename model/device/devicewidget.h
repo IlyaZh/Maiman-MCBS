@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QMap>
+#include "model/device/parameterwidget.h"
+
+class ParameterWidget;
 
 struct Content {
     QString fileName;
@@ -86,20 +89,20 @@ class DeviceWidget : public QWidget
 public:
     explicit DeviceWidget(const DeviceWidgetDesc& description, QWidget *parent = nullptr);
     ~DeviceWidget();
-    QString devName();
 
 public slots:
-    virtual void setValue(quint16 reg, double value);
-    virtual void setValue(quint16 reg, int value);
+    void setValue(quint16 reg, double value);
+//    void setValue(quint16 reg, int value);
 
 signals:
     void dataChanged(quint16 reg, double value);
-    void dataChanged(quint16 reg, int value);
+//    void dataChanged(quint16 reg, int value);
 
 private:
     Ui::DeviceWidget *ui;
     const DeviceWidgetDesc& description;
     QMap<quint16, QVariant> m_values;
+    QVector<ParameterWidget*> m_paramWidgets;
 };
 
 #endif // DEVICEWIDGET_H

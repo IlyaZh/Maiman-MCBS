@@ -1,5 +1,6 @@
 #include "devicewidget.h"
 #include "ui_devicewidget.h"
+#include <QDebug>
 
 DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, QWidget *parent) :
     QWidget(parent),
@@ -17,10 +18,12 @@ DeviceWidget::~DeviceWidget()
     delete ui;
 }
 
-QString DeviceWidget::devName() {
-//    return m_device->name();
+
+void DeviceWidget::setValue(quint16 reg, double value) {
+    qDebug() << "DeviceWidget" << reg << value;
+    for (auto paramWid : m_paramWidgets) {
+        paramWid->setValue(reg, value);
+    }
 }
 
-void DeviceWidget::setValue(quint16 reg, double value) {}
-
-void DeviceWidget::setValue(quint16 reg, int value) {}
+//void DeviceWidget::setValue(quint16 reg, int value) {}

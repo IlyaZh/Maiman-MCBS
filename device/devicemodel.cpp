@@ -1,6 +1,6 @@
 #include "devicemodel.h"
 
-DeviceModel::DeviceModel(quint16 id, const QString& name, const DeviceDelays &delays, const QVector<DevCommandBuilder*> &cmdBuilders) :
+DeviceModel::DeviceModel(quint16 id, const QString& name, const DeviceDelays &delays, const QVector<DeviceConfig*> &cmdBuilders) :
     id(id),
     name(name),
     delays(delays),

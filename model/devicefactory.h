@@ -33,7 +33,7 @@ private:
     QString parseBaudRate(const TreeItem& item);
     QVector<QPair<uint, QString>> parseCommonDevId(const TreeItem& item);
     DeviceModel* parseDevice(const TreeItem& item);
-    const QVector<DevCommandBuilder*> parseCommands(const TreeItem& item);
+    const QVector<DeviceConfig*> parseCommands(const TreeItem& item);
 
 
     QPointer<ParserWorker> m_parseWorker;

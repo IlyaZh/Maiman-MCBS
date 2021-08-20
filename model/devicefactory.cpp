@@ -2,8 +2,8 @@
 #include <QDebug>
 #include "../device/devcommand.h"
 
-bool sortCmdsByCode(const DevCommandBuilder* p1, const DevCommandBuilder* p2) {
-    return p1->code() < p2->code();
+bool sortCmdsByCode(const DeviceConfig* p1, const DeviceConfig* p2) {
+    return p1->code < p2->code;
 }
 
 DeviceFactory::DeviceFactory(QString fileName, AppSettings& settings, QObject* parent) :
@@ -146,7 +146,7 @@ QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(const TreeItem& it
 DeviceModel* DeviceFactory::parseDevice(const TreeItem& item) {
     quint16 id = 0;
     QString name = "";
-    QVector<DevCommandBuilder*> cmdBuilders;
+    QVector<DeviceConfig*> cmdBuilders;
     quint16 stopDelayMs = DeviceDelays::COM_STOP_DELAY_MS;
     quint16 minCommandDelayMs = DeviceDelays::COM_COMMAND_MIN_SEND_DELAY;
     quint16 maxCommandDelayMs = DeviceDelays::COM_COMMAND_MAX_SEND_DELAY;
@@ -191,7 +191,7 @@ DeviceModel* DeviceFactory::parseDevice(const TreeItem& item) {
     }
 }
 
-const QVector<DevCommandBuilder*> DeviceFactory::parseCommands(const TreeItem& item) {
+const QVector<DeviceConfig*> DeviceFactory::parseCommands(const TreeItem& item) {
     quint16 code = 0;
     QString unit = "";
     double divider = 1;
@@ -200,7 +200,7 @@ const QVector<DevCommandBuilder*> DeviceFactory::parseCommands(const TreeItem& i
     bool isSigned = false;
     bool isTemperature = false;
 
-    QVector<DevCommandBuilder*> list = QVector<DevCommandBuilder*>();
+    QVector<DeviceConfig*> list = QVector<DeviceConfig*>();
 
     bool hasCode = false;
 
@@ -219,6 +219,7 @@ const QVector<DevCommandBuilder*> DeviceFactory::parseCommands(const TreeItem& i
             if(child.name() == "unit") {
                 unit = child.value().toString();
                 unit.replace("(deg)", QString::fromRawData(new QChar('\260'), 1));
+//                unit.replace("(deg)", QString('\370'), Qt::CaseInsensitive); // TODO: What's the difference????
             }
 
             if(child.name() == "divider")
@@ -239,7 +240,7 @@ const QVector<DevCommandBuilder*> DeviceFactory::parseCommands(const TreeItem& i
         }
 
         if(hasCode) {
-            list.append(new DevCommandBuilder(code, unit, divider, tol, interval, isSigned, isTemperature));
+            list.append(new DeviceConfig(code, unit, divider, tol, interval, isSigned, isTemperature));
         }
     }
 
