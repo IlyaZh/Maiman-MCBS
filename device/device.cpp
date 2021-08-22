@@ -48,15 +48,6 @@ void Device::dataIncome(quint16 reg, quint16 value) {
     }
 }
 
-void Device::dataOutcome(quint16 reg, quint16 value) {
-//    DevCommand* devCmd = m_Commands->value(reg, nullptr);
-//    if(devCmd != nullptr) {
-//        quint16 rawValue = devCmd->getRawFromValue(value);
-        emit dataToModel(m_addr, reg, value);
-//    }
-
-}
-
 
 void Device::destroy() {
     this->disconnect();
@@ -99,7 +90,8 @@ void Device::clearLink() {
 void Device::addWidget(DeviceWidget& widget) {
     if(!m_deviceWidgets.contains(&widget)) {
         m_deviceWidgets.append(&widget);
-//        connect(m_deviceWidgets, &DeviceWidget::dataChanged, this, &);
+        connect(&widget, &DeviceWidget::dataChanged, this, &Device::dataFromWidget);
+        widget.setAddress(m_addr);
     }
 }
 
@@ -157,7 +149,7 @@ void Device::createCommandsRequests() {
     DevCommand* prevCmd = nullptr;
     bool bHasCommands = false;
 
-    QMapIterator<quint16, DevCommand*> i(m_Commands);
+    QMapIterator<uint, DevCommand*> i(m_Commands);
     while(i.hasNext()) {
         bHasCommands = true;
         if(cmd != nullptr)
@@ -190,6 +182,13 @@ void Device::createCommandsRequests() {
 }
 
 // private slots
+
+void Device::dataFromWidget(quint16 reg, double value) {
+    auto cmd = m_Commands.value(reg, nullptr);
+    if(cmd != nullptr) {
+         emit dataToModel(m_addr, reg, cmd->getRawFromValue(value));
+    }
+}
 
 //void Device::dataFromWidget(quint16 reg, double value) {
 //    qDebug() << "dataFromWidget" << reg << value;

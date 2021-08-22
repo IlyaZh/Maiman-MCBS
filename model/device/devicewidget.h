@@ -89,9 +89,11 @@ class DeviceWidget : public QWidget
 public:
     explicit DeviceWidget(const DeviceWidgetDesc& description, QWidget *parent = nullptr);
     ~DeviceWidget();
+    void setAddress(int addr);
 
 public slots:
     void setValue(quint16 reg, double value);
+    void parameterChanged(quint16 reg, double value);
 //    void setValue(quint16 reg, int value);
 
 signals:

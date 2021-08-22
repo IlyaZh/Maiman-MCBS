@@ -37,12 +37,13 @@ public:
 //    uint interval();
 //    uint stepInterval();
 //    bool nextInterval();
-    virtual bool isSigned();
+    quint16 getRawFromValue(double value);
+    bool isSigned();
     double value();
 
 
 signals:
-    void newValue(quint16 code, double value);
+//    void newValue(quint16 code, double value);
 //    void newValue(quint16 code, int value);
 
 public slots:

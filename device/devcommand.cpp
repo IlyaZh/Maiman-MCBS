@@ -102,6 +102,10 @@ uint DevCommand::interval() {
 //    return state;
 //}
 
+quint16 DevCommand::getRawFromValue(double value) {
+    return static_cast<quint16>(qRound(value*config.divider-0.5));
+}
+
 bool DevCommand::isSigned() {
     return config.isSigned;
 }
@@ -122,7 +126,6 @@ void DevCommand::setRawValue(quint16 value) {
         double d = static_cast<double>(m_rawValue);
         m_value = qRound(d/config.divider*qPow(10,config.tolerance)-0.5)/qPow(10,config.tolerance);
     }
-    qDebug() << config.code << "value=" << m_value;
 
 
     /*QVariant variant(value);

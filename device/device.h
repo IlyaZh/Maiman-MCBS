@@ -24,7 +24,6 @@ public:
     explicit Device(quint8 addr, const DeviceModel& config, QObject *parent = nullptr);
     ~Device();
     void dataIncome(quint16 reg, quint16 value);
-    void dataOutcome(quint16 reg, quint16 value);
     void setWidget(QWidget& widget);
     void destroy();
     QString name();
@@ -42,11 +41,11 @@ public:
 private:
 //    QTimer* timeoutTimer;
     bool m_isLink = false;
-    quint8 m_addr = 0;
-    quint16 m_Id;
+    int m_addr = 0;
+    int m_Id;
     const QString m_Name;
     const DeviceDelays& m_Delays;
-    QMap<quint16, DevCommand*> m_Commands;
+    QMap<uint, DevCommand*> m_Commands;
     QVector<DevicePollRequest*> m_cmdRequests;
     QVector<DevicePollRequest*>::iterator m_cmdReqItt;
     QVector<Device*> m_childDevices;
@@ -56,6 +55,7 @@ private:
 
 private slots:
 //    void dataFromWidget(quint16 reg, double value);
+    void dataFromWidget(quint16 reg, double value);
 //    void timeout();
 
 signals:
