@@ -11,6 +11,9 @@ DataSource::DataSource(QObject* parent) : IDataSource(parent)
 
 DataSource::~DataSource() {
     if(m_currentDevice != nullptr) {
+        if(m_serialPort->isOpen()) {
+            m_serialPort->close();
+        }
         m_currentDevice->disconnect();
 //        m_serialPort->deleteLater();
 //        m_tcpSocket->deleteLater();

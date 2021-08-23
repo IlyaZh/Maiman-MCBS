@@ -14,18 +14,17 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Addr</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
+   <item row="0" column="1" rowspan="2">
+    <layout class="QHBoxLayout" name="paramLayout"/>
    </item>
-   <item row="1" column="0">
+   <item row="0" column="0" rowspan="2">
     <widget class="QLabel" name="addrLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="font">
       <font>
        <pointsize>10</pointsize>
@@ -40,9 +39,6 @@
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-   </item>
-   <item row="0" column="1" rowspan="2">
-    <layout class="QHBoxLayout" name="paramLayout"/>
    </item>
   </layout>
  </widget>

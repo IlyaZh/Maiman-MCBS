@@ -9,6 +9,22 @@ ParameterWidget::ParameterWidget(const Control &settings, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    if(m_settings.max == 0) {
+        ui->maxLabel->setVisible(false);
+    }
+
+    if(m_settings.min == 0) {
+        ui->minLabel->setVisible(false);
+    }
+
+    if(m_settings.real == 0) {
+        ui->realLabel->setVisible(false);
+    }
+
+    if(m_settings.value == 0) {
+        ui->valueLabel->setVisible(false);
+    }
+
 
     ui->nameLabel->setText(m_settings.name);
 }

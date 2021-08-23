@@ -146,6 +146,6 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         m_workWidgets.append(widget);
         int count = m_workFieldLayout->layout()->count();
         qDebug() << "addToWorkField, widgets count = " << count;
-        m_workFieldLayout->addWidget(widget, count / 10, count % 10);
+        m_workFieldLayout->addWidget(widget, count, 0);
     }
 }
