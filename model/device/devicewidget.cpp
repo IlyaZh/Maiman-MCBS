@@ -2,6 +2,8 @@
 #include "ui_devicewidget.h"
 #include <QDebug>
 
+#include "model/device/parameterwidget.h"
+
 DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DeviceWidget),

@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QMap>
-#include "model/device/parameterwidget.h"
 
 class ParameterWidget;
 
@@ -11,6 +10,14 @@ struct Content {
     QString fileName;
     QString description;
     QString link;
+};
+
+struct Control {
+    quint16 min = 0;
+    quint16 max = 0;
+    quint16 value = 0;
+    quint16 real = 0;
+    QString name;
 };
 
 struct Limit {
@@ -26,14 +33,6 @@ struct CalibrationKoef {
     quint16 code;
     double min;
     double max;
-    QString name;
-};
-
-struct Control {
-    quint16 min = 0;
-    quint16 max = 0;
-    quint16 value = 0;
-    quint16 real = 0;
     QString name;
 };
 

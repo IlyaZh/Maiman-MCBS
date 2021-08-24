@@ -1,5 +1,6 @@
 #include "parameterwidget.h"
 #include "ui_parameterwidget.h"
+#include "model/device/devicewidget.h"
 #include <QDebug>
 
 ParameterWidget::ParameterWidget(const Control &settings, QWidget *parent) :

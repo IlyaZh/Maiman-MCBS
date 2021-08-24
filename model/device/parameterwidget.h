@@ -4,8 +4,6 @@
 #include <QWidget>
 #include <QMap>
 #include <QLabel>
-#include "model/device/devicewidget.h"
-//#include "maimanspinbox.h"
 
 struct Control;
 
