@@ -7,9 +7,9 @@
 class Device;
 class DevCommand;
 
-struct DeviceConfig {
-    explicit DeviceConfig(quint16 code, QString unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature);
-    DevCommand* makeCommand(Device* pDevice);
+struct CommandSettings {
+    explicit CommandSettings(quint16 code, QString unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature);
+//    DevCommand* makeCommand(Device* pDevice);
     quint16 code;
     QString unit;
     double divider = 1;
@@ -26,8 +26,8 @@ public:
     static double convertCelToFar(double value);
     static double convertFarToCel(double value);
 
-    explicit DevCommand(Device* device, const DeviceConfig& conf, QObject *parent = nullptr);
-    const DeviceConfig& config;
+    explicit DevCommand(Device* device, const CommandSettings& conf, QObject *parent = nullptr);
+    const CommandSettings config;
 //    virtual void execute(int value);
 //    virtual void execute(double value);
 //    quint16 code();
@@ -42,11 +42,11 @@ public:
     double value();
 
 
-signals:
+//signals:
 //    void newValue(quint16 code, double value);
 //    void newValue(quint16 code, int value);
 
-public slots:
+//public slots:
     void setRawValue(quint16 value);
 
 

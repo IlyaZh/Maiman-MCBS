@@ -1,5 +1,6 @@
 #include "parserworker.h"
 #include <QDebug>
+#include <QScopedPointer>
 
 ParserWorker::ParserWorker(QString fileName, ParserType type, QObject *parent) :
     QObject(parent),
@@ -17,7 +18,7 @@ TreeItem* ParserWorker::data() {
 }
 
 void ParserWorker::process() {
-    QFile* file = new QFile(m_fileName);
+    QScopedPointer<QFile> file(new QFile(m_fileName));
     if(file->exists()) {
         if(file->open(QIODevice::ReadOnly)) {
 
@@ -34,7 +35,7 @@ void ParserWorker::process() {
             if(m_parser) {
                 if(m_parser->start()) {
                     m_data = m_parser->data();
-                    m_parser->deleteLater();
+                    m_parser.reset();
                     emit finished();
                 } else {
                     QString errorString = QString("Parsing erorr in file %1! \"%2\"").arg(file->fileName()).arg(m_parser->errorString());
@@ -50,7 +51,6 @@ void ParserWorker::process() {
        QString errorString = QString("File %1 is not exists!").arg(m_fileName);
        emit errorOccured(errorString);
     }
-    file->deleteLater();
 }
 
 void ParserWorker::stop() {

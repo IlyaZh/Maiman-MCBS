@@ -50,7 +50,7 @@ private slots:
 
 private:
     DeviceFactory& m_deviceModelFactory;
-    QPointer<IDataSource> m_port;
+    QScopedPointer<IDataSource> m_port;
     MainFacade& m_facade;
     SoftProtocol& m_protocol;
     QMap<quint8, Device*> m_devices;

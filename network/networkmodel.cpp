@@ -42,15 +42,15 @@ void NetworkModel::setTimeout(int timeout) {
 
 void NetworkModel::start(IDataSource& networkDevice)
 {
-    if(m_port != nullptr) {
+    if(!m_port.isNull()) {
         m_port->disconnect();
-        m_port->deleteLater();
+//        m_port->deleteLater();
     }
-    m_port = &networkDevice;
-    connect(m_port, &IDataSource::bytesWritten, this, &NetworkModel::bytesWritten);
-    connect(m_port, &IDataSource::readyRead, this, &NetworkModel::readyRead);
-    connect(m_port, &IDataSource::errorOccured, this, &NetworkModel::errorOccured);
-    connect(m_port, &IDataSource::deviceOpen, this, [=](bool state){
+    m_port.reset(&networkDevice);
+    connect(m_port.get(), &IDataSource::bytesWritten, this, &NetworkModel::bytesWritten);
+    connect(m_port.get(), &IDataSource::readyRead, this, &NetworkModel::readyRead);
+    connect(m_port.get(), &IDataSource::errorOccured, this, &NetworkModel::errorOccured);
+    connect(m_port.get(), &IDataSource::deviceOpen, this, [=](bool state){
         qDebug() << "NetworkModel protocol state" << state;
     });
     m_portIsBusy = false;

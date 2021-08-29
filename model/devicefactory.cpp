@@ -1,13 +1,11 @@
 #include "devicefactory.h"
 #include <QDebug>
 #include "../device/devcommand.h"
-
-bool sortCmdsByCode(const DeviceConfig* p1, const DeviceConfig* p2) {
-    return p1->code < p2->code;
-}
+#include <QScopedPointer>
 
 DeviceFactory::DeviceFactory(QString fileName, AppSettings& settings, QObject* parent) :
     QObject(parent),
+    m_thread(new QThread()),
     m_settings(settings),
     m_fileName(fileName)
 
@@ -22,30 +20,31 @@ DeviceFactory::~DeviceFactory() {
 
 void DeviceFactory::start() {
     if(!m_parseWorker.isNull()) m_parseWorker->deleteLater();
-    m_parseWorker = new ParserWorker(m_fileName, ParserType::XmlParser);
-    m_thread = new QThread();
-    m_parseWorker->moveToThread(m_thread);
+//    m_thread = new QThread();
+    m_parseWorker.reset(new ParserWorker(m_fileName, ParserType::XmlParser));
+    m_parseWorker->moveToThread(m_thread.get());
 
-    connect(m_thread, SIGNAL(started()), m_parseWorker, SLOT(process()));
-    connect(m_parseWorker, SIGNAL(finished()), m_thread, SLOT(quit()));
-    connect(m_parseWorker, SIGNAL(finished()), this, SLOT(parsingFinished()));
+    connect(m_thread.get(), SIGNAL(started()), m_parseWorker.get(), SLOT(process()));
+    connect(m_parseWorker.get(), SIGNAL(finished()), m_thread.get(), SLOT(quit()));
+    connect(m_parseWorker.get(), SIGNAL(finished()), this, SLOT(parsingFinished()));
     //    //connect(...,m_parser, SLOT(stop()));
     // проверь сигналы по статье
     //    connect(m_parseWorker, SIGNAL(finished()), m_parseWorker, SLOT(deleteLater()));
-    connect(m_thread, SIGNAL(finished()), m_thread, SLOT(deleteLater()));
-    connect(m_parseWorker, SIGNAL(errorOccured(QString)), this, SLOT(threadError(QString)));
-    connect(m_parseWorker, SIGNAL(errorOccured(QString)), m_thread, SLOT(quit()));
-    connect(m_parseWorker, SIGNAL(errorOccured(QString)), m_thread, SLOT(deleteLater()));
+//    connect(m_thread.get(), SIGNAL(finished()), m_thread.get(), SLOT(deleteLater()));
+    connect(m_parseWorker.get(), SIGNAL(errorOccured(QString)), this, SLOT(threadError(QString)));
+    connect(m_parseWorker.get(), SIGNAL(errorOccured(QString)), m_thread.get(), SLOT(quit()));
+//    connect(m_parseWorker.get(), SIGNAL(errorOccured(QString)), m_thread.get(), SLOT(deleteLater()));
     m_thread->start();
 }
 
 Device* DeviceFactory::createDevice(quint8 addr, quint16 id) {
-    DeviceModel* devModel = findModel(id);
-    if(devModel == nullptr) {
+    const DeviceModel& devModel = findModel(id);
+    if(devModel.id == 0) {
         qDebug() << "Device model with id =" << id << "has not found!";
         return nullptr;
     } else {
-        return devModel->createDevice(addr, this);
+//        return devModel->createDevice(addr, this);
+        return new Device(addr, devModel, this);
     }
 }
 
@@ -53,14 +52,14 @@ QStringList DeviceFactory::getBaudrate() {
     return m_baudrates;
 }
 
-QVector<QPair<uint, QString>> DeviceFactory::getCommonDeviceIDs() {
+const QMultiMap<uint, QString>& DeviceFactory::getCommonDeviceIDs() const {
     return m_commondDevicesId;
 }
 
 
 // private slots
 void DeviceFactory::parsingFinished() {
-    TreeItem* parserTree = m_parseWorker->data();
+    QScopedPointer<TreeItem> parserTree(m_parseWorker->data());
     qDebug() << "m_parseWorker.reset();";
 //    m_parseWorker->deleteLater();
     if(parseTree(*parserTree)) {
@@ -68,23 +67,21 @@ void DeviceFactory::parsingFinished() {
     } else {
         qDebug() << "Can't parse tree";
     }
-    m_parseWorker->deleteLater();
-    delete parserTree;
+    m_parseWorker.reset();
 }
 
 void DeviceFactory::threadError(const QString& str) {
     qDebug() << "Error while parsing. " << str;
+    m_thread.reset();
 }
 
 // private methods
-DeviceModel* DeviceFactory::findModel(quint16 id) {
-    for(auto device : m_DeviceModels) {
-        if(device->id == id) {
-            return device;
-        }
+const DeviceModel DeviceFactory::findModel(quint16 id) {
+    if(m_DeviceModels.contains(id)) {
+        auto model = m_DeviceModels.value(id);
+        return model;
     }
-
-    return nullptr;
+    return DeviceModel();
 }
 
 bool DeviceFactory::parseTree(const TreeItem& tree) {
@@ -100,9 +97,9 @@ bool DeviceFactory::parseTree(const TreeItem& tree) {
                 m_commondDevicesId = parseCommonDevId(childDb);
             }
             if(tagName == "Device") {
-                DeviceModel* devModel = parseDevice(childDb);
-                if(devModel != nullptr)
-                    m_DeviceModels << devModel;
+                const DeviceModel& deviceModel = parseDevice(childDb);
+                if(deviceModel.id != 0) // Null id is invalid
+                    m_DeviceModels.insert(deviceModel.id, deviceModel);
             }
 
         }
@@ -122,8 +119,8 @@ QString DeviceFactory::parseBaudRate(const TreeItem& item) {
     return QString("");
 }
 
-QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(const TreeItem& item) {
-    QVector<QPair<uint, QString>> list;
+QMultiMap<uint, QString> DeviceFactory::parseCommonDevId(const TreeItem& item) {
+    QMultiMap<uint, QString> list;
 
     for(int i = 0; i < item.childCount(); i++) {
         const TreeItem& tagItem = item.child(i);
@@ -137,16 +134,16 @@ QVector<QPair<uint, QString>> DeviceFactory::parseCommonDevId(const TreeItem& it
             }
         }
         if(devId != 0)
-            list << qMakePair(devId, devName);
+            list.insert(devId, devName);
     }
 
     return list;
 }
 
-DeviceModel* DeviceFactory::parseDevice(const TreeItem& item) {
+const DeviceModel DeviceFactory::parseDevice(const TreeItem& item) {
     quint16 id = 0;
     QString name = "";
-    QVector<DeviceConfig*> cmdBuilders;
+    QMap<quint16, CommandSettings> cmdBuilders;
     quint16 stopDelayMs = DeviceDelays::COM_STOP_DELAY_MS;
     quint16 minCommandDelayMs = DeviceDelays::COM_COMMAND_MIN_SEND_DELAY;
     quint16 maxCommandDelayMs = DeviceDelays::COM_COMMAND_MAX_SEND_DELAY;
@@ -185,13 +182,13 @@ DeviceModel* DeviceFactory::parseDevice(const TreeItem& item) {
     }
     if(hasCommands && hasId && hasName) {
         DeviceDelays delays = DeviceDelays(stopDelayMs, minCommandDelayMs, maxCommandDelayMs);
-        return new DeviceModel(id, name, delays, cmdBuilders);
+        return DeviceModel(id, name, delays, cmdBuilders);
     } else {
-        return nullptr;
+        return DeviceModel();
     }
 }
 
-const QVector<DeviceConfig*> DeviceFactory::parseCommands(const TreeItem& item) {
+const QMap<quint16, CommandSettings> DeviceFactory::parseCommands(const TreeItem& item) {
     quint16 code = 0;
     QString unit = "";
     double divider = 1;
@@ -200,7 +197,7 @@ const QVector<DeviceConfig*> DeviceFactory::parseCommands(const TreeItem& item) 
     bool isSigned = false;
     bool isTemperature = false;
 
-    QVector<DeviceConfig*> list = QVector<DeviceConfig*>();
+    QMap<quint16, CommandSettings> list;
 
     bool hasCode = false;
 
@@ -240,12 +237,9 @@ const QVector<DeviceConfig*> DeviceFactory::parseCommands(const TreeItem& item) 
         }
 
         if(hasCode) {
-            list.append(new DeviceConfig(code, unit, divider, tol, interval, isSigned, isTemperature));
+            list.insert(code, CommandSettings(code, unit, divider, tol, interval, isSigned, isTemperature));
         }
     }
-
-
-    std::sort(list.begin(), list.end(), sortCmdsByCode); // TODO: test sorting
 
     return list;
 }

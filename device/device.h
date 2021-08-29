@@ -8,12 +8,11 @@
 #include "model/device/devicewidget.h"
 #include <QTimer>
 #include <QWidget>
-#include <QPointer>
 
 struct DeviceDelays;
 struct DeviceModel;
 class Device;
-struct DeviceConfig;
+struct CommandSettings;
 class DevCommand;
 
 class Device : public QObject
@@ -34,12 +33,8 @@ public:
     void clearLink();
     void addWidget(DeviceWidget& widget);
     void removeWidget(DeviceWidget& widget);
-//    QVector<const DevCommand*>* getCommands();
-//    void connectWidget(DeviceWidget* widget, int code);
-//    void disconnectWidget(DeviceWidget* widget, int code = -1);
 
 private:
-//    QTimer* timeoutTimer;
     bool m_isLink = false;
     int m_addr = 0;
     int m_Id;
@@ -54,15 +49,11 @@ private:
     void createCommandsRequests();
 
 private slots:
-//    void dataFromWidget(quint16 reg, double value);
     void dataFromWidget(quint16 reg, double value);
-//    void timeout();
 
 signals:
     void dataToModel(quint8 addr, quint16 reg, quint16 value);
     void link(bool);
-//    void dataToView(quint16 reg, int value);
-//    void dataToView(quint16 reg, double value);
 
 };
 

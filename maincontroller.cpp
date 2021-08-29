@@ -21,7 +21,7 @@ void MainController::eventHandle(const QString &event, const QVariant &value) {
         if(network.isStart()) {
             network.stop();
             device->close();
-            device->deleteLater();
+//            device->deleteLater();
         } else {
             NetworkType type = static_cast<NetworkType>(portSettings["type"].toInt());
             if(type == NetworkType::Tcp) {

@@ -23,7 +23,6 @@ public:
     ~MainWindow();
 //    void addController(MainWindowControllerInterface* cntrl);
 //    void clearController();
-    void setNetworkMessage(QString msg);
     void setPortList(QVector<QString> *portList);
     void setBaudList(QVector<int> *baudList);
 //    void addSettingsCntrl(AppSettings* settings);

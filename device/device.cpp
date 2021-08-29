@@ -10,15 +10,12 @@ Device::Device(quint8 addr, const DeviceModel& config, QObject *parent)
     m_Delays(config.delays)
 {
     for(auto cmdBldr : config.commands) {
-        m_Commands.insert(cmdBldr->code, cmdBldr->makeCommand(this));
+        m_Commands.insert(cmdBldr.code, new DevCommand(this, cmdBldr));
     }
 
     createCommandsRequests();
 
     qDebug() << "Create device" << m_addr << m_Name << m_Id << "Counter";
-
-//    timeoutTimer = new QTimer();
-//    timeoutTimer->singleShot(m_Delays->timeoutMs(), this, SLOT(timeout()));
 }
 
 Device::~Device() {
@@ -34,16 +31,13 @@ Device::~Device() {
 void Device::dataIncome(quint16 reg, quint16 value) {
     for(DevCommand* cmd : m_Commands) {
         if(cmd->config.code == reg) {
-//            timeoutTimer->stop();
             m_isLink = true;
             emit link(m_isLink);
-//            timeoutTimer->singleShot(m_Delays->timeoutMs(), this, SLOT(timeout()));
 
             cmd->setRawValue(value);
             for (auto widget : m_deviceWidgets) {
                 widget->setValue(reg, cmd->value());
             }
-//            emit dataToView(reg, cmd.va());
         }
     }
 }
@@ -51,7 +45,6 @@ void Device::dataIncome(quint16 reg, quint16 value) {
 
 void Device::destroy() {
     this->disconnect();
-//    this->deleteLater();
 }
 
 QString Device::name() {
@@ -100,44 +93,6 @@ void Device::removeWidget(DeviceWidget& widget) {
     m_deviceWidgets.removeAll(&widget);
 }
 
-/*QVector<const DevCommand*>* Device::getCommands() {
-    QVector<const DevCommand*>* vector = new QVector<const DevCommand*>(m_Commands.size());
-
-    QMap<quint16, QPointer<DevCommand>>::iterator i;
-    for(i = m_Commands.begin(); i != m_Commands.end(); i++)
-        vector->append(qAsConst(i.value()));
-
-    return vector;
-}*/
-
-/*void Device::connectWidget(DeviceWidget* widget, int code) {
-    if(m_deviceWidgets.contains(code)) {}
-
-    if(!m_deviceWidgets.contains(widget)) {
-        m_deviceWidgets.append(widget);
-//        connect(widget, SIGNAL(dataChanged(quint16, int)), this, SIGNAL(dataChanged));
-//        connect(widget, SIGNAL(dataChanged(int)), [this](){
-
-//        });
-    }
-}
-
-void Device::disconnectWidget(DeviceWidget* widget, int code) {
-    if(code == -1) {
-        for() {
-
-        }
-    } else {
-        m_deviceWidgets.remove(code, widget)
-    }
-
-
-    if(m_deviceWidgets.contains(widget)) {
-        widget->disconnect();
-        m_deviceWidgets.removeOne(widget);
-    }
-}*/
-
 
 // private methods
 void Device::createCommandsRequests() {
@@ -150,6 +105,7 @@ void Device::createCommandsRequests() {
     bool bHasCommands = false;
 
     QMapIterator<uint, DevCommand*> i(m_Commands);
+    // TODO: перепиши
     while(i.hasNext()) {
         bHasCommands = true;
         if(cmd != nullptr)
@@ -167,7 +123,6 @@ void Device::createCommandsRequests() {
                 if(minInterval > cmd->config.interval) minInterval = cmd->config.interval;
             } else {
                m_cmdRequests.append(new DevicePollRequest(m_addr, startCode, count, minInterval));
-//               qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
                startCode = cmd->config.code;
                minInterval = cmd->config.interval;
                count = 1;
@@ -176,7 +131,7 @@ void Device::createCommandsRequests() {
     }
     if(bHasCommands) {
         m_cmdRequests.append(new DevicePollRequest(m_addr, startCode, count, minInterval));
-//        qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
+        qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
     }
     m_cmdReqItt = m_cmdRequests.begin();
 }
@@ -190,13 +145,3 @@ void Device::dataFromWidget(quint16 reg, double value) {
     }
 }
 
-//void Device::dataFromWidget(quint16 reg, double value) {
-//    qDebug() << "dataFromWidget" << reg << value;
-
-
-//    emit dataToModel(m_addr, reg, value);
-//}
-
-//void Device::timeout() {
-//    m_isLink = false;
-//}

@@ -9,7 +9,7 @@
 
 class Device;
 class DevCommand;
-struct DeviceConfig;
+struct CommandSettings;
 
 struct DeviceDelays {
     static const quint16 COM_COMMAND_MIN_SEND_DELAY = 50;
@@ -30,7 +30,6 @@ struct DeviceDelays {
 
 struct DeviceDescription
 {
-public:
     DeviceDescription(const QPixmap& pic, const QString& desc, const QString& link) :
         Photo(pic),
         Description(desc),
@@ -42,11 +41,12 @@ public:
 
 struct DeviceModel
 {
-    DeviceModel(quint16 id, const QString& name, const DeviceDelays &delays, const QVector<DeviceConfig*> &cmdBuilders);
+    DeviceModel();
+    DeviceModel(quint16 id, const QString& name, const DeviceDelays &delays, const QMap<quint16, CommandSettings> &cmdBuilders);
     ~DeviceModel();
     quint16 id;
     QString name;
     DeviceDelays delays;
-    QVector<DeviceConfig*> commands;
-    Device* createDevice(quint8 addr, QObject* parent = nullptr) const;
+    QMap<quint16, CommandSettings> commands;
+//    Device* createDevice(quint8 addr, QObject* parent = nullptr) const;
 };

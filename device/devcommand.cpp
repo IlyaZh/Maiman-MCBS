@@ -2,7 +2,7 @@
 #include <QtMath>
 
 // DevCommandBuilder class
-DeviceConfig::DeviceConfig(quint16 code, QString unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature) :
+CommandSettings::CommandSettings(quint16 code, QString unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature) :
     code(code),
     unit(unit),
     divider(divider),
@@ -14,9 +14,9 @@ DeviceConfig::DeviceConfig(quint16 code, QString unit, double divider, quint8 to
 
 }
 
-DevCommand* DeviceConfig::makeCommand(Device* pDevice) {
-    return new DevCommand(pDevice, *this);
-}
+//DevCommand* CommandSettings::makeCommand(Device* pDevice) {
+//    return new DevCommand(pDevice, *this);
+//}
 
 //quint16 DeviceConfig::code() const {
 //    return config.code;
@@ -38,7 +38,7 @@ double DevCommand::convertFarToCel(double value) {
 }
 
 // public methods
-DevCommand::DevCommand(Device* device, const DeviceConfig& conf, QObject *parent) :
+DevCommand::DevCommand(Device* device, const CommandSettings& conf, QObject *parent) :
     QObject(parent),
     config(conf),
     m_device(device)

@@ -86,9 +86,6 @@ void MainWindow::setConnected(bool isConnected) {
     }
 }
 
-void MainWindow::setNetworkMessage(QString msg) {
-    ui->networkStateLabel->setText(msg);
-}
 
 void MainWindow::setPortList(QVector<QString> *portList) {
     if(m_portList != nullptr) {
