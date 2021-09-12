@@ -25,7 +25,7 @@ namespace Constants {
 
     static const quint8 MaxDevices = 32;
     static const QString SecretCodeCombination = "3.1415926";
-    static const QFont ApplicationDefaultFont(":/fonts/ShareTechMono.ttf", 9);
+    static const QFont ApplicationDefaultFont("://resources/fonts/ShareTechMono-Regular.ttf", 9);
     static const QString DeviceConfigFile = QDir::currentPath()+"/DDBconfig.xml";
     static const QString LogTimestampDefaultFormat = "dd.MM.yyyy HH:mm:ss";
     static const int LogMaxQueueSize = 10;

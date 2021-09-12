@@ -14,7 +14,9 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, QWidget *parent)
     for(auto control : description.controls) {
         auto widget = new ParameterWidget(control, this);
         m_paramWidgets.append(widget);
-        ui->paramLayout->addWidget(widget);
+        ui->paramLayout->addWidget(widget, 0, m_paramWidgets.size());
+        // TODO: переработай это всё, я ведь новую форму сделал
+        // TODO: добавь создание кнопки для каждого такого виджета кроме тока
         connect(widget, &ParameterWidget::valueChanged, this, &DeviceWidget::parameterChanged);
     }
 
@@ -28,7 +30,7 @@ DeviceWidget::~DeviceWidget()
 }
 
 void DeviceWidget::setAddress(int addr) {
-    ui->addrLabel->setNum(addr);
+    ui->idLabel->setText(QString("ID:%1").arg(addr));
 }
 
 // public slots
