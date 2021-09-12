@@ -39,7 +39,8 @@ MainWindow::MainWindow(AppSettings& settings, QWidget *parent)
 //    refreshMenuPortList();
 //    refreshMenuPortBaudsList();
 
-    setWindowTitle(Constants::AppTitle);
+    static const QString AppTitle = QString("%1 v.%2").arg(Constants::AppNameTitle, QCoreApplication::applicationVersion());
+    setWindowTitle(AppTitle);
     setWindowIcon(QIcon(":/images/logo-minimal.png"));
 
     m_workFieldLayout = new QGridLayout(ui->workFieldWidget);

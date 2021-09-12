@@ -28,7 +28,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow *{	
+   <string notr="true">* {	
 	background: rgb(51,51,51);
 	color: rgb(255, 255, 255);
 }
@@ -45,7 +45,7 @@ QPushButton:checked {
 }
 
 QWidget, QLabel {
-	font: &quot;Share Tech Mono&quot;;
+	font: url(:/resources/fonts/ShareTechMono-Regular.ttf);
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -53,10 +53,17 @@ QWidget, QLabel {
     <item row="0" column="0" rowspan="3">
      <widget class="QScrollArea" name="scrollArea">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget#DeviceWidget {
+    border: 1px solid black;
+    border-radius: 2px;
+    background:  rgb(51,51,51);
+}</string>
       </property>
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>

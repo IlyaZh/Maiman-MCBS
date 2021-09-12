@@ -21,8 +21,6 @@ namespace Constants {
     // Человекопонятное название (заголовок_ ПО
     static const QString AppNameTitle = "Maiman BenchSoft Multichannel";
 
-    static const QString AppTitle = QString("%1 v.%2").arg(Constants::AppNameTitle, QCoreApplication::applicationVersion());
-
     static const quint8 MaxDevices = 32;
     static const QString SecretCodeCombination = "3.1415926";
     static const QFont ApplicationDefaultFont("://resources/fonts/ShareTechMono-Regular.ttf", 9);
