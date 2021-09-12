@@ -35,6 +35,7 @@ SOURCES += \
     maincontroller.cpp \
     mainfacade.cpp \
     mainwindow.cpp \
+    model/device/HiddenWidget.cpp \
     model/device/devicewidget.cpp \
     model/device/parameterwidget.cpp \
     model/devicefactory.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     mainfacade.h \
     mainwindow.h \
     model/ModelInterface.h \
+    model/device/HiddenWidget.h \
     model/device/devicepollrequest.h \
     model/device/devicewidget.h \
     model/device/parameterwidget.h \
@@ -78,6 +80,7 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui \
+    model/device/HiddenWidget.ui \
     model/device/devicewidget.ui \
     model/device/parameterwidget.ui
 
