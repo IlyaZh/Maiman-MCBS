@@ -26,7 +26,6 @@ bool debugMode = false;
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    QApplication::setApplicationVersion(QString::number(Constants::MajorVersion) + "." + QString::number(Constants::MinorVersion) + "." + QString::number(Constants::PatchVersion));
     QApplication::setFont(Constants::ApplicationDefaultFont);
 
   AppSettings settings;

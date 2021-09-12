@@ -12,6 +12,10 @@ CONFIG += c++11 testcase #warn_on depend_includepath
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
+VERSION = 1.0.0
+TARGET = MaimanMultibench
+TEMPLATE = app
+
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -20,7 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     appsettings.cpp \
     datasource.cpp \
-    device/devcommand.cpp \
+    device/commandsettings.cpp \
     device/device.cpp \
     device/devicemodel.cpp \
     factories/Parser.cpp \
@@ -44,7 +48,7 @@ SOURCES += \
 HEADERS += \
     appsettings.h \
     datasource.h \
-    device/devcommand.h \
+    device/commandsettings.h \
     device/device.h \
     device/devicemodel.h \
     factories/Parser.h \

@@ -2,7 +2,7 @@
 #define DEVICE_H
 
 #include <QObject>
-#include "devcommand.h"
+#include "commandsettings.h"
 #include "devicemodel.h"
 #include "model/device/devicepollrequest.h"
 #include "model/device/devicewidget.h"
@@ -13,7 +13,7 @@ struct DeviceDelays;
 struct DeviceModel;
 class Device;
 struct CommandSettings;
-class DevCommand;
+struct DevCommand;
 
 class Device : public QObject
 {
@@ -28,7 +28,7 @@ public:
     QString name();
     quint16 id();
     quint8 addr();
-    DevicePollRequest* nextPollRequest();
+    const DevicePollRequest nextPollRequest();
     bool isLink();
     void clearLink();
     void addWidget(DeviceWidget& widget);
@@ -41,8 +41,9 @@ private:
     const QString m_Name;
     const DeviceDelays& m_Delays;
     QMap<uint, DevCommand*> m_Commands;
-    QVector<DevicePollRequest*> m_cmdRequests;
-    QVector<DevicePollRequest*>::iterator m_cmdReqItt;
+    QVector<DevicePollRequest> m_cmdRequests;
+//    QVector<DevicePollRequest>::iterator m_cmdReqItt;
+    int m_cmdReqIt = 0;
     QVector<Device*> m_childDevices;
     QVector<DeviceWidget*> m_deviceWidgets;
 

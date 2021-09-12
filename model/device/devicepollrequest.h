@@ -1,5 +1,4 @@
-#ifndef DEVICEPOLLREQUEST_H
-#define DEVICEPOLLREQUEST_H
+#pragma once
 
 #include <QObject>
 #include <QDebug>
@@ -32,4 +31,3 @@ private:
 
 };
 
-#endif // DEVICEPOLLREQUEST_H

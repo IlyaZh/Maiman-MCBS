@@ -10,7 +10,7 @@ Device::Device(quint8 addr, const DeviceModel& config, QObject *parent)
     m_Delays(config.delays)
 {
     for(auto cmdBldr : config.commands) {
-        m_Commands.insert(cmdBldr.code, new DevCommand(this, cmdBldr));
+        m_Commands.insert(cmdBldr.code, new DevCommand(/*this, */cmdBldr));
     }
 
     createCommandsRequests();
@@ -21,11 +21,11 @@ Device::Device(quint8 addr, const DeviceModel& config, QObject *parent)
 Device::~Device() {
     qDebug() << "Delete device" << m_addr << m_Name << m_Id;
 
-    for(auto *item : m_cmdRequests) {
-        delete item;
-    }
+//    for(auto *item : m_cmdRequests) {
+//        delete item;
+//    }
     m_cmdRequests.clear();
-
+    qDeleteAll(m_Commands);
 }
 
 void Device::dataIncome(quint16 reg, quint16 value) {
@@ -59,16 +59,19 @@ quint8 Device::addr() {
     return m_addr;
 }
 
-DevicePollRequest* Device::nextPollRequest() {
-    if(m_cmdReqItt >= m_cmdRequests.end())  m_cmdReqItt = m_cmdRequests.begin();
-    while(m_cmdReqItt != m_cmdRequests.end()) {
-        DevicePollRequest* request = *m_cmdReqItt;
-        m_cmdReqItt++;
-        if(request->isRequestReady()) {
+const DevicePollRequest Device::nextPollRequest() {
+//    if(m_cmdReqItt >= m_cmdRequests.end())  m_cmdReqItt = m_cmdRequests.begin();
+//    while(m_cmdReqItt != m_cmdRequests.end()) {
+//        DevicePollRequest request = *m_cmdReqItt;
+    if(m_cmdReqIt >= m_cmdRequests.size()) m_cmdReqIt = 0;
+    while(m_cmdReqIt < m_cmdRequests.size()) {
+    DevicePollRequest request = m_cmdRequests.at(m_cmdReqIt);
+        m_cmdReqIt++;
+        if(request.isRequestReady()) {
             return request;
         }
     }
-    return nullptr;
+    return DevicePollRequest(0,0,0);
 }
 
 bool Device::isLink() {
@@ -101,10 +104,40 @@ void Device::createCommandsRequests() {
     uint minInterval = 1;
     int count = 0;
     DevCommand* cmd = nullptr;
-    DevCommand* prevCmd = nullptr;
-    bool bHasCommands = false;
 
     QMapIterator<uint, DevCommand*> i(m_Commands);
+
+    qDebug() << "createCommandsRequests " << m_Commands.keys();
+
+    for(auto it = m_Commands.begin(); it != m_Commands.end(); ++it) {
+        qDebug() << it.key();
+//        if(cmd != nullptr)
+//            prevCmd = cmd;
+         cmd = it.value();
+        if(startCode == -1) {
+            startCode = cmd->config.code;
+            minInterval = cmd->config.interval;
+            count++;
+        } else {
+            if((startCode+count) == cmd->config.code) {
+                count++;
+                if(minInterval > cmd->config.interval) minInterval = cmd->config.interval;
+            } else {
+               m_cmdRequests.append(DevicePollRequest(m_addr, startCode, count, minInterval));
+               startCode = cmd->config.code;
+               minInterval = cmd->config.interval;
+               count = 1;
+            }
+        }
+    }
+        if(startCode != -1) {
+            m_cmdRequests.append(DevicePollRequest(m_addr, startCode, count, minInterval));
+            qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
+        }
+//        m_cmdReqIt = m_cmdRequests.begin();
+        m_cmdReqIt = 0;
+
+/*
     // TODO: перепиши
     while(i.hasNext()) {
         bHasCommands = true;
@@ -133,7 +166,7 @@ void Device::createCommandsRequests() {
         m_cmdRequests.append(new DevicePollRequest(m_addr, startCode, count, minInterval));
         qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
     }
-    m_cmdReqItt = m_cmdRequests.begin();
+    m_cmdReqItt = m_cmdRequests.begin();*/
 }
 
 // private slots
@@ -141,7 +174,7 @@ void Device::createCommandsRequests() {
 void Device::dataFromWidget(quint16 reg, double value) {
     auto cmd = m_Commands.value(reg, nullptr);
     if(cmd != nullptr) {
-         emit dataToModel(m_addr, reg, cmd->getRawFromValue(value));
+        emit dataToModel(m_addr, reg, cmd->getRawFromValue(value));
     }
 }
 

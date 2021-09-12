@@ -193,9 +193,9 @@ void NetworkModel::delayTimeout() {
         } else {
             // poll devices state
             for(auto dev : m_devices) {
-                DevicePollRequest* request = dev->nextPollRequest();
-                if(request != nullptr) {
-                    m_queue.enqueue(m_protocol.getDataValue(request->addr, request->code, request->count));
+                const DevicePollRequest request = dev->nextPollRequest();
+                if(request.code != 0) {
+                    m_queue.enqueue(m_protocol.getDataValue(request.addr, request.code, request.count));
                 }
             }
             //            tryToSend();

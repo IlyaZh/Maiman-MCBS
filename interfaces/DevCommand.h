@@ -1,11 +1,11 @@
 #ifndef DEVCOMMAND_H
 #define DEVCOMMAND_H
-
+/*
 #include <QObject>
 #include <QVariant>
 #include <qmath.h>
 
-class DevCommand {
+struct DevCommand {
 public:
     DevCommand(quint16 reg, int divider);
     virtual ~DevCommand();
@@ -28,7 +28,7 @@ protected:
     QVariant m_value;
     double m_dValue;
     uint m_tolerance;
-};
+};*/
 
 
 

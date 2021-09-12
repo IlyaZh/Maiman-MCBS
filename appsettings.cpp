@@ -3,13 +3,14 @@
 #include <QJsonDocument>
 #include <QDebug>
 
-AppSettings::AppSettings(QObject *parent) : QObject(parent)
+AppSettings::AppSettings(QObject *parent) :
+    QObject(parent),
+    settings(new QSettings(QSettings::NativeFormat, QSettings::UserScope, Constants::OrgName, Constants::AppName))
 {
-    settings = new QSettings(QSettings::NativeFormat, QSettings::UserScope, Constants::OrgName, Constants::AppName);
 }
 
 bool AppSettings::parseFileSettings(QString fileName) {
-    QFile* file = new QFile(fileName, this);
+    QScopedPointer<QFile> file(new QFile(fileName));
     if(!file->exists()) {
         m_errorString = QString("File \"%1\" isn't exist!").arg(fileName);
         return false;
@@ -25,7 +26,7 @@ bool AppSettings::parseFileSettings(QString fileName) {
     if(jDoc.isNull()) {
         qDebug() << "[E][AppSettings] Can't parse settings file:" << jParseErrorObj.errorString();
     } else {
-        // debug do it
+        // TODO: do it
     }
 }
 

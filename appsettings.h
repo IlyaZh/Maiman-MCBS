@@ -8,6 +8,7 @@
 #include <QDir>
 #include "globals.h"
 #include "datasource.h"
+#include <QScopedPointer>
 
 typedef struct NetworkData_s {
     NetworkType type;
@@ -37,7 +38,7 @@ public:
 //    QSize getWindowSize();
 
 private:
-    QSettings *settings;
+    QScopedPointer<QSettings> settings;
     QString m_errorString;
 
 signals:

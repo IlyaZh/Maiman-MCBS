@@ -1,6 +1,6 @@
 #include "devicefactory.h"
 #include <QDebug>
-#include "../device/devcommand.h"
+#include "../device/commandsettings.h"
 #include <QScopedPointer>
 
 DeviceFactory::DeviceFactory(QString fileName, AppSettings& settings, QObject* parent) :

@@ -1,14 +1,14 @@
 #pragma once
 
 #include <QObject>
-#include "../device/devcommand.h"
+#include "../device/commandsettings.h"
 #include "device.h"
 #include "globals.h"
 #include <QPixmap>
 
 
 class Device;
-class DevCommand;
+struct DevCommand;
 struct CommandSettings;
 
 struct DeviceDelays {
