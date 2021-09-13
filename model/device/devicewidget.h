@@ -95,6 +95,7 @@ public slots:
     void setValue(quint16 reg, double value);
     void parameterChanged(quint16 reg, double value);
 //    void setValue(quint16 reg, int value);
+    void paintEvent(QPaintEvent*);
 
 signals:
     void dataChanged(quint16 reg, double value);

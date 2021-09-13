@@ -4,6 +4,8 @@
 
 #include "model/device/parameterwidget.h"
 #include "device/devicecommand.h"
+#include <QStyleOption>
+#include <QPainter>
 
 DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QVector<DevCommand*>& commands, QWidget *parent) :
     QWidget(parent),
@@ -48,6 +50,13 @@ void DeviceWidget::setValue(quint16 reg, double value) {
 void DeviceWidget::parameterChanged(quint16 reg, double value) {
     qDebug() << "parameterChanged" << reg << value;
     emit dataChanged(reg, value);
+}
+
+void DeviceWidget::paintEvent(QPaintEvent*) {
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 //void DeviceWidget::setValue(quint16 reg, int value) {}
