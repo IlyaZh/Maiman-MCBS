@@ -1,5 +1,7 @@
 #include "guifactory.h"
 
+class DevCommand;
+
 GuiFactory::GuiFactory(QString fileName, AppSettings& settings, QObject *parent) :
     QObject(parent),
     m_settings(settings),
@@ -29,10 +31,10 @@ void GuiFactory::start() {
     m_thread->start();
 }
 
-DeviceWidget* GuiFactory::createWidget(quint16 id) {
+DeviceWidget* GuiFactory::createWidget(quint16 id, const QVector<DevCommand*>& commands) {
     if(m_deviceWidgets.contains(id)) {
         auto widgetSettings = m_deviceWidgets.value(id).get();
-        return new DeviceWidget(*widgetSettings);
+        return new DeviceWidget(*widgetSettings, commands);
     }
     return nullptr;
 }

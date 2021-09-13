@@ -33,6 +33,7 @@ public:
     void clearLink();
     void addWidget(DeviceWidget& widget);
     void removeWidget(DeviceWidget& widget);
+    const QVector<DevCommand*> commands();
 
 private:
     bool m_isLink = false;

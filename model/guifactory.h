@@ -12,6 +12,8 @@
 #include "appsettings.h"
 #include "device/devicewidget.h"
 
+class DevCommand;
+
 class GuiFactory : public QObject
 {
     Q_OBJECT
@@ -19,7 +21,7 @@ public:
     GuiFactory(QString fileName, AppSettings& settings, QObject *parent = nullptr);
     ~GuiFactory();
     void start();
-    DeviceWidget* createWidget(quint16 id);
+    DeviceWidget* createWidget(quint16 id, const QVector<DevCommand*>& commands);
 
 
 

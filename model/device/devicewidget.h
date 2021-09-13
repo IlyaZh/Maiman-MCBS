@@ -5,6 +5,7 @@
 #include <QMap>
 
 class ParameterWidget;
+class DevCommand;
 
 struct Content {
     QString fileName;
@@ -86,7 +87,7 @@ class DeviceWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit DeviceWidget(const DeviceWidgetDesc& description, QWidget *parent = nullptr);
+    explicit DeviceWidget(const DeviceWidgetDesc& description, const QVector<DevCommand*>& commands,  QWidget *parent = nullptr);
     ~DeviceWidget();
     void setAddress(int addr);
 
@@ -101,9 +102,10 @@ signals:
 
 private:
     Ui::DeviceWidget *ui;
-    const DeviceWidgetDesc& description;
+    const DeviceWidgetDesc& m_description;
     QMap<quint16, QVariant> m_values;
     QVector<ParameterWidget*> m_paramWidgets;
+    const QVector<DevCommand*>& m_commands;
 };
 
 #endif // DEVICEWIDGET_H

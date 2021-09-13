@@ -4,11 +4,11 @@
 #include <QObject>
 #include <QWidget>
 #include <QVector>
-#include <QScopedPointer>
-#include "mainwindow.h"
-#include "model/guifactory.h"
-#include "device/device.h"
-#include "model/device/devicewidget.h"
+
+class GuiFactory;
+class MainWindow;
+class Device;
+class DeviceWidget;
 
 class MainFacade : public QObject
 {
@@ -22,7 +22,7 @@ public:
 private:
     MainWindow& m_window;
     GuiFactory& m_factory;
-    QVector<QSharedPointer<DeviceWidget>> m_widgets;
+    QVector<DeviceWidget*> m_widgets;
 
 };
 

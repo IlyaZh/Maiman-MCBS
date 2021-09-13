@@ -96,6 +96,16 @@ void Device::removeWidget(DeviceWidget& widget) {
     m_deviceWidgets.removeAll(&widget);
 }
 
+const QVector<DevCommand*> Device::commands() {
+    QVector<DevCommand*> vec;
+
+    for(auto command : m_Commands) {
+        vec.push_back(command);
+    }
+
+    return vec;
+}
+
 
 // private methods
 void Device::createCommandsRequests() {

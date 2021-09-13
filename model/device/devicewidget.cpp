@@ -3,11 +3,13 @@
 #include <QDebug>
 
 #include "model/device/parameterwidget.h"
+#include "device/devicecommand.h"
 
-DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, QWidget *parent) :
+DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QVector<DevCommand*>& commands, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DeviceWidget),
-    description(description)
+    m_description(description),
+    m_commands(commands)
 {
     ui->setupUi(this);
 

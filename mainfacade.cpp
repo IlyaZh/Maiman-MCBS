@@ -1,6 +1,11 @@
 #include "mainfacade.h"
 #include <QDebug>
 
+#include "model/device/devicewidget.h"
+#include "device/device.h"
+#include "mainwindow.h"
+#include "model/guifactory.h"
+
 MainFacade::MainFacade(MainWindow& window, GuiFactory& factory, QObject* parent) :
     QObject(parent),
     m_window(window),
@@ -18,9 +23,9 @@ MainFacade::~MainFacade() {
 //}
 
 void MainFacade::createWidgetFor(Device& device) {
-    auto widget = m_factory.createWidget(device.id());
+    auto widget = m_factory.createWidget(device.id(), device.commands());
     if(widget != nullptr) {
-        m_widgets.append(QSharedPointer<DeviceWidget>(widget));
+        m_widgets.append(widget);
         device.addWidget(*widget);
         m_window.addDeviceWidget(widget);
     } else {
@@ -29,9 +34,9 @@ void MainFacade::createWidgetFor(Device& device) {
 }
 
 void MainFacade::clear() {
-    for(auto widget = m_widgets.begin(); widget != m_widgets.end(); ++widget) {
-        widget->get()->disconnect();
-        widget->reset();
+    for(auto widget : m_widgets) {
+        widget->disconnect();
+        widget->deleteLater();
     }
     m_widgets.clear();
 }
