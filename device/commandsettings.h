@@ -18,38 +18,44 @@ struct CommandSettings {
     uint interval;
 };
 
-struct DevCommand
+class DevCommand : public QObject
 {
+    Q_OBJECT
 public:
     static double convertCelToFar(double value);
     static double convertFarToCel(double value);
 
-    DevCommand(/*Device* device, */const CommandSettings& conf);
+    DevCommand(Device* device, const CommandSettings& conf);
     const CommandSettings config;
 //    virtual void execute(int value);
 //    virtual void execute(double value);
-//    quint16 code();
-//    QString unit();
-//    double divider();
-//    quint8 tolerance();
+    quint16 code();
+    QString unit();
+    double divider();
+    int tolerance();
 //    uint interval();
 //    uint stepInterval();
 //    bool nextInterval();
     quint16 getRawFromValue(double value);
     bool isSigned();
-    double value();
+    double valueDouble();
+    uint valueUInt();
 
 
-//signals:
+signals:
+    void updatedValue();
+    void sendValueSignal(quint16 code, quint16 value);
 //    void newValue(quint16 code, double value);
 //    void newValue(quint16 code, int value);
 
-//public slots:
+public slots:
     void setRawValue(quint16 value);
+    void sendValue(int value);
+    void sendValue(double value);
 
 
 private:
-//    Device* m_device = nullptr;
+    Device* m_device;
 
     quint16 m_rawValue = 0;
     double m_value = 0;

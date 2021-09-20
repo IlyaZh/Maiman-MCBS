@@ -37,9 +37,9 @@ double DevCommand::convertFarToCel(double value) {
 }
 
 // public methods
-DevCommand::DevCommand(/*Device* device, */const CommandSettings& conf) :
-    config(conf)/*,
-    m_device(device)*/
+DevCommand::DevCommand(Device* device, const CommandSettings& conf) :
+    config(conf),
+    m_device(device)
 {
     m_rawValue = 0;
 }
@@ -66,7 +66,7 @@ DevCommand::DevCommand(/*Device* device, */const CommandSettings& conf) :
 //    m_device->dataOutcome(config.code, inValue);
 //}
 
-/*quint16 DevCommand::code() {
+quint16 DevCommand::code() {
     return config.code;
 }
 
@@ -78,11 +78,11 @@ double DevCommand::divider() {
     return config.divider;
 }
 
-quint8 DevCommand::tolerance() {
-    return config.tolerance;
+int DevCommand::tolerance() {
+    return static_cast<quint8>(config.tolerance);
 }
 
-uint DevCommand::interval() {
+/*uint DevCommand::interval() {
     return config.interval;
 }*/
 
@@ -99,7 +99,6 @@ uint DevCommand::interval() {
 //    }
 //    return state;
 //}
-
 quint16 DevCommand::getRawFromValue(double value) {
     return static_cast<quint16>(qRound(value*config.divider-0.5));
 }
@@ -108,8 +107,12 @@ bool DevCommand::isSigned() {
     return config.isSigned;
 }
 
-double DevCommand::value() {
+double DevCommand::valueDouble() {
     return m_value;
+}
+
+uint DevCommand::valueUInt() {
+    return m_rawValue;
 }
 
 
@@ -124,20 +127,13 @@ void DevCommand::setRawValue(quint16 value) {
         double d = static_cast<double>(m_rawValue);
         m_value = qRound(d/config.divider*qPow(10,config.tolerance)-0.5)/qPow(10,config.tolerance);
     }
+    emit updatedValue();
+}
 
+void DevCommand::sendValue(int value) {
 
-    /*QVariant variant(value);
-    m_rawValue = value;
+}
 
-    int iValue = (isSigned()) ? static_cast<qint16>(variant.toInt()) : static_cast<quint16>(variant.toUInt());
-    double dValue = (static_cast<double>(iValue) / divider());
-    double power = qPow(10, config.tolerance);;
-    dValue *= power;
-    dValue = qRound(dValue);
-    dValue /= power;
-    m_value = dValue;*/
-//    QString tempStr;
-//    tempStr.number(dValue, 'g', tolerance());
+void DevCommand::sendValue(double value) {
 
-//    emit newValue(config.code, tempStr.toDouble());
 }
