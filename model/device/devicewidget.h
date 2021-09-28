@@ -95,7 +95,6 @@ public slots:
     void setValue(quint16 reg, double value);
     void parameterChanged(quint16 reg, double value);
 //    void setValue(quint16 reg, int value);
-    void paintEvent(QPaintEvent*);
 
 signals:
     void dataChanged(quint16 reg, double value);
@@ -107,6 +106,8 @@ private:
     QMap<quint16, QVariant> m_values;
     QVector<ParameterWidget*> m_paramWidgets;
     const QVector<DevCommand*>& m_commands;
+
+    void paintEvent(QPaintEvent*);
 };
 
 #endif // DEVICEWIDGET_H

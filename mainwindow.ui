@@ -59,11 +59,10 @@ QWidget, QLabel {
        </sizepolicy>
       </property>
       <property name="styleSheet">
-       <string notr="true">QWidget#DeviceWidget {
-    border: 1px solid black;
-    border-radius: 2px;
-    background:  rgb(51,51,51);
-}</string>
+       <string notr="true"/>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -79,8 +78,8 @@ QWidget, QLabel {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>828</width>
-         <height>540</height>
+         <width>830</width>
+         <height>542</height>
         </rect>
        </property>
       </widget>

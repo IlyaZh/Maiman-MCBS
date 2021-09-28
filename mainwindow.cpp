@@ -44,6 +44,9 @@ MainWindow::MainWindow(AppSettings& settings, QWidget *parent)
     setWindowIcon(QIcon(":/images/logo-minimal.png"));
 
     m_workFieldLayout = new QGridLayout(ui->workFieldWidget);
+    m_workFieldLayout->setMargin(0);
+    m_workFieldLayout->setSpacing(0);
+    m_workFieldLayout->setContentsMargins(0,0,0,0);
     ui->workFieldWidget->setLayout(m_workFieldLayout);
 
 //    emit mainWindowReady();

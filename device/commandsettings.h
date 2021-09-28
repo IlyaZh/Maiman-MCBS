@@ -4,7 +4,7 @@
 #include "device.h"
 
 class Device;
-struct DevCommand;
+class DevCommand;
 
 struct CommandSettings {
     explicit CommandSettings(quint16 code, QString unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature);

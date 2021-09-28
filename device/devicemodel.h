@@ -8,7 +8,7 @@
 
 
 class Device;
-struct DevCommand;
+class DevCommand;
 struct CommandSettings;
 
 struct DeviceDelays {

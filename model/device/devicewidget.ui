@@ -114,7 +114,7 @@ padding: 0px;
 margin: 0px;</string>
      </property>
      <property name="text">
-      <string>Hide controls</string>
+      <string>    Hide controls</string>
      </property>
      <property name="icon">
       <iconset resource="../../resources.qrc">

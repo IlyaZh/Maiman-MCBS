@@ -2,8 +2,9 @@
 #include "ui_parameterwidget.h"
 #include "model/device/devicewidget.h"
 #include <QDebug>
+#include "device/commandsettings.h"
 
-ParameterWidget::ParameterWidget(const Control &settings, QWidget *parent) :
+ParameterWidget::ParameterWidget(const Control& settings,  QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ParameterWidget),
     m_settings(settings)

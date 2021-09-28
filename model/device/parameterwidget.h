@@ -6,6 +6,7 @@
 #include <QLabel>
 
 struct Control;
+class DevCommand;
 
 namespace Ui {
 class ParameterWidget;
@@ -16,7 +17,7 @@ class ParameterWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ParameterWidget(const Control &settings, QWidget *parent = nullptr);
+    explicit ParameterWidget(const Control& settings, QWidget *parent = nullptr);
     ~ParameterWidget();
     const Control& settings();
     void setValue(quint16 cmd, double value);
@@ -30,8 +31,10 @@ signals:
 private:
     Ui::ParameterWidget *ui;
     const Control& m_settings;
+    QString m_name;
     QMap<quint16, int> m_decimals;
     QMap<quint16, double> m_values;
+    QMap<quint16, DevCommand*> m_commands;
 //    MaimanSpinBox* valueSpinbox;
     QString m_unit;
 

@@ -9,8 +9,11 @@ Device::Device(quint8 addr, const DeviceModel& config, QObject *parent)
     m_Name(config.name),
     m_Delays(config.delays)
 {
-    for(auto cmdBldr : config.commands) {
-        m_Commands.insert(cmdBldr.code, new DevCommand(/*this, */cmdBldr));
+    for(auto cmdBuilder : config.commands) {
+        auto command = new DevCommand(this, cmdBuilder);
+        m_Commands.insert(command->code(), command);
+
+        connect(command, &DevCommand::sendValueSignal, this, &Device::dataFromCommand);
     }
 
     createCommandsRequests();
@@ -35,9 +38,9 @@ void Device::dataIncome(quint16 reg, quint16 value) {
             emit link(m_isLink);
 
             cmd->setRawValue(value);
-            for (auto widget : m_deviceWidgets) {
-                widget->setValue(reg, cmd->value());
-            }
+//            for (auto widget : m_deviceWidgets) {
+//                widget->setValue(reg, cmd->value());
+//            }
         }
     }
 }
@@ -83,18 +86,18 @@ void Device::clearLink() {
     emit link(m_isLink);
 }
 
-void Device::addWidget(DeviceWidget& widget) {
-    if(!m_deviceWidgets.contains(&widget)) {
-        m_deviceWidgets.append(&widget);
-        connect(&widget, &DeviceWidget::dataChanged, this, &Device::dataFromWidget);
-        widget.setAddress(m_addr);
-    }
-}
+//void Device::addWidget(DeviceWidget& widget) {
+//    if(!m_deviceWidgets.contains(&widget)) {
+//        m_deviceWidgets.append(&widget);
+//        connect(&widget, &DeviceWidget::dataChanged, this, &Device::dataFromWidget);
+//        widget.setAddress(m_addr);
+//    }
+//}
 
-void Device::removeWidget(DeviceWidget& widget) {
-    widget.disconnect();
-    m_deviceWidgets.removeAll(&widget);
-}
+//void Device::removeWidget(DeviceWidget& widget) {
+//    widget.disconnect();
+//    m_deviceWidgets.removeAll(&widget);
+//}
 
 const QVector<DevCommand*> Device::commands() {
     QVector<DevCommand*> vec;
@@ -146,45 +149,11 @@ void Device::createCommandsRequests() {
         }
 //        m_cmdReqIt = m_cmdRequests.begin();
         m_cmdReqIt = 0;
-
-/*
-    // TODO: перепиши
-    while(i.hasNext()) {
-        bHasCommands = true;
-        if(cmd != nullptr)
-            prevCmd = cmd;
-
-        i.next();
-        cmd = i.value();
-        if(startCode == -1) {
-            startCode = cmd->config.code;
-            minInterval = cmd->config.interval;
-            count++;
-        } else {
-            if(prevCmd->config.code+1 == cmd->config.code) {
-                count++;
-                if(minInterval > cmd->config.interval) minInterval = cmd->config.interval;
-            } else {
-               m_cmdRequests.append(new DevicePollRequest(m_addr, startCode, count, minInterval));
-               startCode = cmd->config.code;
-               minInterval = cmd->config.interval;
-               count = 1;
-            }
-        }
-    }
-    if(bHasCommands) {
-        m_cmdRequests.append(new DevicePollRequest(m_addr, startCode, count, minInterval));
-        qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
-    }
-    m_cmdReqItt = m_cmdRequests.begin();*/
 }
 
 // private slots
 
-void Device::dataFromWidget(quint16 reg, double value) {
-    auto cmd = m_Commands.value(reg, nullptr);
-    if(cmd != nullptr) {
-        emit dataToModel(m_addr, reg, cmd->getRawFromValue(value));
-    }
+void Device::dataFromCommand(quint16 reg, quint16 value) {
+        emit dataToModel(m_addr, reg, value);
 }
 

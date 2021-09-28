@@ -16,6 +16,11 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QVector<De
     ui->setupUi(this);
 
     for(auto control : description.controls) {
+        DevCommand* cmd = nullptr;
+        if((cmd = m_commands.value(control.max, nullptr)) != nullptr) {
+
+        }
+
         auto widget = new ParameterWidget(control, this);
         m_paramWidgets.append(widget);
         ui->paramLayout->addWidget(widget, 0, m_paramWidgets.size());
@@ -51,6 +56,8 @@ void DeviceWidget::parameterChanged(quint16 reg, double value) {
     qDebug() << "parameterChanged" << reg << value;
     emit dataChanged(reg, value);
 }
+
+// private methods
 
 void DeviceWidget::paintEvent(QPaintEvent*) {
     QStyleOption opt;

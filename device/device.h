@@ -13,7 +13,7 @@ struct DeviceDelays;
 struct DeviceModel;
 class Device;
 struct CommandSettings;
-struct DevCommand;
+class DevCommand;
 
 class Device : public QObject
 {
@@ -23,7 +23,7 @@ public:
     explicit Device(quint8 addr, const DeviceModel& config, QObject *parent = nullptr);
     ~Device();
     void dataIncome(quint16 reg, quint16 value);
-    void setWidget(QWidget& widget);
+//    void setWidget(QWidget& widget);
     void destroy();
     QString name();
     quint16 id();
@@ -31,8 +31,8 @@ public:
     const DevicePollRequest nextPollRequest();
     bool isLink();
     void clearLink();
-    void addWidget(DeviceWidget& widget);
-    void removeWidget(DeviceWidget& widget);
+//    void addWidget(DeviceWidget& widget);
+//    void removeWidget(DeviceWidget& widget);
     const QVector<DevCommand*> commands();
 
 private:
@@ -46,12 +46,12 @@ private:
 //    QVector<DevicePollRequest>::iterator m_cmdReqItt;
     int m_cmdReqIt = 0;
     QVector<Device*> m_childDevices;
-    QVector<DeviceWidget*> m_deviceWidgets;
+//    QVector<DeviceWidget*> m_deviceWidgets;
 
     void createCommandsRequests();
 
 private slots:
-    void dataFromWidget(quint16 reg, double value);
+    void dataFromCommand(quint16 reg, quint16 value);
 
 signals:
     void dataToModel(quint8 addr, quint16 reg, quint16 value);
