@@ -17,17 +17,17 @@ public:
     ~HiddenWidget();
     void addWidget(QWidget* widget);
     QVector<QWidget*> widgets();
-    bool isVisible();
-    void setVisible(bool show);
-    bool isPinned();
+    bool isShown() const;
+    void setShown(bool show);
+    bool isPinned() const;
     void setPinned(bool pin);
 
 
 private:
     Ui::HiddenWidget *ui;
-    QVector<QWidget*> m_widgets; // TODO: Сделай нормальный тип
-    bool m_isVisible = true;
-    bool m_isPinned = true;
+    QVector<QWidget*> m_widgets;
+    bool m_isVisible {true};
+    bool m_isPinned {false};
     QVBoxLayout* m_layout;
 };
 

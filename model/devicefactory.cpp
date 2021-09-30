@@ -60,7 +60,6 @@ const QMultiMap<uint, QString>& DeviceFactory::getCommonDeviceIDs() const {
 // private slots
 void DeviceFactory::parsingFinished() {
     QScopedPointer<TreeItem> parserTree(m_parseWorker->data());
-    qDebug() << "m_parseWorker.reset();";
 //    m_parseWorker->deleteLater();
     if(parseTree(*parserTree)) {
         qDebug() << "Parse tree is ok!";

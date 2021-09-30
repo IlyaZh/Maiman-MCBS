@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>708</width>
+    <width>296</width>
     <height>247</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
+   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -69,72 +69,6 @@ QLabel {
    <property name="spacing">
     <number>15</number>
    </property>
-   <item row="1" column="1" colspan="2">
-    <widget class="QLabel" name="modelLabel">
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(255,255,255);
-</string>
-     </property>
-     <property name="text">
-      <string>Model: SF830</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="3">
-    <widget class="QPushButton" name="hideControlButton">
-     <property name="minimumSize">
-      <size>
-       <width>135</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>135</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 2px solid rgb(26,26,26);
-border-radius: 3px;
-background: rgb(51,51,51);
-color: rgb(255,255,255);
-padding: 0px;
-margin: 0px;</string>
-     </property>
-     <property name="text">
-      <string>    Hide controls</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../resources.qrc">
-       <normaloff>:/resources/images/hidecontrols-icon.png</normaloff>
-       <normalon>:/resources/images/showcontrols-icon.png</normalon>:/resources/images/hidecontrols-icon.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>10</width>
-       <height>10</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="1" colspan="2">
     <widget class="QPushButton" name="tecButton">
      <property name="minimumSize">
@@ -158,153 +92,12 @@ color: rgb(0,0,0);</string>
      <property name="text">
       <string>TEC</string>
      </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="linkLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>15</width>
-       <height>15</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLabel {
-    background: rgb(0,102,51);
-    border: 1px solid rgb(26,26,26);
-    border-radius: 3px;
-}</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="5">
-    <widget class="QPushButton" name="pin1Button">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 2px solid rgb(26,26,26);
-border-radius: 3px;
-background: rgb(17,17,17);
-color: rgb(255,255,255);
-padding: 0px;
-margin: 0px;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../resources.qrc">
-       <normaloff>:/resources/images/pinSymbol-disactivated.png</normaloff>
-       <normalon>:/resources/images/pinSymbol-activated.png</normalon>:/resources/images/pinSymbol-disactivated.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>10</width>
-       <height>10</height>
-      </size>
-     </property>
      <property name="checkable">
       <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="0" column="6" rowspan="4">
-    <spacer name="horizontalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::MinimumExpanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>1</width>
-       <height>182</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="1" colspan="2">
-    <widget class="QPushButton" name="laserButton">
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>36</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background: rgb(0,102,51);
-border: 2px solid rgb(26,26,26);
-border-radius: 6px;
-color: rgb(0,0,0);</string>
-     </property>
-     <property name="text">
-      <string>Laser</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="4">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="2">
-    <widget class="QLabel" name="idLabel">
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>20</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(255,255,255);
-</string>
-     </property>
-     <property name="text">
-      <string>ID:00</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="7">
+   <item row="4" column="0" colspan="6">
     <widget class="QLabel" name="label_2">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -341,13 +134,125 @@ border-bottom-right-radius: 6px;</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="3" rowspan="3" colspan="3">
-    <layout class="QGridLayout" name="paramLayout"/>
+   <item row="2" column="1" colspan="2">
+    <widget class="QPushButton" name="laserButton">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>36</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+       <pointsize>18</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: rgb(0,102,51);
+border: 2px solid rgb(26,26,26);
+border-radius: 6px;
+color: rgb(0,0,0);</string>
+     </property>
+     <property name="text">
+      <string>Laser</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="2">
+    <widget class="QLabel" name="modelLabel">
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255,255,255);
+</string>
+     </property>
+     <property name="text">
+      <string>Model: SF830</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="linkLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>15</width>
+       <height>15</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+    background: rgb(0,102,51);
+    border: 1px solid rgb(26,26,26);
+    border-radius: 3px;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="idLabel">
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255,255,255);
+</string>
+     </property>
+     <property name="text">
+      <string>ID:00</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3" rowspan="4" colspan="2">
+    <widget class="QWidget" name="widgetBox" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="5">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>1</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -38,6 +38,7 @@ public slots:
     void setConnected(bool flag);
 private slots:
     void on_networkConnectButton_clicked();
+    void adjust();
 
 private:
     Ui::MainWindow *ui;

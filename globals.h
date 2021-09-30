@@ -10,8 +10,9 @@
 #include <QCoreApplication>
 //#include "appsettings.h"
 
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#pragma once
+
+bool isEqual(double first, double second);
 
 namespace Constants {
     // Название организации
@@ -35,6 +36,8 @@ namespace Constants {
     static const QString TemperatureUnitDefault = "C";
 
     static const unsigned int BaudRateDefault = 115200;
+
+    static const double doubleEpsilon = 0.000001;
 };
 
 static const QPoint WINDOW_DEFAULT_POSITION = QPoint(-1, -1);
@@ -68,6 +71,3 @@ static const QString DEFAULT_LOG_FILEPATH = QDir::currentPath()+"/logs/";
 //static const char DOUBLE_FORMAT = 'f';
 
 //enum deviceStatusMask {START_STOP_MASK = 0x2, CURRENT_EXT_INT_MASK = 0x4, START_EXT_INT_MASK = 0x10, BLOCK_THERMO_MASK = 0x40, BLOCK_USE_IGNORE_MASK = 0x80};
-
-
-#endif // GLOBALS_H

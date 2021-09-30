@@ -142,11 +142,26 @@ void MainWindow::on_networkConnectButton_clicked()
     }*/
 }
 
+void MainWindow::adjust() {
+    ui->workFieldWidget->adjustSize();
+    ui->workFieldWidget->setMinimumSize(ui->workFieldWidget->size());
+    ui->centralwidget->adjustSize();
+}
+
 void MainWindow::addDeviceWidget(DeviceWidget* widget) {
     if(!m_workWidgets.contains(widget)) {
         m_workWidgets.append(widget);
         int count = m_workFieldLayout->layout()->count();
-        qDebug() << "addToWorkField, widgets count = " << count;
         m_workFieldLayout->addWidget(widget, count, 0);
+        m_workFieldLayout->addItem(new QSpacerItem(2,2, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding), count+1,0);
+        connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
+        adjust();
+        auto widgetSize = ui->workFieldWidget->size();
+        ui->workFieldWidget->setMinimumSize(widgetSize);
+
+//        ui->scrollArea->adjustSize();
+//        auto scrollSize = ui->scrollArea->size();
+//        qDebug() << scrollSize;
+        ui->scrollArea->setMinimumSize(widgetSize);
     }
 }

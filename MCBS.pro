@@ -37,14 +37,17 @@ SOURCES += \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
     model/device/devicewidget.cpp \
-    model/device/parameterwidget.cpp \
     model/devicefactory.cpp \
     model/guifactory.cpp \
     network/SoftProtocol.cpp \
     network/networkmodel.cpp \
     network/protocols/modbusprotocol.cpp \
     tests/globaltest.cpp \
-    tests/test_modbus/test_modbus.cpp
+    tests/test_modbus/test_modbus.cpp \
+    absoluteToleranceCompare.cpp \
+    widgets/binarywidget.cpp \
+    widgets/commandwidget.cpp \
+    widgets/readparameterwidget.cpp
 
 HEADERS += \
     appsettings.h \
@@ -69,20 +72,24 @@ HEADERS += \
     model/device/HiddenWidget.h \
     model/device/devicepollrequest.h \
     model/device/devicewidget.h \
-    model/device/parameterwidget.h \
     model/devicefactory.h \
     model/guifactory.h \
     network/SoftProtocol.h \
     network/networkmodel.h \
     network/protocols/modbusprotocol.h \
     tests/globaltest.h \
-    tests/test_modbus/test_modbus.h
+    tests/test_modbus/test_modbus.h \
+    widgets/binarywidget.h \
+    widgets/commandwidget.h \
+    widgets/readparameterwidget.h
 
 FORMS += \
     mainwindow.ui \
     model/device/HiddenWidget.ui \
     model/device/devicewidget.ui \
-    model/device/parameterwidget.ui
+    widgets/binarywidget.ui \
+    widgets/commandwidget.ui \
+    widgets/readparameterwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

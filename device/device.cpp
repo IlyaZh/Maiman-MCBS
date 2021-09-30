@@ -11,7 +11,7 @@ Device::Device(quint8 addr, const DeviceModel& config, QObject *parent)
 {
     for(auto cmdBuilder : config.commands) {
         auto command = new DevCommand(this, cmdBuilder);
-        m_Commands.insert(command->code(), command);
+        m_Commands.insert(command->code(), QSharedPointer<DevCommand>(command));
 
         connect(command, &DevCommand::sendValueSignal, this, &Device::dataFromCommand);
     }
@@ -28,11 +28,11 @@ Device::~Device() {
 //        delete item;
 //    }
     m_cmdRequests.clear();
-    qDeleteAll(m_Commands);
+    m_Commands.clear();
 }
 
 void Device::dataIncome(quint16 reg, quint16 value) {
-    for(DevCommand* cmd : m_Commands) {
+    for(auto cmd : m_Commands) {
         if(cmd->config.code == reg) {
             m_isLink = true;
             emit link(m_isLink);
@@ -99,14 +99,8 @@ void Device::clearLink() {
 //    m_deviceWidgets.removeAll(&widget);
 //}
 
-const QVector<DevCommand*> Device::commands() {
-    QVector<DevCommand*> vec;
-
-    for(auto command : m_Commands) {
-        vec.push_back(command);
-    }
-
-    return vec;
+const QMap<quint16, QSharedPointer<DevCommand>> Device::commands() {
+    return m_Commands;
 }
 
 
@@ -116,17 +110,16 @@ void Device::createCommandsRequests() {
     int startCode = -1;
     uint minInterval = 1;
     int count = 0;
-    DevCommand* cmd = nullptr;
+//    DevCommand* cmd = nullptr;
 
-    QMapIterator<uint, DevCommand*> i(m_Commands);
+    QMapIterator<quint16, QSharedPointer<DevCommand>> i(m_Commands);
 
     qDebug() << "createCommandsRequests " << m_Commands.keys();
 
     for(auto it = m_Commands.begin(); it != m_Commands.end(); ++it) {
-        qDebug() << it.key();
 //        if(cmd != nullptr)
 //            prevCmd = cmd;
-         cmd = it.value();
+         auto cmd = it.value();
         if(startCode == -1) {
             startCode = cmd->config.code;
             minInterval = cmd->config.interval;
@@ -145,7 +138,6 @@ void Device::createCommandsRequests() {
     }
         if(startCode != -1) {
             m_cmdRequests.append(DevicePollRequest(m_addr, startCode, count, minInterval));
-            qDebug() << "DevicePollRequest addrr = " << m_addr << ", code = " << startCode << ", count = " << count;
         }
 //        m_cmdReqIt = m_cmdRequests.begin();
         m_cmdReqIt = 0;

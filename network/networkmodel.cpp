@@ -102,15 +102,13 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
         qDebug() << "Device with id " << id << "hasn't found in config";
         return;
     }
-    else
-        qDebug() << newDevice->name();
+
 
     if(m_devices.contains(addr)) {
         auto oldDev = m_devices.value(addr);
         oldDev->disconnect();
         oldDev->deleteLater();
         m_devices.remove(addr);
-        qDebug() << "initDevice duplicate device addr";
     }
 
     m_devices.insert(addr, newDevice);
@@ -146,7 +144,7 @@ void NetworkModel::readyRead() {
     SoftProtocol::DataVector result = m_protocol.execute(rxPacket, m_lastTxPackage);
     m_lastTxPackage.clear();
     for(auto item : result) {
-        qDebug() << "READ" << item.addr << item.reg << item.value;
+//        qDebug() << "READ" << item.addr << item.reg << item.value;
         if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
             initDevice(item.addr, item.value);
         } else {
@@ -204,7 +202,7 @@ void NetworkModel::delayTimeout() {
         }
 
         m_port->write(m_lastTxPackage);
-        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "Write! " << m_lastTxPackage.toHex(' ');
+//        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "Write! " << m_lastTxPackage.toHex(' ');
     }
 }
 // =====================

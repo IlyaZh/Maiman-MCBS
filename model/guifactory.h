@@ -21,7 +21,7 @@ public:
     GuiFactory(QString fileName, AppSettings& settings, QObject *parent = nullptr);
     ~GuiFactory();
     void start();
-    DeviceWidget* createWidget(quint16 id, const QVector<DevCommand*>& commands);
+    DeviceWidget* createWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
 
 
 

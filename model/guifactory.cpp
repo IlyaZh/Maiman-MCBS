@@ -31,7 +31,7 @@ void GuiFactory::start() {
     m_thread->start();
 }
 
-DeviceWidget* GuiFactory::createWidget(quint16 id, const QVector<DevCommand*>& commands) {
+DeviceWidget* GuiFactory::createWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands) {
     if(m_deviceWidgets.contains(id)) {
         auto widgetSettings = m_deviceWidgets.value(id).get();
         return new DeviceWidget(*widgetSettings, commands);
@@ -50,7 +50,6 @@ void GuiFactory::parsingFinished() {
     } else {
         qDebug() << "Gui Can't parse tree";
     }
-    qDebug() << "IDS " << m_deviceWidgets.keys();
     m_parseWorker->deleteLater();
     delete parserTree;
 }
@@ -111,8 +110,9 @@ DeviceWidgetDesc GuiFactory::parseDevice(const TreeItem& item) {
 
         } else if (devOption.name() == "Buttons") {
             for(int i = 0; i < devOption.childCount(); ++i) {
-                const TreeItem& button = devOption.child(i);
-                widgetDesc.buttons << parseButtons(button);
+                const TreeItem& buttonItem = devOption.child(i);
+                auto button = parseButtons(buttonItem);
+                widgetDesc.buttons.insert(button.code, button);
             }
         } else if (devOption.name() == "Leds") {
             for(int i = 0; i < devOption.childCount(); ++i) {
@@ -121,6 +121,11 @@ DeviceWidgetDesc GuiFactory::parseDevice(const TreeItem& item) {
             }
         }
     }
+
+    // Ищем виджет Current и ставим его на первое место
+    std::sort(widgetDesc.controls.begin(), widgetDesc.controls.end(), [](const Control& left, const Control& right){
+        return (left.name.toLower() == "current");
+    });
     return widgetDesc;
 }
 

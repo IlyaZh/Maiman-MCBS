@@ -8,6 +8,7 @@
 #include "model/device/devicewidget.h"
 #include <QTimer>
 #include <QWidget>
+#include <QSharedPointer>
 
 struct DeviceDelays;
 struct DeviceModel;
@@ -33,7 +34,7 @@ public:
     void clearLink();
 //    void addWidget(DeviceWidget& widget);
 //    void removeWidget(DeviceWidget& widget);
-    const QVector<DevCommand*> commands();
+    const QMap<quint16, QSharedPointer<DevCommand>> commands();
 
 private:
     bool m_isLink = false;
@@ -41,7 +42,7 @@ private:
     int m_Id;
     const QString m_Name;
     const DeviceDelays& m_Delays;
-    QMap<uint, DevCommand*> m_Commands;
+    QMap<quint16, QSharedPointer<DevCommand>> m_Commands;
     QVector<DevicePollRequest> m_cmdRequests;
 //    QVector<DevicePollRequest>::iterator m_cmdReqItt;
     int m_cmdReqIt = 0;

@@ -25,7 +25,6 @@ void MainController::eventHandle(const QString &event, const QVariant &value) {
         } else {
             NetworkType type = static_cast<NetworkType>(portSettings["type"].toInt());
             if(type == NetworkType::Tcp) {
-                qDebug() << "open device";
                 device = new DataSource();
                 device->setSettings(type, portSettings["host"], portSettings["port"]);
                 device->open();

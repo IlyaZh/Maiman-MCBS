@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>HiddenWidget</class>
- <widget class="QWidget" name="HiddenWidget">
+ <class>BinaryWidget</class>
+ <widget class="QWidget" name="BinaryWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>232</width>
-    <height>38</height>
+    <width>87</width>
+    <height>16</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="MinimumExpanding">
+   <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -29,33 +29,50 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
    <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
     <number>0</number>
    </property>
    <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
-    <widget class="QWidget" name="widget" native="true"/>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
+    <widget class="QCheckBox" name="statusCheckbox">
+     <property name="minimumSize">
       <size>
-       <width>20</width>
-       <height>25</height>
+       <width>0</width>
+       <height>16</height>
       </size>
      </property>
-    </spacer>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QCheckBox{
+	border-color: rgb(0, 0, 0);
+	font: 10pt &quot;Share Tech Mono&quot;;
+	color: rgb(153, 153, 153);
+	
+
+}
+QCheckBox::indicator{
+	
+	background-color: rgb(255, 255, 255);
+
+	border: 1px solid black
+
+}
+QCheckBox::indicator:unchecked{
+	
+	
+}</string>
+     </property>
+     <property name="text">
+      <string>Status</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

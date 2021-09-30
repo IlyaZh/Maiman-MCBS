@@ -10,7 +10,7 @@ ParserWorker::ParserWorker(QString fileName, ParserType type, QObject *parent) :
 }
 
 ParserWorker::~ParserWorker() {
-    qDebug() << "Delet ParserWorker";
+
 }
 
 TreeItem* ParserWorker::data() {
