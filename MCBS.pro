@@ -36,6 +36,7 @@ SOURCES += \
     mainfacade.cpp \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
+    model/device/connectionwidget.cpp \
     model/device/devicewidget.cpp \
     model/devicefactory.cpp \
     model/guifactory.cpp \
@@ -70,6 +71,7 @@ HEADERS += \
     mainwindow.h \
     model/ModelInterface.h \
     model/device/HiddenWidget.h \
+    model/device/connectionwidget.h \
     model/device/devicepollrequest.h \
     model/device/devicewidget.h \
     model/devicefactory.h \
@@ -86,6 +88,7 @@ HEADERS += \
 FORMS += \
     mainwindow.ui \
     model/device/HiddenWidget.ui \
+    model/device/connectionwidget.ui \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
     widgets/commandwidget.ui \
