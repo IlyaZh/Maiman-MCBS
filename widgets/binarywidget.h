@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QMap>
 #include <QTest>
+#include <QSharedPointer>
 #include "model/device/devicewidget.h"
 
 namespace Ui {
@@ -15,18 +16,21 @@ class BinaryWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit BinaryWidget(const Checkbox &settings, QWidget *parent = nullptr);
+    explicit BinaryWidget(const Checkbox &settings, QSharedPointer<DevCommand> cmd, QWidget *parent = nullptr);
     ~BinaryWidget();
 
 signals:
-    void valueChanged(quint16 cmd, quint8 bit, bool state);
+//    void valueChanged(quint16 cmd, quint8 bit, bool state);
 
 private slots:
-    void checkBoxClicked();
+    void checkBoxClicked(bool checked);
 
 private:
     Ui::BinaryWidget *ui;
     const Checkbox m_settings;
+    QSharedPointer<DevCommand> m_cmd;
+
+    void setValue(quint16 value);
 
 };
 #endif // BINARYWIDGET_H

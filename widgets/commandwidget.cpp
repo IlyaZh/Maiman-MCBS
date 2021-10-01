@@ -20,7 +20,7 @@ CommandWidget::CommandWidget(const Control& settings,
 
     ui->WidgetName->setText(m_settings.name);
 
-    if (m_Value != nullptr and m_Max != nullptr and m_Min != nullptr){
+    if (m_Value and m_Max and m_Min){
         m_Validator.setRange(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
 
         ui->Value->setValidator(&m_Validator);
@@ -36,12 +36,27 @@ CommandWidget::CommandWidget(const Control& settings,
             setRealValue(m_Real->valueDouble(),m_Real->tolerance());
         }
         setUnits(m_Value->unit());
+
+        connect(m_Value.get(), &DevCommand::updatedValue, this, [this](){
+            setValue(m_Value->valueDouble(), m_Value->tolerance());
+        });
+        connect(m_Min.get(), &DevCommand::updatedValue, this, [this](){
+            setMinValue(m_Min->valueDouble(), m_Min->tolerance());
+        });
+        connect(m_Max.get(), &DevCommand::updatedValue, this, [this](){
+            setMaxValue(m_Max->valueDouble(), m_Max->tolerance());
+        });
     }
+
+    if(m_Real) {
+        connect(m_Real.get(), &DevCommand::updatedValue, this, [this](){
+            setRealValue(m_Real->valueDouble(), m_Real->tolerance());
+        });
+    }
+
     connect(ui->Value, &QLineEdit::editingFinished, this, &CommandWidget::LineEdit_EditFinished);
 
     adjust();
-    qDebug() << "CommandWIdget size=" << this->size();
-
 }
 
 CommandWidget::~CommandWidget()
@@ -56,7 +71,12 @@ void CommandWidget::LineEdit_EditFinished(){
 //        ui->RealValue->setText(ui->Value->text());
 
     valueFromLine =  ui->Value->text().toDouble();
-    emit valueChanged(m_Value->code(), valueFromLine);
+//    emit valueChanged(m_Value->code(), valueFromLine);
+
+    if(!m_Value.isNull()) {
+        m_Value->sendValue(valueFromLine);
+    }
+
     qDebug() << "SIGNAL CommandWidget" << m_Value->code() << valueFromLine;
 }
 

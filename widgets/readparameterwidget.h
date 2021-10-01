@@ -21,18 +21,16 @@ public:
     explicit ReadParameterWidget(const Control &settings, QSharedPointer<DevCommand> cmd, /*int value, QString name,*/ QWidget *parent = nullptr);
 //    explicit ReadParameterWidget(const Control &settings, int decimal, QString name, /*double value,*/ QWidget *parent = nullptr);
     ~ReadParameterWidget();
-    void setValue(quint16 cmd, double value, int decimal);
-    void setValue(quint16 cmd, int value);
-    void setUnits(const QString& unit);
-    void setDecimals(quint16 cmd, int decimals);
 
 private:
     Ui::ReadParameterWidget *ui;
     const Control& m_settings;
-    QMap<quint16, int> m_decimals;
-    QMap<quint16, double> m_values;
     QString m_unit;
     QSharedPointer<DevCommand> m_command;
+
+    void setValue(double value, int decimal);
+    void setValue(int value);
+    void setUnits(QStringView unit);
 
 
 #ifdef QT_DEBUG

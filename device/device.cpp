@@ -33,7 +33,7 @@ Device::~Device() {
 
 void Device::dataIncome(quint16 reg, quint16 value) {
     for(auto cmd : m_Commands) {
-        if(cmd->config.code == reg) {
+        if(cmd->config.m_code == reg) {
             m_isLink = true;
             emit link(m_isLink);
 
@@ -121,17 +121,17 @@ void Device::createCommandsRequests() {
 //            prevCmd = cmd;
          auto cmd = it.value();
         if(startCode == -1) {
-            startCode = cmd->config.code;
-            minInterval = cmd->config.interval;
+            startCode = cmd->config.m_code;
+            minInterval = cmd->config.m_interval;
             count++;
         } else {
-            if((startCode+count) == cmd->config.code) {
+            if((startCode+count) == cmd->config.m_code) {
                 count++;
-                if(minInterval > cmd->config.interval) minInterval = cmd->config.interval;
+                if(minInterval > cmd->config.m_interval) minInterval = cmd->config.m_interval;
             } else {
                m_cmdRequests.append(DevicePollRequest(m_addr, startCode, count, minInterval));
-               startCode = cmd->config.code;
-               minInterval = cmd->config.interval;
+               startCode = cmd->config.m_code;
+               minInterval = cmd->config.m_interval;
                count = 1;
             }
         }
@@ -146,6 +146,7 @@ void Device::createCommandsRequests() {
 // private slots
 
 void Device::dataFromCommand(quint16 reg, quint16 value) {
-        emit dataToModel(m_addr, reg, value);
+    qDebug() << "DataFromCommand" << reg << value;
+    emit dataToModel(m_addr, reg, value);
 }
 

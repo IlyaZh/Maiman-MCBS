@@ -2,13 +2,13 @@
 #include <QtMath>
 
 CommandSettings::CommandSettings(quint16 code, QString unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature) :
-    code(code),
-    unit(unit),
-    divider(divider),
-    tolerance(tolerance),
-    isSigned(isSigned),
-    isTemperature(isTemperature),
-    interval(interval)
+    m_code(code),
+    m_unit(unit),
+    m_divider(divider),
+    m_tolerance(tolerance),
+    m_isSigned(isSigned),
+    m_isTemperature(isTemperature),
+    m_interval(interval)
 {
 
 }
@@ -67,19 +67,19 @@ DevCommand::DevCommand(Device* device, const CommandSettings& conf) :
 //}
 
 quint16 DevCommand::code() {
-    return config.code;
+    return config.m_code;
 }
 
 QString DevCommand::unit() {
-    return config.unit;
+    return config.m_unit;
 }
 
 double DevCommand::divider() {
-    return config.divider;
+    return config.m_divider;
 }
 
 int DevCommand::tolerance() {
-    return static_cast<quint8>(config.tolerance);
+    return static_cast<int>(config.m_tolerance);
 }
 
 /*uint DevCommand::interval() {
@@ -100,11 +100,11 @@ int DevCommand::tolerance() {
 //    return state;
 //}
 quint16 DevCommand::getRawFromValue(double value) {
-    return static_cast<quint16>(qRound(value*config.divider-0.5));
+    return static_cast<quint16>(qRound(value*config.m_divider-0.5));
 }
 
 bool DevCommand::isSigned() {
-    return config.isSigned;
+    return config.m_isSigned;
 }
 
 double DevCommand::valueDouble() {
@@ -122,18 +122,18 @@ void DevCommand::setRawValue(quint16 value) {
 
     if(isSigned()) {
         double d = static_cast<double>((int16_t) m_rawValue);
-        m_value = qRound(d/config.divider*qPow(10,config.tolerance)-0.5)/qPow(10,config.tolerance);
+        m_value = qRound(d/config.m_divider*qPow(10,config.m_tolerance)-0.5)/qPow(10,config.m_tolerance);
     } else {
         double d = static_cast<double>(m_rawValue);
-        m_value = qRound(d/config.divider*qPow(10,config.tolerance)-0.5)/qPow(10,config.tolerance);
+        m_value = qRound(d/config.m_divider*qPow(10,config.m_tolerance)-0.5)/qPow(10,config.m_tolerance);
     }
     emit updatedValue();
 }
 
 void DevCommand::sendValue(int value) {
-
+    emit sendValueSignal(config.m_code, getRawFromValue(static_cast<double>(value)));
 }
 
 void DevCommand::sendValue(double value) {
-
+    emit sendValueSignal(config.m_code, getRawFromValue(value));
 }

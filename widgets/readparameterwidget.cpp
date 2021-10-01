@@ -17,6 +17,13 @@ ReadParameterWidget::ReadParameterWidget(const Control &settings, QSharedPointer
 
     ui->labelUnits->setText(m_command->unit());
 
+    if(m_command) {
+        setValue(m_command->valueDouble(), m_command->tolerance());
+        connect(m_command.get(), &DevCommand::updatedValue, this, [this](){
+            setValue(m_command->valueDouble(), m_command->tolerance());
+        });
+    }
+
     /*setValue(m_settings.real, value);*/
 
     this->adjustSize();
@@ -42,33 +49,20 @@ ReadParameterWidget::~ReadParameterWidget()
     delete ui;
 }
 
+// private methods
 
-void ReadParameterWidget::setUnits(const QString& unit){
-    m_unit = unit;
-    ui->labelUnits->setText(unit);
+void ReadParameterWidget::setUnits(QStringView unit){
+    m_unit = unit.toString();
+    ui->labelUnits->setText(m_unit);
 }
 
-void ReadParameterWidget::setValue(quint16 cmd, double value, int decimal){
+void ReadParameterWidget::setValue(double value, int decimal){
     QString realStr = QString::number(value, 'f', decimal);
-    if (cmd == m_settings.real){
-        ui->labelValue->setText(realStr);
-        m_values.insert(cmd, value);
-        m_decimals.insert(cmd, decimal);
-    }
+    ui->labelValue->setText(realStr);
 }
 
-void ReadParameterWidget::setValue(quint16 cmd, int value){
-    if (cmd == m_settings.real){
-        ui->labelValue->setNum(value);
-        m_values.insert(cmd, value);
-        m_decimals.insert(cmd, 0);
-    }
-}
-
-void ReadParameterWidget::setDecimals(quint16 cmd, int decimals){
-    if (cmd == m_settings.real){
-        m_decimals.insert(cmd, decimals);
-    }
+void ReadParameterWidget::setValue(int value){
+    ui->labelValue->setNum(value);
 }
 
 //testDevice

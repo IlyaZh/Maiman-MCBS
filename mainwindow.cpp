@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "globals.h"
 #include <QVariant>
+#include <QScrollBar>
 
 #include <QDebug>
 
@@ -142,10 +143,12 @@ void MainWindow::on_networkConnectButton_clicked()
     }*/
 }
 
-void MainWindow::adjust() {
+void MainWindow::adjust(const QSize& size) {
     ui->workFieldWidget->adjustSize();
     ui->workFieldWidget->setMinimumSize(ui->workFieldWidget->size());
-    ui->centralwidget->adjustSize();
+    if(!size.isEmpty()) {
+        ui->scrollArea->setMinimumWidth(size.width()+2*ui->scrollArea->frameWidth()+ui->scrollArea->verticalScrollBar()->sizeHint().width());
+    }
 }
 
 void MainWindow::addDeviceWidget(DeviceWidget* widget) {
@@ -155,13 +158,9 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         m_workFieldLayout->addWidget(widget, count, 0);
         m_workFieldLayout->addItem(new QSpacerItem(2,2, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding), count+1,0);
         connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
-        adjust();
-        auto widgetSize = ui->workFieldWidget->size();
-        ui->workFieldWidget->setMinimumSize(widgetSize);
-
-//        ui->scrollArea->adjustSize();
-//        auto scrollSize = ui->scrollArea->size();
-//        qDebug() << scrollSize;
-        ui->scrollArea->setMinimumSize(widgetSize);
+        adjust(widget->size());
+//        auto widgetSize = ui->workFieldWidget->size();
+//        ui->workFieldWidget->setMinimumSize(widgetSize);
+//        ui->scrollArea->setMinimumSize(widgetSize);
     }
 }

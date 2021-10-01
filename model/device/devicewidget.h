@@ -97,13 +97,13 @@ public:
     void setAddress(int addr);
 
 public slots:
-    void setValue(quint16 reg, double value);
-    void parameterChanged(quint16 reg, double value);
+//    void setValue(quint16 reg, double value);
+//    void parameterChanged(quint16 reg, double value);
 //    void setValue(quint16 reg, int value);
 
 signals:
-    void sizeChanged();
-    void dataChanged(quint16 reg, double value);
+    void sizeChanged(const QSize& size);
+//    void dataChanged(quint16 reg, double value);
 //    void dataChanged(quint16 reg, int value);
 
 private:
@@ -120,16 +120,19 @@ private:
 //    QPushButton* m_hideControlsButton;
     bool m_hideControls {false};
 
-    void paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent*) override;
     void adjust();
+//    void resizeEvent(QResizeEvent *event) override;
 
 private slots:
+    void setLaserButton(quint16 value);
+    void setTecButton(quint16 value);
     void laserButtonClicked(bool state);
     void tecButtonClicked(bool state);
-    void commandChanged(quint16 reg);
+//    void commandChanged(quint16 reg);
     void hideControlsButtonClicked(bool flag);
     void pinButtonClicked(int idx, bool state);
-    void checkBoxClicked(quint16 cmd, quint8 bit, bool state);
+//    void checkBoxClicked(quint16 cmd, quint8 bit, bool state);
 };
 
 #endif // DEVICEWIDGET_H

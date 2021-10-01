@@ -9,13 +9,13 @@ class DevCommand;
 struct CommandSettings {
     explicit CommandSettings(quint16 code, QString unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature);
 //    DevCommand* makeCommand(Device* pDevice);
-    quint16 code;
-    QString unit;
-    double divider = 1;
-    quint8 tolerance = 0;
-    bool isSigned = false;
-    bool isTemperature = false;
-    uint interval;
+    quint16 m_code;
+    QString m_unit;
+    double m_divider = 1;
+    quint8 m_tolerance = 0;
+    bool m_isSigned = false;
+    bool m_isTemperature = false;
+    uint m_interval;
 };
 
 class DevCommand : public QObject

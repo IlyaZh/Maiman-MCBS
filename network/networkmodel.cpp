@@ -144,7 +144,6 @@ void NetworkModel::readyRead() {
     SoftProtocol::DataVector result = m_protocol.execute(rxPacket, m_lastTxPackage);
     m_lastTxPackage.clear();
     for(auto item : result) {
-//        qDebug() << "READ" << item.addr << item.reg << item.value;
         if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
             initDevice(item.addr, item.value);
         } else {

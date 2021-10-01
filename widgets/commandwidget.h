@@ -25,14 +25,9 @@ public:
                            QSharedPointer<DevCommand> Real,
                            QWidget *parent = nullptr);
     ~CommandWidget();
-    void setValue(double value, int decimal);
-    void setMaxValue(double value, int decimal);
-    void setMinValue(double value, int decimal);
-    void setRealValue(double value, int decimal);
-    void setUnits(QString units);
 
 signals:
-    void valueChanged(quint16 reg, double value);
+//    void valueChanged(quint16 reg, double value);
 
 private:
     Ui::CommandWidget *ui;
@@ -43,6 +38,12 @@ private:
     QSharedPointer<DevCommand> m_Value;
     QSharedPointer<DevCommand> m_Max;
     QSharedPointer<DevCommand> m_Min;
+
+    void setValue(double value, int decimal);
+    void setMaxValue(double value, int decimal);
+    void setMinValue(double value, int decimal);
+    void setRealValue(double value, int decimal);
+    void setUnits(QString units);
 
     void adjust();
 private slots:

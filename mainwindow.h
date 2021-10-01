@@ -38,7 +38,7 @@ public slots:
     void setConnected(bool flag);
 private slots:
     void on_networkConnectButton_clicked();
-    void adjust();
+    void adjust(const QSize& size = QSize());
 
 private:
     Ui::MainWindow *ui;
