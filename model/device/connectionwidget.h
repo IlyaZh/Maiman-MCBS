@@ -18,8 +18,8 @@ public:
 
 
 public slots:
-    void setBaudList(const QStringList&);
-    void setPortList(const QStringList&);
+    void setBaudList(const QStringList& baudrateList);
+    void setPortList(const QStringList& portList);
     void setCurrentComPort(QStringView port);
     void setProtocol(NetworkType type);
     void setCurrentIp(QStringView ip);
@@ -29,6 +29,7 @@ public slots:
     void setConnected(bool isConnected);
 private:
     Ui::ConnectionWidget *ui;
+    const QString baudrate;
 };
 
 #endif // CONNECTIONWIDGET_H

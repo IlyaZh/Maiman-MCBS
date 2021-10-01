@@ -6,7 +6,10 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
     ui(new Ui::ConnectionWidget)
 {
     ui->setupUi(this);
-    //ui->ConnectTab->removeTab(ui->ConnectTab->indexOf(ui->TCP));
+    ui->NetworkIP->setInputMask("000.000.000.000;_");
+    ui->NetworkPort->setInputMask("0000;_");
+    //connect(ui->NetworkConnect,&QPushButton::clicked,this, ConnectionWidget::setCurrentTcpPort());
+    //ui->ConnectionTab->removeTab(ui->ConnectionTab->indexOf(ui->TCP));
 }
 
 ConnectionWidget::~ConnectionWidget()
@@ -15,7 +18,7 @@ ConnectionWidget::~ConnectionWidget()
 }
 
 void ConnectionWidget::setConnectMessage(QString msg) {
-    ui->NetworkStatus->setText(msg);;
+    ui->NetworkStatus->setText(msg);
 }
 
 void ConnectionWidget::setConnected(bool isConnected) {
@@ -26,3 +29,25 @@ void ConnectionWidget::setConnected(bool isConnected) {
         ui->NetworkConnect->setText(tr("Connect"));
     }
 }
+
+void ConnectionWidget::setBaudList(const QStringList& baudrateList){
+
+    ui->Baudrate->insertItems(0,baudrateList);
+}
+
+void ConnectionWidget::setPortList(const QStringList& portList){
+    ui->Baudrate->insertItems(0,portList);
+}
+
+void ConnectionWidget::setCurrentComPort(QStringView port){
+    ui->COMPort->setCurrentText(port.toString());
+}
+
+void ConnectionWidget::setCurrentIp(QStringView ip){
+    ui->NetworkIP->setText(ip.toString());
+}
+
+void ConnectionWidget::setCurrentTcpPort(QStringView port){
+    ui->NetworkPort->setText(port.toString());
+}
+
