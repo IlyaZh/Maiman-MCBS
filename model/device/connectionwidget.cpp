@@ -6,8 +6,17 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
     ui(new Ui::ConnectionWidget)
 {
     ui->setupUi(this);
-    ui->NetworkIP->setInputMask("000.000.000.000;_");
-    ui->NetworkPort->setInputMask("0000;_");
+
+    QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
+    QRegularExpression ipRegex ("^" + ipRange
+                     + "\\." + ipRange
+                     + "\\." + ipRange
+                     + "\\." + ipRange + "$");
+    QRegularExpressionValidator *ipValidator = new QRegularExpressionValidator(ipRegex, this);
+    ui->NetworkIP->setValidator(ipValidator);
+    QRegularExpression portRegex("^\\d\\d\\d\\d$");
+    QRegularExpressionValidator *portValidator = new QRegularExpressionValidator(portRegex ,this);
+    ui->NetworkPort->setValidator(portValidator);
     //connect(ui->NetworkConnect,&QPushButton::clicked,this, ConnectionWidget::setCurrentTcpPort());
     //ui->ConnectionTab->removeTab(ui->ConnectionTab->indexOf(ui->TCP));
 }
@@ -36,7 +45,7 @@ void ConnectionWidget::setBaudList(const QStringList& baudrateList){
 }
 
 void ConnectionWidget::setPortList(const QStringList& portList){
-    ui->Baudrate->insertItems(0,portList);
+    ui->COMPort->insertItems(0,portList);
 }
 
 void ConnectionWidget::setCurrentComPort(QStringView port){

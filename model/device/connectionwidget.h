@@ -2,6 +2,8 @@
 #define CONNECTIONWIDGET_H
 
 #include <QWidget>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 #include "network/networkmodel.h"
 
 namespace Ui {
