@@ -51,3 +51,16 @@ void ConnectionWidget::setCurrentTcpPort(QStringView port){
     ui->NetworkPort->setText(port.toString());
 }
 
+void ConnectionWidget::setProtocol(NetworkType type){
+    QVariantHash networkMap;
+    networkMap.insert("type", static_cast<quint8>(NetworkType::Tcp));
+    if (type == NetworkType::Tcp){
+        networkMap.insert("host", ui->NetworkIP->text());
+        networkMap.insert("port", ui->NetworkPort->text());
+    }
+    else if(type == NetworkType::SerialPort){
+        networkMap.insert("comport", ui->COMPort->currentText());
+        networkMap.insert("baudrate", ui->Baudrate->currentText());
+    }
+    emit makeEvent("NetworkConnectClicked", networkMap);
+}

@@ -16,6 +16,8 @@ public:
     explicit ConnectionWidget(QWidget *parent = nullptr);
     ~ConnectionWidget();
 
+signals:
+    void makeEvent(QString EventName, QVariant EventValue);
 
 public slots:
     void setBaudList(const QStringList& baudrateList);
