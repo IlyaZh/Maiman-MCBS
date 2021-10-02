@@ -25,7 +25,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
     // Инициализация виджетов
     QVector<ReadParameterWidget*> readOnlyWidgets;
-    for(auto control : description.controls) {
+    for(const auto& control : description.controls) {
         auto valueCmd = m_commands.value(control.value, nullptr);
         auto maxCmd = m_commands.value(control.max, nullptr);
         auto minCmd = m_commands.value(control.min, nullptr);
@@ -33,21 +33,21 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
         if(realCmd != nullptr and valueCmd == nullptr) {
             // Обработка неизменяемых параметров
-            readOnlyWidgets.append(new ReadParameterWidget(control, realCmd));
+            readOnlyWidgets.append(new ReadParameterWidget(control.name, realCmd));
         } else {
             // Обработка изменяемых параметров
-            auto widget = new CommandWidget(control, valueCmd, maxCmd, minCmd, realCmd, this);
-            auto hiddenWidget = new HiddenWidget();
+            auto hiddenWidget = new HiddenWidget(this);
+            auto widget = new CommandWidget(control.name, valueCmd, maxCmd, minCmd, realCmd, hiddenWidget);
             m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
             hiddenWidget->addWidget(widget);
-            if(control.name.toLower() == "current")
+            if(control.name == "current")
                 hiddenWidget->setPinned(true);
             m_widgets.append(hiddenWidget);
         }
     }
     // Закидываем неизменяемые параметры в виджет
     if(readOnlyWidgets.count() > 0) {
-        auto hiddenWidget = new HiddenWidget();
+        auto hiddenWidget = new HiddenWidget(this);
         for(auto item : readOnlyWidgets) {
             hiddenWidget->addWidget(item);
         }
@@ -58,12 +58,12 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
     // Инициализация checkbox'ов
     QPointer<HiddenWidget> hiddenWidget;
-    for(auto item : m_description.checkboxes) {
+    for(const auto &item : m_description.checkboxes) {
         if(!hiddenWidget)
-            hiddenWidget = new HiddenWidget();
+            hiddenWidget = new HiddenWidget(this);
         auto cmd = m_commands.value(item.code, nullptr);
         if(cmd) {
-            hiddenWidget->addWidget(new BinaryWidget(item, cmd));
+            hiddenWidget->addWidget(new BinaryWidget(item, cmd, hiddenWidget));
         }
 
     }
@@ -105,7 +105,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     // Инциализация кнопок Laser и TEC
     ui->laserButton->hide();
     ui->tecButton->hide();
-    for(auto button : m_description.buttons) {
+    for(const auto &button : m_description.buttons) {
         if(button.name == "laser") {
             ui->laserButton->setVisible(true);
             ui->laserButton->setChecked(false);
@@ -154,10 +154,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     ui->widgetBox->setLayout(m_widgetLayout);
 
     adjust();
-    qDebug() << "device widget size=" << this->size() << this->minimumSize() << m_widgetLayout->sizeHint() << ui->widgetBox->size() << ui->widgetBox->sizeHint();
-
-    //    connect(m_device, SIGNAL(dataToView(quint16, double)), this, SLOT(dataChanged(quint16, double)));
-    //    connect(m_device, SIGNAL(dataToView(quint16, int)), this, SLOT(dataChanged(quint16, int)));
 }
 
 DeviceWidget::~DeviceWidget()
@@ -168,18 +164,6 @@ DeviceWidget::~DeviceWidget()
 void DeviceWidget::setAddress(int addr) {
     ui->idLabel->setText(QString("ID:%1").arg(addr));
 }
-
-// public slots
-
-
-//void DeviceWidget::setValue(quint16 reg, double value) {
-//    qDebug() << "setValue DeviceWidget DELETE";
-//}
-
-//void DeviceWidget::parameterChanged(quint16 reg, double value) {
-//    qDebug() << "parameterChanged" << reg << value;
-////    emit dataChanged(reg, value);
-//}
 
 // private methods
 
@@ -246,22 +230,6 @@ void DeviceWidget::tecButtonClicked(bool state) {
     }
 }
 
-//void DeviceWidget::commandChanged(quint16 reg) {
-//    if(m_commands.contains(reg)) {
-//        auto cmd = m_commands.value(reg);
-//        qDebug() << "DeviceWidget" << reg << cmd->valueDouble();
-
-//        if(m_description.buttons.contains(reg)) {
-//            auto button = m_description.buttons.value(reg);
-//            if(button.name == "laser") {
-//                ui->laserButton->setChecked((cmd->valueUInt() & button.mask) != 0);
-//            } else if(button.name == "tec") {
-//                ui->tecButton->setChecked((cmd->valueUInt() & button.mask) != 0);
-//            }
-//        }
-//    }
-//}
-
 void DeviceWidget::hideControlsButtonClicked(bool flag) {
     m_hideControls = flag;
     qDebug() << "hideControlsButtonClicked" << flag;
@@ -292,7 +260,3 @@ void DeviceWidget::pinButtonClicked(int idx, bool state) {
         widget->setPinned(state);
     }
 }
-
-//void DeviceWidget::checkBoxClicked(quint16 cmd, quint8 bit, bool state) {
-//    qDebug() << "checkBoxClicked" << cmd << bit << state;
-//}

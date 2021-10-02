@@ -21,9 +21,6 @@ void GuiFactory::start() {
     connect(m_thread, SIGNAL(started()), m_parseWorker, SLOT(process()));
     connect(m_parseWorker, SIGNAL(finished()), m_thread, SLOT(quit()));
     connect(m_parseWorker, SIGNAL(finished()), this, SLOT(parsingFinished()));
-    //    //connect(...,m_parser, SLOT(stop()));
-    // проверь сигналы по статье
-    //    connect(m_parseWorker, SIGNAL(finished()), m_parseWorker, SLOT(deleteLater()));
     connect(m_thread, SIGNAL(finished()), m_thread, SLOT(deleteLater()));
     connect(m_parseWorker, SIGNAL(errorOccured(QString)), this, SLOT(threadError(QString)));
     connect(m_parseWorker, SIGNAL(errorOccured(QString)), m_thread, SLOT(quit()));
@@ -33,8 +30,8 @@ void GuiFactory::start() {
 
 DeviceWidget* GuiFactory::createWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands) {
     if(m_deviceWidgets.contains(id)) {
-        auto widgetSettings = m_deviceWidgets.value(id).get();
-        return new DeviceWidget(*widgetSettings, commands);
+        auto widgetSettings = m_deviceWidgets.value(id);
+        return new DeviceWidget(widgetSettings, commands);
     }
     return nullptr;
 }
@@ -66,8 +63,8 @@ bool GuiFactory::parseTree(const TreeItem& tree) {
             const TreeItem& device = tree.child(i);
             QString name = device.name();
             if(name == "Device") {
-                auto devWidget = QSharedPointer<DeviceWidgetDesc>::create(parseDevice(device));
-                m_deviceWidgets.insert(devWidget->id, devWidget);
+                auto devWidget = parseDevice(device);
+                m_deviceWidgets.insert(devWidget.id, devWidget);
             }
         }
         return true;
@@ -124,6 +121,7 @@ DeviceWidgetDesc GuiFactory::parseDevice(const TreeItem& item) {
 
     // Ищем виджет Current и ставим его на первое место
     std::sort(widgetDesc.controls.begin(), widgetDesc.controls.end(), [](const Control& left, const Control& right){
+        Q_UNUSED(right)
         return (left.name.toLower() == "current");
     });
     return widgetDesc;

@@ -6,170 +6,136 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>100</height>
+    <width>757</width>
+    <height>505</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Share Tech Mono</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QTabWidget" name="ConnectionTab">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>400</width>
-     <height>100</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(51, 51, 51);
-font: 8pt &quot;Share Tech Mono&quot;;
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(51, 51, 51);
 color: rgb(255, 255, 255);</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
    </property>
-   <property name="currentIndex">
-    <number>1</number>
+   <property name="topMargin">
+    <number>0</number>
    </property>
-   <widget class="QWidget" name="COM">
-    <attribute name="title">
-     <string>COM</string>
-    </attribute>
-    <widget class="QComboBox" name="Baudrate">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>101</width>
-       <height>22</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="COMPort">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>20</y>
-       <width>101</width>
-       <height>22</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="COMConnect">
-     <property name="geometry">
-      <rect>
-       <x>279</x>
-       <y>20</y>
-       <width>91</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="TCP">
-    <attribute name="title">
-     <string>TCP</string>
-    </attribute>
-    <widget class="QLabel" name="IPLabel">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>31</width>
-       <height>16</height>
-      </rect>
-     </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="ConnectionTab">
      <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;Share Tech Mono&quot;;</string>
+      <string notr="true"/>
      </property>
-     <property name="text">
-      <string>IP:</string>
+     <property name="currentIndex">
+      <number>1</number>
      </property>
+     <widget class="QWidget" name="COM">
+      <attribute name="title">
+       <string>COM</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QComboBox" name="Baudrate"/>
+       </item>
+       <item>
+        <widget class="QComboBox" name="COMPort"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="COMConnect">
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="TCP">
+      <attribute name="title">
+       <string>TCP</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="IPLabel">
+         <property name="styleSheet">
+          <string notr="true">font: 12pt &quot;Share Tech Mono&quot;;</string>
+         </property>
+         <property name="text">
+          <string>IP:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="NetworkIP">
+         <property name="text">
+          <string>127.0.1.0</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="PortLabel">
+         <property name="styleSheet">
+          <string notr="true">font: 12pt &quot;Share Tech Mono&quot;;</string>
+         </property>
+         <property name="text">
+          <string>Port:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLineEdit" name="NetworkPort">
+         <property name="text">
+          <string>9999</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QPushButton" name="NetworkConnect">
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QLabel" name="NetworkStatus">
+         <property name="styleSheet">
+          <string notr="true">font: 10pt &quot;Share Tech Mono&quot;;</string>
+         </property>
+         <property name="text">
+          <string>Status</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
-    <widget class="QLabel" name="NetworkStatus">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>47</width>
-       <height>13</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font: 10pt &quot;Share Tech Mono&quot;;</string>
-     </property>
-     <property name="text">
-      <string>Status</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="PortLabel">
-     <property name="geometry">
-      <rect>
-       <x>160</x>
-       <y>10</y>
-       <width>47</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font: 12pt &quot;Share Tech Mono&quot;;</string>
-     </property>
-     <property name="text">
-      <string>Port:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="NetworkIP">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>10</y>
-       <width>113</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>127.0.1.0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="NetworkConnect">
-     <property name="geometry">
-      <rect>
-       <x>270</x>
-       <y>10</y>
-       <width>80</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="NetworkPort">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>10</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>9999</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </widget>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

@@ -13,10 +13,6 @@ quint8 SoftProtocol::loBYTE(quint16 value) {
     return (value & 0xff);
 }
 
-SoftProtocol::SoftProtocol() {
-
-}
-
 bool SoftProtocol::isError() { return m_error; }
 
 QString SoftProtocol::errorString() { return m_errorString; }

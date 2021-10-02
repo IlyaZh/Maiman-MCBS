@@ -17,22 +17,16 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    const QString SETTINGS_PATH = "window/";
+    static const QString SettingsPath;
 
     MainWindow(AppSettings& settings, QWidget *parent = nullptr);
     ~MainWindow();
-//    void addController(MainWindowControllerInterface* cntrl);
-//    void clearController();
     void setPortList(QVector<QString> *portList);
     void setBaudList(QVector<int> *baudList);
-//    void addSettingsCntrl(AppSettings* settings);
     void addDeviceWidget(DeviceWidget* widget);
 
 signals:
     void makeEvent(QString event, QVariant value);
-//    void networkConnectClicked(NetworkType type, QVariant host, QVariant port);
-//    void networkConnectClicked(int, QString, int);
-//    void mainWindowReady();
 public slots:
     void setConnectMessage(QString msg);
     void setConnected(bool flag);

@@ -18,13 +18,13 @@ class ReadParameterWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ReadParameterWidget(const Control &settings, QSharedPointer<DevCommand> cmd, /*int value, QString name,*/ QWidget *parent = nullptr);
+    explicit ReadParameterWidget(QStringView name, QSharedPointer<DevCommand> cmd, /*int value, QString name,*/ QWidget *parent = nullptr);
 //    explicit ReadParameterWidget(const Control &settings, int decimal, QString name, /*double value,*/ QWidget *parent = nullptr);
     ~ReadParameterWidget();
 
 private:
     Ui::ReadParameterWidget *ui;
-    const Control& m_settings;
+//    const Control& m_settings;
     QString m_unit;
     QSharedPointer<DevCommand> m_command;
 

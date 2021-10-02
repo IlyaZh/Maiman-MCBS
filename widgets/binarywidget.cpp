@@ -1,6 +1,7 @@
 #include "binarywidget.h"
 #include "ui_binarywidget.h"
 #include "device/commandsettings.h"
+#include <QDebug>
 
 BinaryWidget::BinaryWidget(const Checkbox &settings, QSharedPointer<DevCommand> cmd, QWidget *parent) :
     QWidget(parent),

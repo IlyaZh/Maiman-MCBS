@@ -16,13 +16,11 @@ class MainFacade : public QObject
 public:
     explicit MainFacade(MainWindow& window, GuiFactory& factory, QObject* parent = nullptr);
     ~MainFacade();
-//    void eventHandle(const QString& event, const QVariant& value);
-    void createWidgetFor(Device& device);
+    void createWidgetFor(Device* device);
     void clear();
 private:
     MainWindow& m_window;
     GuiFactory& m_factory;
-    QVector<DeviceWidget*> m_widgets;
 
 };
 

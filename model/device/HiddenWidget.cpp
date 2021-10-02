@@ -45,9 +45,9 @@ void HiddenWidget::addWidget(QWidget* widget) {
     }
 }
 
-QVector<QWidget*> HiddenWidget::widgets() {
-    return m_widgets;
-}
+//QVector<QWidget*> HiddenWidget::widgets() {
+//    return m_widgets;
+//}
 
 bool HiddenWidget::isShown() const {
     return m_isVisible;

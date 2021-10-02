@@ -3,17 +3,15 @@
 #include "model/device/devicewidget.h"
 #include "device/commandsettings.h"
 
-// TODO: почисти хлам
-
-ReadParameterWidget::ReadParameterWidget(const Control &settings, QSharedPointer<DevCommand> cmd, /*int value, QString name,*/ QWidget *parent) :
+ReadParameterWidget::ReadParameterWidget(QStringView name, QSharedPointer<DevCommand> cmd, /*int value, QString name,*/ QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ReadParameterWidget),
-    m_settings(settings),
+//    m_settings(settings),
     m_command(cmd)
 {
     ui->setupUi(this);
 
-    ui->labelParameter->setText(m_settings.name);
+    ui->labelParameter->setText(name.toString());
 
     ui->labelUnits->setText(m_command->unit());
 

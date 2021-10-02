@@ -20,11 +20,9 @@ class Device : public QObject
 {
     Q_OBJECT
 public:
-//    explicit Device(quint16 id, quint8 addr, const QString& name, const DeviceDelays &delays, const QVector<DevCommandBuilder*> &commandsBld, QObject *parent = nullptr);
     explicit Device(quint8 addr, const DeviceModel& config, QObject *parent = nullptr);
     ~Device();
     void dataIncome(quint16 reg, quint16 value);
-//    void setWidget(QWidget& widget);
     void destroy();
     QString name();
     quint16 id();
@@ -32,8 +30,6 @@ public:
     const DevicePollRequest nextPollRequest();
     bool isLink();
     void clearLink();
-//    void addWidget(DeviceWidget& widget);
-//    void removeWidget(DeviceWidget& widget);
     const QMap<quint16, QSharedPointer<DevCommand>> commands();
 
 private:
@@ -44,10 +40,8 @@ private:
     const DeviceDelays& m_Delays;
     QMap<quint16, QSharedPointer<DevCommand>> m_Commands;
     QVector<DevicePollRequest> m_cmdRequests;
-//    QVector<DevicePollRequest>::iterator m_cmdReqItt;
     int m_cmdReqIt = 0;
     QVector<Device*> m_childDevices;
-//    QVector<DeviceWidget*> m_deviceWidgets;
 
     void createCommandsRequests();
 

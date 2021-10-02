@@ -1,8 +1,9 @@
 #include "commandwidget.h"
 #include "ui_commandwidget.h"
 #include "model/device/devicewidget.h"
+#include <QDebug>
 
-CommandWidget::CommandWidget(const Control& settings,
+CommandWidget::CommandWidget(QStringView name,
                              QSharedPointer<DevCommand> Value,
                              QSharedPointer<DevCommand> Max,
                              QSharedPointer<DevCommand> Min,
@@ -10,7 +11,6 @@ CommandWidget::CommandWidget(const Control& settings,
                              QWidget *parent):
     QWidget(parent),
     ui(new Ui::CommandWidget),
-    m_settings(settings),
     m_Real(Real),
     m_Value(Value),
     m_Max(Max),
@@ -18,7 +18,7 @@ CommandWidget::CommandWidget(const Control& settings,
 {
     ui->setupUi(this);
 
-    ui->WidgetName->setText(m_settings.name);
+    ui->WidgetName->setText(name.toString());
 
     if (m_Value and m_Max and m_Min){
         m_Validator.setRange(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
