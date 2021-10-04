@@ -6,75 +6,110 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>757</width>
-    <height>505</height>
+    <width>420</width>
+    <height>119</height>
    </rect>
-  </property>
-  <property name="font">
-   <font>
-    <family>Share Tech Mono</family>
-   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(51, 51, 51);
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
-   <property name="spacing">
-    <number>0</number>
-   </property>
+  <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
     <widget class="QTabWidget" name="ConnectionTab">
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+      </font>
+     </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">
+border: 1px solid #FFFFFF;			
+</string>
      </property>
      <property name="currentIndex">
       <number>1</number>
      </property>
-     <widget class="QWidget" name="COM">
+     <widget class="QWidget" name="ComTab">
       <attribute name="title">
        <string>COM</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QComboBox" name="Baudrate"/>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="1">
+        <widget class="QComboBox" name="comPortComboBox">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+          </font>
+         </property>
+        </widget>
        </item>
-       <item>
-        <widget class="QComboBox" name="COMPort"/>
+       <item row="0" column="0">
+        <widget class="QComboBox" name="baudrateComboBox">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+          </font>
+         </property>
+        </widget>
        </item>
-       <item>
-        <widget class="QPushButton" name="COMConnect">
+       <item row="0" column="2">
+        <widget class="QPushButton" name="connectComPortButton">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+          </font>
+         </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>Connect</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="refreshComPortButton">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Refresh</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="statusComPortLabel">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Status</string>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="TCP">
+     <widget class="QWidget" name="TcpTab">
       <attribute name="title">
        <string>TCP</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_2">
+      <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
-        <widget class="QLabel" name="IPLabel">
+        <widget class="QLabel" name="networkIpLabel">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="styleSheet">
-          <string notr="true">font: 12pt &quot;Share Tech Mono&quot;;</string>
+          <string notr="true"/>
          </property>
          <property name="text">
           <string>IP:</string>
@@ -82,7 +117,15 @@ color: rgb(255, 255, 255);</string>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="NetworkIP">
+        <widget class="QLineEdit" name="networkIpLineEdit">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="text">
           <string>127.0.1.0</string>
          </property>
@@ -92,9 +135,15 @@ color: rgb(255, 255, 255);</string>
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QLabel" name="PortLabel">
+        <widget class="QLabel" name="networkPortLabel">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="styleSheet">
-          <string notr="true">font: 12pt &quot;Share Tech Mono&quot;;</string>
+          <string notr="true"/>
          </property>
          <property name="text">
           <string>Port:</string>
@@ -105,7 +154,13 @@ color: rgb(255, 255, 255);</string>
         </widget>
        </item>
        <item row="0" column="3">
-        <widget class="QLineEdit" name="NetworkPort">
+        <widget class="QLineEdit" name="networkPortLineEdit">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>9999</string>
          </property>
@@ -115,16 +170,27 @@ color: rgb(255, 255, 255);</string>
         </widget>
        </item>
        <item row="0" column="4">
-        <widget class="QPushButton" name="NetworkConnect">
+        <widget class="QPushButton" name="networkConnectButton">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+          </font>
+         </property>
          <property name="text">
-          <string>PushButton</string>
+          <string>Connect</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0" colspan="2">
-        <widget class="QLabel" name="NetworkStatus">
+        <widget class="QLabel" name="networkStatusLabel">
+         <property name="font">
+          <font>
+           <family>Share Tech Mono</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="styleSheet">
-          <string notr="true">font: 10pt &quot;Share Tech Mono&quot;;</string>
+          <string notr="true"/>
          </property>
          <property name="text">
           <string>Status</string>

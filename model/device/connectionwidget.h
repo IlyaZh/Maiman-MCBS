@@ -2,6 +2,8 @@
 #define CONNECTIONWIDGET_H
 
 #include <QWidget>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 #include "network/networkmodel.h"
 
 namespace Ui {
@@ -16,10 +18,7 @@ public:
     explicit ConnectionWidget(QWidget *parent = nullptr);
     ~ConnectionWidget();
 
-signals:
-    void makeEvent(QString EventName, QVariant EventValue);
-
-public slots:
+//public slots:
     void setBaudList(const QStringList& baudrateList);
     void setPortList(const QStringList& portList);
     void setCurrentComPort(QStringView port);
@@ -29,9 +28,16 @@ public slots:
 
     void setConnectMessage(QString msg);
     void setConnected(bool isConnected);
+
+private slots:
+    void connectedIsClicked(NetworkType type);
+
+signals:
+    void deviceClicked(QVariant EventValue);
+    void refreshComPorts();
+
 private:
     Ui::ConnectionWidget *ui;
-    const QString baudrate;
 };
 
 #endif // CONNECTIONWIDGET_H
