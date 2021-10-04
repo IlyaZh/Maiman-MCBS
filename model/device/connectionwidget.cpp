@@ -6,6 +6,10 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
     ui(new Ui::ConnectionWidget)
 {
     ui->setupUi(this);
+    ui->NetworkIP->setPlaceholderText("127.0.0.1");
+    ui->NetworkPort->setPlaceholderText("500");
+    ui->COMPort->setPlaceholderText("COM4");
+    ui->Baudrate->setPlaceholderText("115200");
 
     QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
     QRegularExpression ipRegex ("^" + ipRange
@@ -41,11 +45,11 @@ void ConnectionWidget::setConnected(bool isConnected) {
 
 void ConnectionWidget::setBaudList(const QStringList& baudrateList){
 
-    ui->Baudrate->insertItems(0,baudrateList);
+    ui->Baudrate->addItems(baudrateList);
 }
 
 void ConnectionWidget::setPortList(const QStringList& portList){
-    ui->COMPort->insertItems(0,portList);
+    ui->COMPort->addItems(portList);
 }
 
 void ConnectionWidget::setCurrentComPort(QStringView port){
@@ -73,5 +77,5 @@ void ConnectionWidget::setProtocol(NetworkType type){
     }
     else
         return;
-    emit makeEvent("NetworkConnectClicked", networkMap);
+    emit connectedClicked(networkMap);
 }

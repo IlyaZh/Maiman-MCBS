@@ -19,7 +19,7 @@ public:
     ~ConnectionWidget();
 
 signals:
-    void makeEvent(QString EventName, QVariant EventValue);
+    void connectedClicked(QVariant EventValue);
 
 public slots:
     void setBaudList(const QStringList& baudrateList);
