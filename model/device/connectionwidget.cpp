@@ -6,10 +6,10 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
     ui(new Ui::ConnectionWidget)
 {
     ui->setupUi(this);
-    ui->NetworkIP->setPlaceholderText("127.0.0.1");
-    ui->NetworkPort->setPlaceholderText("500");
-    ui->COMPort->setPlaceholderText("COM4");
-    ui->Baudrate->setPlaceholderText("115200");
+    ui->networkIpLineEdit->setPlaceholderText("127.0.0.1");
+    ui->networkPortLineEdit->setPlaceholderText("500");
+    ui->comPortComboBox->setPlaceholderText("COM4");
+    ui->baudrateComboBox->setPlaceholderText("115200");
 
     QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
     QRegularExpression ipRegex ("^" + ipRange
@@ -17,10 +17,18 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
                      + "\\." + ipRange
                      + "\\." + ipRange + "$");
     QRegularExpressionValidator *ipValidator = new QRegularExpressionValidator(ipRegex, this);
-    ui->NetworkIP->setValidator(ipValidator);
-    QRegularExpression portRegex("^\\d\\d\\d\\d$");
-    QRegularExpressionValidator *portValidator = new QRegularExpressionValidator(portRegex ,this);
-    ui->NetworkPort->setValidator(portValidator);
+    ui->networkIpLineEdit->setValidator(ipValidator);
+    connect(ui->networkConnectButton, &QPushButton::clicked, this, [this](){
+     connectedIsClicked(NetworkType::Tcp);
+    });
+    connect(ui->connectComPortButton, &QPushButton::clicked, this, [this](){
+     connectedIsClicked(NetworkType::SerialPort);
+    });
+    connect(ui->refreshComPortButton, &QPushButton::clicked, this, &ConnectionWidget::refreshComPorts);
+
+    //QRegularExpression portRegex("^\\d\\d\\d\\d$");
+    //QRegularExpressionValidator *portValidator = new QRegularExpressionValidator(portRegex ,this);
+    //ui->NetworkPort->setValidator(portValidator);
     //connect(ui->NetworkConnect,&QPushButton::clicked,this, ConnectionWidget::setCurrentTcpPort());
     //ui->ConnectionTab->removeTab(ui->ConnectionTab->indexOf(ui->TCP));
 }
@@ -31,51 +39,64 @@ ConnectionWidget::~ConnectionWidget()
 }
 
 void ConnectionWidget::setConnectMessage(QString msg) {
-    ui->NetworkStatus->setText(msg);
+    ui->networkStatusLabel->setText(msg);
+    ui->statusComPortLabel->setText(msg);
 }
 
 void ConnectionWidget::setConnected(bool isConnected) {
     qDebug() << "MainWindow::setConnected" << isConnected;
     if(isConnected) {
-        ui->NetworkConnect->setText(tr("Disconnect"));
+        ui->networkConnectButton->setText(tr("Disconnect"));
     } else {
-        ui->NetworkConnect->setText(tr("Connect"));
+        ui->networkConnectButton->setText(tr("Connect"));
     }
 }
 
 void ConnectionWidget::setBaudList(const QStringList& baudrateList){
 
-    ui->Baudrate->addItems(baudrateList);
+    ui->baudrateComboBox->addItems(baudrateList);
 }
 
 void ConnectionWidget::setPortList(const QStringList& portList){
-    ui->COMPort->addItems(portList);
+    ui->comPortComboBox->addItems(portList);
 }
 
 void ConnectionWidget::setCurrentComPort(QStringView port){
-    ui->COMPort->setCurrentText(port.toString());
+    ui->comPortComboBox->setCurrentText(port.toString());
 }
 
 void ConnectionWidget::setCurrentIp(QStringView ip){
-    ui->NetworkIP->setText(ip.toString());
+    ui->networkIpLineEdit->setText(ip.toString());
 }
 
 void ConnectionWidget::setCurrentTcpPort(QStringView port){
-    ui->NetworkPort->setText(port.toString());
+    ui->networkPortLineEdit->setText(port.toString());
 }
 
 void ConnectionWidget::setProtocol(NetworkType type){
-    QVariantHash networkMap;
-    networkMap.insert("type",  static_cast<quint8>(type));
+
     if (type == NetworkType::Tcp){
-        networkMap.insert("host", ui->NetworkIP->text());
-        networkMap.insert("port", ui->NetworkPort->text());
+        ui->ConnectionTab->setTabEnabled(ui->ConnectionTab->indexOf(ui->TCP), true);
     }
     else if(type == NetworkType::SerialPort){
-        networkMap.insert("comport", ui->COMPort->currentText());
-        networkMap.insert("baudrate", ui->Baudrate->currentText());
+        ui->ConnectionTab->setTabEnabled(ui->ConnectionTab->indexOf(ui->TCP), true);
     }
     else
         return;
-    emit connectedClicked(networkMap);
+}
+
+void ConnectionWidget::connectedIsClicked(NetworkType type){
+    QVariantHash networkMap;
+    networkMap.insert("type",  static_cast<quint8>(type));
+    if (type == NetworkType::Tcp){
+        networkMap.insert("host", ui->networkIpLineEdit->text());
+        networkMap.insert("port", ui->networkPortLineEdit->text());
+    }
+    else if(type == NetworkType::SerialPort){
+        networkMap.insert("comport", ui->comPortComboBox->currentText());
+        networkMap.insert("baudrate", ui->baudrateComboBox->currentText());
+    }
+    else
+        return;
+    emit deviceIsConnected(networkMap);
 }
