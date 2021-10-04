@@ -33,7 +33,7 @@ private slots:
     void connectedIsClicked(NetworkType type);
 
 signals:
-    void deviceIsConnected(QVariant EventValue);
+    void deviceClicked(QVariant EventValue);
     void refreshComPorts();
 
 private:

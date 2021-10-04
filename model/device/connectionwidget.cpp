@@ -18,6 +18,7 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
                      + "\\." + ipRange + "$");
     QRegularExpressionValidator *ipValidator = new QRegularExpressionValidator(ipRegex, this);
     ui->networkIpLineEdit->setValidator(ipValidator);
+
     connect(ui->networkConnectButton, &QPushButton::clicked, this, [this](){
      connectedIsClicked(NetworkType::Tcp);
     });
@@ -25,12 +26,6 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
      connectedIsClicked(NetworkType::SerialPort);
     });
     connect(ui->refreshComPortButton, &QPushButton::clicked, this, &ConnectionWidget::refreshComPorts);
-
-    //QRegularExpression portRegex("^\\d\\d\\d\\d$");
-    //QRegularExpressionValidator *portValidator = new QRegularExpressionValidator(portRegex ,this);
-    //ui->NetworkPort->setValidator(portValidator);
-    //connect(ui->NetworkConnect,&QPushButton::clicked,this, ConnectionWidget::setCurrentTcpPort());
-    //ui->ConnectionTab->removeTab(ui->ConnectionTab->indexOf(ui->TCP));
 }
 
 ConnectionWidget::~ConnectionWidget()
@@ -76,10 +71,10 @@ void ConnectionWidget::setCurrentTcpPort(QStringView port){
 void ConnectionWidget::setProtocol(NetworkType type){
 
     if (type == NetworkType::Tcp){
-        ui->ConnectionTab->setTabEnabled(ui->ConnectionTab->indexOf(ui->TCP), true);
+        ui->ConnectionTab->setCurrentWidget(ui->TcpTab);
     }
     else if(type == NetworkType::SerialPort){
-        ui->ConnectionTab->setTabEnabled(ui->ConnectionTab->indexOf(ui->TCP), true);
+        ui->ConnectionTab->setCurrentWidget(ui->ComTab);
     }
     else
         return;
@@ -98,5 +93,5 @@ void ConnectionWidget::connectedIsClicked(NetworkType type){
     }
     else
         return;
-    emit deviceIsConnected(networkMap);
+    emit deviceClicked(networkMap);
 }

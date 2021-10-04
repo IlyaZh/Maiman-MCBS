@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>110</height>
+    <height>119</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@ border: 1px solid #FFFFFF;
      <property name="currentIndex">
       <number>1</number>
      </property>
-     <widget class="QWidget" name="COM">
+     <widget class="QWidget" name="ComTab">
       <attribute name="title">
        <string>COM</string>
       </attribute>
@@ -95,7 +95,7 @@ border: 1px solid #FFFFFF;
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="TCP">
+     <widget class="QWidget" name="TcpTab">
       <attribute name="title">
        <string>TCP</string>
       </attribute>
