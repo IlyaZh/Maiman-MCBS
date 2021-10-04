@@ -16,6 +16,7 @@
 #include "datasource.h"
 #include <QQueue>
 #include <QTimer>
+#include <QSharedPointer>
 
 //#include "enums.h"
 
@@ -53,7 +54,7 @@ private:
     QScopedPointer<IDataSource> m_port;
     MainFacade& m_facade;
     SoftProtocol& m_protocol;
-    QMap<quint8, Device*> m_devices;
+    QMap<quint8, QSharedPointer<Device>> m_devices;
     bool m_bIsStart = false;
     bool m_portIsBusy = false;
     QQueue<QByteArray> m_queue;

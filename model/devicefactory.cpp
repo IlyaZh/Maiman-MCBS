@@ -5,7 +5,6 @@
 
 DeviceFactory::DeviceFactory(QString fileName, AppSettings& settings, QObject* parent) :
     QObject(parent),
-    m_thread(new QThread()),
     m_settings(settings),
     m_fileName(fileName)
 
@@ -13,38 +12,30 @@ DeviceFactory::DeviceFactory(QString fileName, AppSettings& settings, QObject* p
 
 }
 
-DeviceFactory::~DeviceFactory() {
-    //    m_parser->stop();
-    //    if(m_parseWorker) m_parseWorker->deleteLater();
-}
-
 void DeviceFactory::start() {
     if(!m_parseWorker.isNull()) m_parseWorker->deleteLater();
-//    m_thread = new QThread();
+    auto m_thread = new QThread();
     m_parseWorker.reset(new ParserWorker(m_fileName, ParserType::XmlParser));
-    m_parseWorker->moveToThread(m_thread.get());
+    m_parseWorker->moveToThread(m_thread);
 
-    connect(m_thread.get(), SIGNAL(started()), m_parseWorker.get(), SLOT(process()));
-    connect(m_parseWorker.get(), SIGNAL(finished()), m_thread.get(), SLOT(quit()));
+    connect(m_thread, SIGNAL(started()), m_parseWorker.get(), SLOT(process()));
+    connect(m_parseWorker.get(), SIGNAL(finished()), m_thread, SLOT(quit()));
     connect(m_parseWorker.get(), SIGNAL(finished()), this, SLOT(parsingFinished()));
-    //    //connect(...,m_parser, SLOT(stop()));
-    // проверь сигналы по статье
-    //    connect(m_parseWorker, SIGNAL(finished()), m_parseWorker, SLOT(deleteLater()));
-//    connect(m_thread.get(), SIGNAL(finished()), m_thread.get(), SLOT(deleteLater()));
+
+    connect(m_thread, SIGNAL(finished()), m_thread, SLOT(deleteLater()));
     connect(m_parseWorker.get(), SIGNAL(errorOccured(QString)), this, SLOT(threadError(QString)));
-    connect(m_parseWorker.get(), SIGNAL(errorOccured(QString)), m_thread.get(), SLOT(quit()));
-//    connect(m_parseWorker.get(), SIGNAL(errorOccured(QString)), m_thread.get(), SLOT(deleteLater()));
+    connect(m_parseWorker.get(), SIGNAL(errorOccured(QString)), m_thread, SLOT(quit()));
+    connect(m_parseWorker.get(), SIGNAL(errorOccured(QString)), m_thread, SLOT(deleteLater()));
     m_thread->start();
 }
 
-Device* DeviceFactory::createDevice(quint8 addr, quint16 id) {
+QSharedPointer<Device> DeviceFactory::createDevice(quint8 addr, quint16 id) {
     const DeviceModel& devModel = findModel(id);
     if(devModel.id == 0) {
         qDebug() << "Device model with id =" << id << "has not found!";
-        return nullptr;
+        return QSharedPointer<Device>();
     } else {
-//        return devModel->createDevice(addr, this);
-        return new Device(addr, devModel, this);
+        return QSharedPointer<Device>::create(addr, devModel, this);
     }
 }
 
@@ -60,7 +51,6 @@ const QMultiMap<uint, QString>& DeviceFactory::getCommonDeviceIDs() const {
 // private slots
 void DeviceFactory::parsingFinished() {
     QScopedPointer<TreeItem> parserTree(m_parseWorker->data());
-//    m_parseWorker->deleteLater();
     if(parseTree(*parserTree)) {
         qDebug() << "Parse tree is ok!";
     } else {
@@ -71,7 +61,6 @@ void DeviceFactory::parsingFinished() {
 
 void DeviceFactory::threadError(const QString& str) {
     qDebug() << "Error while parsing. " << str;
-    m_thread.reset();
 }
 
 // private methods

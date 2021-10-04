@@ -96,23 +96,23 @@ void NetworkModel::clear() {
 void NetworkModel::initDevice(quint8 addr, quint16 id)
 {
     qDebug() << "Init device " << addr << " with id " << id;
-    Device* newDevice =  m_deviceModelFactory.createDevice(addr, id);
-    if(newDevice == nullptr) {
+    QSharedPointer<Device> newDevice =  m_deviceModelFactory.createDevice(addr, id);
+    if(newDevice.isNull()) {
         qDebug() << "Device with id " << id << "hasn't found in config";
         return;
     }
 
     if(m_devices.contains(addr)) {
-        auto oldDev = m_devices.value(addr);
+        auto &oldDev = m_devices[addr];
         oldDev->disconnect();
-        oldDev->deleteLater();
+        oldDev.reset();
         m_devices.remove(addr);
     }
 
     m_devices.insert(addr, newDevice);
-    connect(newDevice, SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
+    connect(newDevice.get(), SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
 
-    m_facade.createWidgetFor(newDevice);
+    m_facade.createWidgetFor(newDevice.get());
 }
 
 void NetworkModel::tryToSend() {

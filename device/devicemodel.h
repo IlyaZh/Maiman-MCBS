@@ -43,10 +43,8 @@ struct DeviceModel
 {
     DeviceModel();
     DeviceModel(quint16 id, const QString& name, const DeviceDelays &delays, const QMap<quint16, CommandSettings> &cmdBuilders);
-    ~DeviceModel();
     quint16 id;
     QString name;
     DeviceDelays delays;
     QMap<quint16, CommandSettings> commands;
-//    Device* createDevice(quint8 addr, QObject* parent = nullptr) const;
 };
