@@ -6,7 +6,6 @@
 #include <QGridLayout>
 #include <QPushButton>
 
-//class ParameterWidget;
 class DevCommand;
 class CommandWidget;
 class BinaryWidget;
@@ -96,28 +95,18 @@ public:
     ~DeviceWidget();
     void setAddress(int addr);
 
-public slots:
-//    void setValue(quint16 reg, double value);
-//    void parameterChanged(quint16 reg, double value);
-//    void setValue(quint16 reg, int value);
-
 signals:
     void sizeChanged(const QSize& size);
-//    void dataChanged(quint16 reg, double value);
-//    void dataChanged(quint16 reg, int value);
 
 private:
     Ui::DeviceWidget *ui;
     const DeviceWidgetDesc& m_description;
     QMap<quint16, QVariant> m_values;
-//    QVector<ParameterWidget*> m_paramWidgets;
-//    QVector<CommandWidget*> m_paramWidgets;
     QVector<HiddenWidget*> m_widgets;
     const QMap<quint16, QSharedPointer<DevCommand>>& m_commands;
     QGridLayout* m_widgetLayout;
     QMap<quint16, BinaryWidget*> m_binaryWidgets;
     QVector<QPushButton*> m_pinButtons;
-//    QPushButton* m_hideControlsButton;
     bool m_hideControls {false};
 
     void paintEvent(QPaintEvent*) override;
@@ -129,10 +118,8 @@ private slots:
     void setTecButton(quint16 value);
     void laserButtonClicked(bool state);
     void tecButtonClicked(bool state);
-//    void commandChanged(quint16 reg);
     void hideControlsButtonClicked(bool flag);
     void pinButtonClicked(int idx, bool state);
-//    void checkBoxClicked(quint16 cmd, quint8 bit, bool state);
 };
 
 #endif // DEVICEWIDGET_H

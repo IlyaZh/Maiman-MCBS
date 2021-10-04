@@ -18,7 +18,7 @@ class CommandWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit CommandWidget(const Control& settings,
+    explicit CommandWidget(QStringView name,
                            QSharedPointer<DevCommand> Value,
                            QSharedPointer<DevCommand> Max,
                            QSharedPointer<DevCommand> Min,
@@ -31,7 +31,7 @@ signals:
 
 private:
     Ui::CommandWidget *ui;
-    const Control& m_settings;
+//    const Control& m_settings;
     QDoubleValidator m_Validator;
     QVector<DevCommand> m_Commands;
     QSharedPointer<DevCommand> m_Real;

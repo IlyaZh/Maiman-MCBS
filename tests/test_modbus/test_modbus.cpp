@@ -100,5 +100,5 @@ void Test_Modbus::test_Execute() {
 
 void Test_Modbus::cleanupTestCase() {
     m_protocol.reset();
-    QVERIFY2(m_protocol == nullptr, "Can't delete ModbusProtocol object");
+    QVERIFY2(m_protocol.isNull(), "Can't delete ModbusProtocol object");
 }

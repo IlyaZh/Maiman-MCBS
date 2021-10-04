@@ -13,19 +13,6 @@ CommandSettings::CommandSettings(quint16 code, QString unit, double divider, qui
 
 }
 
-//DevCommand* CommandSettings::makeCommand(Device* pDevice) {
-//    return new DevCommand(pDevice, *this);
-//}
-
-//quint16 DeviceConfig::code() const {
-//    return config.code;
-//}
-
-//uint DeviceConfig::interval() const {
-//    return config.interval;
-//}
-
-// DevCommand class
 // static methods
 
 double DevCommand::convertCelToFar(double value) {
@@ -37,34 +24,11 @@ double DevCommand::convertFarToCel(double value) {
 }
 
 // public methods
-DevCommand::DevCommand(Device* device, const CommandSettings& conf) :
-    config(conf),
-    m_device(device)
+DevCommand::DevCommand(const CommandSettings& conf) :
+    config(conf)
 {
     m_rawValue = 0;
 }
-
-//void DevCommand::execute(int value) {
-//    quint16 inValue = 0;
-//    if(isSigned()) {
-//        inValue = (quint16) value;
-//    } else {
-//        inValue = value;
-//    }
-
-//    m_device->dataOutcome(config.code, inValue);
-//}
-
-//void DevCommand::execute(double value) {
-//    quint16 inValue = qRound(value*config.divider);
-//    if(isSigned()) {
-//        inValue = static_cast<quint16>((qint16) qRound(value*config.divider));
-//    } else {
-//        inValue = static_cast<quint16>(qRound(value*config.divider));
-//    }
-
-//    m_device->dataOutcome(config.code, inValue);
-//}
 
 quint16 DevCommand::code() {
     return config.m_code;
@@ -82,23 +46,6 @@ int DevCommand::tolerance() {
     return static_cast<int>(config.m_tolerance);
 }
 
-/*uint DevCommand::interval() {
-    return config.interval;
-}*/
-
-//uint DevCommand::stepInterval() {
-//    return m_stepInterval;
-//}
-
-//bool DevCommand::nextInterval() {
-//    m_stepInterval++;
-//    bool state = (m_stepInterval == config.interval);
-
-//    if(state) {
-//        m_stepInterval = 0;
-//    }
-//    return state;
-//}
 quint16 DevCommand::getRawFromValue(double value) {
     return static_cast<quint16>(qRound(value*config.m_divider-0.5));
 }
@@ -113,6 +60,10 @@ double DevCommand::valueDouble() {
 
 uint DevCommand::valueUInt() {
     return m_rawValue;
+}
+
+uint DevCommand::interval() {
+    return config.m_interval;
 }
 
 

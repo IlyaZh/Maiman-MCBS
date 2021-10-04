@@ -27,7 +27,7 @@ private slots:
 
 private:
     Ui::BinaryWidget *ui;
-    const Checkbox m_settings;
+    const Checkbox& m_settings;
     QSharedPointer<DevCommand> m_cmd;
 
     void setValue(quint16 value);

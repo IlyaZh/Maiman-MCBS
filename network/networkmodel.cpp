@@ -77,7 +77,6 @@ void NetworkModel::rescanNetwork()
     for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr) {
         m_queue.enqueue(m_protocol.getDataValue(iAddr, NetworkModel::IDENTIFY_REG_ID_DEFAULT));
     }
-    m_facade.clear();
     tryToSend();
 }
 
@@ -87,7 +86,7 @@ void NetworkModel::clear() {
     m_timeoutTimer.stop();
     m_priorityQueue.clear();
     m_queue.clear();
-    for(auto item : m_devices) {
+    for(auto& item : m_devices) {
         item->disconnect();
         item->deleteLater();
     }
@@ -103,7 +102,6 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
         return;
     }
 
-
     if(m_devices.contains(addr)) {
         auto oldDev = m_devices.value(addr);
         oldDev->disconnect();
@@ -114,7 +112,7 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
     m_devices.insert(addr, newDevice);
     connect(newDevice, SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
 
-    m_facade.createWidgetFor(*newDevice);
+    m_facade.createWidgetFor(newDevice);
 }
 
 void NetworkModel::tryToSend() {
@@ -122,7 +120,6 @@ void NetworkModel::tryToSend() {
         m_portIsBusy = true;
         m_delayTimer.setInterval(m_delayMs);
         m_delayTimer.start();
-    } else {
     }
 
 }
@@ -132,7 +129,6 @@ void NetworkModel::tryToSend() {
 
 void NetworkModel::dataOutcome(quint8 addr, quint16 reg, quint16 value)
 {
-    //    m_protocol.setDataValue(addr, reg, value);
     m_priorityQueue.enqueue(m_protocol.setDataValue(addr, reg, value));
     tryToSend();
 }
