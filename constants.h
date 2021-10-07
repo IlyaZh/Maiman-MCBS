@@ -14,30 +14,33 @@
 
 bool isEqual(double first, double second);
 
-namespace Constants {
+class Const {
+public:
     // Название организации
-    static const QString OrgName = "MaimanElectronics";
+    static const QString OrgName;
     // Название (заголовок) ПО для служебных путей (без пробелов)
-    static const QString AppName = "BenchSoft_Multichannel";
+    static const QString AppName;
     // Человекопонятное название (заголовок_ ПО
-    static const QString AppNameTitle = "Maiman BenchSoft Multichannel";
+    static const QString AppNameTitle;
 
-    static const quint8 MaxDevices = 32;
-    static const QString SecretCodeCombination = "3.1415926";
-    static const QFont ApplicationDefaultFont("://resources/fonts/ShareTechMono-Regular.ttf", 9);
-    static const QString DeviceConfigFile = QDir::currentPath()+"/DDBconfig.xml";
-    static const QString LogTimestampDefaultFormat = "dd.MM.yyyy HH:mm:ss";
-    static const int LogMaxQueueSize = 10;
-    static const unsigned int ConsoleMaxLinesToShow = 1000;
-    static const int MaxFilesInMenu = 5;
-    static const int StatusbarMessageTimeout = 5000; // ms
+    static const quint8 MaxDevices;
+    static const QString SecretCodeCombination;
+//    static const QFont ApplicationDefaultFont("qrc://resources/fonts/ShareTechMono-Regular.ttf", 9);
+    static const QString DeviceConfigFile;
+    static const QString LogTimestampDefaultFormat;
+    static const int LogMaxQueueSize;
+    static const int ConsoleMaxLinesToShow;
+    static const int MaxFilesInMenu;
+    static const int StatusbarMessageTimeout;
 
-    static const quint16 IdentifyDeviceCommand = 0x0001;
-    static const QString TemperatureUnitDefault = "C";
+    static const quint16 IdentifyDeviceCommand;
+    static const QString TemperatureUnitDefault;
 
-    static const unsigned int BaudRateDefault = 115200;
+    static const QStringList BaudRates;
+    static const int BaudRateDefault;
 
-    static const double doubleEpsilon = 0.000001;
+    static const double DoubleEpsilon;
+
 };
 
 static const QPoint WINDOW_DEFAULT_POSITION = QPoint(-1, -1);
