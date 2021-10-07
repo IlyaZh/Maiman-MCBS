@@ -7,6 +7,8 @@
 #include <QObject>
 #include "factories/parserworker.h"
 #include "appsettings.h"
+#include <QMultiMap>
+#include <QSharedPointer>
 
 
 class DeviceFactory : public QObject
@@ -14,34 +16,30 @@ class DeviceFactory : public QObject
     Q_OBJECT
 public:
     DeviceFactory(QString fileName, AppSettings& settings, QObject *parent = nullptr);
-    ~DeviceFactory();
     void start();
-    Device* createDevice(quint8 addr, quint16 id);
+    QSharedPointer<Device> createDevice(quint8 addr, quint16 id);
     QStringList getBaudrate();
-    QVector<QPair<uint, QString>> getCommonDeviceIDs();
+    const QMultiMap<uint, QString>& getCommonDeviceIDs() const;
 
 private slots:
     void parsingFinished();
     void threadError(const QString&);
 private:
-    QThread* m_thread;
     AppSettings& m_settings;
     QString m_fileName;
 
-    DeviceModel* findModel(quint16 id);
-    bool parseTree(TreeItem& tree);
-    QString parseBaudRate(TreeItem& item);
-    QVector<QPair<uint, QString>> parseCommonDevId(TreeItem& item);
-    DeviceModel* parseDevice(TreeItem& item);
-    QVector<DevCommandBuilder*>* parseCommands(TreeItem& item);
+    const DeviceModel findModel(quint16 id);
+    bool parseTree(const TreeItem& tree);
+    QString parseBaudRate(const TreeItem& item);
+    QMultiMap<uint, QString> parseCommonDevId(const TreeItem& item);
+    const DeviceModel parseDevice(const TreeItem& item);
+    const QMap<quint16, CommandSettings> parseCommands(const TreeItem& item);
 
 
-    QPointer<ParserWorker> m_parseWorker;
-    QVector<DeviceModel*> m_DeviceModels;
-//    QVector<device_t> m_device;
+    QScopedPointer<ParserWorker> m_parseWorker;
+    QMap<quint16, DeviceModel> m_DeviceModels;
     QStringList m_baudrates;
-    QVector<QPair<uint, QString>> m_commondDevicesId;
-//    QMap<QString, QString> IDDevice;
+    QMultiMap<uint, QString> m_commondDevicesId;
 
 
 };

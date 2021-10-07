@@ -1,70 +1,50 @@
-#ifndef DEVICEMODEL_H
-#define DEVICEMODEL_H
+#pragma once
 
 #include <QObject>
-#include "../device/devcommand.h"
+#include "../device/commandsettings.h"
 #include "device.h"
-#include "globals.h"
+#include "constants.h"
+#include <QPixmap>
+
 
 class Device;
 class DevCommand;
-class DevCommandBuilder;
+struct CommandSettings;
 
-class DeviceDelays {
-public:
+struct DeviceDelays {
     static const quint16 COM_COMMAND_MIN_SEND_DELAY = 50;
     static const quint16 COM_COMMAND_MAX_SEND_DELAY = 1000;
     static const quint16 COM_STOP_DELAY_MS = 300;
 
     DeviceDelays(quint16 stopDelayMs = COM_STOP_DELAY_MS, quint16 minCommandDelayMs = COM_COMMAND_MIN_SEND_DELAY, quint16 maxCommandDelayMs = COM_COMMAND_MAX_SEND_DELAY, quint16 timeout_ms = COM_PORT_TIMEOUT)
-        : m_stopDelayMs(stopDelayMs),
-          m_minCommandDelayMs(minCommandDelayMs),
-          m_maxCommandDelayMs(maxCommandDelayMs),
-          m_timeoutMs(timeout_ms)
+        : stopDelayMs(stopDelayMs),
+          minCommandDelayMs(minCommandDelayMs),
+          maxCommandDelayMs(maxCommandDelayMs),
+          timeoutMs(timeout_ms)
     {}
-    quint16 stopDelayMs() { return m_stopDelayMs; }
-    quint16 minCommandDelayMs() { return m_minCommandDelayMs; }
-    quint16 maxCommandDelayMs() { return m_maxCommandDelayMs; }
-    quint16 timeoutMs() { return m_timeoutMs; }
-private:
-    quint16 m_stopDelayMs;
-    quint16 m_minCommandDelayMs;
-    quint16 m_maxCommandDelayMs;
-    quint16 m_timeoutMs;
+    quint16 stopDelayMs;
+    quint16 minCommandDelayMs;
+    quint16 maxCommandDelayMs;
+    quint16 timeoutMs;
 };
 
-class DeviceDescription
+struct DeviceDescription
 {
-public:
-    DeviceDescription(QPixmap *pic, QString desc, QString link) : m_Photo(pic), m_Description(desc), m_Link(link) {}
-    ~DeviceDescription() {
-        if(m_Photo != nullptr) { delete m_Photo; }
-    }
-    const QPixmap* photo() { return m_Photo; }
-    QString description() { return m_Description; }
-    QString link() { return m_Link; }
-private:
-    QPixmap* m_Photo;
-    QString m_Description;
-    QString m_Link;
+    DeviceDescription(const QPixmap& pic, const QString& desc, const QString& link) :
+        Photo(pic),
+        Description(desc),
+        Link(link) {}
+    QPixmap Photo;
+    QString Description;
+    QString Link;
 };
 
-class DeviceModel
+struct DeviceModel
 {
-public:
-    DeviceModel(quint16 id, QString name, DeviceDelays *delays, QVector<DevCommandBuilder*> *cmdBuilders);
-    ~DeviceModel();
-    Device* createDevice(quint8 addr, QObject *parent = nullptr);
-    QString name();
-    quint16 id();
-
-private:
-    quint16 m_Id;
-    QString m_Name;
-    DeviceDelays* m_Delays;
-//    DeviceDescription* m_Description;
-    QVector<DevCommandBuilder*> *m_Commands;
-//    QVector<DeviceBinaryOption*> *m_BinaryOptions;
+    DeviceModel();
+    DeviceModel(quint16 id, const QString& name, const DeviceDelays &delays, const QMap<quint16, CommandSettings> &cmdBuilders);
+    quint16 id;
+    QString name;
+    DeviceDelays delays;
+    QMap<quint16, CommandSettings> commands;
 };
-
-#endif // DEVICEMODEL_H

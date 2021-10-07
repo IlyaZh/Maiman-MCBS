@@ -1,15 +1,16 @@
 #include "appsettings.h"
-#include "globals.h"
+#include "constants.h"
 #include <QJsonDocument>
 #include <QDebug>
 
-AppSettings::AppSettings(QObject *parent) : QObject(parent)
+AppSettings::AppSettings(QObject *parent) :
+    QObject(parent),
+    settings(new QSettings(QSettings::NativeFormat, QSettings::UserScope, Const::OrgName, Const::AppName))
 {
-    settings = new QSettings(QSettings::NativeFormat, QSettings::UserScope, Constants::OrgName, Constants::AppName);
 }
 
 bool AppSettings::parseFileSettings(QString fileName) {
-    QFile* file = new QFile(fileName, this);
+    QScopedPointer<QFile> file(new QFile(fileName));
     if(!file->exists()) {
         m_errorString = QString("File \"%1\" isn't exist!").arg(fileName);
         return false;
@@ -25,14 +26,14 @@ bool AppSettings::parseFileSettings(QString fileName) {
     if(jDoc.isNull()) {
         qDebug() << "[E][AppSettings] Can't parse settings file:" << jParseErrorObj.errorString();
     } else {
-        // debug do it
+        // TODO: do it
     }
 }
 
-quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", Constants::BaudRateDefault).toUInt(); }
+quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", Const::BaudRateDefault).toUInt(); }
 QString AppSettings::getComPort() { return settings->value("userSettings/comPort/port", "").toString(); }
 bool AppSettings::getComAutoconnectFlag() { return settings->value("userSettings/comPort/autoConnect", false).toBool(); }
-QString AppSettings::getTemperatureSymbol() { return settings->value("userSettings/temperatureSymbol", Constants::TemperatureUnitDefault).toString(); }
+QString AppSettings::getTemperatureSymbol() { return settings->value("userSettings/temperatureSymbol", Const::TemperatureUnitDefault).toString(); }
 const QList<QVariant> AppSettings::getRecentOpenFiles() { return settings->value("lastOpenedFiles").toList(); }
 QString AppSettings::getLastSaveDirectory() { return settings->value("lastUsedDirectory", QDir::homePath()).toString(); }
 uint AppSettings::getComCommandsDelay() { return settings->value("userSettings/comPort/commandsDelay", COM_COMMAND_SEND_DELAY).toUInt(); }
@@ -41,7 +42,6 @@ int AppSettings::getComStopBits() { return settings->value("userSettings/comPort
 
 NetworkData_s AppSettings::getNetworkData() {
     NetworkData_s netData;
-    // TODO: refactoring there
     netData.type = static_cast<NetworkType>(settings->value("network/type", 0).toUInt());
     netData.host = settings->value("network/host", "").toString();
     netData.port = settings->value("network/port", 0).toInt();

@@ -8,22 +8,23 @@ TreeItem::~TreeItem() {
     delete m_value;
 }
 
-QVariant TreeItem::value() {
+const QVariant& TreeItem::value() const {
     return (*m_value);
 }
 
-QString TreeItem::name() {
+const QString& TreeItem::name() const {
     return m_name;
 }
 
-bool TreeItem::hasChilds() {
+bool TreeItem::hasChilds() const {
     return (!m_childs->isEmpty());
 }
 
-int TreeItem::childCount() {
+int TreeItem::childCount() const {
     return m_childs->count();
 }
 
-TreeItem* TreeItem::child(int num) {
-    return (num < m_childs->count()) ? m_childs->at(num) : nullptr;
+const TreeItem& TreeItem::child(int num) const {
+    Q_ASSERT(num < m_childs->size());
+    return *(m_childs->at(num));
 }

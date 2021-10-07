@@ -1,5 +1,4 @@
-#ifndef SOFTPROTOCOLINTERFACE_H
-#define SOFTPROTOCOLINTERFACE_H
+#pragma once
 
 #include <QObject>
 //#include <QIODevice>
@@ -7,63 +6,66 @@
 #include <QPointer>
 #include <QTimer>
 #include <QQueue>
+#include <QVector>
 #include "datasource.h"
 #include "interfaces/ProtocolObserverInterface.h"
 
-class SoftProtocol : public QObject
-{
-    Q_OBJECT
-public:
-    static const quint8 MAX_ADDRESS;
-    static const int TIMEOUT_DEFAULT;
-    static const int DELAY_DEFAULT;
-    SoftProtocol(QString name, int timeoutMSecs = TIMEOUT_DEFAULT, int delayMSecs = DELAY_DEFAULT, QObject *parent = nullptr);
-    ~SoftProtocol();
-    virtual void start(DataSourceInterface& device/*, int m_TimeoutMSecs = TIMEOUT_DEFAULT*/);
-    virtual void setTimeout(int) ;
-    virtual void setDelay(int);
-//    virtual void setEnable(bool);
-    virtual bool isEnable();
-    virtual void addObserver(ProtocolObserverInterface* newObserver);
-    virtual void removeObserver(ProtocolObserverInterface* newObserver);
-    virtual void setDataValue(quint8 addr, quint16 reg, quint16 value);
-    virtual void getDataValue(quint8 addr, quint16 reg, quint8 count = 1);
-    virtual void stop();
+struct SoftProtocolData {
+    quint8 addr;
+    quint16 reg;
+    quint16 value;
 
-signals:
-    void errorOccured(QString);
-    void deviceOpen(bool);
-//    void timeoutOccured(quint8 code);
-
-public slots:
-
-private slots:
-    virtual void readyRead() = 0;
-    virtual void bytesWritten(qint64 bytes);
-    virtual void timeout() = 0;
-    virtual void delayBeforeSendCallback();
-
-protected:
-    QByteArray m_lastTxPackage;
-    DataSourceInterface* m_DataSource;
-    QQueue<QByteArray> m_Queue;
-    ProtocolObserverInterface* m_observer = nullptr;
-    QTimer m_timeoutTimer;
-    QTimer m_delayTimer;
-    int m_TimeoutMSecs;
-    int m_delayMSecs; // сделай установаку задержки
-    bool bPortIsBusy;
-    int m_bytesWritten;
-    QString m_name;
-
-    quint8 hiBYTE(quint16 value);
-    quint8 loBYTE(quint16 value);
-    virtual quint16 calcCrc(QByteArray &byteArray);
-    virtual void prepareAndWrite(QByteArray &byteArray);
-    virtual void rxPacketHandler(QByteArray &rxPacket);
-    virtual void makeNotify(quint8 addr, quint16 reg, quint16 value);
-    virtual void nothingToSend();
-    virtual void tryToSend();
+    bool operator==(const SoftProtocolData& other) const {
+        return ((addr == other.addr)
+                && (reg == other.reg)
+                && (value == other.value));
+    }
 };
 
-#endif // SOFTPROTOCOLINTERFACE_H
+class SoftProtocol {
+public:
+    using DataVector = QVector<SoftProtocolData>;
+    static const quint8 MaxAddress;
+    static quint8 hiBYTE(quint16 value);
+    static quint8 loBYTE(quint16 value);
+
+    SoftProtocol() = default;
+    virtual ~SoftProtocol() = default;
+    SoftProtocol(SoftProtocol&&) = default;
+    SoftProtocol& operator=(SoftProtocol&&) = default;
+
+    virtual QByteArray setDataValue(quint8 addr, quint16 reg, quint16 value) = 0;
+    virtual QByteArray getDataValue(quint8 addr, quint16 reg, quint8 count = 1) = 0;
+    virtual DataVector execute(const QByteArray& rxPackage, const QByteArray& lastTxPackage) = 0;
+    virtual bool needWaitForAnswer(const QByteArray& package) = 0;
+    bool isError();
+    QString errorString();
+
+protected:
+    QString m_errorString;
+    bool m_error = false;
+};
+
+
+/*class ISoftProtocolObserver {
+public:
+    virtual ~ISoftProtocolObserver(){};
+    virtual void update(quint8 addr, quint16 reg, quint16 value) = 0;
+    virtual void iamReady() = 0;
+    virtual void errorOccured(const QString& msg) = 0;
+};
+
+class ISoftProtocolSubject {
+public:
+    ~ISoftProtocolSubject(){};
+    virtual void Attach(ISoftProtocolObserver* observer);
+    virtual void Detach(ISoftProtocolObserver* observer);
+protected:
+    virtual void Notify(quint8 addr, quint16 reg, quint16 value);
+    virtual void done();
+    virtual void makeError(QString msg);
+protected:
+    QList<ISoftProtocolObserver*> m_listeners;
+    QString m_errorString = "";
+};*/
+

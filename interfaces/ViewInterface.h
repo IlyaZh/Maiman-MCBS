@@ -4,12 +4,12 @@
 #include <QObject>
 #include <QMap>
 #include "device/devicemodel.h"
-#include "globals.h"
+#include "constants.h"
 #include "device/device.h"
 
 class ViewInterface {
 public:
-    ViewInterface() { m_devices.resize(Constants::MaxDevices); m_devices.fill(nullptr); }
+    ViewInterface() { m_devices.resize(Const::MaxDevices); m_devices.fill(nullptr); }
 //    virtual ~ViewInterface() = 0;
 
     virtual void createdDevice( Device* pDev) = 0;

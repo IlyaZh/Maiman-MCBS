@@ -5,41 +5,33 @@
 #include <QGridLayout>
 //#include "interfaces/mainwindowco1ntrollerinterface.h"
 #include "appsettings.h"
-#include "MediatorPattern.h"
-
+#include "model/device/devicewidget.h"
 //class MainWindowControllerInterface;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow, public BaseComponent
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    const QString SETTINGS_PATH = "window/";
+    static const QString SettingsPath;
 
     MainWindow(AppSettings& settings, QWidget *parent = nullptr);
     ~MainWindow();
-//    void addController(MainWindowControllerInterface* cntrl);
-//    void clearController();
-    void setNetworkMessage(QString msg);
-    void setPortList(QVector<QString> *portList);
-    void setBaudList(QVector<int> *baudList);
-//    void addSettingsCntrl(AppSettings* settings);
-    void addToWorkField(QWidget* widget);
+    void addDeviceWidget(DeviceWidget* widget);
+    void setComPorts(const QStringList& portList);
+    void setBaudRates(const QStringList& baudsList);
 
 signals:
-//    void networkConnectClicked(NetworkType type, QVariant host, QVariant port);
-//    void networkConnectClicked(int, QString, int);
-    void mainWindowReady();
+    void makeEvent(QString event, QVariant value = QVariant());
 public slots:
     void setConnectMessage(QString msg);
-
-private slots:
     void setConnected(bool flag);
-    void on_networkConnectButton_clicked();
+private slots:
+    void adjust(const QSize& size = QSize());
 
 private:
     Ui::MainWindow *ui;
@@ -47,9 +39,9 @@ private:
     QVector<QString> *m_portList;
     QVector<int> *m_baudList;
     AppSettings& m_settings;
-    QVector<QWidget*> m_workWidgets;
+    QVector<DeviceWidget*> m_workWidgets;
     QGridLayout* m_workFieldLayout;
 
-    void setConnections();
+//    void setConnections();
 };
 #endif // MAINWINDOW_H
