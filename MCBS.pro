@@ -23,6 +23,7 @@ TEMPLATE = app
 
 SOURCES += \
     appsettings.cpp \
+    constants.cpp \
     datasource.cpp \
     device/commandsettings.cpp \
     device/device.cpp \
@@ -36,7 +37,7 @@ SOURCES += \
     mainfacade.cpp \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
-    model/device/connectionwidget.cpp \
+    widgets/connectionwidget.cpp \
     model/device/devicewidget.cpp \
     model/devicefactory.cpp \
     model/guifactory.cpp \
@@ -52,6 +53,7 @@ SOURCES += \
 
 HEADERS += \
     appsettings.h \
+    constants.h \
     datasource.h \
     device/commandsettings.h \
     device/device.h \
@@ -60,7 +62,6 @@ HEADERS += \
     factories/parserworker.h \
     factories/treeitem.h \
     factories/xmlparser.h \
-    globals.h \
     interfaces/DevCommand.h \
     interfaces/IMediator.h \
     interfaces/ProtocolObserverInterface.h \
@@ -71,7 +72,7 @@ HEADERS += \
     mainwindow.h \
     model/ModelInterface.h \
     model/device/HiddenWidget.h \
-    model/device/connectionwidget.h \
+    widgets/connectionwidget.h \
     model/device/devicepollrequest.h \
     model/device/devicewidget.h \
     model/devicefactory.h \
@@ -88,7 +89,7 @@ HEADERS += \
 FORMS += \
     mainwindow.ui \
     model/device/HiddenWidget.ui \
-    model/device/connectionwidget.ui \
+    widgets/connectionwidget.ui \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
     widgets/commandwidget.ui \

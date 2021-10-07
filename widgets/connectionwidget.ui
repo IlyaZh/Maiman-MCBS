@@ -21,15 +21,39 @@ color: rgb(255, 255, 255);
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
     <widget class="QTabWidget" name="ConnectionTab">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">
-border: 1px solid #FFFFFF;			
-</string>
+      <string notr="true">QTabWidget::pane {
+    background: rgb(51,51,51);
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+}
+QTabWidget::tab-bar {
+	background: rgb(51,51,51);
+}
+QTabBar::tab {
+    background: rgb(51,51,51);
+    color: #999999;
+    border: 1px solid #ffffff;
+    padding: 5px 8px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-width: 0;
+    margin-right:4px;
+}
+QTabBar::tab:selected {
+   color: #ffffff;
+}</string>
      </property>
      <property name="currentIndex">
       <number>1</number>
@@ -40,48 +64,120 @@ border: 1px solid #FFFFFF;
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="1">
-        <widget class="QComboBox" name="comPortComboBox">
+        <widget class="QComboBox" name="baudrateComboBox">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Share Tech Mono</family>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: rgb(51,51,51);
+color: #ffffff;
+border: 1px solid #FFFFFF;			
+border-radius: 4px;
+padding-left: 10px;
+padding-right: 10px;
+</string>
          </property>
         </widget>
        </item>
        <item row="0" column="0">
-        <widget class="QComboBox" name="baudrateComboBox">
+        <widget class="QComboBox" name="comPortComboBox">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Share Tech Mono</family>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">background: rgb(51,51,51);
+color: #ffffff;
+border: 1px solid #FFFFFF;			
+border-radius: 4px;
+padding-left: 10px;
+padding-right: 10px;
+</string>
+         </property>
         </widget>
        </item>
-       <item row="0" column="2">
+       <item row="0" column="3">
         <widget class="QPushButton" name="connectComPortButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Share Tech Mono</family>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: rgb(51,51,51);
+color: #ffffff;
+border: 1px solid #FFFFFF;			
+border-radius: 4px;
+padding-left: 10px;
+padding-right: 10px;
+</string>
          </property>
          <property name="text">
           <string>Connect</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
+       <item row="0" column="2">
         <widget class="QPushButton" name="refreshComPortButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Share Tech Mono</family>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: rgb(51,51,51);
+color: #ffffff;
+border: 1px solid #FFFFFF;			
+border-radius: 4px;
+padding-left: 10px;
+padding-right: 10px;
+</string>
          </property>
          <property name="text">
           <string>Refresh</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="1" column="0" colspan="4">
         <widget class="QLabel" name="statusComPortLabel">
          <property name="font">
           <font>
@@ -89,7 +185,7 @@ border: 1px solid #FFFFFF;
           </font>
          </property>
          <property name="text">
-          <string>Status</string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -105,7 +201,7 @@ border: 1px solid #FFFFFF;
          <property name="font">
           <font>
            <family>Share Tech Mono</family>
-           <pointsize>12</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="styleSheet">
@@ -114,17 +210,33 @@ border: 1px solid #FFFFFF;
          <property name="text">
           <string>IP:</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
         </widget>
        </item>
        <item row="0" column="1">
         <widget class="QLineEdit" name="networkIpLineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Share Tech Mono</family>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">border: 1px solid #ffffff;
+border-radius: 4px;</string>
          </property>
          <property name="text">
           <string>127.0.1.0</string>
@@ -139,7 +251,7 @@ border: 1px solid #FFFFFF;
          <property name="font">
           <font>
            <family>Share Tech Mono</family>
-           <pointsize>12</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="styleSheet">
@@ -149,17 +261,33 @@ border: 1px solid #FFFFFF;
           <string>Port:</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
        <item row="0" column="3">
         <widget class="QLineEdit" name="networkPortLineEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Share Tech Mono</family>
            <pointsize>8</pointsize>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border-radius: 4px;
+border: 1px solid #ffffff;</string>
          </property>
          <property name="text">
           <string>9999</string>
@@ -171,17 +299,38 @@ border: 1px solid #FFFFFF;
        </item>
        <item row="0" column="4">
         <widget class="QPushButton" name="networkConnectButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Share Tech Mono</family>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: rgb(51,51,51);
+color: #ffffff;
+border: 1px solid #FFFFFF;			
+border-radius: 4px;
+padding-left: 10px;
+padding-right: 10px;
+</string>
          </property>
          <property name="text">
           <string>Connect</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2">
+       <item row="1" column="0" colspan="5">
         <widget class="QLabel" name="networkStatusLabel">
          <property name="font">
           <font>
@@ -193,7 +342,7 @@ border: 1px solid #FFFFFF;
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>Status</string>
+          <string/>
          </property>
         </widget>
        </item>

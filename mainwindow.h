@@ -21,17 +21,16 @@ public:
 
     MainWindow(AppSettings& settings, QWidget *parent = nullptr);
     ~MainWindow();
-    void setPortList(QVector<QString> *portList);
-    void setBaudList(QVector<int> *baudList);
     void addDeviceWidget(DeviceWidget* widget);
+    void setComPorts(const QStringList& portList);
+    void setBaudRates(const QStringList& baudsList);
 
 signals:
-    void makeEvent(QString event, QVariant value);
+    void makeEvent(QString event, QVariant value = QVariant());
 public slots:
     void setConnectMessage(QString msg);
     void setConnected(bool flag);
 private slots:
-    void on_networkConnectButton_clicked();
     void adjust(const QSize& size = QSize());
 
 private:
@@ -43,6 +42,6 @@ private:
     QVector<DeviceWidget*> m_workWidgets;
     QGridLayout* m_workFieldLayout;
 
-    void setConnections();
+//    void setConnections();
 };
 #endif // MAINWINDOW_H

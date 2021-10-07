@@ -3,7 +3,7 @@
 
 #include <QObject>
 //#include <QIODevice>
-#include "globals.h"
+#include "constants.h"
 #include "datasource.h"
 
 class ModelInterface {

@@ -6,7 +6,7 @@
 #include <QPoint>
 #include <QSize>
 #include <QDir>
-#include "globals.h"
+#include "constants.h"
 #include "datasource.h"
 #include <QScopedPointer>
 

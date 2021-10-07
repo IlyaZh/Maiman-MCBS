@@ -7,7 +7,7 @@
 #include "model/devicefactory.h"
 #include "model/guifactory.h"
 #include <QTcpSocket>
-#include "globals.h"
+#include "constants.h"
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include "factories/Parser.h"
@@ -26,7 +26,7 @@ bool debugMode = false;
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    QApplication::setFont(Constants::ApplicationDefaultFont);
+//    QApplication::setFont(Constants::ApplicationDefaultFont);
 
   AppSettings settings;
 
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     ////========================
 
     MainWindow w(settings);
-    w.setFont(Constants::ApplicationDefaultFont);
+//    w.setFont(Constants::ApplicationDefaultFont);
     w.show();
 
     DataSource dataSource;

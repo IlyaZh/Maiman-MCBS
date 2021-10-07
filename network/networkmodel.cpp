@@ -42,6 +42,8 @@ void NetworkModel::setTimeout(int timeout) {
 
 void NetworkModel::start(IDataSource& networkDevice)
 {
+    m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
+
     if(!m_port.isNull()) {
         m_port->disconnect();
 //        m_port->deleteLater();
@@ -139,7 +141,7 @@ void NetworkModel::readyRead() {
     m_timeoutTimer.stop();
     SoftProtocol::DataVector result = m_protocol.execute(rxPacket, m_lastTxPackage);
     m_lastTxPackage.clear();
-    for(auto item : result) {
+    for(const auto& item : qAsConst(result)) {
         if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
             initDevice(item.addr, item.value);
         } else {
@@ -185,7 +187,7 @@ void NetworkModel::delayTimeout() {
             m_lastTxPackage = m_queue.dequeue();
         } else {
             // poll devices state
-            for(auto dev : m_devices) {
+            for(const auto& dev : qAsConst(m_devices)) {
                 const DevicePollRequest request = dev->nextPollRequest();
                 if(request.code != 0) {
                     m_queue.enqueue(m_protocol.getDataValue(request.addr, request.code, request.count));

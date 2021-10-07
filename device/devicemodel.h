@@ -3,7 +3,7 @@
 #include <QObject>
 #include "../device/commandsettings.h"
 #include "device.h"
-#include "globals.h"
+#include "constants.h"
 #include <QPixmap>
 
 

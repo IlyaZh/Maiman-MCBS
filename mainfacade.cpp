@@ -26,3 +26,7 @@ void MainFacade::createWidgetFor(Device* device) {
         qWarning() << "Can't find device widget with id=" << device->id();
     }
 }
+
+void MainFacade::setBaudRates(const QStringList& bauds) {
+    m_window.setBaudRates(bauds);
+}

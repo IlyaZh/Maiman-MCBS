@@ -24,20 +24,22 @@ public:
     void setCurrentComPort(QStringView port);
     void setProtocol(NetworkType type);
     void setCurrentIp(QStringView ip);
-    void setCurrentTcpPort(QStringView port);
+    void setCurrentTcpPort(int port);
 
-    void setConnectMessage(QString msg);
+    void setConnectMessage(QStringView msg);
     void setConnected(bool isConnected);
 
 private slots:
-    void connectedIsClicked(NetworkType type);
+    void connectIsClicked(NetworkType type);
 
 signals:
-    void deviceClicked(QVariant EventValue);
+    void connectButtonClicked(QVariant value);
     void refreshComPorts();
 
 private:
     Ui::ConnectionWidget *ui;
+    void paintEvent(QPaintEvent*) override;
+
 };
 
 #endif // CONNECTIONWIDGET_H

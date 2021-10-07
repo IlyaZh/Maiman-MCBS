@@ -1,4 +1,5 @@
 #include "maincontroller.h"
+#include <QSerialPortInfo>
 
 MainController::MainController(MainWindow& window, NetworkModel& networkModel, AppSettings& settings, QObject *parent) :
     QObject(parent),
@@ -7,6 +8,8 @@ MainController::MainController(MainWindow& window, NetworkModel& networkModel, A
     settings(settings)
 {
     connect(&window, &MainWindow::makeEvent, this, &MainController::eventHandle);
+
+    eventHandle("NetworkRefreshComPorts", QVariant());
 }
 
 
@@ -34,5 +37,12 @@ void MainController::eventHandle(const QString &event, const QVariant &value) {
             }
         }
         window.setConnected(device->isOpen());
+    } else if (event == "NetworkRefreshComPorts") {
+        QStringList ports;
+        const auto list = QSerialPortInfo::availablePorts();
+        for(const auto& port : list) {
+            ports << port.portName();
+        }
+        window.setComPorts(ports);
     }
 }

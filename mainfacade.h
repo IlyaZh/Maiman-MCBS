@@ -17,7 +17,7 @@ public:
     explicit MainFacade(MainWindow& window, GuiFactory& factory, QObject* parent = nullptr);
     ~MainFacade();
     void createWidgetFor(Device* device);
-    void clear();
+    void setBaudRates(const QStringList& bauds);
 private:
     MainWindow& m_window;
     GuiFactory& m_factory;

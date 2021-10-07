@@ -7,7 +7,7 @@
 #include <QIODevice>
 #include <QScopedPointer>
 
-enum class NetworkType { NONE, Tcp, SerialPort };
+enum class NetworkType { None, Tcp, SerialPort };
 
 class IDataSource : public QObject {
     Q_OBJECT
@@ -52,7 +52,7 @@ private:
     QScopedPointer<QTcpSocket> m_tcpSocket;
     QScopedPointer<QSerialPort> m_serialPort;
     QIODevice* m_currentDevice;
-    NetworkType m_type = NetworkType::NONE;
+    NetworkType m_type = NetworkType::None;
     QVariant m_host;
     QVariant m_port;
 
