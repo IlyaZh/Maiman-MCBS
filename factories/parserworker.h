@@ -36,7 +36,7 @@ private:
     QString m_fileName;
     ParserType m_type;
 
-    Parser* createParser(QByteArray dataArray);
+//    Parser* createParser(QByteArray dataArray);
 
 };
 

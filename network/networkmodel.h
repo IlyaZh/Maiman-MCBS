@@ -7,7 +7,6 @@
 #include <QVector>
 #include "protocols/modbusprotocol.h"
 #include "interfaces/ProtocolObserverInterface.h"
-#include "model/ModelInterface.h"
 #include "SoftProtocol.h"
 #include "device/devicemodel.h"
 #include "model/devicefactory.h"
@@ -23,8 +22,7 @@
 class MainViewFacade;
 
 class NetworkModel :
-        public QObject,
-        public ModelInterface
+        public QObject
 {
     Q_OBJECT
 public:
@@ -32,12 +30,12 @@ public:
     static const quint16 TIMEOUT_MS;
     explicit NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, MainFacade& facade, QObject *parent = nullptr);
     ~NetworkModel();
-    void setDelay(int delay) override;
-    void setTimeout(int timeout) override;
-    void start(IDataSource &iodevice) override;
-    bool isStart() override;
-    void stop() override;
-    void rescanNetwork() override;
+    void setDelay(int delay);
+    void setTimeout(int timeout);
+    void start(IDataSource &iodevice);
+    bool isStart();
+    void stop();
+    void rescanNetwork();
 
 public slots:
     void dataOutcome(quint8 addr, quint16 reg, quint16 value);

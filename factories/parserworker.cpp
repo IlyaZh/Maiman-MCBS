@@ -38,7 +38,7 @@ void ParserWorker::process() {
                     m_parser.reset();
                     emit finished();
                 } else {
-                    QString errorString = QString("Parsing erorr in file %1! \"%2\"").arg(file->fileName()).arg(m_parser->errorString());
+                    QString errorString = QString("Parsing erorr in file %1! \"%2\"").arg(file->fileName(), m_parser->errorString());
                     emit errorOccured(errorString);
                 }
             }
@@ -67,9 +67,9 @@ void ParserWorker::getData() {
 
 // private methods
 
-Parser* ParserWorker::createParser(QByteArray dataArray) {
-    Parser* parser = nullptr;
+//Parser* ParserWorker::createParser(QByteArray dataArray) {
+//    Parser* parser = nullptr;
 
 
-    return parser;
-}
+//    return parser;
+//}

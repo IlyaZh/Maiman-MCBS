@@ -32,7 +32,7 @@ signals:
 private:
     Ui::CommandWidget *ui;
 //    const Control& m_settings;
-    QDoubleValidator m_Validator;
+    QDoubleValidator* m_Validator;
     QVector<DevCommand> m_Commands;
     QSharedPointer<DevCommand> m_Real;
     QSharedPointer<DevCommand> m_Value;

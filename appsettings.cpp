@@ -31,13 +31,21 @@ bool AppSettings::parseFileSettings(QString fileName) {
 }
 
 quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", Const::BaudRateDefault).toUInt(); }
+
 QString AppSettings::getComPort() { return settings->value("userSettings/comPort/port", "").toString(); }
+
 bool AppSettings::getComAutoconnectFlag() { return settings->value("userSettings/comPort/autoConnect", false).toBool(); }
+
 QString AppSettings::getTemperatureSymbol() { return settings->value("userSettings/temperatureSymbol", Const::TemperatureUnitDefault).toString(); }
+
 const QList<QVariant> AppSettings::getRecentOpenFiles() { return settings->value("lastOpenedFiles").toList(); }
+
 QString AppSettings::getLastSaveDirectory() { return settings->value("lastUsedDirectory", QDir::homePath()).toString(); }
-uint AppSettings::getComCommandsDelay() { return settings->value("userSettings/comPort/commandsDelay", COM_COMMAND_SEND_DELAY).toUInt(); }
-QPoint AppSettings::getWindowPosition() { return settings->value("window/position", WINDOW_DEFAULT_POSITION).toPoint(); }
+
+uint AppSettings::getComCommandsDelay() { return settings->value("userSettings/comPort/commandsDelay", Const::COM_COMMAND_SEND_DELAY).toUInt(); }
+
+QPoint AppSettings::getWindowPosition() { return settings->value("window/position", Const::WINDOW_DEFAULT_POSITION).toPoint(); }
+
 int AppSettings::getComStopBits() { return settings->value("userSettings/comPort/stopBits", 1).toInt(); }
 
 NetworkData_s AppSettings::getNetworkData() {

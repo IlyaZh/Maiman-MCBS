@@ -38,7 +38,7 @@ public:
 //    QSize getWindowSize();
 
 private:
-    QScopedPointer<QSettings> settings;
+    QSettings* settings;
     QString m_errorString;
 
 signals:

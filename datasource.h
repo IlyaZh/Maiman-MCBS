@@ -49,8 +49,8 @@ public:
 private:
     QString m_errorString;
 
-    QScopedPointer<QTcpSocket> m_tcpSocket;
-    QScopedPointer<QSerialPort> m_serialPort;
+    QTcpSocket* m_tcpSocket;
+    QSerialPort* m_serialPort;
     QIODevice* m_currentDevice;
     NetworkType m_type = NetworkType::None;
     QVariant m_host;

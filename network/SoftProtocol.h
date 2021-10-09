@@ -45,27 +45,3 @@ protected:
     QString m_errorString;
     bool m_error = false;
 };
-
-
-/*class ISoftProtocolObserver {
-public:
-    virtual ~ISoftProtocolObserver(){};
-    virtual void update(quint8 addr, quint16 reg, quint16 value) = 0;
-    virtual void iamReady() = 0;
-    virtual void errorOccured(const QString& msg) = 0;
-};
-
-class ISoftProtocolSubject {
-public:
-    ~ISoftProtocolSubject(){};
-    virtual void Attach(ISoftProtocolObserver* observer);
-    virtual void Detach(ISoftProtocolObserver* observer);
-protected:
-    virtual void Notify(quint8 addr, quint16 reg, quint16 value);
-    virtual void done();
-    virtual void makeError(QString msg);
-protected:
-    QList<ISoftProtocolObserver*> m_listeners;
-    QString m_errorString = "";
-};*/
-
