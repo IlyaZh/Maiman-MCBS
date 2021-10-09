@@ -30,11 +30,11 @@ bool DataSource::open() {
         if(m_type == NetworkType::SerialPort) {
             m_serialPort->setPortName(m_host.toString());
             m_serialPort->setBaudRate(m_port.toInt());
-            m_currentDevice = m_serialPort.get();
+            m_currentDevice = m_serialPort;
             state = m_serialPort->open(QIODevice::ReadWrite);
         } else if(m_type == NetworkType::Tcp) {
             m_tcpSocket->connectToHost(m_host.toString(), m_port.toInt());
-            m_currentDevice = m_tcpSocket.get();
+            m_currentDevice = m_tcpSocket;
             state = m_tcpSocket->isOpen();
         }
 

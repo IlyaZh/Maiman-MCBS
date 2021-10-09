@@ -21,9 +21,10 @@ CommandWidget::CommandWidget(QStringView name,
     ui->WidgetName->setText(name.toString());
 
     if (m_Value and m_Max and m_Min){
-        m_Validator.setRange(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
+        m_Validator = new QDoubleValidator(this);
+        m_Validator->setRange(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
 
-        ui->Value->setValidator(&m_Validator);
+        ui->Value->setValidator(m_Validator);
         setMinValue(m_Min->valueDouble(),m_Min->tolerance());
         setMaxValue(m_Max->valueDouble(),m_Max->tolerance());
         setValue(m_Value->valueDouble(),m_Value->tolerance());
@@ -66,11 +67,10 @@ CommandWidget::~CommandWidget()
 
 void CommandWidget::LineEdit_EditFinished(){
 
-    double valueFromLine;
 //    if (m_Real == nullptr)
 //        ui->RealValue->setText(ui->Value->text());
 
-    valueFromLine =  ui->Value->text().toDouble();
+    double valueFromLine =  ui->Value->text().toDouble();
 //    emit valueChanged(m_Value->code(), valueFromLine);
 
     if(!m_Value.isNull()) {

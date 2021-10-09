@@ -5,15 +5,6 @@
 #include <QString>
 #include <QVariant>
 
-#include "../interfaces/DevCommand.h"
-
-//class DeviceCommand : public DevCommand, public QObject
-//{
-//    Q_OBJECT
-//public:
-//};
-
-
 class DeviceCommand : public QObject
 {
     Q_OBJECT

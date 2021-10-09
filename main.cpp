@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "interfaces/mainwindowcontrollerinterface.h"
+//#include "interfaces/mainwindowcontrollerinterface.h"
 
 #include <QApplication>
 #include "network/networkmodel.h"

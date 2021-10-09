@@ -1,16 +1,8 @@
-#include <QString>
-#include <QStringList>
-#include <QMap>
-#include <QDate>
-#include <QDir>
-#include <QPointer>
-#include <QFont>
-#include <QPoint>
-#include <QStringView>
-#include <QCoreApplication>
-//#include "appsettings.h"
-
 #pragma once
+
+//#include "appsettings.h"
+#include <QString>
+#include <QPoint>
 
 bool isEqual(double first, double second);
 
@@ -41,33 +33,24 @@ public:
 
     static const double DoubleEpsilon;
 
+    static const QPoint WINDOW_DEFAULT_POSITION;
+    //static const QSize WINDOW_DEFAULT_SIZE = QSize(-1,-1);
+
+    static const QString DEVICE_STATUS_COMMAND;
+    static const QString TEC_STATUS_COMMAND;
+    static const QString FREQUENCY_COMMAND;
+    static const QString DURATION_COMMAND;
+
+    // Длительность "покраснения" поля ввода параметров при неверном значении
+    static const int CURR_VALUE_BG_ERROR_TIMEOUT;
+
+    static const unsigned int COM_PORT_TIMEOUT;
+
+    static const quint16 COM_COMMAND_SEND_DELAY;
+
+    static const QString DEFAULT_LOG_FILENAME;
+    static const QString DEFAULT_LOG_FILEPATH;
 };
-
-static const QPoint WINDOW_DEFAULT_POSITION = QPoint(-1, -1);
-//static const QSize WINDOW_DEFAULT_SIZE = QSize(-1,-1);
-
-static const QString DEVICE_STATUS_COMMAND = "0004";
-static const QString TEC_STATUS_COMMAND = "0A1A";
-static const QString FREQUENCY_COMMAND = "0100";
-static const QString DURATION_COMMAND = "0200";
-
-
-
-// Длительность "покраснения" поля ввода параметров при неверном значении
-static const int CURR_VALUE_BG_ERROR_TIMEOUT = 1000; // ms
-
-
-
-
-static const unsigned int COM_PORT_TIMEOUT = 100; // [ms]
-
-
-
-static const quint16 COM_COMMAND_SEND_DELAY = 150; // ms
-
-
-static const QString DEFAULT_LOG_FILENAME = "consoleLog " + QDate::currentDate().toString("dd.MM.yyyy") + ".log";
-static const QString DEFAULT_LOG_FILEPATH = QDir::currentPath()+"/logs/";
 
 //static const int DEFAULT_DIGITS_AFTER_POINT = 2;
 //#define DEFAULT_FORMAT_FOR_PARAMETERS 'f', DEFAULT_DIGITS_AFTER_POINT

@@ -62,15 +62,10 @@ HEADERS += \
     factories/parserworker.h \
     factories/treeitem.h \
     factories/xmlparser.h \
-    interfaces/DevCommand.h \
-    interfaces/IMediator.h \
     interfaces/ProtocolObserverInterface.h \
-    interfaces/ViewInterface.h \
-    interfaces/mainwindowcontrollerinterface.h \
     maincontroller.h \
     mainfacade.h \
     mainwindow.h \
-    model/ModelInterface.h \
     model/device/HiddenWidget.h \
     widgets/connectionwidget.h \
     model/device/devicepollrequest.h \

@@ -10,7 +10,6 @@ const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug заме�
 
 NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, MainFacade& facade, QObject *parent) :
     QObject(parent),
-    ModelInterface(),
     m_deviceModelFactory(deviceModelFactory),
     m_facade(facade),
     m_protocol(protocol)

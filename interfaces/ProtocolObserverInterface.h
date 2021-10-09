@@ -3,18 +3,6 @@
 
 #include <QObject>
 
-//class ModbusObserverInterface : public QObject
-//{
-//    Q_OBJECT
-//public:
-//    explicit ModbusObserverInterface(QObject *parent = nullptr) : QObject(parent) {}
-
-//signals:
-
-//public slots:
-//    void notify(quint16 reg, quint16 value);
-//};
-
 class ProtocolObserverInterface {
 public:
     explicit ProtocolObserverInterface() {}
