@@ -10,7 +10,7 @@ struct DevicePollRequest
       addr(addr),
       count(count),
       interval(interval),
-      counter(0)
+      counter(interval-1)
     {
 
     }

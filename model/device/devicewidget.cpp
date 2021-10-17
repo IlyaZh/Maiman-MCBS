@@ -211,7 +211,7 @@ void DeviceWidget::laserButtonClicked(bool state) {
         if(button.name == "laser") {
             if(m_commands.contains(button.code)) {
                 auto cmd = m_commands.value(button.code);
-                cmd->sendValue((state) ? button.onCommand : button.offCommand);
+                cmd->setFromWidget((state) ? button.onCommand : button.offCommand);
             }
             return;
         }
@@ -223,7 +223,7 @@ void DeviceWidget::tecButtonClicked(bool state) {
         if(button.name == "tec") {
             if(m_commands.contains(button.code)) {
                 auto cmd = m_commands.value(button.code);
-                cmd->sendValue((state) ? button.onCommand : button.offCommand);
+                cmd->setFromWidget((state) ? button.onCommand : button.offCommand);
             }
             return;
         }

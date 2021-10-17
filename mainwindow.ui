@@ -116,7 +116,6 @@ QWidget, QLabel {
         <bold>false</bold>
        </font>
       </property>
-      <layout class="QGridLayout" name="gridLayout"/>
      </widget>
     </item>
    </layout>

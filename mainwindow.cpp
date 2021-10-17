@@ -115,6 +115,11 @@ void MainWindow::setConnectMessage(QString msg) {
 
 void MainWindow::setConnected(bool isConnected) {
     ui->connectionWidget->setConnected(isConnected);
+
+    if(!isConnected) {
+        qDeleteAll(m_workWidgets);
+        m_workWidgets.clear();
+    }
 }
 
 // private methods

@@ -31,6 +31,7 @@ public:
     bool isSigned();
     double valueDouble();
     uint valueUInt();
+    QString valueStr();
     uint interval();
 
 
@@ -38,9 +39,9 @@ signals:
     void updatedValue();
     void sendValueSignal(quint16 code, quint16 value);
 public slots:
-    void setRawValue(quint16 value);
-    void sendValue(int value);
-    void sendValue(double value);
+    void setFromDevice(quint16 value);
+    void setFromWidget(int value);
+    void setFromWidget(double value);
 
 
 private:
@@ -49,6 +50,7 @@ private:
     quint16 m_rawValue = 0;
     double m_value = 0;
     uint m_stepInterval = 0;
+    QString m_strValue {};
 
 
 
