@@ -1,5 +1,5 @@
-#ifndef COMMANDWIDGET_H
-#define COMMANDWIDGET_H
+#ifndef CONTROLWIDGET_H
+#define CONTROLWIDGET_H
 
 #include <QWidget>
 #include <QLabel>
@@ -13,18 +13,18 @@ namespace Ui {
 class CommandWidget;
 }
 
-class CommandWidget : public QWidget
+class ControlWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CommandWidget(QStringView name,
+    explicit ControlWidget(QStringView name,
                            QSharedPointer<DevCommand> Value,
                            QSharedPointer<DevCommand> Max,
                            QSharedPointer<DevCommand> Min,
                            QSharedPointer<DevCommand> Real,
                            QWidget *parent = nullptr);
-    ~CommandWidget();
+    ~ControlWidget();
 
 signals:
 //    void valueChanged(quint16 reg, double value);
@@ -38,8 +38,9 @@ private:
     QSharedPointer<DevCommand> m_Value;
     QSharedPointer<DevCommand> m_Max;
     QSharedPointer<DevCommand> m_Min;
+    bool isUserEdit = false;
 
-    void setValue(double value, int decimal);
+    void setValue(/*double value, int decimal*/);
     void setMaxValue(double value, int decimal);
     void setMinValue(double value, int decimal);
     void setRealValue(double value, int decimal);
@@ -47,7 +48,7 @@ private:
 
     void adjust();
 private slots:
-    void LineEdit_EditFinished();
+    void userEnteredValue();
 };
 
-#endif // COMMANDWIDGET_H
+#endif // CONTROLWIDGET_H

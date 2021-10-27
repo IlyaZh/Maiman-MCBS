@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QObject>
+#include <QTime>
+#include <QQueue>
+#include <QPair>
 
 class DevCommand;
 
@@ -19,6 +22,7 @@ class DevCommand : public QObject
 {
     Q_OBJECT
 public:
+    static const int maxLogValues;
     static double convertCelToFar(double value);
     static double convertFarToCel(double value);
 
@@ -30,7 +34,7 @@ public:
     quint16 getRawFromValue(double value);
     bool isSigned();
     double valueDouble();
-    uint valueUInt();
+    uint valueInt();
     QString valueStr();
     uint interval();
 
@@ -49,9 +53,11 @@ private:
 
     quint16 m_rawValue = 0;
     double m_value = 0;
+    int m_iValue = 0;
     uint m_stepInterval = 0;
-    QString m_strValue {};
-
+    QString m_strValue;
+    QVector<QPair<QTime, double>> m_logValues;
+    int m_cmdIt = 0;
 
 
 };

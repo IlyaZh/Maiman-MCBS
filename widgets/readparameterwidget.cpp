@@ -23,6 +23,7 @@ ReadParameterWidget::ReadParameterWidget(QStringView name, QSharedPointer<DevCom
     }
 
     /*setValue(m_settings.real, value);*/
+    setValue(m_command->valueDouble(), m_command->tolerance());
 
     this->adjustSize();
 

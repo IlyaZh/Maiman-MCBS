@@ -7,7 +7,7 @@
 #include <QPushButton>
 
 class DevCommand;
-class CommandWidget;
+class ControlWidget;
 class BinaryWidget;
 class HiddenWidget;
 

@@ -17,6 +17,8 @@ CommandSettings::CommandSettings(quint16 code, QString unit, double divider, qui
 
 // static methods
 
+const int DevCommand::maxLogValues = 100;
+
 double DevCommand::convertCelToFar(double value) {
     return value * 9.0 / 5.0 + 32.0;
 }
@@ -30,6 +32,7 @@ DevCommand::DevCommand(const CommandSettings& conf) :
     config(conf)
 {
     m_rawValue = 0;
+    m_strValue = QString::number(0, 'f', static_cast<int>(config.m_tolerance));
 }
 
 quint16 DevCommand::code() {
@@ -60,8 +63,8 @@ double DevCommand::valueDouble() {
     return m_value;
 }
 
-uint DevCommand::valueUInt() {
-    return m_rawValue;
+uint DevCommand::valueInt() {
+    return m_iValue;
 }
 
 QString DevCommand::valueStr() {
@@ -79,13 +82,22 @@ void DevCommand::setFromDevice(quint16 value) {
 
     double d = 0;
     if(isSigned()) {
-        d = static_cast<double>((int16_t) m_rawValue);
+        d = static_cast<double>(static_cast<int16_t>(m_rawValue));
         m_value = qRound(d/config.m_divider*qPow(10,config.m_tolerance)-0.5)/qPow(10,config.m_tolerance);
     } else {
-        d = static_cast<double>(m_rawValue);
+        d = static_cast<double>(static_cast<quint16>(m_rawValue));
         m_value = qRound(d/config.m_divider*qPow(10,config.m_tolerance)-0.5)/qPow(10,config.m_tolerance);
     }
-    m_strValue = QString::number(d, 'f', static_cast<int>(config.m_tolerance));
+    m_iValue = static_cast<int>(m_value);
+    m_strValue = QString::number(m_value, 'f', static_cast<int>(config.m_tolerance));
+
+    if(m_logValues.size() < maxLogValues) {
+        m_logValues.push_back({QTime::currentTime(), m_value});
+    } else {
+        if(m_cmdIt >= m_logValues.size()) m_cmdIt = 0;
+        m_logValues[m_cmdIt++] = {QTime::currentTime(), m_value};
+    }
+
     emit updatedValue();
 }
 

@@ -3,9 +3,8 @@
 #include "../device/commandsettings.h"
 #include <QScopedPointer>
 
-DeviceFactory::DeviceFactory(QString fileName, AppSettings& settings, QObject* parent) :
+DeviceFactory::DeviceFactory(QString fileName, QObject* parent) :
     QObject(parent),
-    m_settings(settings),
     m_fileName(fileName)
 
 {

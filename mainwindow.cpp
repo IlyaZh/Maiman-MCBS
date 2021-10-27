@@ -1,27 +1,26 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "constants.h"
-#include <QVariant>
-#include <QScrollBar>
 #include "widgets/connectionwidget.h"
+#include "appsettings.h"
+#include <QtWidgets>
 
 #include <QDebug>
 
 const QString MainWindow::SettingsPath {"window/"};
 
-MainWindow::MainWindow(AppSettings& settings, QWidget *parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow),
 //      m_cntrl(nullptr),
       m_portList(nullptr),
-      m_baudList(nullptr),
-      m_settings(settings)
+      m_baudList(nullptr)
 {
     ui->setupUi(this);
 
-    this->move(m_settings.getWindowPosition());
+    this->move(AppSettings::getWindowPosition());
 
-    auto netData = m_settings.getNetworkData();
+    auto netData = AppSettings::getNetworkData();
     ui->connectionWidget->setProtocol(NetworkType::Tcp);
     ui->connectionWidget->setBaudList(Const::BaudRates);
     switch(netData.type) {
@@ -40,13 +39,9 @@ MainWindow::MainWindow(AppSettings& settings, QWidget *parent)
 //    refreshMenuPortBaudsList();
 
     connect(ui->connectionWidget, &ConnectionWidget::refreshComPorts,
-            this, [this](){
-        emit makeEvent("NetworkRefreshComPorts");
-    });
+            this, &MainWindow::refreshComPortsSignal);
     connect(ui->connectionWidget, &ConnectionWidget::connectButtonClicked,
-            this, [this](QVariant value){
-        emit makeEvent("NetworkConnectClicked", value);
-    });
+            this, &MainWindow::connectToNetwork);
 
     const QString AppTitle = QString("%1 v.%2").arg(Const::AppNameTitle, QCoreApplication::applicationVersion());
     setWindowTitle(AppTitle);
@@ -57,6 +52,8 @@ MainWindow::MainWindow(AppSettings& settings, QWidget *parent)
     m_workFieldLayout->setSpacing(0);
     m_workFieldLayout->setContentsMargins(0,0,0,0);
     ui->workFieldWidget->setLayout(m_workFieldLayout);
+
+    emit refreshComPortsSignal();
 
 //    emit mainWindowReady();
 }

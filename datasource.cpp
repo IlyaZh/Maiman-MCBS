@@ -3,17 +3,17 @@
 //DataSource* DataSource::m_im = nullptr;
 
 DataSource::DataSource(QObject* parent) :
-    IDataSource(parent),
+    QObject(parent),
     m_tcpSocket(new QTcpSocket(this)),
     m_serialPort(new QSerialPort(this))
 {
-    m_currentDevice = nullptr;
+
 }
 
 DataSource::~DataSource() {
     if(m_currentDevice != nullptr) {
-        if(m_serialPort->isOpen()) {
-            m_serialPort->close();
+        if(m_currentDevice->isOpen()) {
+            m_currentDevice->close();
         }
         m_currentDevice->disconnect();
     }

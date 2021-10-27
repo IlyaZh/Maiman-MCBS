@@ -7,7 +7,7 @@
 #include <QStyleOption>
 #include <QPainter>
 #include "widgets/binarywidget.h"
-#include "widgets/commandwidget.h"
+#include "widgets/controlwidget.h"
 #include "widgets/readparameterwidget.h"
 #include "model/device/HiddenWidget.h"
 
@@ -37,7 +37,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         } else {
             // Обработка изменяемых параметров
             auto hiddenWidget = new HiddenWidget(this);
-            auto widget = new CommandWidget(control.name, valueCmd, maxCmd, minCmd, realCmd, hiddenWidget);
+            auto widget = new ControlWidget(control.name, valueCmd, maxCmd, minCmd, realCmd, hiddenWidget);
             m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
             hiddenWidget->addWidget(widget);
             if(control.name == "current")
@@ -114,7 +114,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             if(m_commands.contains(button.code)) {
                 auto cmd = m_commands.value(button.code);
                 connect(cmd.get(), &DevCommand::updatedValue, this, [this, cmd](){
-                    setLaserButton(cmd->valueUInt());
+                    setLaserButton(cmd->valueInt());
                 });
             }
         } else if (button.name == "tec") {
@@ -125,7 +125,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             if(m_commands.contains(button.code)) {
                 auto cmd = m_commands.value(button.code);
                 connect(cmd.get(), &DevCommand::updatedValue, this, [this, cmd](){
-                    setTecButton(cmd->valueUInt());
+                    setTecButton(cmd->valueInt());
                 });
             }
         }

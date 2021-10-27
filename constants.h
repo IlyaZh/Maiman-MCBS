@@ -1,13 +1,11 @@
 #pragma once
 
-//#include "appsettings.h"
 #include <QString>
 #include <QPoint>
 
 bool isEqual(double first, double second);
 
-class Const {
-public:
+struct Const {
     // Название организации
     static const QString OrgName;
     // Название (заголовок) ПО для служебных путей (без пробелов)

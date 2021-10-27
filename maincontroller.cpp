@@ -1,48 +1,47 @@
 #include "maincontroller.h"
+#include "appsettings.h"
 #include <QSerialPortInfo>
 
-MainController::MainController(MainWindow& window, NetworkModel& networkModel, AppSettings& settings, QObject *parent) :
+MainController::MainController(MainWindow& window, NetworkModel& networkModel, QObject *parent) :
     QObject(parent),
     window(window),
-    network(networkModel),
-    settings(settings)
+    network(networkModel)
 {
-    connect(&window, &MainWindow::makeEvent, this, &MainController::eventHandle);
-
-    eventHandle("NetworkRefreshComPorts", QVariant());
+    connect(&window, &MainWindow::connectToNetwork, this, &MainController::connectToNetwork);
+    connect(&window, &MainWindow::refreshComPortsSignal, this, &MainController::refreshComPorts);
 }
 
 
 // private slots
 
-void MainController::eventHandle(const QString &event, const QVariant &value) {
-    if(event == "NetworkConnectClicked") {
-        settings.setNetworkData(value);
+void MainController::refreshComPorts() {
+    QStringList ports;
+    for(const auto& port : QSerialPortInfo::availablePorts()) {
+        ports << port.portName();
+    }
+    window.setComPorts(ports);
+}
 
-        QVariantMap portSettings = value.toMap();
+void MainController::connectToNetwork(QVariant value) {
+    AppSettings::setNetworkData(value);
 
-        if(network.isStart()) {
-            network.stop();
-            device->close();
-//            device->deleteLater();
-        } else {
-            NetworkType type = static_cast<NetworkType>(portSettings["type"].toInt());
-            if(type == NetworkType::Tcp) {
-                device = new DataSource();
-                device->setSettings(type, portSettings["host"], portSettings["port"]);
-                device->open();
-                network.start(*device);
-            } else if(type == NetworkType::SerialPort) {
-                // none. do it!
-            }
-        }
+    QVariantMap portSettings = value.toMap();
+
+    if(network.isStart()) {
+        network.stop();
+        device->close();
         window.setConnected(device->isOpen());
-    } else if (event == "NetworkRefreshComPorts") {
-        QStringList ports;
-        const auto list = QSerialPortInfo::availablePorts();
-        for(const auto& port : list) {
-            ports << port.portName();
+//            device->deleteLater();
+    } else {
+        NetworkType type = static_cast<NetworkType>(portSettings["type"].toInt());
+        if(type == NetworkType::Tcp) {
+            device = new DataSource;
+            device->setSettings(type, portSettings["host"], portSettings["port"]);
+            device->open();
+            window.setConnected(device->isOpen());
+            network.start(*device);
+        } else if(type == NetworkType::SerialPort) {
+            // none. do it!
         }
-        window.setComPorts(ports);
     }
 }

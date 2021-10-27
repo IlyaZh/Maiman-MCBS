@@ -1,10 +1,10 @@
-QT       += core gui network xml testlib concurrent
+QT       += core gui network xml testlib concurrent serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-lessThan(QT_MAJOR_VERSION, 6): QT += serialport
-greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
+#lessThan(QT_MAJOR_VERSION, 6): QT += serialport
+#greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
 
-CONFIG += c++11 testcase #warn_on depend_includepath
+CONFIG += c++11 testcase #warn_on depend_includepath console
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -22,6 +22,7 @@ TEMPLATE = app
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    DebugMode.cpp \
     appsettings.cpp \
     constants.cpp \
     datasource.cpp \
@@ -48,10 +49,11 @@ SOURCES += \
     tests/test_modbus/test_modbus.cpp \
     absoluteToleranceCompare.cpp \
     widgets/binarywidget.cpp \
-    widgets/commandwidget.cpp \
+    widgets/controlwidget.cpp \
     widgets/readparameterwidget.cpp
 
 HEADERS += \
+    DebugMode.h \
     appsettings.h \
     constants.h \
     datasource.h \
@@ -78,7 +80,7 @@ HEADERS += \
     tests/globaltest.h \
     tests/test_modbus/test_modbus.h \
     widgets/binarywidget.h \
-    widgets/commandwidget.h \
+    widgets/controlwidget.h \
     widgets/readparameterwidget.h
 
 FORMS += \
@@ -87,7 +89,7 @@ FORMS += \
     widgets/connectionwidget.ui \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
-    widgets/commandwidget.ui \
+    widgets/controlwidget.ui \
     widgets/readparameterwidget.ui
 
 # Default rules for deployment.

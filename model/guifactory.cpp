@@ -1,10 +1,10 @@
 #include "guifactory.h"
+#include <QDebug>
 
 class DevCommand;
 
-GuiFactory::GuiFactory(QString fileName, AppSettings& settings, QObject *parent) :
+GuiFactory::GuiFactory(QString fileName, QObject *parent) :
     QObject(parent),
-    m_settings(settings),
     m_fileName(fileName)
 {
 

@@ -14,6 +14,7 @@
 #include "datasource.h"
 #include "maincontroller.h"
 #include "mainfacade.h"
+//#include "DebugMode.h"
 
 #include <QDebug>
 #ifdef QT_DEBUG
@@ -26,9 +27,8 @@ bool debugMode = false;
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+//    setlocale(LC_CTYPE, "rus");
 //    QApplication::setFont(Constants::ApplicationDefaultFont);
-
-  AppSettings settings;
 
 #ifdef QT_DEBUG
     debugMode = true;
@@ -53,17 +53,17 @@ int main(int argc, char *argv[])
     /// 4. передаем данные gui в MainWindow и в DeviceModel
     ////========================
 
-    MainWindow w(settings);
+    MainWindow w;
 //    w.setFont(Constants::ApplicationDefaultFont);
     w.show();
 
     DataSource dataSource;
 
-    GuiFactory guiFactory("DeviceGUI.xml", settings);
+    GuiFactory guiFactory("DeviceGUI.xml");
 //    MainViewFacade mvCntrl(dataSource, settings, guiFactory);
 //    mvCntrl.addView(&w);
 
-    DeviceFactory deviceFactory("DeviceDB.xml", settings);
+    DeviceFactory deviceFactory("DeviceDB.xml");
 
     // Фасад для управления потоками данных от модели к представлению
     MainFacade mainFacade(w, guiFactory);
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     model.setTimeout(500);
 
     // Контроллер главного окна, управляет потоком данных от GUI к моделии
-    MainController mainCtrl(w, model, settings);
+    MainController mainCtrl(w, model);
 
 #ifdef QT_DEBUG
     GlobalTest tests(argc, argv);

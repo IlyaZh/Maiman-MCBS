@@ -4,9 +4,9 @@
 #include <QMainWindow>
 #include <QGridLayout>
 //#include "interfaces/mainwindowco1ntrollerinterface.h"
-#include "appsettings.h"
 #include "model/device/devicewidget.h"
 //class MainWindowControllerInterface;
+#include <QVariant>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,14 +19,15 @@ class MainWindow : public QMainWindow
 public:
     static const QString SettingsPath;
 
-    MainWindow(AppSettings& settings, QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void addDeviceWidget(DeviceWidget* widget);
     void setComPorts(const QStringList& portList);
     void setBaudRates(const QStringList& baudsList);
 
 signals:
-    void makeEvent(QString event, QVariant value = QVariant());
+    void refreshComPortsSignal();
+    void connectToNetwork(QVariant value);
 public slots:
     void setConnectMessage(QString msg);
     void setConnected(bool flag);
@@ -38,7 +39,6 @@ private:
 //    MainWindowControllerInterface* m_cntrl;
     QVector<QString> *m_portList;
     QVector<int> *m_baudList;
-    AppSettings& m_settings;
     QVector<DeviceWidget*> m_workWidgets;
     QGridLayout* m_workFieldLayout;
 

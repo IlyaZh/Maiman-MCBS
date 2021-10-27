@@ -1,15 +1,9 @@
 #ifndef GUIFACTORY_H
 #define GUIFACTORY_H
 
-#include <QThread>
 #include <QObject>
-#include <QSharedPointer>
-#include <QString>
-#include <QVector>
-#include <QColor>
-#include <QMap>
+#include <QtWidgets>
 #include "factories/parserworker.h"
-#include "appsettings.h"
 #include "device/devicewidget.h"
 
 class DevCommand;
@@ -18,7 +12,7 @@ class GuiFactory : public QObject
 {
     Q_OBJECT
 public:
-    GuiFactory(QString fileName, AppSettings& settings, QObject *parent = nullptr);
+    GuiFactory(QString fileName, QObject *parent = nullptr);
     ~GuiFactory();
     void start();
     DeviceWidget* createWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
@@ -34,7 +28,6 @@ signals:
 private:
     QPointer<QThread> m_thread;
     QPointer<ParserWorker> m_parseWorker;
-    AppSettings& m_settings;
     QString m_fileName;
 
     QMap<quint16, DeviceWidgetDesc> m_deviceWidgets;

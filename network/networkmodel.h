@@ -32,7 +32,7 @@ public:
     ~NetworkModel();
     void setDelay(int delay);
     void setTimeout(int timeout);
-    void start(IDataSource &iodevice);
+    void start(DataSource &iodevice);
     bool isStart();
     void stop();
     void rescanNetwork();
@@ -49,7 +49,7 @@ private slots:
 
 private:
     DeviceFactory& m_deviceModelFactory;
-    QScopedPointer<IDataSource> m_port;
+    QScopedPointer<DataSource> m_port;
     MainFacade& m_facade;
     SoftProtocol& m_protocol;
     QMap<quint8, QSharedPointer<Device>> m_devices;

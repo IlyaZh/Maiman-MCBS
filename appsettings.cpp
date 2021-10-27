@@ -3,13 +3,9 @@
 #include <QJsonDocument>
 #include <QDebug>
 
-AppSettings::AppSettings(QObject *parent) :
-    QObject(parent),
-    settings(new QSettings(QSettings::NativeFormat, QSettings::UserScope, Const::OrgName, Const::AppName))
-{
-}
+QScopedPointer<QSettings> AppSettings::settings(new QSettings(QSettings::NativeFormat, QSettings::UserScope, Const::OrgName, Const::AppName));
 
-bool AppSettings::parseFileSettings(QString fileName) {
+/*bool AppSettings::parseFileSettings(QString fileName) {
     QScopedPointer<QFile> file(new QFile(fileName));
     if(!file->exists()) {
         m_errorString = QString("File \"%1\" isn't exist!").arg(fileName);
@@ -28,7 +24,7 @@ bool AppSettings::parseFileSettings(QString fileName) {
     } else {
         // TODO: do it
     }
-}
+}*/
 
 quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", Const::BaudRateDefault).toUInt(); }
 
