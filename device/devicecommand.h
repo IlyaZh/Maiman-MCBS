@@ -10,9 +10,9 @@ class DeviceCommand : public QObject
     Q_OBJECT
 public:
     static const quint16 MAX_COM_INTERVAL_COUNTER;
-    explicit DeviceCommand(QString code, QString unit = "", double divider = 1, quint8 interval = 1, quint8 tol = 0, bool isTemperature = false, quint16 maxInterval = MAX_COM_INTERVAL_COUNTER, QObject *parent = nullptr);
+    explicit DeviceCommand(QString code, const QString& unit = "", double divider = 1, quint8 interval = 1, quint8 tol = 0, bool isTemperature = false, quint16 maxInterval = MAX_COM_INTERVAL_COUNTER, QObject *parent = nullptr);
     virtual DeviceCommand* copy();
-    void setTemperatureUnit(QString unit);
+    void setTemperatureUnit(const QString& unit);
     QString getTemperatureUnit() const;
     QString getCodeStr() const;
     quint16 getCode() const;

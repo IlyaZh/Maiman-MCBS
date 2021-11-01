@@ -3,7 +3,7 @@
 #include "../device/commandsettings.h"
 #include <QScopedPointer>
 
-DeviceFactory::DeviceFactory(QString fileName, QObject* parent) :
+DeviceFactory::DeviceFactory(const QString& fileName, QObject* parent) :
     QObject(parent),
     m_fileName(fileName)
 

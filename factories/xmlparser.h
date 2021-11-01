@@ -11,7 +11,7 @@ class XmlParser : public Parser
 {
     Q_OBJECT
 public:
-    explicit XmlParser(QByteArray dataArray, QObject *parent = nullptr);
+    explicit XmlParser(const QByteArray& dataArray, QObject *parent = nullptr);
     ~XmlParser();
     virtual bool start() override;
 

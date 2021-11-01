@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QLocale>
 
-CommandSettings::CommandSettings(quint16 code, QString unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature) :
+CommandSettings::CommandSettings(quint16 code, const QString& unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature) :
     m_code(code),
     m_unit(unit),
     m_divider(divider),
@@ -102,6 +102,7 @@ void DevCommand::setFromDevice(quint16 value) {
 }
 
 void DevCommand::setFromWidget(int value) {
+    qDebug() << "DevCommand::setFromWidget" << config.m_code << getRawFromValue(static_cast<double>(value));
     emit sendValueSignal(config.m_code, getRawFromValue(static_cast<double>(value)));
 }
 

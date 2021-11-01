@@ -20,21 +20,21 @@ HiddenWidget::~HiddenWidget()
     delete ui;
 }
 
-void HiddenWidget::addWidget(QWidget* widget) {
-    m_widgets.append(widget);
-    widget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
-    m_layout->insertWidget(m_widgets.size(), widget);
-    widget->adjustSize();
+void HiddenWidget::addWidget(QWidget* newWidget) {
+    m_widgets.append(newWidget);
+    newWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
+    m_layout->insertWidget(m_widgets.size(), newWidget);
+    newWidget->adjustSize();
     this->adjustSize();
 
     int maxWidth = 0;
-    for(auto widget : m_widgets) {
+    for(const auto& widget : qAsConst(m_widgets)) {
         if (widget->size().width() > maxWidth)
             maxWidth = widget->size().width();
     }
     auto newSize = QSize(maxWidth, 0);
 
-    for(auto widget : m_widgets) {
+    for(const auto& widget : qAsConst(m_widgets)) {
         auto size = widget->size();
         newSize.setHeight(size.height());
         widget->setMinimumWidth(maxWidth);

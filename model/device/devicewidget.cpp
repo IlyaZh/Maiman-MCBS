@@ -10,6 +10,7 @@
 #include "widgets/controlwidget.h"
 #include "widgets/readparameterwidget.h"
 #include "model/device/HiddenWidget.h"
+#include <algorithm>
 
 DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint16, QSharedPointer<DevCommand>>& commands, QWidget *parent) :
     QWidget(parent),
@@ -105,8 +106,9 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     // Инциализация кнопок Laser и TEC
     ui->laserButton->hide();
     ui->tecButton->hide();
+    // TODO: почему не отображаются кнопки???
     for(const auto &button : m_description.buttons) {
-        if(button.name == "laser") {
+        if(button.name.compare("laser", Qt::CaseInsensitive) == 0 && m_commands.contains(button.code)) {
             ui->laserButton->setVisible(true);
             ui->laserButton->setChecked(false);
             connect(ui->laserButton, &QPushButton::clicked, this, &DeviceWidget::laserButtonClicked);
@@ -117,7 +119,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
                     setLaserButton(cmd->valueInt());
                 });
             }
-        } else if (button.name == "tec") {
+        } else if (button.name.compare("tec", Qt::CaseInsensitive) == 0) {
             ui->tecButton->setVisible(true);
             connect(ui->tecButton, &QPushButton::clicked, this, &DeviceWidget::tecButtonClicked);
             ui->tecButton->setChecked(false);
@@ -191,7 +193,7 @@ void DeviceWidget::adjust() {
 // private slots
 
 void DeviceWidget::setLaserButton(quint16 value) {
-    for(auto button : m_description.buttons) {
+    for(const auto& button : m_description.buttons) {
         if(button.name == "laser") {
             ui->laserButton->setChecked((value & button.mask) != 0);
         }
@@ -199,7 +201,7 @@ void DeviceWidget::setLaserButton(quint16 value) {
 }
 
 void DeviceWidget::setTecButton(quint16 value) {
-    for(auto button : m_description.buttons) {
+    for(const auto& button : m_description.buttons) {
         if(button.name == "tec") {
             ui->tecButton->setChecked((value & button.mask) != 0);
         }
@@ -207,25 +209,28 @@ void DeviceWidget::setTecButton(quint16 value) {
 }
 
 void DeviceWidget::laserButtonClicked(bool state) {
-    for(auto button : m_description.buttons) {
-        if(button.name == "laser") {
-            if(m_commands.contains(button.code)) {
-                auto cmd = m_commands.value(button.code);
-                cmd->setFromWidget((state) ? button.onCommand : button.offCommand);
-            }
-            return;
+    // TODO: отладь кнопки чтоб переключали состояние
+    auto search = std::find_if(m_description.buttons.begin(), m_description.buttons.end(), [](const auto& button){
+        return (button.name.compare("laser", Qt::CaseInsensitive) == 0);
+    });
+    if(search != m_description.buttons.end()) {
+        auto laserButton = search.value();
+        auto cmd = m_commands.value(laserButton.code, 0);
+        if(cmd) {
+            cmd->setFromWidget((state) ? laserButton.onCommand : laserButton.offCommand);
         }
     }
 }
 
 void DeviceWidget::tecButtonClicked(bool state) {
-    for(auto button : m_description.buttons) {
-        if(button.name == "tec") {
-            if(m_commands.contains(button.code)) {
-                auto cmd = m_commands.value(button.code);
-                cmd->setFromWidget((state) ? button.onCommand : button.offCommand);
-            }
-            return;
+    auto search = std::find_if(m_description.buttons.begin(), m_description.buttons.end(), [](const auto& button){
+        return (button.name.compare("tec", Qt::CaseInsensitive) == 0);
+    });
+    if(search != m_description.buttons.end()) {
+        auto laserButton = search.value();
+        auto cmd = m_commands.value(laserButton.code, 0);
+        if(cmd) {
+            cmd->setFromWidget((state) ? laserButton.onCommand : laserButton.offCommand);
         }
     }
 }

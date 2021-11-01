@@ -1,10 +1,12 @@
 #ifndef DEVICEWIDGET_H
 #define DEVICEWIDGET_H
 
-#include <QWidget>
-#include <QMap>
-#include <QGridLayout>
-#include <QPushButton>
+#include <QtWidgets>
+
+//#include <QWidget>
+//#include <QMap>
+//#include <QGridLayout>
+//#include <QPushButton>
 
 class DevCommand;
 class ControlWidget;

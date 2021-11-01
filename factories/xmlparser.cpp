@@ -1,7 +1,7 @@
 #include "xmlparser.h"
 #include <QDebug>
 
-XmlParser::XmlParser(QByteArray dataArray, QObject *parent) :
+XmlParser::XmlParser(const QByteArray& dataArray, QObject *parent) :
     Parser(dataArray, parent)
 {
 }

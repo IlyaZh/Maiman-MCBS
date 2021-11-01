@@ -20,9 +20,9 @@ private slots:
 signals:
 
 private:
-    MainWindow& window;
-    NetworkModel& network;
-    QPointer<DataSource> device;
+    MainWindow& m_window;
+    NetworkModel& m_network;
+    QPointer<DataSource> m_device;
 
 };
 

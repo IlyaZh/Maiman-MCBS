@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 #lessThan(QT_MAJOR_VERSION, 6): QT += serialport
 #greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
 
-CONFIG += c++11 testcase #warn_on depend_includepath console
+CONFIG += c++14 testcase #warn_on depend_includepath console
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings

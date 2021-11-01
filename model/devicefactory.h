@@ -14,7 +14,7 @@ class DeviceFactory : public QObject
 {
     Q_OBJECT
 public:
-    DeviceFactory(QString fileName, QObject *parent = nullptr);
+    DeviceFactory(const QString& fileName, QObject *parent = nullptr);
     void start();
     QSharedPointer<Device> createDevice(quint8 addr, quint16 id);
     QStringList getBaudrate();

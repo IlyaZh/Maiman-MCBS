@@ -3,6 +3,8 @@
 #include "model/device/devicewidget.h"
 #include "device/commandsettings.h"
 
+// TODO: Почему серийник имеет единицу измерения Вольт?
+
 ReadParameterWidget::ReadParameterWidget(QStringView name, QSharedPointer<DevCommand> cmd, /*int value, QString name,*/ QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ReadParameterWidget),

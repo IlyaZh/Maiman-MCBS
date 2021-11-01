@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QScopedPointer>
 
-ParserWorker::ParserWorker(QString fileName, ParserType type, QObject *parent) :
+ParserWorker::ParserWorker(const QString& fileName, ParserType type, QObject *parent) :
     QObject(parent),
     m_fileName(fileName),
     m_type(type)

@@ -141,7 +141,6 @@ void NetworkModel::readyRead() {
     m_timeoutTimer.stop();
     SoftProtocol::DataVector result = m_protocol.execute(rxPacket, m_lastTxPackage);
 
-    for(const auto& item : result)
     m_lastTxPackage.clear();
     for(const auto& item : qAsConst(result)) {
         if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {

@@ -8,7 +8,7 @@
 class DevCommand;
 
 struct CommandSettings {
-    explicit CommandSettings(quint16 code, QString unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature);
+    explicit CommandSettings(quint16 code, const QString& unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature);
     quint16 m_code;
     QString m_unit;
     double m_divider = 1;

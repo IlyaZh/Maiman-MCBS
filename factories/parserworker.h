@@ -15,7 +15,7 @@ class ParserWorker : public QObject
 {
     Q_OBJECT
 public:
-    explicit ParserWorker(QString fileName, ParserType type, QObject *parent = nullptr);
+    explicit ParserWorker(const QString& fileName, ParserType type, QObject *parent = nullptr);
     ~ParserWorker();
     TreeItem* data();
 

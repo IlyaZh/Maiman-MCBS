@@ -75,7 +75,7 @@ void Device::clearLink() {
     emit link(m_isLink);
 }
 
-const QMap<quint16, QSharedPointer<DevCommand>> Device::commands() {
+const QMap<quint16, QSharedPointer<DevCommand>>& Device::commands() {
     return m_Commands;
 }
 

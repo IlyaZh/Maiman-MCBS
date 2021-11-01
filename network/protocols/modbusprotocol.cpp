@@ -5,10 +5,9 @@
 quint16 ModbusProtocol::calcCrc(const QByteArray &byteArray) {
     quint16 RetCRC = 0xffff;	// CRC initialization
     quint8 i = 0;
-    quint8 index = 0;
 
     while (i < byteArray.size()) {
-        index = hiBYTE(RetCRC) ^ static_cast<quint8>(byteArray.at(i));
+        quint8 index = hiBYTE(RetCRC) ^ static_cast<quint8>(byteArray.at(i));
         RetCRC = static_cast<quint16> (((loBYTE(RetCRC) ^ CRC_HTable.at(index)) << 8)
                                        | (CRC_LTable.at(index)));
         i++;

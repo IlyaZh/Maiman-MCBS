@@ -1,6 +1,6 @@
 #include "treeitem.h"
 
-TreeItem::TreeItem(QString name, QVariant* value, QVector<TreeItem*>* pChilds) : m_name(name), m_value(value), m_childs(pChilds) {
+TreeItem::TreeItem(const QString& name, QVariant* value, QVector<TreeItem*>* pChilds) : m_name(name), m_value(value), m_childs(pChilds) {
 }
 
 TreeItem::~TreeItem() {
