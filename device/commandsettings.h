@@ -4,6 +4,7 @@
 #include <QTime>
 #include <QQueue>
 #include <QPair>
+#include "constants.h"
 
 class DevCommand;
 
@@ -26,17 +27,23 @@ public:
     static double convertCelToFar(double value);
     static double convertFarToCel(double value);
 
-    DevCommand(const CommandSettings& conf);
-    quint16 code();
-    QString unit();
-    double divider();
-    int tolerance();
-    quint16 getRawFromValue(double value);
-    bool isSigned();
-    double valueDouble();
-    uint valueInt();
-    QString valueStr();
-    uint interval();
+    explicit DevCommand(const CommandSettings& conf);
+    void changeTemperatureUnit(Const::TemperatureUnitId id);
+    quint16 code() const;
+    QString unit() const ;
+    double divider() const;
+    int tolerance() const;
+    quint16 getRawFromValue(double value) const;
+    bool isSigned() const;
+    double valueDouble() const ;
+    uint valueInt() const ;
+    QString valueStr() const;
+    uint interval() const;
+
+    const QVector<double>& historyValues() const;
+    double avgValue() const;
+    double maxValue() const;
+    double minValue() const;
 
 
 signals:
@@ -56,8 +63,8 @@ private:
     int m_iValue = 0;
     uint m_stepInterval = 0;
     QString m_strValue;
-    QVector<QPair<QTime, double>> m_logValues;
+//    QVector<QPair<QTime, double>> m_logValues;
+    QVector<double> m_logValues;
+    double m_cmdSum = 0;
     int m_cmdIt = 0;
-
-
 };

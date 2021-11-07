@@ -2,6 +2,7 @@
 //#include "interfaces/mainwindowcontrollerinterface.h"
 
 #include <QApplication>
+#include <QLocale>
 #include "network/networkmodel.h"
 #include "network/protocols/modbusprotocol.h"
 #include "model/devicefactory.h"
@@ -15,6 +16,7 @@
 #include "maincontroller.h"
 #include "mainfacade.h"
 //#include "DebugMode.h"
+#include <QFontDatabase>
 
 #include <QDebug>
 #ifdef QT_DEBUG
@@ -28,7 +30,11 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 //    setlocale(LC_CTYPE, "rus");
-//    QApplication::setFont(Constants::ApplicationDefaultFont);
+
+    qDebug() << "add font" << QFontDatabase::addApplicationFont(Const::ApplicationDefaultFontPath);
+    QApplication::setFont(QFont("Share Tech Mono", 9));
+//    QFile fil(Const::ApplicationDefaultFont);
+//    qDebug() << QApplication::font() << fil.exists();
 
 #ifdef QT_DEBUG
     debugMode = true;
@@ -54,7 +60,7 @@ int main(int argc, char *argv[])
     ////========================
 
     MainWindow w;
-//    w.setFont(Constants::ApplicationDefaultFont);
+    w.setFont(Const::ApplicationDefaultFontPath);
     w.show();
 
     DataSource dataSource;
@@ -71,8 +77,8 @@ int main(int argc, char *argv[])
     ModbusProtocol modbus;
     // Модель данных (подключается к источнику данных и забирает их)
     NetworkModel model(deviceFactory, modbus, mainFacade);
-    model.setDelay(100);
-    model.setTimeout(500);
+//    model.setDelay(100);
+    model.setTimeout(300);
 
     // Контроллер главного окна, управляет потоком данных от GUI к моделии
     MainController mainCtrl(w, model);

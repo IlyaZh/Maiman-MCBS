@@ -27,7 +27,7 @@ public:
     static uint getComAutoconnectFlag(bool flag);
     static uint getComCommandsDelay();
     static bool getComAutoconnectFlag();
-    static QString getTemperatureSymbol();
+    static Const::TemperatureUnitId getTemperatureUnit();
     static const QList<QVariant> getRecentOpenFiles();
     static QString getLastSaveDirectory();
     static QPoint getWindowPosition();
@@ -47,7 +47,8 @@ public slots:
     static void setComPort(QString port);
     static void setComAutoconnectFlag(bool flag);
     static void setComCommandsDelay(uint delayMs);
-    static void setTemperatureSymbol(QString tempSymbol);
+    static void setTemperatureUnit(const QString& unit);
+    static void setTemperatureUnit(Const::TemperatureUnitId id);
     static void setRecentOpenFiles(const QList<QVariant> &list);
     static void setLastSaveDirectory(QString dir = QDir::homePath());
     static void setLastSelectedDeviceId(quint32 id);

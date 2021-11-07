@@ -9,6 +9,7 @@ MainController::MainController(MainWindow& window, NetworkModel& networkModel, Q
 {
     connect(&window, &MainWindow::connectToNetwork, this, &MainController::connectToNetwork);
     connect(&window, &MainWindow::refreshComPortsSignal, this, &MainController::refreshComPorts);
+    connect(&window, &MainWindow::tempratureUnitsChanged, &m_network, &NetworkModel::temperatureUnitsChanged);
 }
 
 
@@ -16,7 +17,8 @@ MainController::MainController(MainWindow& window, NetworkModel& networkModel, Q
 
 void MainController::refreshComPorts() {
     QStringList ports;
-    for(const auto& port : QSerialPortInfo::availablePorts()) {
+    const auto availPorts = QSerialPortInfo::availablePorts();
+    for(const auto& port : availPorts) {
         ports << port.portName();
     }
     m_window.setComPorts(ports);
@@ -42,6 +44,7 @@ void MainController::connectToNetwork(QVariant value) {
             m_network.start(*m_device);
         } else if(type == NetworkType::SerialPort) {
             // none. do it!
+            // TODO: Add com-port support
         }
     }
 }

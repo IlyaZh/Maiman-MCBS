@@ -2,6 +2,7 @@
 #include <QtMath>
 #include <QDebug>
 #include <QLocale>
+#include <algorithm>
 
 CommandSettings::CommandSettings(quint16 code, const QString& unit, double divider, quint8 tolerance, uint interval, bool isSigned, bool isTemperature) :
     m_code(code),
@@ -12,7 +13,6 @@ CommandSettings::CommandSettings(quint16 code, const QString& unit, double divid
     m_isTemperature(isTemperature),
     m_interval(interval)
 {
-
 }
 
 // static methods
@@ -33,46 +33,70 @@ DevCommand::DevCommand(const CommandSettings& conf) :
 {
     m_rawValue = 0;
     m_strValue = QString::number(0, 'f', static_cast<int>(config.m_tolerance));
+    m_logValues.fill(0, maxLogValues);
 }
 
-quint16 DevCommand::code() {
+void DevCommand::changeTemperatureUnit(Const::TemperatureUnitId id) {
+    // TODO: make a function's implementation
+    if(config.m_isTemperature) {
+
+    }
+}
+
+quint16 DevCommand::code() const {
     return config.m_code;
 }
 
-QString DevCommand::unit() {
+QString DevCommand::unit() const {
     return config.m_unit;
 }
 
-double DevCommand::divider() {
+double DevCommand::divider() const {
     return config.m_divider;
 }
 
-int DevCommand::tolerance() {
+int DevCommand::tolerance() const {
     return static_cast<int>(config.m_tolerance);
 }
 
-quint16 DevCommand::getRawFromValue(double value) {
+quint16 DevCommand::getRawFromValue(double value) const {
     return static_cast<quint16>(qRound(value*config.m_divider-0.5));
 }
 
-bool DevCommand::isSigned() {
+bool DevCommand::isSigned() const {
     return config.m_isSigned;
 }
 
-double DevCommand::valueDouble() {
+double DevCommand::valueDouble() const {
     return m_value;
 }
 
-uint DevCommand::valueInt() {
+uint DevCommand::valueInt() const {
     return m_iValue;
 }
 
-QString DevCommand::valueStr() {
+QString DevCommand::valueStr() const {
     return m_strValue;
 }
 
-uint DevCommand::interval() {
+uint DevCommand::interval() const {
     return config.m_interval;
+}
+
+const QVector<double>& DevCommand::historyValues() const {
+    return m_logValues;
+}
+
+double DevCommand::avgValue() const {
+    return m_cmdSum / static_cast<double>(maxLogValues);
+}
+
+double DevCommand::maxValue() const {
+    return *std::max_element(m_logValues.begin(), m_logValues.end());
+}
+
+double DevCommand::minValue() const {
+    return *std::min_element(m_logValues.begin(), m_logValues.end());
 }
 
 
@@ -91,12 +115,11 @@ void DevCommand::setFromDevice(quint16 value) {
     m_iValue = static_cast<int>(m_value);
     m_strValue = QString::number(m_value, 'f', static_cast<int>(config.m_tolerance));
 
-    if(m_logValues.size() < maxLogValues) {
-        m_logValues.push_back({QTime::currentTime(), m_value});
-    } else {
-        if(m_cmdIt >= m_logValues.size()) m_cmdIt = 0;
-        m_logValues[m_cmdIt++] = {QTime::currentTime(), m_value};
-    }
+    if(m_cmdIt < m_logValues.size())
+        m_cmdSum -= m_logValues.at(m_cmdIt);
+    m_logValues[m_cmdIt++] = m_value;
+    m_cmdSum += m_value;
+    if(m_cmdIt >= m_logValues.size()) m_cmdIt = 0;
 
     emit updatedValue();
 }

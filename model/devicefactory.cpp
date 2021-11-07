@@ -196,7 +196,6 @@ const QMap<quint16, CommandSettings> DeviceFactory::parseCommands(const TreeItem
             if(child.name() == "unit") {
                 unit = child.value().toString();
                 unit.replace("(deg)", QString::fromRawData(new QChar('\260'), 1));
-//                unit.replace("(deg)", QString('\370'), Qt::CaseInsensitive); // TODO: What's the difference????
             }
 
             if(child.name() == "divider")

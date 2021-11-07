@@ -12,6 +12,20 @@
 #include "model/device/HiddenWidget.h"
 #include <algorithm>
 
+// TODO: сделай нормальный размер по высоте, бесит
+
+const QString DeviceWidget::linkStyleOn = "QLabel { \
+        background: rgb(0,102,51); \
+border: 1px solid rgb(26,26,26); \
+border-radius: 3px; \
+}";
+
+const QString DeviceWidget::linkStyleOff = "QLabel { \
+        background: rgb(175,0,0); \
+border: 1px solid rgb(26,26,26); \
+border-radius: 3px; \
+}";
+
 DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint16, QSharedPointer<DevCommand>>& commands, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DeviceWidget),
@@ -23,6 +37,30 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
     m_widgetLayout->setMargin(6);
     m_widgetLayout->setSpacing(9);
+
+    ui->modelLabel->setText(QString("Model: %1").arg(m_description.name));
+    setAddress(m_description.id);
+
+    // Инициализация кнопки (Hide controls)
+    auto m_hideControlsButton = new QPushButton("    "+tr("Hide controls"));
+    m_hideControlsButton->setStyleSheet("border: 2px solid rgb(26,26,26);\nborder-radius: 3px;\nbackground: rgb(51,51,51);\ncolor: rgb(255,255,255);\npadding: 0px;\nmargin: 0px;");
+    m_hideControlsButton->setCheckable(true);
+    m_hideControlsButton->setChecked(false);
+    m_hideControlsButton->setIconSize(QSize(10, 10));
+    QIcon icon1;
+    icon1.addFile(QString::fromUtf8(":/resources/images/hidecontrols-icon.png"), QSize(), QIcon::Normal, QIcon::Off);
+    icon1.addFile(QString::fromUtf8(":/resources/images/showcontrols-icon.png"), QSize(), QIcon::Normal, QIcon::On);
+    m_hideControlsButton->setIcon(icon1);
+    m_hideControlsButton->setObjectName(QString::fromUtf8("hideControlButton"));
+    m_hideControlsButton->setMinimumSize(QSize(135, 20));
+    m_hideControlsButton->setMaximumSize(QSize(135, 20));
+    QFont font1;
+    font1.setFamily(QString::fromUtf8("Share Tech Mono"));
+    m_hideControlsButton->setFont(font1);
+
+    connect(m_hideControlsButton, &QPushButton::clicked, this, &DeviceWidget::hideControlsButtonClicked);
+    m_widgetLayout->addWidget(m_hideControlsButton, 0, 0, Qt::AlignCenter);
+    qDebug() << "hine button" << 0 << 0;
 
     // Инициализация виджетов
     QVector<ReadParameterWidget*> readOnlyWidgets;
@@ -40,6 +78,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             auto hiddenWidget = new HiddenWidget(this);
             auto widget = new ControlWidget(control.name, valueCmd, maxCmd, minCmd, realCmd, hiddenWidget);
             m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
+            qDebug() << "add control widget" << 1 << m_widgets.size();
             hiddenWidget->addWidget(widget);
             if(control.name == "current")
                 hiddenWidget->setPinned(true);
@@ -54,6 +93,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         }
         readOnlyWidgets.clear();
         m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
+        qDebug() << "add read only widget" << 1 << m_widgets.size();
         m_widgets.append(hiddenWidget);
     }
 
@@ -70,6 +110,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     }
     if(hiddenWidget) {
         m_widgetLayout->addWidget(hiddenWidget.data(), 1, m_widgets.size());
+        qDebug() << "addHidenWidget" << 1 << m_widgets.size();
         m_widgets.append(hiddenWidget);
     }
 
@@ -84,11 +125,11 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         pinButton->setMinimumSize(QSize(16, 16));
         pinButton->setMaximumSize(QSize(16, 16));
         pinButton->setStyleSheet(QString::fromUtf8("border: 2px solid rgb(26,26,26);\n"
-"border-radius: 3px;\n"
-"background: rgb(17,17,17);\n"
-"color: rgb(255,255,255);\n"
-"padding: 0px;\n"
-"margin: 0px;"));
+                                                   "border-radius: 3px;\n"
+                                                   "background: rgb(17,17,17);\n"
+                                                   "color: rgb(255,255,255);\n"
+                                                   "padding: 0px;\n"
+                                                   "margin: 0px;"));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/resources/images/pinSymbol-disactivated.png"), QSize(), QIcon::Normal, QIcon::Off);
         icon.addFile(QString::fromUtf8(":/resources/images/pinSymbol-activated.png"), QSize(), QIcon::Normal, QIcon::On);
@@ -98,15 +139,16 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         pinButton->setCheckable(true);
         m_pinButtons.append(pinButton);
         m_widgetLayout->addWidget(pinButton, 0, i, Qt::AlignRight);
+        qDebug() << "add pin button" << 0 << i;
         connect(pinButton, &QPushButton::clicked, this, [i, this](bool checked){
             pinButtonClicked(i, checked);
         });
     }
 
     // Инциализация кнопок Laser и TEC
+    // TODO: Сделай создание кнопок динамическим
     ui->laserButton->hide();
     ui->tecButton->hide();
-    // TODO: почему не отображаются кнопки???
     for(const auto &button : m_description.buttons) {
         if(button.name.compare("laser", Qt::CaseInsensitive) == 0 && m_commands.contains(button.code)) {
             ui->laserButton->setVisible(true);
@@ -133,27 +175,14 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         }
     }
 
-    // Инициализация кнопки (Hide controls)
-    auto m_hideControlsButton = new QPushButton("    "+tr("Hide controls"));
-    m_hideControlsButton->setStyleSheet("border: 2px solid rgb(26,26,26);\nborder-radius: 3px;\nbackground: rgb(51,51,51);\ncolor: rgb(255,255,255);\npadding: 0px;\nmargin: 0px;");
-    m_hideControlsButton->setCheckable(true);
-    m_hideControlsButton->setChecked(false);
-    m_hideControlsButton->setIconSize(QSize(10, 10));
-    QIcon icon1;
-    icon1.addFile(QString::fromUtf8(":/resources/images/hidecontrols-icon.png"), QSize(), QIcon::Normal, QIcon::Off);
-    icon1.addFile(QString::fromUtf8(":/resources/images/showcontrols-icon.png"), QSize(), QIcon::Normal, QIcon::On);
-    m_hideControlsButton->setIcon(icon1);
-    m_hideControlsButton->setObjectName(QString::fromUtf8("hideControlButton"));
-    m_hideControlsButton->setMinimumSize(QSize(135, 20));
-    m_hideControlsButton->setMaximumSize(QSize(135, 20));
-    QFont font1;
-    font1.setFamily(QString::fromUtf8("Share Tech Mono"));
-    m_hideControlsButton->setFont(font1);
-
-    connect(m_hideControlsButton, &QPushButton::clicked, this, &DeviceWidget::hideControlsButtonClicked);
-    m_widgetLayout->addWidget(m_hideControlsButton, 0, 0, Qt::AlignCenter);
-
     ui->widgetBox->setLayout(m_widgetLayout);
+
+    // TODO: Ниже ДЕБАГ УДОЛИ
+    ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
+    ui->tecButton->setVisible(true);
+    qDebug() << m_description.name << "layout size" << m_widgetLayout->rowCount() << m_widgetLayout->columnCount();
+
+    m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     adjust();
 }
@@ -165,6 +194,10 @@ DeviceWidget::~DeviceWidget()
 
 void DeviceWidget::setAddress(int addr) {
     ui->idLabel->setText(QString("ID:%1").arg(addr));
+}
+
+void DeviceWidget::setLink(bool link) {
+    ui->linkLabel->setStyleSheet(link ? linkStyleOn : linkStyleOff);
 }
 
 // private methods
@@ -181,12 +214,14 @@ void DeviceWidget::adjust() {
     this->adjustSize();
     this->setMinimumSize(this->size());
 
+    qDebug() << "DeviceWidget::adjust()" << m_description.name << size() << sizeHint();
+
     emit sizeChanged(this->size());
 }
 
-//void DeviceWidget::resizeEvent(QResizeEvent *event) {
-//    qDebug() << "old size = " << event->oldSize() << "new size=" << this->size() << "minsize=" << this->minimumSize();
-//}
+void DeviceWidget::resizeEvent(QResizeEvent *event) {
+    qDebug() << m_description.name <<  "old size = " << event->oldSize() << "new size=" << this->size() << "minsize=" << this->minimumSize();
+}
 
 //void DeviceWidget::setValue(quint16 reg, int value) {}
 
@@ -194,7 +229,7 @@ void DeviceWidget::adjust() {
 
 void DeviceWidget::setLaserButton(quint16 value) {
     for(const auto& button : m_description.buttons) {
-        if(button.name == "laser") {
+        if(button.name == "Laser") {
             ui->laserButton->setChecked((value & button.mask) != 0);
         }
     }
@@ -202,16 +237,15 @@ void DeviceWidget::setLaserButton(quint16 value) {
 
 void DeviceWidget::setTecButton(quint16 value) {
     for(const auto& button : m_description.buttons) {
-        if(button.name == "tec") {
+        if(button.name == "Tec") {
             ui->tecButton->setChecked((value & button.mask) != 0);
         }
     }
 }
 
 void DeviceWidget::laserButtonClicked(bool state) {
-    // TODO: отладь кнопки чтоб переключали состояние
     auto search = std::find_if(m_description.buttons.begin(), m_description.buttons.end(), [](const auto& button){
-        return (button.name.compare("laser", Qt::CaseInsensitive) == 0);
+        return (button.name == "Laser");
     });
     if(search != m_description.buttons.end()) {
         auto laserButton = search.value();
@@ -224,7 +258,7 @@ void DeviceWidget::laserButtonClicked(bool state) {
 
 void DeviceWidget::tecButtonClicked(bool state) {
     auto search = std::find_if(m_description.buttons.begin(), m_description.buttons.end(), [](const auto& button){
-        return (button.name.compare("tec", Qt::CaseInsensitive) == 0);
+        return (button.name == "Tec");
     });
     if(search != m_description.buttons.end()) {
         auto laserButton = search.value();
@@ -237,7 +271,6 @@ void DeviceWidget::tecButtonClicked(bool state) {
 
 void DeviceWidget::hideControlsButtonClicked(bool flag) {
     m_hideControls = flag;
-    qDebug() << "hideControlsButtonClicked" << flag;
 
     for(int idx = 1; idx < m_widgets.count(); ++idx) {
         int pinShift = idx-1;

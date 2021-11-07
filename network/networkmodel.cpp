@@ -17,10 +17,10 @@ NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& prot
     m_bIsStart = false;
     m_deviceModelFactory.start();
 
-    connect(&m_delayTimer, &QTimer::timeout, this, &NetworkModel::delayTimeout);
+//    connect(&m_delayTimer, &QTimer::timeout, this, &NetworkModel::delayTimeout);
     connect(&m_timeoutTimer, &QTimer::timeout, this, &NetworkModel::sendTimeout);
 
-    m_delayTimer.setSingleShot(true);
+//    m_delayTimer.setSingleShot(true);
     m_timeoutTimer.setSingleShot(true);
 }
 
@@ -119,8 +119,9 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
 void NetworkModel::tryToSend() {
     if(!m_portIsBusy) {
         m_portIsBusy = true;
-        m_delayTimer.setInterval(m_delayMs);
-        m_delayTimer.start();
+        delayTimeout(); // try to send data immediately
+//        m_delayTimer.setInterval(m_delayMs);
+//        m_delayTimer.start();
     }
 
 }
@@ -132,6 +133,15 @@ void NetworkModel::dataOutcome(quint8 addr, quint16 reg, quint16 value)
 {
     m_priorityQueue.enqueue(m_protocol.setDataValue(addr, reg, value));
     tryToSend();
+}
+
+void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
+    qDebug() << "NetworkModel::temperatureUnitsChanged" << static_cast<int>(id);
+
+    for(auto& device : m_devices) {
+//        device.
+        // TODO: complete function's code
+    }
 }
 
 // private slots
@@ -183,7 +193,7 @@ void NetworkModel::sendTimeout() {
 }
 
 void NetworkModel::delayTimeout() {
-    m_delayTimer.stop();
+//    m_delayTimer.stop();
     if(!m_port.isNull()) {
         if (!m_priorityQueue.isEmpty()) {
             m_lastTxPackage = m_priorityQueue.dequeue();
