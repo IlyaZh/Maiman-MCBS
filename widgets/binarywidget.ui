@@ -57,7 +57,7 @@
 	
 
 }
-QCheckBox::indicator{
+/*QCheckBox::indicator{
 	
 	background-color: rgb(255, 255, 255);
 
@@ -67,10 +67,13 @@ QCheckBox::indicator{
 QCheckBox::indicator:unchecked{
 	
 	
-}</string>
+}*/</string>
      </property>
      <property name="text">
       <string>Status</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

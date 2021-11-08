@@ -59,7 +59,7 @@
         				mask="0004">Digital Current Set</CheckBox>
 			<CheckBox code="0004"
         				onCommand="0400"
-        				offCommand="0007"
+        				offCommand="0200"
         				mask="0010">Digital Enable</CheckBox>
 			<CheckBox code="0004"
         				onCommand="2000"

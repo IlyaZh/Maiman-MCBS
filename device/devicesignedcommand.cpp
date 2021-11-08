@@ -1,6 +1,6 @@
 #include "devicesignedcommand.h"
 
-DeviceSignedCommand::DeviceSignedCommand(QString code, QString unit, double divider, quint8 interval, quint8 tol, bool isTemperature, quint16 maxInterval, QObject* parent)
+DeviceSignedCommand::DeviceSignedCommand(const QString& code, const QString& unit, double divider, quint8 interval, quint8 tol, bool isTemperature, quint16 maxInterval, QObject* parent)
     : DeviceCommand(code, unit, divider, interval, tol, isTemperature, maxInterval, parent)
 {
 

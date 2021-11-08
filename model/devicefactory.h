@@ -6,7 +6,6 @@
 #include <QThread>
 #include <QObject>
 #include "factories/parserworker.h"
-#include "appsettings.h"
 #include <QMultiMap>
 #include <QSharedPointer>
 
@@ -15,7 +14,7 @@ class DeviceFactory : public QObject
 {
     Q_OBJECT
 public:
-    DeviceFactory(QString fileName, AppSettings& settings, QObject *parent = nullptr);
+    DeviceFactory(const QString& fileName, QObject *parent = nullptr);
     void start();
     QSharedPointer<Device> createDevice(quint8 addr, quint16 id);
     QStringList getBaudrate();
@@ -25,7 +24,6 @@ private slots:
     void parsingFinished();
     void threadError(const QString&);
 private:
-    AppSettings& m_settings;
     QString m_fileName;
 
     const DeviceModel findModel(quint16 id);

@@ -1,13 +1,10 @@
 #ifndef DEVICEWIDGET_H
 #define DEVICEWIDGET_H
 
-#include <QWidget>
-#include <QMap>
-#include <QGridLayout>
-#include <QPushButton>
+#include <QtWidgets>
 
 class DevCommand;
-class CommandWidget;
+class ControlWidget;
 class BinaryWidget;
 class HiddenWidget;
 
@@ -95,6 +92,9 @@ public:
     ~DeviceWidget();
     void setAddress(int addr);
 
+public slots:
+    void setLink(bool link);
+
 signals:
     void sizeChanged(const QSize& size);
 
@@ -111,7 +111,10 @@ private:
 
     void paintEvent(QPaintEvent*) override;
     void adjust();
-//    void resizeEvent(QResizeEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+
+    static const QString linkStyleOn;
+    static const QString linkStyleOff;
 
 private slots:
     void setLaserButton(quint16 value);

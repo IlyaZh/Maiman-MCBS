@@ -5,10 +5,9 @@
 quint16 ModbusProtocol::calcCrc(const QByteArray &byteArray) {
     quint16 RetCRC = 0xffff;	// CRC initialization
     quint8 i = 0;
-    quint8 index = 0;
 
     while (i < byteArray.size()) {
-        index = hiBYTE(RetCRC) ^ static_cast<quint8>(byteArray.at(i));
+        quint8 index = hiBYTE(RetCRC) ^ static_cast<quint8>(byteArray.at(i));
         RetCRC = static_cast<quint16> (((loBYTE(RetCRC) ^ CRC_HTable.at(index)) << 8)
                                        | (CRC_LTable.at(index)));
         i++;
@@ -53,16 +52,21 @@ ModbusProtocol::DataVector ModbusProtocol::execute(const QByteArray& rxPackage, 
             quint8 addr = static_cast<quint8>(rxPackage.at(0));
             int comm = rxPackage.at(1);
             int bytesCount = 0;
-            quint16 reg = 0, value = 0;
+            quint16 reg = 0;
+            quint16 value = 0;
             switch(comm) {
             case Read:
                 bytesCount = rxPackage.at(2);
                 if(rxPackage.size() == 5+bytesCount) {
                     for(quint16 i = 0; i < bytesCount/2; ++i) {
-                        quint16 lastWriteReg = (lastTxPackage.at(2) << 8) + lastTxPackage.at(3);
+                        quint16 lastWriteReg = ((static_cast<quint16>(lastTxPackage.at(2)) << 8)&0xff00) + static_cast<quint8>(lastTxPackage.at(3));
                         reg = lastWriteReg+i;
-                        value = static_cast<quint16>((static_cast<quint16>(rxPackage.at(3+2*i)) << 8) + static_cast<quint16>(rxPackage.at(4+2*i)));
-                        resultVector.append({addr, reg, value});
+                        value = static_cast<quint16>(((static_cast<quint16>(rxPackage.at(3+2*i)) << 8)&0xff00) + static_cast<quint8>(rxPackage.at(4+2*i)));
+                        SoftProtocolData dataUnit;
+                        dataUnit.addr = addr;
+                        dataUnit.reg = reg;
+                        dataUnit.value = value;
+                        resultVector.append(dataUnit);
                     }
                 } else {
                     makeError(QString("[%1} Wrong size of packet").arg("Modbus"));
@@ -70,7 +74,8 @@ ModbusProtocol::DataVector ModbusProtocol::execute(const QByteArray& rxPackage, 
                 break;
             case WriteOne:
                 reg = static_cast<quint16>((static_cast<quint16>(rxPackage.at(2)) << 8) + static_cast<quint16>(rxPackage.at(3)));
-                value = static_cast<quint16>((static_cast<quint16>(rxPackage.at(4)) << 8) + static_cast<quint16>(rxPackage.at(5)));
+                value = static_cast<quint16>(((static_cast<quint16>(rxPackage.at(4)) << 8)&0xff00) + static_cast<quint8>(rxPackage.at(5)));
+//                value = static_cast<quint16>((static_cast<quint16>(rxPackage.at(4)) << 8) + static_cast<quint16>(rxPackage.at(5)));
                 resultVector.append({addr, reg, value});
                 break;
             default:

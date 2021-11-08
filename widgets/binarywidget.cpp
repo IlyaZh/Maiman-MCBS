@@ -13,9 +13,9 @@ BinaryWidget::BinaryWidget(const Checkbox &settings, QSharedPointer<DevCommand> 
     ui->statusCheckbox->setText(m_settings.name);
 
     if(cmd) {
-        setValue(cmd->valueUInt());
+        setValue(cmd->valueInt());
         connect(cmd.get(), &DevCommand::updatedValue, this, [this](){
-            setValue(m_cmd->valueUInt());
+            setValue(m_cmd->valueInt());
         });
     }
 
@@ -28,8 +28,9 @@ BinaryWidget::~BinaryWidget()
 }
 
 void BinaryWidget::checkBoxClicked(bool checked) {
-    m_cmd->sendValue((checked) ? m_settings.onCommand : m_settings.offCommand);
-    ui->statusCheckbox->setCheckState(Qt::CheckState::PartiallyChecked);
+    qDebug() << ((checked) ? m_settings.onCommand : m_settings.offCommand) << checked;
+    m_cmd->setFromWidget((checked) ? m_settings.onCommand : m_settings.offCommand);
+//    ui->statusCheckbox->setCheckState(Qt::CheckState::PartiallyChecked);
 }
 
 // private methods

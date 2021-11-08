@@ -1,7 +1,7 @@
 #include "Parser.h"
 #include <QDebug>
 
-Parser::Parser(QByteArray dataArray, QObject* parent) :
+Parser::Parser(const QByteArray& dataArray, QObject* parent) :
     QObject(parent),
     m_data(dataArray)
 {
@@ -25,7 +25,7 @@ QString Parser::errorString() {
 }
 
 // protected methods
-void Parser::makeError(QString msg) {
+void Parser::makeError(const QString& msg) {
     if(!m_errorString.isEmpty()) m_errorString.append("; ");
     m_errorString.append("[XmlParser] "+msg);
 }

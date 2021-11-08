@@ -3,13 +3,9 @@
 #include <QJsonDocument>
 #include <QDebug>
 
-AppSettings::AppSettings(QObject *parent) :
-    QObject(parent),
-    settings(new QSettings(QSettings::NativeFormat, QSettings::UserScope, Const::OrgName, Const::AppName))
-{
-}
+QScopedPointer<QSettings> AppSettings::settings(new QSettings(QSettings::NativeFormat, QSettings::UserScope, Const::OrgName, Const::AppName));
 
-bool AppSettings::parseFileSettings(QString fileName) {
+/*bool AppSettings::parseFileSettings(QString fileName) {
     QScopedPointer<QFile> file(new QFile(fileName));
     if(!file->exists()) {
         m_errorString = QString("File \"%1\" isn't exist!").arg(fileName);
@@ -26,9 +22,9 @@ bool AppSettings::parseFileSettings(QString fileName) {
     if(jDoc.isNull()) {
         qDebug() << "[E][AppSettings] Can't parse settings file:" << jParseErrorObj.errorString();
     } else {
-        // TODO: do it
+
     }
-}
+}*/
 
 quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", Const::BaudRateDefault).toUInt(); }
 
@@ -36,7 +32,10 @@ QString AppSettings::getComPort() { return settings->value("userSettings/comPort
 
 bool AppSettings::getComAutoconnectFlag() { return settings->value("userSettings/comPort/autoConnect", false).toBool(); }
 
-QString AppSettings::getTemperatureSymbol() { return settings->value("userSettings/temperatureSymbol", Const::TemperatureUnitDefault).toString(); }
+Const::TemperatureUnitId AppSettings::getTemperatureUnit() {
+    int tempId = settings->value("userSettings/temperatureUnit", static_cast<int>(Const::TemperatureUnitId::Celsius)).toInt();
+    return static_cast<Const::TemperatureUnitId>(tempId);
+}
 
 const QList<QVariant> AppSettings::getRecentOpenFiles() { return settings->value("lastOpenedFiles").toList(); }
 
@@ -71,7 +70,14 @@ void AppSettings::setComAutoconnectFlag(bool flag) { settings->setValue("userSet
 
 void AppSettings::setComCommandsDelay(uint delayMs) { settings->setValue("userSettings/comPort/commandsDelay", delayMs); }
 
-void AppSettings::setTemperatureSymbol(QString tempSymbol) { settings->setValue("userSettings/temperatureSymbol", tempSymbol); }
+void AppSettings::setTemperatureUnit(const QString& unit) {
+    Const::TemperatureUnitId id = (unit == "Celsius") ? Const::TemperatureUnitId::Celsius : Const::TemperatureUnitId::Fahrenheit;
+    settings->setValue("userSettings/temperatureUnit", static_cast<int>(id));
+}
+
+void AppSettings::setTemperatureUnit(Const::TemperatureUnitId id) {
+    settings->setValue("userSettings/temperatureUnit", static_cast<int>(id));
+}
 
 void AppSettings::setRecentOpenFiles(const QList<QVariant> &list) { settings->setValue("lastOpenedFiles", list); }
 

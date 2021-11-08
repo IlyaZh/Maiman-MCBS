@@ -1,27 +1,30 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "constants.h"
-#include <QVariant>
-#include <QScrollBar>
 #include "widgets/connectionwidget.h"
+#include "appsettings.h"
+#include <QtWidgets>
 
 #include <QDebug>
 
-const QString MainWindow::SettingsPath {"window/"};
+//const QString MainWindow::SettingsPath {"window/"};
 
-MainWindow::MainWindow(AppSettings& settings, QWidget *parent)
+// TODO: Наезжают виджеты друг на друга
+
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow),
-//      m_cntrl(nullptr),
-      m_portList(nullptr),
-      m_baudList(nullptr),
-      m_settings(settings)
+    , ui(new Ui::MainWindow)
+      //      m_cntrl(nullptr),
+//      m_portList(nullptr),
+//      m_baudList(nullptr)
 {
     ui->setupUi(this);
 
-    this->move(m_settings.getWindowPosition());
+    setFont(Const::ApplicationDefaultFontPath);
 
-    auto netData = m_settings.getNetworkData();
+    this->move(AppSettings::getWindowPosition());
+
+    auto netData = AppSettings::getNetworkData();
     ui->connectionWidget->setProtocol(NetworkType::Tcp);
     ui->connectionWidget->setBaudList(Const::BaudRates);
     switch(netData.type) {
@@ -36,36 +39,53 @@ MainWindow::MainWindow(AppSettings& settings, QWidget *parent)
         break;
     }
 
-//    refreshMenuPortList();
-//    refreshMenuPortBaudsList();
+    //    refreshMenuPortList();
+    //    refreshMenuPortBaudsList();
 
     connect(ui->connectionWidget, &ConnectionWidget::refreshComPorts,
-            this, [this](){
-        emit makeEvent("NetworkRefreshComPorts");
-    });
+            this, &MainWindow::refreshComPortsSignal);
     connect(ui->connectionWidget, &ConnectionWidget::connectButtonClicked,
-            this, [this](QVariant value){
-        emit makeEvent("NetworkConnectClicked", value);
-    });
+            this, &MainWindow::connectToNetwork);
 
     const QString AppTitle = QString("%1 v.%2").arg(Const::AppNameTitle, QCoreApplication::applicationVersion());
     setWindowTitle(AppTitle);
     setWindowIcon(QIcon(":/images/logo-minimal.png"));
 
-    m_workFieldLayout = new QGridLayout(ui->workFieldWidget);
+    m_workFieldLayout = new QVBoxLayout(ui->workFieldWidget);
     m_workFieldLayout->setMargin(0);
     m_workFieldLayout->setSpacing(0);
     m_workFieldLayout->setContentsMargins(0,0,0,0);
     ui->workFieldWidget->setLayout(m_workFieldLayout);
 
-//    emit mainWindowReady();
+    emit refreshComPortsSignal();
+
+    //    emit mainWindowReady();
+
+    // setup menu's
+    connect(ui->actionExit, &QAction::triggered, qApp, &QApplication::closeAllWindows, Qt::QueuedConnection);
+    auto temperatureGroup = new QActionGroup(this);
+    temperatureGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
+    for(const auto& unit : Const::TemperatureUnits) {
+        auto action = new QAction(unit);
+        ui->menuTmperature_units->addAction(action);
+        temperatureGroup->addAction(action);
+    }
+
+    connect(temperatureGroup, &QActionGroup::triggered, this, [this](QAction* action){
+        Const::TemperatureUnitId id = (action->text() == "Celsius") ?
+                    Const::TemperatureUnitId::Celsius :
+                    Const::TemperatureUnitId::Fahrenheit;
+
+        emit tempratureUnitsChanged(id);
+
+    });
 }
 
 MainWindow::~MainWindow()
 {
-//    if(m_cntrl != nullptr) delete m_cntrl;
-    if(m_portList != nullptr) delete m_portList;
-    if(m_baudList != nullptr) delete m_baudList;
+    //    if(m_cntrl != nullptr) delete m_cntrl;
+//    if(m_portList != nullptr) delete m_portList;
+//    if(m_baudList != nullptr) delete m_baudList;
 
     delete ui;
 }
@@ -73,14 +93,17 @@ MainWindow::~MainWindow()
 void MainWindow::addDeviceWidget(DeviceWidget* widget) {
     if(!m_workWidgets.contains(widget)) {
         m_workWidgets.append(widget);
-        int count = m_workFieldLayout->layout()->count();
-        m_workFieldLayout->addWidget(widget, count, 0);
-        m_workFieldLayout->addItem(new QSpacerItem(2,2, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding), count+1,0);
+        int count = m_workWidgets.size();
+        qDebug() << "addDeviceWidget" << count;
+        m_workFieldLayout->addWidget(widget);
+        //        m_workFieldLayout->addItem(new QSpacerItem(2,2, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding), count+1,0);
         connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
-        adjust(widget->size());
-//        auto widgetSize = ui->workFieldWidget->size();
-//        ui->workFieldWidget->setMinimumSize(widgetSize);
-//        ui->scrollArea->setMinimumSize(widgetSize);
+        adjust(widget->sizeHint());
+        //        widget->setMaximumHeight(widget->sizeHint().height());
+        //        auto widgetSize = ui->workFieldWidget->size();
+        qDebug() << "addDeviceWidget size=" << widget->size() << widget->sizeHint();
+        //        ui->workFieldWidget->setMinimumSize(widgetSize);
+        //        ui->scrollArea->setMinimumSize(widgetSize);
     }
 }
 
@@ -115,11 +138,20 @@ void MainWindow::setConnectMessage(QString msg) {
 
 void MainWindow::setConnected(bool isConnected) {
     ui->connectionWidget->setConnected(isConnected);
+
+    if(!isConnected) {
+        qDeleteAll(m_workWidgets);
+        m_workWidgets.clear();
+    }
+}
+
+void MainWindow::setStatusMessage(const QString& msg, int timeout) {
+    ui->statusbar->showMessage(msg, timeout);
 }
 
 // private methods
 //void MainWindow::setConnections() {
-    // network connection button
+// network connection button
 //    connect(ui->networkConnectButton, &QPushButton::clicked, [=]{
 //        emit this->networkConnectButtonSignal();
 
@@ -132,5 +164,22 @@ void MainWindow::adjust(const QSize& size) {
     ui->workFieldWidget->setMinimumSize(ui->workFieldWidget->size());
     if(!size.isEmpty()) {
         ui->scrollArea->setMinimumWidth(size.width()+2*ui->scrollArea->frameWidth()+ui->scrollArea->verticalScrollBar()->sizeHint().width());
+    }
+    ui->workFieldWidget->updateGeometry();
+}
+
+// protected methods
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    auto dialog = QMessageBox::question(this, "Do you want to quit?", "Do you really want to quit?");
+    switch (dialog) {
+    case QMessageBox::Yes:
+        event->accept();
+        break;
+    case QMessageBox::No:
+        event->ignore();
+        break;
+    default:
+        break;
     }
 }

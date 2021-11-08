@@ -15,9 +15,13 @@ const QString Const::AppName = "BenchSoft_Multichannel";
 // Человекопонятное название (заголовок_ ПО
 const QString Const::AppNameTitle = "Maiman BenchSoft Multichannel";
 
-const quint8 Const::MaxDevices = 32;
+const QStringList Const::TemperatureUnits({"Celsius", "Fahrenheit"});
 
 const QString Const::SecretCodeCombination = "3.1415926";
+
+const QString Const::ApplicationDefaultFontPath = ":/resources/fonts/ShareTechMono-Regular.ttf";
+
+const QFont Const::ApplicationDefaultFont("Share Tech Mono", 9);
 
 const QString Const::DeviceConfigFile = QDir::currentPath()+"/DDBconfig.xml";
 
@@ -31,9 +35,7 @@ const int Const::MaxFilesInMenu = 5;
 
 const int Const::StatusbarMessageTimeout = 5000; // ms
 
-const quint16 Const::IdentifyDeviceCommand = 0x0001;
-
-const QString Const::TemperatureUnitDefault = "C";
+//const QString Const::TemperatureUnitDefault = "C";
 
 const QStringList Const::BaudRates({"9600", "115200"});
 

@@ -3,9 +3,8 @@
 #include "../device/commandsettings.h"
 #include <QScopedPointer>
 
-DeviceFactory::DeviceFactory(QString fileName, AppSettings& settings, QObject* parent) :
+DeviceFactory::DeviceFactory(const QString& fileName, QObject* parent) :
     QObject(parent),
-    m_settings(settings),
     m_fileName(fileName)
 
 {
@@ -65,11 +64,7 @@ void DeviceFactory::threadError(const QString& str) {
 
 // private methods
 const DeviceModel DeviceFactory::findModel(quint16 id) {
-    if(m_DeviceModels.contains(id)) {
-        auto model = m_DeviceModels.value(id);
-        return model;
-    }
-    return DeviceModel();
+    return m_DeviceModels.value(id, DeviceModel());
 }
 
 bool DeviceFactory::parseTree(const TreeItem& tree) {
@@ -177,19 +172,17 @@ const DeviceModel DeviceFactory::parseDevice(const TreeItem& item) {
 }
 
 const QMap<quint16, CommandSettings> DeviceFactory::parseCommands(const TreeItem& item) {
-    quint16 code = 0;
-    QString unit = "";
-    double divider = 1;
-    quint8 tol = 0;
-    uint interval = 1;
-    bool isSigned = false;
-    bool isTemperature = false;
-
     QMap<quint16, CommandSettings> list;
 
-    bool hasCode = false;
-
     for(int c = 0; c < item.childCount(); c++) {
+        quint16 code = 0;
+        QString unit = "";
+        double divider = 1;
+        quint8 tol = 0;
+        uint interval = 1;
+        bool isSigned = false;
+        bool isTemperature = false;
+
         const TreeItem& cmd = item.child(c);
 
         for(int i = 0; i < cmd.childCount(); i++) {
@@ -198,13 +191,11 @@ const QMap<quint16, CommandSettings> DeviceFactory::parseCommands(const TreeItem
             if(child.name() == "code") {
 //                code = child.value().toUInt();
                 code = child.value().toString().toUInt(nullptr, 16);
-                hasCode = true;
             }
 
             if(child.name() == "unit") {
                 unit = child.value().toString();
                 unit.replace("(deg)", QString::fromRawData(new QChar('\260'), 1));
-//                unit.replace("(deg)", QString('\370'), Qt::CaseInsensitive); // TODO: What's the difference????
             }
 
             if(child.name() == "divider")
@@ -224,7 +215,7 @@ const QMap<quint16, CommandSettings> DeviceFactory::parseCommands(const TreeItem
 
         }
 
-        if(hasCode) {
+        if(code != 0) {
             list.insert(code, CommandSettings(code, unit, divider, tol, interval, isSigned, isTemperature));
         }
     }

@@ -1,13 +1,12 @@
 #pragma once
 
-//#include "appsettings.h"
 #include <QString>
 #include <QPoint>
+#include <QFont>
 
 bool isEqual(double first, double second);
 
-class Const {
-public:
+struct Const {
     // Название организации
     static const QString OrgName;
     // Название (заголовок) ПО для служебных путей (без пробелов)
@@ -15,9 +14,15 @@ public:
     // Человекопонятное название (заголовок_ ПО
     static const QString AppNameTitle;
 
-    static const quint8 MaxDevices;
+    static const QStringList TemperatureUnits;
+    enum class TemperatureUnitId {
+        Celsius,
+        Fahrenheit
+    };
+
     static const QString SecretCodeCombination;
-//    static const QFont ApplicationDefaultFont("qrc://resources/fonts/ShareTechMono-Regular.ttf", 9);
+    static const QString ApplicationDefaultFontPath;
+    static const QFont ApplicationDefaultFont;
     static const QString DeviceConfigFile;
     static const QString LogTimestampDefaultFormat;
     static const int LogMaxQueueSize;
@@ -25,8 +30,7 @@ public:
     static const int MaxFilesInMenu;
     static const int StatusbarMessageTimeout;
 
-    static const quint16 IdentifyDeviceCommand;
-    static const QString TemperatureUnitDefault;
+//    static const QString TemperatureUnitDefault;
 
     static const QStringList BaudRates;
     static const int BaudRateDefault;

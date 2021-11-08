@@ -2,11 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QGridLayout>
 //#include "interfaces/mainwindowco1ntrollerinterface.h"
-#include "appsettings.h"
 #include "model/device/devicewidget.h"
 //class MainWindowControllerInterface;
+//#include <QtWidgets>
+#include "constants.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,30 +17,35 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    static const QString SettingsPath;
+//    static const QString SettingsPath;
 
-    MainWindow(AppSettings& settings, QWidget *parent = nullptr);
-    ~MainWindow();
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow() override;
     void addDeviceWidget(DeviceWidget* widget);
     void setComPorts(const QStringList& portList);
     void setBaudRates(const QStringList& baudsList);
 
 signals:
-    void makeEvent(QString event, QVariant value = QVariant());
+    void refreshComPortsSignal();
+    void connectToNetwork(QVariant value);
+    void tempratureUnitsChanged(Const::TemperatureUnitId id);
 public slots:
     void setConnectMessage(QString msg);
     void setConnected(bool flag);
+    void setStatusMessage(const QString& msg, int timeout = 10);
 private slots:
     void adjust(const QSize& size = QSize());
 
 private:
     Ui::MainWindow *ui;
 //    MainWindowControllerInterface* m_cntrl;
-    QVector<QString> *m_portList;
-    QVector<int> *m_baudList;
-    AppSettings& m_settings;
+//    QVector<QString> *m_portList;
+//    QVector<int> *m_baudList;
     QVector<DeviceWidget*> m_workWidgets;
-    QGridLayout* m_workFieldLayout;
+    QVBoxLayout* m_workFieldLayout;
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 
 //    void setConnections();
 };

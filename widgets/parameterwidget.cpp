@@ -69,7 +69,7 @@ void ParameterWidget::setButtonPressed()
 {
     bool ok;
     double value;
-    int intValue,intMax,intMin;
+
     if(m_decimals.value(m_settings.value) != 0)
     {
         value = QInputDialog::getDouble(this, tr("ParameterWidget"),
@@ -81,9 +81,9 @@ void ParameterWidget::setButtonPressed()
     }
     else
     {
-        intValue = static_cast<int>(qRound(m_values.value(m_settings.value)));
-        intMax = static_cast<int>(qRound(m_values.value(m_settings.max)));
-        intMin = static_cast<int>(qRound(m_values.value(m_settings.min)));
+        int intValue = static_cast<int>(qRound(m_values.value(m_settings.value)));
+        int intMax = static_cast<int>(qRound(m_values.value(m_settings.max)));
+        int intMin = static_cast<int>(qRound(m_values.value(m_settings.min)));
         value = QInputDialog::getInt(this, tr("ParameterWidget"),
                                            tr("Value"), intValue,
                                            intMin, intMax, 2, &ok,

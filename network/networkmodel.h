@@ -1,21 +1,23 @@
 #ifndef NETWORKMODEL_H
 #define NETWORKMODEL_H
 
-#include <QObject>
-#include <QPointer>
-#include <QIODevice>
-#include <QVector>
+#include <QtWidgets>
+//#include <QObject>
+//#include <QPointer>
+//#include <QIODevice>
+//#include <QVector>
 #include "protocols/modbusprotocol.h"
 #include "interfaces/ProtocolObserverInterface.h"
 #include "SoftProtocol.h"
 #include "device/devicemodel.h"
 #include "model/devicefactory.h"
-#include <QPointer>
+//#include <QPointer>
 #include "mainfacade.h"
 #include "datasource.h"
-#include <QQueue>
-#include <QTimer>
-#include <QSharedPointer>
+#include "constants.h"
+//#include <QQueue>
+//#include <QTimer>
+//#include <QSharedPointer>
 
 //#include "enums.h"
 
@@ -32,13 +34,14 @@ public:
     ~NetworkModel();
     void setDelay(int delay);
     void setTimeout(int timeout);
-    void start(IDataSource &iodevice);
+    void start(DataSource &iodevice);
     bool isStart();
     void stop();
     void rescanNetwork();
 
 public slots:
     void dataOutcome(quint8 addr, quint16 reg, quint16 value);
+    void temperatureUnitsChanged(Const::TemperatureUnitId id);
 private slots:
     void readyRead();
     void bytesWritten(qint64 bytes);
@@ -49,7 +52,7 @@ private slots:
 
 private:
     DeviceFactory& m_deviceModelFactory;
-    QScopedPointer<IDataSource> m_port;
+    QScopedPointer<DataSource> m_port;
     MainFacade& m_facade;
     SoftProtocol& m_protocol;
     QMap<quint8, QSharedPointer<Device>> m_devices;
@@ -61,8 +64,8 @@ private:
     QByteArray m_lastTxPackage;
     QTimer m_timeoutTimer;
     QTimer m_delayTimer;
-    int m_timeoutMs = 1000;
-    int m_delayMs = 50;
+    int m_timeoutMs = 300;
+    int m_delayMs = 0;
 
     void clear();
     void initDevice(quint8 addr, quint16 id);

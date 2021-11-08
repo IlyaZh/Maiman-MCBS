@@ -10,7 +10,7 @@ class TreeItem;
 class TreeItem
 {
 public:
-    TreeItem(QString name, QVariant* value, QVector<TreeItem*>* pChilds);
+    TreeItem(const QString& name, QVariant* value, QVector<TreeItem*>* pChilds);
     ~TreeItem();
 
     const QVariant& value() const;

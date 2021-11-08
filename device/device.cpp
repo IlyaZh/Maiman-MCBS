@@ -29,16 +29,14 @@ Device::~Device() {
 }
 
 void Device::dataIncome(quint16 reg, quint16 value) {
-    for(auto &cmd : qAsConst(m_Commands)) {
-        if(cmd->code() == reg) {
-            m_isLink = true;
-            emit link(m_isLink);
+    auto cmd = m_Commands.value(reg, nullptr);
+    if(cmd) {
+        m_isLink = true;
+        emit link(m_isLink);
 
-            cmd->setRawValue(value);
-        }
+        cmd->setFromDevice(value);
     }
 }
-
 
 void Device::destroy() {
     this->disconnect();
@@ -77,7 +75,7 @@ void Device::clearLink() {
     emit link(m_isLink);
 }
 
-const QMap<quint16, QSharedPointer<DevCommand>> Device::commands() {
+const QMap<quint16, QSharedPointer<DevCommand>>& Device::commands() {
     return m_Commands;
 }
 

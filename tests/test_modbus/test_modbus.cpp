@@ -2,7 +2,9 @@
 #include <QtTest/QtTest>
 #include "network/protocols/modbusprotocol.h"
 
-Test_Modbus::Test_Modbus(QObject *parent) : QObject(parent)
+Test_Modbus::Test_Modbus(QObject *parent) :
+    QObject(parent),
+    lastPackage({0,0,0})
 {
     m_queue.append({1, 10, 2});
     m_queue.append({2, 3, 80});

@@ -20,9 +20,6 @@ void MainWindowController::removeModel() {
 
 // public slots
 void MainWindowController::networkConnectClicked(CONNECT_PROTOCOL protocol, QString host, int port) {
-    QTcpSocket* tcpSocket;
-    QSerialPort *serialPort;
-
     if(m_model == nullptr) {
         // model is not assigned
         return;
@@ -32,6 +29,9 @@ void MainWindowController::networkConnectClicked(CONNECT_PROTOCOL protocol, QStr
         m_model->stop();
         emit connected(false);
     } else {
+        QTcpSocket* tcpSocket;
+        QSerialPort *serialPort;
+
         switch(protocol) {
         case TCP_PROTOCOL:
             tcpSocket = new QTcpSocket();

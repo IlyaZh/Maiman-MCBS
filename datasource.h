@@ -5,53 +5,56 @@
 #include <QSerialPort>
 #include <QTcpSocket>
 #include <QIODevice>
+#include <QPointer>
 #include <QScopedPointer>
 
 enum class NetworkType { None, Tcp, SerialPort };
 
-class IDataSource : public QObject {
-    Q_OBJECT
+//class DataSource : public QObject {
+//    Q_OBJECT
+//public:
+//    DataSource(QObject *parent = nullptr) : QObject(parent) {}
+//    virtual void setSettings(NetworkType type, QVariant host, QVariant port) = 0;
+//    virtual bool open() = 0;
+//    virtual void close() = 0;
+//    virtual bool isOpen() = 0;
+//    virtual qint64 write(const QByteArray &byteArray) = 0;
+//    virtual qint64 read(char* data, qint64 maxSize) = 0;
+//    virtual QByteArray read(qint64 maxSize) = 0;
+//    virtual QByteArray readAll() = 0;
+//    virtual QString errorString() = 0;
+
+
+//};
+
+class DataSource : public QObject //public DataSource
+{
+Q_OBJECT
 public:
-    IDataSource(QObject *parent = nullptr) : QObject(parent) {}
-    virtual void setSettings(NetworkType type, QVariant host, QVariant port) = 0;
-    virtual bool open() = 0;
-    virtual void close() = 0;
-    virtual bool isOpen() = 0;
-    virtual qint64 write(const QByteArray &byteArray) = 0;
-    virtual qint64 read(char* data, qint64 maxSize) = 0;
-    virtual QByteArray read(qint64 maxSize) = 0;
-    virtual QByteArray readAll() = 0;
-    virtual QString errorString() = 0;
+    explicit DataSource(QObject* parent = nullptr);
+    ~DataSource();
+    void setSettings(NetworkType type, QVariant host, QVariant port);
+    bool open();
+    void close();
+    bool isOpen();
+    qint64 write(const QByteArray &byteArray);
+    qint64 read(char* data, qint64 maxSize);
+    QByteArray read(qint64 maxSize);
+    QByteArray readAll();
+    QString errorString();
 
 signals:
     void deviceOpen(bool isOpen);
     void errorOccured(QString msg);
     void bytesWritten(qint64 bytes);
     void readyRead();
-};
-
-class DataSource : public IDataSource
-{
-
-public:
-    explicit DataSource(QObject* parent = nullptr);
-    ~DataSource();
-    void setSettings(NetworkType type, QVariant host, QVariant port) override;
-    bool open() override;
-    void close() override;
-    bool isOpen() override;
-    qint64 write(const QByteArray &byteArray) override;
-    qint64 read(char* data, qint64 maxSize) override;
-    QByteArray read(qint64 maxSize) override;
-    QByteArray readAll() override;
-    QString errorString() override;
 
 private:
     QString m_errorString;
 
-    QTcpSocket* m_tcpSocket;
-    QSerialPort* m_serialPort;
-    QIODevice* m_currentDevice;
+    QTcpSocket* m_tcpSocket {nullptr};
+    QSerialPort* m_serialPort {nullptr};
+    QIODevice* m_currentDevice {nullptr};
     NetworkType m_type = NetworkType::None;
     QVariant m_host;
     QVariant m_port;

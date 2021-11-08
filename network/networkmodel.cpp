@@ -17,10 +17,10 @@ NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& prot
     m_bIsStart = false;
     m_deviceModelFactory.start();
 
-    connect(&m_delayTimer, &QTimer::timeout, this, &NetworkModel::delayTimeout);
+//    connect(&m_delayTimer, &QTimer::timeout, this, &NetworkModel::delayTimeout);
     connect(&m_timeoutTimer, &QTimer::timeout, this, &NetworkModel::sendTimeout);
 
-    m_delayTimer.setSingleShot(true);
+//    m_delayTimer.setSingleShot(true);
     m_timeoutTimer.setSingleShot(true);
 }
 
@@ -39,7 +39,7 @@ void NetworkModel::setTimeout(int timeout) {
 }
 
 
-void NetworkModel::start(IDataSource& networkDevice)
+void NetworkModel::start(DataSource& networkDevice)
 {
     m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
 
@@ -48,10 +48,10 @@ void NetworkModel::start(IDataSource& networkDevice)
 //        m_port->deleteLater();
     }
     m_port.reset(&networkDevice);
-    connect(m_port.get(), &IDataSource::bytesWritten, this, &NetworkModel::bytesWritten);
-    connect(m_port.get(), &IDataSource::readyRead, this, &NetworkModel::readyRead);
-    connect(m_port.get(), &IDataSource::errorOccured, this, &NetworkModel::errorOccured);
-    connect(m_port.get(), &IDataSource::deviceOpen, this, [=](bool state){
+    connect(m_port.get(), &DataSource::bytesWritten, this, &NetworkModel::bytesWritten);
+    connect(m_port.get(), &DataSource::readyRead, this, &NetworkModel::readyRead);
+    connect(m_port.get(), &DataSource::errorOccured, this, &NetworkModel::errorOccured);
+    connect(m_port.get(), &DataSource::deviceOpen, this, [=](bool state){
         qDebug() << "NetworkModel protocol state" << state;
     });
     m_portIsBusy = false;
@@ -119,8 +119,9 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
 void NetworkModel::tryToSend() {
     if(!m_portIsBusy) {
         m_portIsBusy = true;
-        m_delayTimer.setInterval(m_delayMs);
-        m_delayTimer.start();
+        delayTimeout(); // try to send data immediately
+//        m_delayTimer.setInterval(m_delayMs);
+//        m_delayTimer.start();
     }
 
 }
@@ -134,11 +135,22 @@ void NetworkModel::dataOutcome(quint8 addr, quint16 reg, quint16 value)
     tryToSend();
 }
 
+void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
+    qDebug() << "NetworkModel::temperatureUnitsChanged" << static_cast<int>(id);
+
+    for(auto& device : m_devices) {
+//        device.
+        // TODO: complete function's code
+    }
+}
+
 // private slots
 void NetworkModel::readyRead() {
     QByteArray rxPacket = m_port->readAll();
+//    qDebug() << "RX" << rxPacket.toHex(' ');
     m_timeoutTimer.stop();
     SoftProtocol::DataVector result = m_protocol.execute(rxPacket, m_lastTxPackage);
+
     m_lastTxPackage.clear();
     for(const auto& item : qAsConst(result)) {
         if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
@@ -156,10 +168,12 @@ void NetworkModel::readyRead() {
 void NetworkModel::bytesWritten(qint64 bytes) {
     m_bytesWritten += bytes;
     if(m_bytesWritten >= m_lastTxPackage.size()) {
+//        qDebug() << "Written bytes";
         m_bytesWritten = 0;
         if(m_protocol.needWaitForAnswer(m_lastTxPackage)) {
             m_timeoutTimer.setInterval(m_timeoutMs);
             m_timeoutTimer.start();
+//            qDebug() << "Start interval timeout";
         } else {
             tryToSend();
         }
@@ -174,11 +188,12 @@ void NetworkModel::sendTimeout() {
     m_timeoutTimer.stop();
     m_portIsBusy = false;
     m_lastTxPackage.clear();
+//    qDebug() << "Timeout";
     tryToSend();
 }
 
 void NetworkModel::delayTimeout() {
-    m_delayTimer.stop();
+//    m_delayTimer.stop();
     if(!m_port.isNull()) {
         if (!m_priorityQueue.isEmpty()) {
             m_lastTxPackage = m_priorityQueue.dequeue();

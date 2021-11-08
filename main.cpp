@@ -2,6 +2,7 @@
 //#include "interfaces/mainwindowcontrollerinterface.h"
 
 #include <QApplication>
+#include <QLocale>
 #include "network/networkmodel.h"
 #include "network/protocols/modbusprotocol.h"
 #include "model/devicefactory.h"
@@ -14,6 +15,8 @@
 #include "datasource.h"
 #include "maincontroller.h"
 #include "mainfacade.h"
+//#include "DebugMode.h"
+#include <QFontDatabase>
 
 #include <QDebug>
 #ifdef QT_DEBUG
@@ -26,9 +29,12 @@ bool debugMode = false;
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-//    QApplication::setFont(Constants::ApplicationDefaultFont);
+//    setlocale(LC_CTYPE, "rus");
 
-  AppSettings settings;
+    qDebug() << "add font" << QFontDatabase::addApplicationFont(Const::ApplicationDefaultFontPath);
+    QApplication::setFont(QFont("Share Tech Mono", 9));
+//    QFile fil(Const::ApplicationDefaultFont);
+//    qDebug() << QApplication::font() << fil.exists();
 
 #ifdef QT_DEBUG
     debugMode = true;
@@ -53,17 +59,17 @@ int main(int argc, char *argv[])
     /// 4. передаем данные gui в MainWindow и в DeviceModel
     ////========================
 
-    MainWindow w(settings);
-//    w.setFont(Constants::ApplicationDefaultFont);
+    MainWindow w;
+    w.setFont(Const::ApplicationDefaultFontPath);
     w.show();
 
     DataSource dataSource;
 
-    GuiFactory guiFactory("DeviceGUI.xml", settings);
+    GuiFactory guiFactory("DeviceGUI.xml");
 //    MainViewFacade mvCntrl(dataSource, settings, guiFactory);
 //    mvCntrl.addView(&w);
 
-    DeviceFactory deviceFactory("DeviceDB.xml", settings);
+    DeviceFactory deviceFactory("DeviceDB.xml");
 
     // Фасад для управления потоками данных от модели к представлению
     MainFacade mainFacade(w, guiFactory);
@@ -71,11 +77,11 @@ int main(int argc, char *argv[])
     ModbusProtocol modbus;
     // Модель данных (подключается к источнику данных и забирает их)
     NetworkModel model(deviceFactory, modbus, mainFacade);
-    model.setDelay(100);
-    model.setTimeout(500);
+//    model.setDelay(100);
+    model.setTimeout(300);
 
     // Контроллер главного окна, управляет потоком данных от GUI к моделии
-    MainController mainCtrl(w, model, settings);
+    MainController mainCtrl(w, model);
 
 #ifdef QT_DEBUG
     GlobalTest tests(argc, argv);

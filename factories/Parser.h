@@ -9,7 +9,7 @@ class Parser : public QObject
 {
     Q_OBJECT
 public:
-    explicit Parser(QByteArray dataArray, QObject *parent = nullptr);
+    explicit Parser(const QByteArray& dataArray, QObject *parent = nullptr);
     ~Parser();
     TreeItem* data();
     virtual bool start() = 0;
@@ -22,7 +22,7 @@ protected:
     bool m_stop = false;
     QString m_errorString;
 
-    void makeError(QString msg);
+    void makeError(const QString& msg);
 //    void readData(TreeItem* item, int level = 0); // debug only
 
 };

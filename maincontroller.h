@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QDebug>
-#include "appsettings.h"
 #include "mainwindow.h"
 #include "network/networkmodel.h"
 
@@ -12,18 +11,18 @@ class MainController :
 {
     Q_OBJECT
 public:
-    explicit MainController(MainWindow& window, NetworkModel& networkModel, AppSettings& settings, QObject *parent = nullptr);
+    explicit MainController(MainWindow& window, NetworkModel& networkModel, QObject *parent = nullptr);
 
 private slots:
-    void eventHandle(const QString &event, const QVariant &value);
+    void refreshComPorts();
+    void connectToNetwork(QVariant value);
 
 signals:
 
 private:
-    MainWindow& window;
-    NetworkModel& network;
-    AppSettings& settings;
-    QPointer<DataSource> device;
+    MainWindow& m_window;
+    NetworkModel& m_network;
+    QPointer<DataSource> m_device;
 
 };
 

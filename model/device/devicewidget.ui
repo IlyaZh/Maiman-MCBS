@@ -7,25 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>296</width>
-    <height>247</height>
+    <height>240</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>0</width>
-    <height>247</height>
+    <width>296</width>
+    <height>240</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>247</height>
+    <height>300</height>
    </size>
   </property>
   <property name="font">
@@ -52,7 +52,7 @@ QLabel {
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="sizeConstraint">
-    <enum>QLayout::SetMinimumSize</enum>
+    <enum>QLayout::SetDefaultConstraint</enum>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -84,10 +84,18 @@ QLabel {
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background: rgb(189,0,0);
-border: 2px solid rgb(26,26,26);
-border-radius: 6px;
-color: rgb(0,0,0);</string>
+      <string notr="true">QPushButton 
+{
+	border: 2px solid rgb(26,26,26);
+	border-radius: 6px;
+	color: rgb(0,0,0);
+	background: rgb(189,0,0);
+}
+
+:checked 
+{
+	background: rgb(0,102,51);
+}</string>
      </property>
      <property name="text">
       <string>TEC</string>
@@ -100,7 +108,7 @@ color: rgb(0,0,0);</string>
    <item row="4" column="0" colspan="6">
     <widget class="QLabel" name="label_2">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -149,16 +157,27 @@ border-bottom-right-radius: 6px;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background: rgb(0,102,51);
-border: 2px solid rgb(26,26,26);
-border-radius: 6px;
-color: rgb(0,0,0);</string>
+      <string notr="true">QPushButton 
+{
+	border: 2px solid rgb(26,26,26);
+	border-radius: 6px;
+	color: rgb(0,0,0);
+	background: rgb(189,0,0);
+}
+
+:checked 
+{
+	background: rgb(0,102,51);
+}</string>
      </property>
      <property name="text">
       <string>Laser</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -195,10 +214,10 @@ color: rgb(0,0,0);</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QLabel {
-    background: rgb(0,102,51);
+    background: rgb(175,0,0);
     border: 1px solid rgb(26,26,26);
     border-radius: 3px;
-}</string>
+}c</string>
      </property>
      <property name="text">
       <string/>
@@ -225,7 +244,7 @@ color: rgb(0,0,0);</string>
    <item row="0" column="3" rowspan="4" colspan="2">
     <widget class="QWidget" name="widgetBox" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -233,7 +252,7 @@ color: rgb(0,0,0);</string>
      <property name="minimumSize">
       <size>
        <width>50</width>
-       <height>0</height>
+       <height>182</height>
       </size>
      </property>
     </widget>

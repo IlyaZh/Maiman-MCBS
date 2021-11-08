@@ -1,10 +1,10 @@
 #include "guifactory.h"
+#include <QDebug>
 
 class DevCommand;
 
-GuiFactory::GuiFactory(QString fileName, AppSettings& settings, QObject *parent) :
+GuiFactory::GuiFactory(const QString& fileName, QObject *parent) :
     QObject(parent),
-    m_settings(settings),
     m_fileName(fileName)
 {
 
@@ -30,8 +30,7 @@ void GuiFactory::start() {
 
 DeviceWidget* GuiFactory::createWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands) {
     if(m_deviceWidgets.contains(id)) {
-        auto widgetSettings = m_deviceWidgets.value(id);
-        return new DeviceWidget(widgetSettings, commands);
+        return new DeviceWidget(m_deviceWidgets[id], commands);
     }
     return nullptr;
 }
@@ -74,8 +73,8 @@ bool GuiFactory::parseTree(const TreeItem& tree) {
 
 DeviceWidgetDesc GuiFactory::parseDevice(const TreeItem& item) {
     DeviceWidgetDesc widgetDesc;
-    for(int i = 0; i < item.childCount(); ++i) {
-        const TreeItem& devOption = item.child(i);
+    for(int c = 0; c < item.childCount(); ++c) {
+        const TreeItem& devOption = item.child(c);
 
         if(devOption.name() == "id") {
             widgetDesc.id = devOption.value().toString().toUInt(nullptr, 16);

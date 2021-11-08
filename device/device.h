@@ -30,7 +30,7 @@ public:
     const DevicePollRequest nextPollRequest();
     bool isLink();
     void clearLink();
-    const QMap<quint16, QSharedPointer<DevCommand>> commands();
+    const QMap<quint16, QSharedPointer<DevCommand>>& commands();
 
 private:
     bool m_isLink = false;

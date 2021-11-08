@@ -4,7 +4,10 @@
 
 const quint16 DeviceCommand::MAX_COM_INTERVAL_COUNTER = 100;
 
-DeviceCommand::DeviceCommand(QString code, QString unit, double divider, quint8 interval, quint8 tol, bool isTemperatureFlag, quint16 maxInterval, QObject *parent) : QObject(parent)
+DeviceCommand::DeviceCommand(QString code, const QString& unit, double divider, quint8 interval, quint8 tol, bool isTemperatureFlag, quint16 maxInterval, QObject *parent) :
+    QObject(parent),
+    value(0),
+    iValue(0)
 {
     this->codeStr = code;
     this->code = code.toUInt(nullptr, 16);
@@ -33,7 +36,7 @@ double DeviceCommand::convertFarToCel(double val) {
     return (val - 32.0) * 5.0 / 9.0;
 }
 
-void DeviceCommand::setTemperatureUnit(QString unit) {
+void DeviceCommand::setTemperatureUnit(const QString& unit) {
     temperatureUnit = unit;
     emit valueChanged(getValue());
 }
