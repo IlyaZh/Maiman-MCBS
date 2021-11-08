@@ -43,6 +43,11 @@ void MainController::connectToNetwork(QVariant value) {
             m_window.setConnected(m_device->isOpen());
             m_network.start(*m_device);
         } else if(type == NetworkType::SerialPort) {
+            m_device = new DataSource;
+            m_device->setSettings(type, portSettings["comport"], portSettings["baudrate"]);
+            m_device->open();
+            m_window.setConnected(m_device->isOpen());
+            m_network.start(*m_device);
             // none. do it!
             // TODO: Add com-port support
         }

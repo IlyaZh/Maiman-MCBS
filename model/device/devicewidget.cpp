@@ -178,6 +178,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     ui->widgetBox->setLayout(m_widgetLayout);
 
     // TODO: Ниже ДЕБАГ УДОЛИ
+    /*
     ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
     ui->tecButton->setVisible(true);
     qDebug() << m_description.name << "layout size" << m_widgetLayout->rowCount() << m_widgetLayout->columnCount();
@@ -185,6 +186,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     adjust();
+    */
 }
 
 DeviceWidget::~DeviceWidget()

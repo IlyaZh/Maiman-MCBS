@@ -44,8 +44,10 @@ void ConnectionWidget::setConnected(bool isConnected) {
     qDebug() << "setConnected" << isConnected;
     if(isConnected) {
         ui->networkConnectButton->setText(tr("Disconnect"));
+        ui->connectComPortButton->setText(tr("Disconnect"));
     } else {
         ui->networkConnectButton->setText(tr("Connect"));
+        ui->connectComPortButton->setText(tr("Connect"));
     }
 }
 
