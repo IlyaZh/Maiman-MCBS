@@ -1,5 +1,5 @@
 #include "controlwidget.h"
-#include "ui_commandwidget.h"
+#include "ui_controlwidget.h"
 #include "model/device/devicewidget.h"
 #include <QDebug>
 
