@@ -16,14 +16,14 @@
 
 const QString DeviceWidget::linkStyleOn = "QLabel { \
         background: rgb(0,102,51); \
-border: 1px solid rgb(26,26,26); \
-border-radius: 3px; \
+        border: 1px solid rgb(26,26,26); \
+        border-radius: 3px; \
 }";
 
 const QString DeviceWidget::linkStyleOff = "QLabel { \
         background: rgb(175,0,0); \
-border: 1px solid rgb(26,26,26); \
-border-radius: 3px; \
+        border: 1px solid rgb(26,26,26); \
+        border-radius: 3px; \
 }";
 
 DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint16, QSharedPointer<DevCommand>>& commands, QWidget *parent) :
@@ -147,11 +147,24 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
     // Инциализация кнопок Laser и TEC
     // TODO: Сделай создание кнопок динамическим
-    ui->laserButton->hide();
-    ui->tecButton->hide();
+//    ui->laserButton->hide();
+//    ui->tecButton->hide();
     for(const auto &button : m_description.buttons) {
+        QPointer<QPushButton> pButton;
         if(button.name.compare("laser", Qt::CaseInsensitive) == 0 && m_commands.contains(button.code)) {
-            ui->laserButton->setVisible(true);
+            m_laserButton = new QPushButton("Laser", this);
+            pButton = m_laserButton;
+            connect(m_laserButton, &QPushButton::clicked, this, &DeviceWidget::laserButtonClicked);
+
+            if(m_commands.contains(button.code)) {
+                auto cmd = m_commands.value(button.code);
+                connect(cmd.get(), &DevCommand::updatedValue, this, [this, cmd](){
+                    setLaserButton(cmd->valueInt());
+                });
+            }
+
+
+            /*ui->laserButton->setVisible(true);
             ui->laserButton->setChecked(false);
             connect(ui->laserButton, &QPushButton::clicked, this, &DeviceWidget::laserButtonClicked);
 
@@ -160,9 +173,22 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
                 connect(cmd.get(), &DevCommand::updatedValue, this, [this, cmd](){
                     setLaserButton(cmd->valueInt());
                 });
-            }
+            }*/
         } else if (button.name.compare("tec", Qt::CaseInsensitive) == 0) {
-            ui->tecButton->setVisible(true);
+            m_tecButton = new QPushButton("TEC", this);
+            pButton = m_tecButton;
+            m_tecButton->setVisible(true);
+            connect(m_tecButton, &QPushButton::clicked, this, &DeviceWidget::tecButtonClicked);
+
+            if(m_commands.contains(button.code)) {
+                auto cmd = m_commands.value(button.code);
+                connect(cmd.get(), &DevCommand::updatedValue, this, [this, cmd](){
+                    setTecButton(cmd->valueInt());
+                });
+            }
+
+
+            /*ui->tecButton->setVisible(true);
             connect(ui->tecButton, &QPushButton::clicked, this, &DeviceWidget::tecButtonClicked);
             ui->tecButton->setChecked(false);
 
@@ -171,11 +197,32 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
                 connect(cmd.get(), &DevCommand::updatedValue, this, [this, cmd](){
                     setTecButton(cmd->valueInt());
                 });
-            }
+            }*/
+        }
+
+        if(pButton) {
+            pButton->setMinimumSize(200, 36);
+            pButton->setFont(QFont("Share Tech Mono", 18));
+            pButton->setStyleSheet("QPushButton \
+                                   { \
+                                       border: 2px solid rgb(26,26,26); \
+                                       border-radius: 6px; \
+                                       color: rgb(0,0,0); \
+                                       background: rgb(189,0,0); \
+                                   } \
+                                   :checked \
+                                   { \
+                                       background: rgb(0,102,51); \
+                                   }");
+            pButton->setCheckable(true);
+            pButton->setChecked(false);
+            pButton->setVisible(true);
+            ui->buttonsLayout->addWidget(pButton);
         }
     }
 
     ui->widgetBox->setLayout(m_widgetLayout);
+    m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     // TODO: Ниже ДЕБАГ УДОЛИ
     /*
@@ -183,7 +230,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     ui->tecButton->setVisible(true);
     qDebug() << m_description.name << "layout size" << m_widgetLayout->rowCount() << m_widgetLayout->columnCount();
 
-    m_hideControlsButton->setVisible(!m_widgets.isEmpty());
+
 
     adjust();
     */
@@ -232,7 +279,8 @@ void DeviceWidget::resizeEvent(QResizeEvent *event) {
 void DeviceWidget::setLaserButton(quint16 value) {
     for(const auto& button : m_description.buttons) {
         if(button.name == "Laser") {
-            ui->laserButton->setChecked((value & button.mask) != 0);
+//            ui->laserButton->setChecked((value & button.mask) != 0);
+            m_laserButton->setChecked((value & button.mask) != 0);
         }
     }
 }
@@ -240,7 +288,8 @@ void DeviceWidget::setLaserButton(quint16 value) {
 void DeviceWidget::setTecButton(quint16 value) {
     for(const auto& button : m_description.buttons) {
         if(button.name == "Tec") {
-            ui->tecButton->setChecked((value & button.mask) != 0);
+//            ui->tecButton->setChecked((value & button.mask) != 0);
+            m_tecButton->setChecked((value & button.mask) != 0);
         }
     }
 }

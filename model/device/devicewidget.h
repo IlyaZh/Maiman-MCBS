@@ -108,6 +108,8 @@ private:
     QMap<quint16, BinaryWidget*> m_binaryWidgets;
     QVector<QPushButton*> m_pinButtons;
     bool m_hideControls {false};
+    QPushButton* m_laserButton {nullptr};
+    QPushButton* m_tecButton {nullptr};
 
     void paintEvent(QPaintEvent*) override;
     void adjust();
