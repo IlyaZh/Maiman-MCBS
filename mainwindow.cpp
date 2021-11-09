@@ -51,12 +51,13 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle(AppTitle);
     setWindowIcon(QIcon(":/images/logo-minimal.png"));
 
-    m_workFieldLayout = new QVBoxLayout(ui->workFieldWidget);
+    m_workFieldLayout = new QVBoxLayout(ui->scrollFieldWidget);
     m_workFieldLayout->setMargin(0);
-    m_workFieldLayout->setSpacing(0);
+    m_workFieldLayout->setSpacing(10);
     m_workFieldLayout->setContentsMargins(0,0,0,0);
-    ui->workFieldWidget->setLayout(m_workFieldLayout);
-
+    m_workFieldLayout->setSizeConstraint(QLayout::SetMinimumSize);
+    ui->scrollFieldWidget->setLayout(m_workFieldLayout);
+    ui->scrollFieldWidget->setMaximumHeight(m_workFieldLayout->maximumSize().height());
     emit refreshComPortsSignal();
 
     //    emit mainWindowReady();

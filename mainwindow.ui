@@ -102,13 +102,13 @@ QPushButton:checked {
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
-      <widget class="QWidget" name="workFieldWidget_2">
+      <widget class="QWidget" name="scrollFieldWidget">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1219</width>
-         <height>499</height>
+         <width>1222</width>
+         <height>496</height>
         </rect>
        </property>
       </widget>
@@ -128,7 +128,14 @@ QPushButton:checked {
      </spacer>
     </item>
     <item row="0" column="0">
-     <widget class="QWidget" name="workFieldWidget" native="true"/>
+     <widget class="QWidget" name="workFieldWidget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
     </item>
     <item row="0" column="1" rowspan="2">
      <widget class="ConnectionWidget" name="connectionWidget" native="true">
