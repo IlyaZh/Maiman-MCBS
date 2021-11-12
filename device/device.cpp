@@ -28,6 +28,14 @@ Device::~Device() {
     m_Commands.clear();
 }
 
+void Device::changeTempratureUnit(Const::TemperatureUnitId id) {
+    for(auto& command : m_Commands) {
+        if(command->isTemperature()) {
+            command->changeTemperatureUnit(id);
+        }
+    }
+}
+
 void Device::dataIncome(quint16 reg, quint16 value) {
     auto cmd = m_Commands.value(reg, nullptr);
     if(cmd) {

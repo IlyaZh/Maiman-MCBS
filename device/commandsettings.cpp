@@ -68,11 +68,15 @@ bool DevCommand::isSigned() const {
     return config.m_isSigned;
 }
 
+bool DevCommand::isTemperature() const {
+    return config.m_isTemperature;
+}
+
 double DevCommand::valueDouble() const {
     return m_value;
 }
 
-uint DevCommand::valueInt() const {
+int DevCommand::valueInt() const {
     return m_iValue;
 }
 

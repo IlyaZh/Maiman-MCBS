@@ -35,8 +35,9 @@ public:
     int tolerance() const;
 
     bool isSigned() const;
+    bool isTemperature() const;
     double valueDouble() const ;
-    uint valueInt() const ;
+    int valueInt() const ;
     QString valueStr() const;
     uint interval() const;
 

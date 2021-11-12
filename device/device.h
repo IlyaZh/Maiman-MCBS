@@ -21,7 +21,8 @@ class Device : public QObject
     Q_OBJECT
 public:
     explicit Device(quint8 addr, const DeviceModel& config, QObject *parent = nullptr);
-    ~Device();
+    ~Device() override;
+    void changeTempratureUnit(Const::TemperatureUnitId id);
     void dataIncome(quint16 reg, quint16 value);
     void destroy();
     QString name();
