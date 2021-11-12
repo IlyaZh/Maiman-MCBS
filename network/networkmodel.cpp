@@ -41,7 +41,7 @@ void NetworkModel::setTimeout(int timeout) {
 
 void NetworkModel::start(DataSource& networkDevice)
 {
-    m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
+    //m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
 
     if(!m_port.isNull()) {
         m_port->disconnect();

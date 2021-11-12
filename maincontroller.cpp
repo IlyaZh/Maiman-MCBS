@@ -28,7 +28,6 @@ void MainController::connectToNetwork(QVariant value) {
     AppSettings::setNetworkData(value);
 
     QVariantMap portSettings = value.toMap();
-
     if(m_network.isStart()) {
         m_network.stop();
         m_device->close();
