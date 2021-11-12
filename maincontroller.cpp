@@ -48,8 +48,6 @@ void MainController::connectToNetwork(QVariant value) {
             m_device->open();
             m_window.setConnected(m_device->isOpen());
             m_network.start(*m_device);
-            // none. do it!
-            // TODO: Add com-port support
         }
     }
 }

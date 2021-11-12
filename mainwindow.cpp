@@ -9,8 +9,6 @@
 
 //const QString MainWindow::SettingsPath {"window/"};
 
-// TODO: Наезжают виджеты друг на друга
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)

@@ -38,8 +38,9 @@ DevCommand::DevCommand(const CommandSettings& conf) :
 
 void DevCommand::changeTemperatureUnit(Const::TemperatureUnitId id) {
     // TODO: make a function's implementation
-    if(config.m_isTemperature) {
-
+    if(config.m_isTemperature && m_tempId != id) {
+        m_tempId = id;
+        emit updatedUnit(Const::TemperatureUnits.at(static_cast<int>(Const::TemperatureUnitId::Celsius)));
     }
 }
 
