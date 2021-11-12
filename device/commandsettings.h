@@ -33,7 +33,7 @@ public:
     QString unit() const ;
     double divider() const;
     int tolerance() const;
-    quint16 getRawFromValue(double value) const;
+
     bool isSigned() const;
     double valueDouble() const ;
     uint valueInt() const ;
@@ -48,6 +48,7 @@ public:
 
 signals:
     void updatedValue();
+    void updatedUnit(const QString& unit);
     void sendValueSignal(quint16 code, quint16 value);
 public slots:
     void setFromDevice(quint16 value);
@@ -67,4 +68,7 @@ private:
     QVector<double> m_logValues;
     double m_cmdSum = 0;
     int m_cmdIt = 0;
+    Const::TemperatureUnitId m_tempId = Const::TemperatureUnitId::Celsius;
+
+    quint16 getRawFromValue(double value) const;
 };

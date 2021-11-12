@@ -12,7 +12,7 @@
 #include "model/device/HiddenWidget.h"
 #include <algorithm>
 
-// TODO: сделай нормальный размер по высоте, бесит
+// TODO: реализуй функционал Link
 
 const QString DeviceWidget::linkStyleOn = "QLabel { \
         background: rgb(0,102,51); \
@@ -224,16 +224,8 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     ui->widgetBox->setLayout(m_widgetLayout);
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
-    // TODO: Ниже ДЕБАГ УДОЛИ
-    /*
-    ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
-    ui->tecButton->setVisible(true);
-    qDebug() << m_description.name << "layout size" << m_widgetLayout->rowCount() << m_widgetLayout->columnCount();
-
-
-
     adjust();
-    */
+
 }
 
 DeviceWidget::~DeviceWidget()
