@@ -21,8 +21,7 @@ class Device : public QObject
     Q_OBJECT
 public:
     explicit Device(quint8 addr, const DeviceModel& config, QObject *parent = nullptr);
-    ~Device() override;
-    void changeTempratureUnit(Const::TemperatureUnitId id);
+    ~Device();
     void dataIncome(quint16 reg, quint16 value);
     void destroy();
     QString name();
@@ -32,6 +31,7 @@ public:
     bool isLink();
     void clearLink();
     const QMap<quint16, QSharedPointer<DevCommand>>& commands();
+    void changeTemperatureUnit(Const::TemperatureUnitId id);
 
 private:
     bool m_isLink = false;

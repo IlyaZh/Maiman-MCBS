@@ -64,8 +64,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionExit, &QAction::triggered, qApp, &QApplication::closeAllWindows, Qt::QueuedConnection);
     auto temperatureGroup = new QActionGroup(this);
     temperatureGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
-    for(const auto& unit : Const::TemperatureUnits) {
+    int unitIdx = static_cast<int>(AppSettings::getTemperatureUnit());
+    for(const auto& unit : Const::TemperatureUnitNames) {
         auto action = new QAction(unit);
+        action->setCheckable(true);
+        action->setChecked(unit == Const::TemperatureUnitNames.at(unitIdx));
         ui->menuTmperature_units->addAction(action);
         temperatureGroup->addAction(action);
     }

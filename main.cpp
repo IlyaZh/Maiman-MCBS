@@ -29,15 +29,13 @@ bool debugMode = false;
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-//    setlocale(LC_CTYPE, "rus");
 
-    qDebug() << "add font" << QFontDatabase::addApplicationFont(Const::ApplicationDefaultFontPath);
+    QFontDatabase::addApplicationFont(Const::ApplicationDefaultFontPath);
     QApplication::setFont(QFont("Share Tech Mono", 9));
-//    QFile fil(Const::ApplicationDefaultFont);
-//    qDebug() << QApplication::font() << fil.exists();
 
 #ifdef QT_DEBUG
     debugMode = true;
+    setlocale(LC_CTYPE, "rus");
 #endif
 
     QCommandLineParser cliParser;

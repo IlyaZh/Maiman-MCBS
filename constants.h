@@ -14,7 +14,7 @@ struct Const {
     // Человекопонятное название (заголовок_ ПО
     static const QString AppNameTitle;
 
-    static const QStringList TemperatureUnits;
+    static const QStringList TemperatureUnitNames;
     enum class TemperatureUnitId {
         Celsius,
         Fahrenheit

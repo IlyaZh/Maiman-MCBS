@@ -28,14 +28,6 @@ Device::~Device() {
     m_Commands.clear();
 }
 
-void Device::changeTempratureUnit(Const::TemperatureUnitId id) {
-    for(auto& command : m_Commands) {
-        if(command->isTemperature()) {
-            command->changeTemperatureUnit(id);
-        }
-    }
-}
-
 void Device::dataIncome(quint16 reg, quint16 value) {
     auto cmd = m_Commands.value(reg, nullptr);
     if(cmd) {
@@ -87,6 +79,13 @@ const QMap<quint16, QSharedPointer<DevCommand>>& Device::commands() {
     return m_Commands;
 }
 
+void Device::changeTemperatureUnit(Const::TemperatureUnitId id) {
+    for(auto& command : m_Commands) {
+        if(command->isTemperature()) {
+            command->changeTemperatureUnit(id);
+        }
+    }
+}
 
 // private methods
 void Device::createCommandsRequests() {

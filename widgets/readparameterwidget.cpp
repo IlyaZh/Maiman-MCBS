@@ -20,6 +20,9 @@ ReadParameterWidget::ReadParameterWidget(QStringView name, QSharedPointer<DevCom
         connect(m_command.get(), &DevCommand::updatedValue, this, [this](){
             setValue(m_command->valueDouble(), m_command->tolerance());
         });
+        connect(m_command.get(), &DevCommand::updatedUnit, this, [this](QStringView unit){
+            setUnit(unit.toString());
+        });
     }
 
     /*setValue(m_settings.real, value);*/
@@ -50,7 +53,7 @@ ReadParameterWidget::~ReadParameterWidget()
 
 // private methods
 
-void ReadParameterWidget::setUnits(QStringView unit){
+void ReadParameterWidget::setUnit(QStringView unit){
     m_unit = unit.toString();
     ui->labelUnits->setText(m_unit);
 }

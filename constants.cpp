@@ -15,7 +15,7 @@ const QString Const::AppName = "BenchSoft_Multichannel";
 // Человекопонятное название (заголовок_ ПО
 const QString Const::AppNameTitle = "Maiman BenchSoft Multichannel";
 
-const QStringList Const::TemperatureUnits({"Celsius", "Fahrenheit"});
+const QStringList Const::TemperatureUnitNames({"Celsius", "Fahrenheit"});
 
 const QString Const::SecretCodeCombination = "3.1415926";
 

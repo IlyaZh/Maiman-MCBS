@@ -43,6 +43,9 @@ ControlWidget::ControlWidget(QStringView name,
                 setValue(/*m_Value->valueDouble(), m_Value->tolerance()*/);
             }
         });
+        connect(m_Value.get(), &DevCommand::updatedUnit, this, [this](QStringView unit){
+            setUnits(unit.toString());
+        });
         connect(m_Min.get(), &DevCommand::updatedValue, this, [this](){
             setMinValue(m_Min->valueDouble(), m_Min->tolerance());
         });

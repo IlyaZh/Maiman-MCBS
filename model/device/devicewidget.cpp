@@ -12,8 +12,6 @@
 #include "model/device/HiddenWidget.h"
 #include <algorithm>
 
-// TODO: реализуй функционал Link
-
 const QString DeviceWidget::linkStyleOn = "QLabel { \
         background: rgb(0,102,51); \
         border: 1px solid rgb(26,26,26); \
@@ -146,7 +144,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     }
 
     // Инциализация кнопок Laser и TEC
-    // TODO: Сделай создание кнопок динамическим
 //    ui->laserButton->hide();
 //    ui->tecButton->hide();
     for(const auto &button : m_description.buttons) {
@@ -225,7 +222,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     adjust();
-
 }
 
 DeviceWidget::~DeviceWidget()
