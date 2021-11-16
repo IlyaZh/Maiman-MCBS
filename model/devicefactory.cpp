@@ -14,6 +14,7 @@ DeviceFactory::DeviceFactory(const QString& fileName, QObject* parent) :
 void DeviceFactory::start() {
     if(!m_parseWorker.isNull()) m_parseWorker->deleteLater();
     auto m_thread = new QThread();
+    qDebug()<<"Start parser";
     m_parseWorker.reset(new ParserWorker(m_fileName, ParserType::XmlParser));
     m_parseWorker->moveToThread(m_thread);
 
@@ -52,6 +53,7 @@ void DeviceFactory::parsingFinished() {
     QScopedPointer<TreeItem> parserTree(m_parseWorker->data());
     if(parseTree(*parserTree)) {
         qDebug() << "Parse tree is ok!";
+        emit parsingIsFinished();
     } else {
         qDebug() << "Can't parse tree";
     }
