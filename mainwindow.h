@@ -24,7 +24,6 @@ public:
     void addDeviceWidget(DeviceWidget* widget);
     void setComPorts(const QStringList& portList);
     void setBaudRates(const QStringList& baudsList);
-    void refreshPorts();
 
 signals:
     void refreshComPortsSignal();
@@ -44,8 +43,8 @@ private:
 //    QVector<int> *m_baudList;
     QVector<DeviceWidget*> m_workWidgets;
     QGridLayout* m_workFieldLayout;
-    QActionGroup* m_portGroup;
-    QActionGroup* m_baudrateGroup;
+    QPointer<QActionGroup> m_portGroup;
+    QPointer<QActionGroup> m_baudrateGroup;
 
 protected:
     void closeEvent(QCloseEvent *event) override;
