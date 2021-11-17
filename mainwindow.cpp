@@ -206,8 +206,8 @@ void MainWindow::setConnectMessage(QString msg) {
 
 void MainWindow::setConnected(bool isConnected) {
     ui->connectionWidget->setConnected(isConnected);
-    ui->menuPorts->setEnabled(isConnected);
-    ui->menuBaudrates->setEnabled(isConnected);
+    ui->menuPorts->setEnabled(!isConnected);
+    ui->menuBaudrates->setEnabled(!isConnected);
     if(!isConnected) {
         qDeleteAll(m_workWidgets);
         m_workWidgets.clear();
