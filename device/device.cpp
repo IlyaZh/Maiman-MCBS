@@ -79,6 +79,13 @@ const QMap<quint16, QSharedPointer<DevCommand>>& Device::commands() {
     return m_Commands;
 }
 
+void Device::changeTemperatureUnit(Const::TemperatureUnitId id) {
+    for(auto& command : m_Commands) {
+        if(command->isTemperature()) {
+            command->changeTemperatureUnit(id);
+        }
+    }
+}
 
 // private methods
 void Device::createCommandsRequests() {

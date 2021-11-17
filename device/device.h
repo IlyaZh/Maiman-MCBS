@@ -31,6 +31,7 @@ public:
     bool isLink();
     void clearLink();
     const QMap<quint16, QSharedPointer<DevCommand>>& commands();
+    void changeTemperatureUnit(Const::TemperatureUnitId id);
 
 private:
     bool m_isLink = false;

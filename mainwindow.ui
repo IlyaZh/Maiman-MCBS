@@ -107,8 +107,8 @@ QPushButton:checked {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1222</width>
-         <height>496</height>
+         <width>1219</width>
+         <height>499</height>
         </rect>
        </property>
       </widget>

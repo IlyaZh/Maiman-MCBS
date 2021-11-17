@@ -30,7 +30,7 @@ private:
 
     void setValue(double value, int decimal);
     void setValue(int value);
-    void setUnits(QStringView unit);
+    void setUnit(QStringView unit);
 
 
 #ifdef QT_DEBUG

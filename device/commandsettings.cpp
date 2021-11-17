@@ -18,6 +18,7 @@ CommandSettings::CommandSettings(quint16 code, const QString& unit, double divid
 // static methods
 
 const int DevCommand::maxLogValues = 100;
+const QSet<quint16> DevCommand::logCommandsSet({6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31});
 
 double DevCommand::convertCelToFar(double value) {
     return value * 9.0 / 5.0 + 32.0;
@@ -29,42 +30,66 @@ double DevCommand::convertFarToCel(double value) {
 
 // public methods
 DevCommand::DevCommand(const CommandSettings& conf) :
-    config(conf)
+    m_config(conf)
 {
     m_rawValue = 0;
-    m_strValue = QString::number(0, 'f', static_cast<int>(config.m_tolerance));
-    m_logValues.fill(0, maxLogValues);
+    m_strValue = QString::number(0, 'f', static_cast<int>(m_config.m_tolerance));
+    if(logCommandsSet.contains(conf.m_code)) {
+        m_logValues.reset(new QVector<double>(maxLogValues, 0));
+        m_logValues->shrink_to_fit();
+    }
 }
 
 void DevCommand::changeTemperatureUnit(Const::TemperatureUnitId id) {
-    // TODO: make a function's implementation
-    if(config.m_isTemperature) {
+    if(m_config.m_isTemperature && m_tempId != id) {
+        m_tempId = id;
+        switch(id) {
+        default:
+        case Const::TemperatureUnitId::Celsius:
 
+            break;
+        case Const::TemperatureUnitId::Fahrenheit:
+            setFromDevice(m_rawValue);
+            break;
+        }
+        emit updatedUnit(unit());
     }
 }
 
 quint16 DevCommand::code() const {
-    return config.m_code;
+    return m_config.m_code;
 }
 
 QString DevCommand::unit() const {
-    return config.m_unit;
+    if(isTemperature()) {
+    switch(m_tempId) {
+        default:
+        case Const::TemperatureUnitId::Celsius:
+        return m_config.m_unit+"C";
+        break;
+    case Const::TemperatureUnitId::Fahrenheit:
+        return m_config.m_unit+"F";
+        break;
+    }
+    } else {
+        return m_config.m_unit;
+    }
 }
 
 double DevCommand::divider() const {
-    return config.m_divider;
+    return m_config.m_divider;
 }
 
 int DevCommand::tolerance() const {
-    return static_cast<int>(config.m_tolerance);
-}
-
-quint16 DevCommand::getRawFromValue(double value) const {
-    return static_cast<quint16>(qRound(value*config.m_divider-0.5));
+    return static_cast<int>(m_config.m_tolerance);
 }
 
 bool DevCommand::isSigned() const {
-    return config.m_isSigned;
+    return m_config.m_isSigned;
+}
+
+bool DevCommand::isTemperature() const {
+    return m_config.m_isTemperature;
 }
 
 double DevCommand::valueDouble() const {
@@ -80,23 +105,29 @@ QString DevCommand::valueStr() const {
 }
 
 uint DevCommand::interval() const {
-    return config.m_interval;
+    return m_config.m_interval;
 }
 
-const QVector<double>& DevCommand::historyValues() const {
-    return m_logValues;
-}
+//const QVector<double>& DevCommand::historyValues() const {
+//    return m_logValues;
+//}
 
 double DevCommand::avgValue() const {
     return m_cmdSum / static_cast<double>(maxLogValues);
 }
 
 double DevCommand::maxValue() const {
-    return *std::max_element(m_logValues.begin(), m_logValues.end());
+    if(m_logValues)
+        return *std::max_element(m_logValues->begin(), m_logValues->end());
+    else
+        return 0;
 }
 
 double DevCommand::minValue() const {
-    return *std::min_element(m_logValues.begin(), m_logValues.end());
+    if(m_logValues)
+        return *std::min_element(m_logValues->begin(), m_logValues->end());
+    else
+        return 0;
 }
 
 
@@ -107,28 +138,44 @@ void DevCommand::setFromDevice(quint16 value) {
     double d = 0;
     if(isSigned()) {
         d = static_cast<double>(static_cast<int16_t>(m_rawValue));
-        m_value = qRound(d/config.m_divider*qPow(10,config.m_tolerance)-0.5)/qPow(10,config.m_tolerance);
+        m_value = qRound(d/m_config.m_divider*qPow(10,m_config.m_tolerance)-0.5)/qPow(10,m_config.m_tolerance);
     } else {
         d = static_cast<double>(static_cast<quint16>(m_rawValue));
-        m_value = qRound(d/config.m_divider*qPow(10,config.m_tolerance)-0.5)/qPow(10,config.m_tolerance);
+        m_value = qRound(d/m_config.m_divider*qPow(10,m_config.m_tolerance)-0.5)/qPow(10,m_config.m_tolerance);
     }
-    m_iValue = static_cast<int>(m_value);
-    m_strValue = QString::number(m_value, 'f', static_cast<int>(config.m_tolerance));
 
-    if(m_cmdIt < m_logValues.size())
-        m_cmdSum -= m_logValues.at(m_cmdIt);
-    m_logValues[m_cmdIt++] = m_value;
-    m_cmdSum += m_value;
-    if(m_cmdIt >= m_logValues.size()) m_cmdIt = 0;
+    if(m_config.m_isTemperature && m_tempId == Const::TemperatureUnitId::Fahrenheit) {
+        m_value = convertCelToFar(m_value);
+    }
+
+    m_iValue = static_cast<int>(m_value);
+    m_strValue = QString::number(m_value, 'f', static_cast<int>(m_config.m_tolerance));
+
+    if(m_logValues) {
+        if(m_cmdIt < m_logValues->size()) {
+            m_cmdSum -= m_logValues->at(m_cmdIt);
+            (*m_logValues)[m_cmdIt++] = m_value;
+            m_cmdSum += m_value;
+        } else
+            m_cmdIt = 0;
+    }
 
     emit updatedValue();
 }
 
 void DevCommand::setFromWidget(int value) {
-    qDebug() << "DevCommand::setFromWidget" << config.m_code << getRawFromValue(static_cast<double>(value));
-    emit sendValueSignal(config.m_code, getRawFromValue(static_cast<double>(value)));
+    qDebug() << "DevCommand::setFromWidget" << m_config.m_code << getRawFromValue(static_cast<double>(value));
+    emit sendValueSignal(m_config.m_code, getRawFromValue(static_cast<double>(value)));
 }
 
 void DevCommand::setFromWidget(double value) {
-    emit sendValueSignal(config.m_code, getRawFromValue(value));
+    emit sendValueSignal(m_config.m_code, getRawFromValue(value));
+}
+
+quint16 DevCommand::getRawFromValue(double value) const {
+    if(m_config.m_isTemperature && m_tempId == Const::TemperatureUnitId::Fahrenheit) {
+        value = convertFarToCel(value);
+    }
+
+    return static_cast<quint16>(qRound(value*m_config.m_divider-0.5));
 }

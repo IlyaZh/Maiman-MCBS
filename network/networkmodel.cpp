@@ -142,8 +142,7 @@ void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
     qDebug() << "NetworkModel::temperatureUnitsChanged" << static_cast<int>(id);
 
     for(auto& device : m_devices) {
-//        device.
-        // TODO: complete function's code
+        device->changeTemperatureUnit(id);
     }
 }
 
