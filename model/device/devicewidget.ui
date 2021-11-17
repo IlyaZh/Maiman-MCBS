@@ -25,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>300</height>
+    <height>247</height>
    </size>
   </property>
   <property name="font">
@@ -69,42 +69,6 @@ QLabel {
    <property name="spacing">
     <number>15</number>
    </property>
-   <item row="3" column="1" colspan="2">
-    <widget class="QPushButton" name="tecButton">
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>36</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton 
-{
-	border: 2px solid rgb(26,26,26);
-	border-radius: 6px;
-	color: rgb(0,0,0);
-	background: rgb(189,0,0);
-}
-
-:checked 
-{
-	background: rgb(0,102,51);
-}</string>
-     </property>
-     <property name="text">
-      <string>TEC</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="4" column="0" colspan="6">
     <widget class="QLabel" name="label_2">
      <property name="sizePolicy">
@@ -139,45 +103,6 @@ border-bottom-right-radius: 6px;</string>
      </property>
      <property name="text">
       <string>Intlock</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1" colspan="2">
-    <widget class="QPushButton" name="laserButton">
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>36</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton 
-{
-	border: 2px solid rgb(26,26,26);
-	border-radius: 6px;
-	color: rgb(0,0,0);
-	background: rgb(189,0,0);
-}
-
-:checked 
-{
-	background: rgb(0,102,51);
-}</string>
-     </property>
-     <property name="text">
-      <string>Laser</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -255,6 +180,12 @@ border-bottom-right-radius: 6px;</string>
        <height>182</height>
       </size>
      </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>182</height>
+      </size>
+     </property>
     </widget>
    </item>
    <item row="2" column="5">
@@ -269,6 +200,9 @@ border-bottom-right-radius: 6px;</string>
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="2" column="1" rowspan="2" colspan="2">
+    <layout class="QVBoxLayout" name="buttonsLayout"/>
    </item>
   </layout>
  </widget>

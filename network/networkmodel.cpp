@@ -16,7 +16,7 @@ NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& prot
 {
     m_bIsStart = false;
     m_deviceModelFactory.start();
-
+    connect(&m_deviceModelFactory,&DeviceFactory::parsingIsFinished, this, &NetworkModel::getBaudrate);
 //    connect(&m_delayTimer, &QTimer::timeout, this, &NetworkModel::delayTimeout);
     connect(&m_timeoutTimer, &QTimer::timeout, this, &NetworkModel::sendTimeout);
 
@@ -29,6 +29,9 @@ NetworkModel::~NetworkModel() {
 }
 // controller to model interface overrides
 
+void NetworkModel::getBaudrate(){
+    m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
+}
 
 void NetworkModel::setDelay(int delay) {
     m_delayMs = delay;
@@ -41,8 +44,8 @@ void NetworkModel::setTimeout(int timeout) {
 
 void NetworkModel::start(DataSource& networkDevice)
 {
-    m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
-
+    //m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
+    qDebug()<<m_deviceModelFactory.getBaudrate();
     if(!m_port.isNull()) {
         m_port->disconnect();
 //        m_port->deleteLater();

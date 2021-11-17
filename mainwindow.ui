@@ -102,13 +102,13 @@ QPushButton:checked {
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
-      <widget class="QWidget" name="workFieldWidget_2">
+      <widget class="QWidget" name="scrollFieldWidget">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1219</width>
-         <height>499</height>
+         <width>1222</width>
+         <height>496</height>
         </rect>
        </property>
       </widget>
@@ -128,7 +128,14 @@ QPushButton:checked {
      </spacer>
     </item>
     <item row="0" column="0">
-     <widget class="QWidget" name="workFieldWidget" native="true"/>
+     <widget class="QWidget" name="workFieldWidget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+     </widget>
     </item>
     <item row="0" column="1" rowspan="2">
      <widget class="ConnectionWidget" name="connectionWidget" native="true">
@@ -222,8 +229,29 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
     </widget>
     <addaction name="menuTmperature_units"/>
    </widget>
+   <widget class="QMenu" name="menuConnect">
+    <property name="title">
+     <string>Connect</string>
+    </property>
+    <widget class="QMenu" name="menuPorts">
+     <property name="title">
+      <string>Ports</string>
+     </property>
+     <addaction name="actionRefresh_port"/>
+    </widget>
+    <widget class="QMenu" name="menuBaudrates">
+     <property name="title">
+      <string>Baudrates</string>
+     </property>
+     <addaction name="actionRefresh_baud"/>
+    </widget>
+    <addaction name="menuPorts"/>
+    <addaction name="menuBaudrates"/>
+    <addaction name="actionConnect"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
+   <addaction name="menuConnect"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="font">
@@ -232,16 +260,6 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
     </font>
    </property>
   </widget>
-  <action name="actionSerialBaudrate">
-   <property name="text">
-    <string>Baudrate</string>
-   </property>
-  </action>
-  <action name="actionRefresh">
-   <property name="text">
-    <string>Refresh</string>
-   </property>
-  </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
@@ -266,6 +284,24 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
    </property>
    <property name="text">
     <string>Fahrenheit</string>
+   </property>
+  </action>
+  <action name="actionRefresh_port">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+  </action>
+  <action name="actionRefresh_baud">
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Connect</string>
    </property>
   </action>
  </widget>

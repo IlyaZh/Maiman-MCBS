@@ -37,7 +37,7 @@ const int Const::StatusbarMessageTimeout = 5000; // ms
 
 //const QString Const::TemperatureUnitDefault = "C";
 
-const QStringList Const::BaudRates({"9600", "115200"});
+const QStringList Const::BaudRates({"9600", "115200","230400"});
 
 const int Const::BaudRateDefault = 115200;
 

@@ -4,7 +4,7 @@
 #include "widgets/connectionwidget.h"
 #include "appsettings.h"
 #include <QtWidgets>
-
+#include <QSerialPortInfo>
 #include <QDebug>
 
 //const QString MainWindow::SettingsPath {"window/"};
@@ -14,6 +14,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , m_portGroup(new QActionGroup(this))
+    , m_baudrateGroup(new QActionGroup(this))
       //      m_cntrl(nullptr),
 //      m_portList(nullptr),
 //      m_baudList(nullptr)
@@ -25,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
     this->move(AppSettings::getWindowPosition());
 
     auto netData = AppSettings::getNetworkData();
+    #ifndef QT_DEBUG
+    ui->connectionWidget->hide();
+    #endif
     ui->connectionWidget->setProtocol(NetworkType::Tcp);
     ui->connectionWidget->setBaudList(Const::BaudRates);
     switch(netData.type) {
@@ -51,17 +56,29 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle(AppTitle);
     setWindowIcon(QIcon(":/images/logo-minimal.png"));
 
-    m_workFieldLayout = new QVBoxLayout(ui->workFieldWidget);
+    m_workFieldLayout = new QGridLayout(ui->scrollFieldWidget);
     m_workFieldLayout->setMargin(0);
-    m_workFieldLayout->setSpacing(0);
+    m_workFieldLayout->setSpacing(10);
     m_workFieldLayout->setContentsMargins(0,0,0,0);
-    ui->workFieldWidget->setLayout(m_workFieldLayout);
-
-    emit refreshComPortsSignal();
+    m_workFieldLayout->setSizeConstraint(QLayout::SetMinimumSize);
+    ui->scrollFieldWidget->setLayout(m_workFieldLayout);
+    ui->scrollFieldWidget->setMaximumHeight(m_workFieldLayout->maximumSize().height());
 
     //    emit mainWindowReady();
 
     // setup menu's
+    ui->actionConnect->setCheckable(true);
+    ui->actionConnect->setChecked(false);
+    //setBaudRates(Const::BaudRates);
+    connect(ui->actionRefresh_port, &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
+    connect(ui->actionConnect, &QAction::triggered,
+            this, &MainWindow::connectTriggered);
+/*
+    for(auto& port : m_baudrateGroup->actions()) {
+        if (port->text().toUInt() == AppSettings::getComBaudrate()){
+            port->setChecked(true);
+        }
+    }*/
     connect(ui->actionExit, &QAction::triggered, qApp, &QApplication::closeAllWindows, Qt::QueuedConnection);
     auto temperatureGroup = new QActionGroup(this);
     temperatureGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
@@ -90,6 +107,26 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::connectTriggered(){
+    QVariantHash networkMap;
+    NetworkType type;
+    type = NetworkType::SerialPort;
+    networkMap.insert("type",  static_cast<quint8>(type));
+    if (ui->actionConnect->isChecked() and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
+        if (type == NetworkType::Tcp){
+            networkMap.insert("host", "127.0.1.0");
+            networkMap.insert("port", "9999");
+        }
+        else if(type == NetworkType::SerialPort){
+            networkMap.insert("comport", m_portGroup->checkedAction()->iconText());
+            networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->iconText());
+        }
+        else
+            return;
+    }
+    emit connectToNetwork(networkMap);
+}
+
 void MainWindow::addDeviceWidget(DeviceWidget* widget) {
     if(!m_workWidgets.contains(widget)) {
         m_workWidgets.append(widget);
@@ -109,11 +146,42 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
 
 
 void MainWindow::setComPorts(const QStringList& portList) {
+    ui->menuPorts->clear();
+    if (m_portGroup)
+        m_portGroup->deleteLater();
+    m_portGroup = new QActionGroup(this);
+    for(const auto& port : portList) {
+        auto action = new QAction(port);
+        action->setCheckable(true);
+        m_portGroup->addAction(action);
+        ui->menuPorts->addAction(action);
+        if (port == AppSettings::getComPort())
+            action->setChecked(true);
+        //m_portGroup->addAction(ui->menuPorts->addAction(port))->setCheckable(true);
+    }
+    ui->menuPorts->addSeparator();
+    connect(ui->menuPorts->addAction("Refresh"), &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
+
+
     ui->connectionWidget->setPortList(portList);
 }
 
 void MainWindow::setBaudRates(const QStringList& baudsList) {
-    ui->connectionWidget->setBaudList(baudsList);
+    //ui->connectionWidget->setBaudList(baudsList);
+    ui->menuBaudrates->clear();
+    if (m_baudrateGroup)
+        m_baudrateGroup->deleteLater();
+    m_baudrateGroup = new QActionGroup(this);
+    QStringList baudrates = baudsList;
+    for(const auto& baudrate : baudrates) {
+        auto action = new QAction(baudrate);
+        action->setCheckable(true);
+        m_baudrateGroup->addAction(action);
+        ui->menuBaudrates->addAction(action);
+        if (baudrate.toUInt() == AppSettings::getComBaudrate())
+            action->setChecked(true);
+        //m_baudrateGroup->addAction(ui->menuBaudrates->addAction(baudrate))->setCheckable(true);
+    }
 }
 
 //void MainWindow::addSettingsCntrl(AppSettings* settings) {
@@ -138,7 +206,8 @@ void MainWindow::setConnectMessage(QString msg) {
 
 void MainWindow::setConnected(bool isConnected) {
     ui->connectionWidget->setConnected(isConnected);
-
+    ui->menuPorts->setEnabled(isConnected);
+    ui->menuBaudrates->setEnabled(isConnected);
     if(!isConnected) {
         qDeleteAll(m_workWidgets);
         m_workWidgets.clear();
