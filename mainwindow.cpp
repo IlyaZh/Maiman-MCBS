@@ -113,10 +113,6 @@ void MainWindow::connectTriggered(){
     type = NetworkType::SerialPort;
     networkMap.insert("type",  static_cast<quint8>(type));
     if (ui->actionConnect->isChecked() and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
-        if (ui->actionConnect->isChecked()){
-            ui->menuPorts->setEnabled(false);
-            ui->menuBaudrates->setEnabled(false);
-        }
         if (type == NetworkType::Tcp){
             networkMap.insert("host", "127.0.1.0");
             networkMap.insert("port", "9999");
@@ -127,10 +123,6 @@ void MainWindow::connectTriggered(){
         }
         else
             return;
-    }
-    else{
-        ui->menuPorts->setEnabled(true);
-        ui->menuBaudrates->setEnabled(true);
     }
     emit connectToNetwork(networkMap);
 }
@@ -155,7 +147,7 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
 
 void MainWindow::setComPorts(const QStringList& portList) {
     ui->menuPorts->clear();
-    if (!m_portGroup)
+    if (m_portGroup)
         m_portGroup->deleteLater();
     m_portGroup = new QActionGroup(this);
     for(const auto& port : portList) {
@@ -177,7 +169,7 @@ void MainWindow::setComPorts(const QStringList& portList) {
 void MainWindow::setBaudRates(const QStringList& baudsList) {
     //ui->connectionWidget->setBaudList(baudsList);
     ui->menuBaudrates->clear();
-    if (!m_baudrateGroup)
+    if (m_baudrateGroup)
         m_baudrateGroup->deleteLater();
     m_baudrateGroup = new QActionGroup(this);
     QStringList baudrates = baudsList;
@@ -214,17 +206,11 @@ void MainWindow::setConnectMessage(QString msg) {
 
 void MainWindow::setConnected(bool isConnected) {
     ui->connectionWidget->setConnected(isConnected);
-
+    ui->menuPorts->setEnabled(isConnected);
+    ui->menuBaudrates->setEnabled(isConnected);
     if(!isConnected) {
-        ui->menuPorts->setEnabled(true);
-        ui->menuBaudrates->setEnabled(true);
         qDeleteAll(m_workWidgets);
         m_workWidgets.clear();
-    }
-    else
-    {
-        ui->menuPorts->setEnabled(false);
-        ui->menuBaudrates->setEnabled(false);
     }
 }
 
