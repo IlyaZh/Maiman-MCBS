@@ -35,14 +35,16 @@ public slots:
     void setStatusMessage(const QString& msg, int timeout = 10);
 private slots:
     void adjust(const QSize& size = QSize());
-
+    void connectTriggered();
 private:
     Ui::MainWindow *ui;
 //    MainWindowControllerInterface* m_cntrl;
 //    QVector<QString> *m_portList;
 //    QVector<int> *m_baudList;
     QVector<DeviceWidget*> m_workWidgets;
-    QVBoxLayout* m_workFieldLayout;
+    QGridLayout* m_workFieldLayout;
+    QPointer<QActionGroup> m_portGroup;
+    QPointer<QActionGroup> m_baudrateGroup;
 
 protected:
     void closeEvent(QCloseEvent *event) override;

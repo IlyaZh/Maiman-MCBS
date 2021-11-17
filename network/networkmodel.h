@@ -39,6 +39,7 @@ public:
     void stop();
     void rescanNetwork();
 
+
 public slots:
     void dataOutcome(quint8 addr, quint16 reg, quint16 value);
     void temperatureUnitsChanged(Const::TemperatureUnitId id);
@@ -48,7 +49,7 @@ private slots:
     void errorOccured(const QString& msg);
     void sendTimeout();
     void delayTimeout();
-
+    void getBaudrate();
 
 private:
     DeviceFactory& m_deviceModelFactory;

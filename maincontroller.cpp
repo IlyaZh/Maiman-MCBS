@@ -10,6 +10,8 @@ MainController::MainController(MainWindow& window, NetworkModel& networkModel, Q
     connect(&window, &MainWindow::connectToNetwork, this, &MainController::connectToNetwork);
     connect(&window, &MainWindow::refreshComPortsSignal, this, &MainController::refreshComPorts);
     connect(&window, &MainWindow::tempratureUnitsChanged, &m_network, &NetworkModel::temperatureUnitsChanged);
+    refreshComPorts();
+
 }
 
 
@@ -17,18 +19,18 @@ MainController::MainController(MainWindow& window, NetworkModel& networkModel, Q
 
 void MainController::refreshComPorts() {
     QStringList ports;
-    const auto availPorts = QSerialPortInfo::availablePorts();
-    for(const auto& port : availPorts) {
+    const auto availablePorts = QSerialPortInfo::availablePorts();
+    for(const auto& port : availablePorts) {
         ports << port.portName();
     }
     m_window.setComPorts(ports);
+
 }
 
 void MainController::connectToNetwork(QVariant value) {
     AppSettings::setNetworkData(value);
 
     QVariantMap portSettings = value.toMap();
-
     if(m_network.isStart()) {
         m_network.stop();
         m_device->close();
@@ -44,6 +46,8 @@ void MainController::connectToNetwork(QVariant value) {
             m_network.start(*m_device);
         } else if(type == NetworkType::SerialPort) {
             m_device = new DataSource;
+            AppSettings::setComPort(portSettings["comport"].toString());
+            AppSettings::setComBaudrate(portSettings["baudrate"].toInt());
             m_device->setSettings(type, portSettings["comport"], portSettings["baudrate"]);
             m_device->open();
             m_window.setConnected(m_device->isOpen());

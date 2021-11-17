@@ -20,6 +20,9 @@ public:
     QStringList getBaudrate();
     const QMultiMap<uint, QString>& getCommonDeviceIDs() const;
 
+signals:
+    void parsingIsFinished();
+
 private slots:
     void parsingFinished();
     void threadError(const QString&);
