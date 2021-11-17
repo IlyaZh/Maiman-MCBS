@@ -1,12 +1,15 @@
 #ifndef DATASOURCE_H
 #define DATASOURCE_H
 
-#include <QObject>
-#include <QSerialPort>
-#include <QTcpSocket>
-#include <QIODevice>
-#include <QPointer>
-#include <QScopedPointer>
+#include <QtCore>
+#include <QtNetwork>
+#include <QtSerialPort>
+//#include <QObject>
+//#include <QSerialPort>
+//#include <QTcpSocket>
+//#include <QIODevice>
+//#include <QPointer>
+//#include <QScopedPointer>
 
 enum class NetworkType { None, Tcp, SerialPort };
 

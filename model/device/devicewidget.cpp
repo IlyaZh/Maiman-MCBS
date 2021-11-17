@@ -58,7 +58,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
     connect(m_hideControlsButton, &QPushButton::clicked, this, &DeviceWidget::hideControlsButtonClicked);
     m_widgetLayout->addWidget(m_hideControlsButton, 0, 0, Qt::AlignCenter);
-    qDebug() << "hine button" << 0 << 0;
 
     // Инициализация виджетов
     QVector<ReadParameterWidget*> readOnlyWidgets;
@@ -76,7 +75,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             auto hiddenWidget = new HiddenWidget(this);
             auto widget = new ControlWidget(control.name, valueCmd, maxCmd, minCmd, realCmd, hiddenWidget);
             m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
-            qDebug() << "add control widget" << 1 << m_widgets.size();
             hiddenWidget->addWidget(widget);
             if(control.name == "current")
                 hiddenWidget->setPinned(true);
@@ -91,7 +89,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         }
         readOnlyWidgets.clear();
         m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
-        qDebug() << "add read only widget" << 1 << m_widgets.size();
         m_widgets.append(hiddenWidget);
     }
 
@@ -108,7 +105,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     }
     if(hiddenWidget) {
         m_widgetLayout->addWidget(hiddenWidget.data(), 1, m_widgets.size());
-        qDebug() << "addHidenWidget" << 1 << m_widgets.size();
         m_widgets.append(hiddenWidget);
     }
 
@@ -137,7 +133,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         pinButton->setCheckable(true);
         m_pinButtons.append(pinButton);
         m_widgetLayout->addWidget(pinButton, 0, i, Qt::AlignRight);
-        qDebug() << "add pin button" << 0 << i;
         connect(pinButton, &QPushButton::clicked, this, [i, this](bool checked){
             pinButtonClicked(i, checked);
         });
@@ -251,14 +246,12 @@ void DeviceWidget::adjust() {
     this->adjustSize();
     this->setMinimumSize(this->size());
 
-    qDebug() << "DeviceWidget::adjust()" << m_description.name << size() << sizeHint();
-
     emit sizeChanged(this->size());
 }
 
-void DeviceWidget::resizeEvent(QResizeEvent *event) {
-    qDebug() << m_description.name <<  "old size = " << event->oldSize() << "new size=" << this->size() << "minsize=" << this->minimumSize();
-}
+//void DeviceWidget::resizeEvent(QResizeEvent *event) {
+
+//}
 
 //void DeviceWidget::setValue(quint16 reg, int value) {}
 
@@ -331,7 +324,7 @@ void DeviceWidget::hideControlsButtonClicked(bool flag) {
 }
 
 void DeviceWidget::pinButtonClicked(int idx, bool state) {
-    qDebug() << "pinButtonClicked" << idx << state;
+//    qDebug() << "pinButtonClicked" << idx << state;
     if(idx < m_widgets.count()) {
         auto widget = m_widgets.at(idx);
         widget->setPinned(state);

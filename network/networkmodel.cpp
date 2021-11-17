@@ -1,9 +1,15 @@
 #include "networkmodel.h"
+#
 #include <QDebug>
 #include "model/device/devicepollrequest.h"
 #include <QTcpSocket>
 #include "datasource.h"
 #include <QDateTime>
+#include "protocols/modbusprotocol.h"
+#include "SoftProtocol.h"
+#include "device/devicemodel.h"
+#include "model/devicefactory.h"
+#include "mainfacade.h"
 
 const quint16 NetworkModel::TIMEOUT_MS = 50*10;
 const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug замени
@@ -17,10 +23,10 @@ NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& prot
     m_bIsStart = false;
     m_deviceModelFactory.start();
     connect(&m_deviceModelFactory,&DeviceFactory::parsingIsFinished, this, &NetworkModel::getBaudrate);
-//    connect(&m_delayTimer, &QTimer::timeout, this, &NetworkModel::delayTimeout);
+    //    connect(&m_delayTimer, &QTimer::timeout, this, &NetworkModel::delayTimeout);
     connect(&m_timeoutTimer, &QTimer::timeout, this, &NetworkModel::sendTimeout);
 
-//    m_delayTimer.setSingleShot(true);
+    //    m_delayTimer.setSingleShot(true);
     m_timeoutTimer.setSingleShot(true);
 }
 
@@ -48,7 +54,7 @@ void NetworkModel::start(DataSource& networkDevice)
     qDebug()<<m_deviceModelFactory.getBaudrate();
     if(!m_port.isNull()) {
         m_port->disconnect();
-//        m_port->deleteLater();
+        //        m_port->deleteLater();
     }
     m_port.reset(&networkDevice);
     connect(m_port.get(), &DataSource::bytesWritten, this, &NetworkModel::bytesWritten);
@@ -122,9 +128,30 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
 void NetworkModel::tryToSend() {
     if(!m_portIsBusy) {
         m_portIsBusy = true;
-        delayTimeout(); // try to send data immediately
-//        m_delayTimer.setInterval(m_delayMs);
-//        m_delayTimer.start();
+        if(!m_port.isNull()) {
+            if (!m_priorityQueue.isEmpty()) {
+                m_lastTxPackage = m_priorityQueue.dequeue();
+            } else if (!m_queue.isEmpty()) {
+                m_lastTxPackage = m_queue.dequeue();
+            } else {
+                // poll devices state
+                for(const auto& dev : qAsConst(m_devices)) {
+                    const DevicePollRequest request = dev->nextPollRequest();
+                    if(request.code != 0) {
+                        m_queue.enqueue(m_protocol.getDataValue(request.addr, request.code, request.count));
+                    }
+                }
+                if(!m_queue.isEmpty())
+                    m_lastTxPackage = m_queue.dequeue();
+                //            tryToSend();
+                //                delayTimeout();
+            }
+            if(!m_lastTxPackage.isEmpty()) {
+                m_port->write(m_lastTxPackage);
+                m_waitForBytes = m_protocol.waitForBytes(m_lastTxPackage);
+            }
+            //        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "Write! " << m_lastTxPackage.toHex(' ');
+        }
     }
 
 }
@@ -148,34 +175,44 @@ void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
 
 // private slots
 void NetworkModel::readyRead() {
-    QByteArray rxPacket = m_port->readAll();
-//    qDebug() << "RX" << rxPacket.toHex(' ');
-    m_timeoutTimer.stop();
-    SoftProtocol::DataVector result = m_protocol.execute(rxPacket, m_lastTxPackage);
+    m_rxPacket.append(m_port->readAll());
+    if(m_rxPacket.size() >= m_waitForBytes) {
+        //    qDebug() << "RX" << rxPacket.toHex(' ');
+        m_timeoutTimer.stop();
+        SoftProtocol::DataVector result = m_protocol.execute(m_rxPacket, m_lastTxPackage);
 
-    m_lastTxPackage.clear();
-    for(const auto& item : qAsConst(result)) {
-        if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
-            initDevice(item.addr, item.value);
+        m_lastTxPackage.clear();
+        if(m_protocol.isError()) {
+            quint8 addr = static_cast<quint8>(m_rxPacket.at(0));
+            if(m_devices.contains(addr)) {
+                qDebug() << addr << "UNLINK";
+                m_devices[addr]->unlink();
+            }
         } else {
-            if(m_devices.contains(item.addr)) {
-                m_devices[item.addr]->dataIncome(item.reg, item.value);
+            for(const auto& item : qAsConst(result)) {
+                if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
+                    initDevice(item.addr, item.value);
+                } else {
+                    if(m_devices.contains(item.addr)) {
+                        m_devices[item.addr]->dataIncome(item.reg, item.value);
+                    }
+                }
             }
         }
+        m_rxPacket.clear();
+        m_portIsBusy = false;
+        tryToSend();
     }
-    m_portIsBusy = false;
-    tryToSend();
 }
 
 void NetworkModel::bytesWritten(qint64 bytes) {
     m_bytesWritten += bytes;
     if(m_bytesWritten >= m_lastTxPackage.size()) {
-//        qDebug() << "Written bytes";
+        //        qDebug() << "Written bytes";
         m_bytesWritten = 0;
         if(m_protocol.needWaitForAnswer(m_lastTxPackage)) {
-            m_timeoutTimer.setInterval(m_timeoutMs);
-            m_timeoutTimer.start();
-//            qDebug() << "Start interval timeout";
+            m_timeoutTimer.start(m_timeoutMs);
+            //            qDebug() << "Start interval timeout";
         } else {
             tryToSend();
         }
@@ -189,35 +226,44 @@ void NetworkModel::errorOccured(const QString& msg) {
 void NetworkModel::sendTimeout() {
     m_timeoutTimer.stop();
     m_portIsBusy = false;
+
+    if(!m_lastTxPackage.isEmpty()) {
+        quint8 addr = static_cast<quint8>(m_lastTxPackage.at(0));
+        auto device = m_devices.value(addr);
+        if(device) {
+            device->unlink();
+        }
+    }
     m_lastTxPackage.clear();
-//    qDebug() << "Timeout";
+
+    //    qDebug() << "Timeout";
     tryToSend();
 }
 
-void NetworkModel::delayTimeout() {
-//    m_delayTimer.stop();
-    if(!m_port.isNull()) {
-        if (!m_priorityQueue.isEmpty()) {
-            m_lastTxPackage = m_priorityQueue.dequeue();
-        } else if (!m_queue.isEmpty()) {
-            m_lastTxPackage = m_queue.dequeue();
-        } else {
-            // poll devices state
-            for(const auto& dev : qAsConst(m_devices)) {
-                const DevicePollRequest request = dev->nextPollRequest();
-                if(request.code != 0) {
-                    m_queue.enqueue(m_protocol.getDataValue(request.addr, request.code, request.count));
-                }
-            }
-            //            tryToSend();
-            delayTimeout();
-            return;
-        }
+//void NetworkModel::delayTimeout() {
+////    m_delayTimer.stop();
+//    if(!m_port.isNull()) {
+//        if (!m_priorityQueue.isEmpty()) {
+//            m_lastTxPackage = m_priorityQueue.dequeue();
+//        } else if (!m_queue.isEmpty()) {
+//            m_lastTxPackage = m_queue.dequeue();
+//        } else {
+//            // poll devices state
+//            for(const auto& dev : qAsConst(m_devices)) {
+//                const DevicePollRequest request = dev->nextPollRequest();
+//                if(request.code != 0) {
+//                    m_queue.enqueue(m_protocol.getDataValue(request.addr, request.code, request.count));
+//                }
+//            }
+//            //            tryToSend();
+//            delayTimeout();
+//            return;
+//        }
 
-        m_port->write(m_lastTxPackage);
-//        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "Write! " << m_lastTxPackage.toHex(' ');
-    }
-}
+//        m_port->write(m_lastTxPackage);
+////        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "Write! " << m_lastTxPackage.toHex(' ');
+//    }
+//}
 // =====================
 
 

@@ -55,7 +55,7 @@ bool HiddenWidget::isShown() const {
 
 void HiddenWidget::setShown(bool show) {
     m_isVisible = show;
-    for(auto widget : m_widgets)
+    for(auto widget : qAsConst(m_widgets))
         widget->setVisible(m_isVisible);
     this->adjustSize();
 }

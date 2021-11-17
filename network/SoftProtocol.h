@@ -8,7 +8,7 @@
 #include <QQueue>
 #include <QVector>
 #include "datasource.h"
-#include "interfaces/ProtocolObserverInterface.h"
+//#include "interfaces/ProtocolObserverInterface.h"
 
 struct SoftProtocolData {
     quint8 addr;
@@ -38,6 +38,7 @@ public:
     virtual QByteArray getDataValue(quint8 addr, quint16 reg, quint8 count = 1) = 0;
     virtual DataVector execute(const QByteArray& rxPackage, const QByteArray& lastTxPackage) = 0;
     virtual bool needWaitForAnswer(const QByteArray& package) = 0;
+    virtual qint64 waitForBytes(const QByteArray& package) = 0;
     bool isError();
     QString errorString();
 

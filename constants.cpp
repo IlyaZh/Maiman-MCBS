@@ -56,7 +56,7 @@ const QString Const::DURATION_COMMAND = "0200";
 // Длительность "покраснения" поля ввода параметров при неверном значении
 const int Const::CURR_VALUE_BG_ERROR_TIMEOUT = 1000; // ms
 
-const unsigned int Const::COM_PORT_TIMEOUT = 100; // [ms]
+const unsigned int Const::ComPortTimeout = 100; // [ms]
 
 const quint16 Const::COM_COMMAND_SEND_DELAY = 150; // ms
 

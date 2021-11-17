@@ -19,7 +19,7 @@ struct DeviceDelays {
     DeviceDelays(quint16 stopDelayMs = COM_STOP_DELAY_MS,
                  quint16 minCommandDelayMs = COM_COMMAND_MIN_SEND_DELAY,
                  quint16 maxCommandDelayMs = COM_COMMAND_MAX_SEND_DELAY,
-                 quint16 timeout_ms = Const::COM_PORT_TIMEOUT)
+                 quint16 timeout_ms = Const::ComPortTimeout)
         : stopDelayMs(stopDelayMs),
           minCommandDelayMs(minCommandDelayMs),
           maxCommandDelayMs(maxCommandDelayMs),

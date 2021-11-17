@@ -12,8 +12,7 @@ class GuiFactory : public QObject
 {
     Q_OBJECT
 public:
-    GuiFactory(const QString& fileName, QObject *parent = nullptr);
-    ~GuiFactory();
+    explicit GuiFactory(const QString& fileName, QObject *parent = nullptr);
     void start();
     DeviceWidget* createWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
 

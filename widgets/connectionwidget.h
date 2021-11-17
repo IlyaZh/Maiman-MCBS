@@ -5,6 +5,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include "network/networkmodel.h"
+#include "datasource.h"
 
 namespace Ui {
 class ConnectionWidget;

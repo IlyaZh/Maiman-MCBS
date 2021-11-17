@@ -1,14 +1,16 @@
 #ifndef APPSETTINGS_H
 #define APPSETTINGS_H
 
-#include <QObject>
-#include <QSettings>
-#include <QPoint>
-#include <QSize>
-#include <QDir>
+#include <QtCore>
+
+//#include <QObject>
+//#include <QSettings>
+//#include <QPoint>
+//#include <QSize>
+//#include <QDir>
 #include "constants.h"
 #include "datasource.h"
-#include <QScopedPointer>
+//#include <QScopedPointer>
 
 typedef struct NetworkData_s {
     NetworkType type;

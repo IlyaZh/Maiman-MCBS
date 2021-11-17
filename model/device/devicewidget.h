@@ -113,7 +113,7 @@ private:
 
     void paintEvent(QPaintEvent*) override;
     void adjust();
-    void resizeEvent(QResizeEvent *event) override;
+//    void resizeEvent(QResizeEvent *event) override;
 
     static const QString linkStyleOn;
     static const QString linkStyleOff;

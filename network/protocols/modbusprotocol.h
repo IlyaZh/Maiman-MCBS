@@ -15,6 +15,7 @@ public:
     virtual QByteArray getDataValue(quint8 addr, quint16 reg, quint8 count = 1) override;
     virtual DataVector execute(const QByteArray& rxPackage, const QByteArray& lastTxPackage) override;
     virtual bool needWaitForAnswer(const QByteArray& package) override;
+    virtual qint64 waitForBytes(const QByteArray& package) override;
 private:
     static const QVector<quint8> CRC_HTable;
     static const QVector<quint8> CRC_LTable;

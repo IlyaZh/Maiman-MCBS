@@ -6,10 +6,6 @@ XmlParser::XmlParser(const QByteArray& dataArray, QObject *parent) :
 {
 }
 
-XmlParser::~XmlParser() {
-}
-
-
 bool XmlParser::start() {
         QXmlStreamReader* xml = new QXmlStreamReader(m_data);
 
@@ -52,7 +48,7 @@ TreeItem* XmlParser::parseTag(QXmlStreamReader* xml) {
     QVariant* variant = new QVariant(0);
     TreeItem* item = new TreeItem(tagName.toString(), variant, items);
 
-    for(auto attr : xml->attributes()) {
+    for(const auto &attr : xml->attributes()) {
         items->append(parseAttribs(attr.name().toString(), attr.value().toString()));
     }
 

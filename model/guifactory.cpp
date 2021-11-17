@@ -10,7 +10,6 @@ GuiFactory::GuiFactory(const QString& fileName, QObject *parent) :
 
 }
 
-GuiFactory::~GuiFactory() {}
 
 void GuiFactory::start() {
     if(!m_parseWorker.isNull()) m_parseWorker->deleteLater();

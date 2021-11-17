@@ -230,12 +230,12 @@ void MainWindow::setStatusMessage(const QString& msg, int timeout) {
 //}
 
 void MainWindow::adjust(const QSize& size) {
-    ui->workFieldWidget->adjustSize();
-    ui->workFieldWidget->setMinimumSize(ui->workFieldWidget->size());
-    if(!size.isEmpty()) {
-        ui->scrollArea->setMinimumWidth(size.width()+2*ui->scrollArea->frameWidth()+ui->scrollArea->verticalScrollBar()->sizeHint().width());
-    }
-    ui->workFieldWidget->updateGeometry();
+//    ui->workFieldWidget->adjustSize();
+//    ui->workFieldWidget->setMinimumSize(ui->workFieldWidget->size());
+//    if(!size.isEmpty()) {
+//        ui->scrollArea->setMinimumWidth(size.width()+2*ui->scrollArea->frameWidth()+ui->scrollArea->verticalScrollBar()->sizeHint().width());
+//    }
+//    ui->workFieldWidget->updateGeometry();
 }
 
 // protected methods

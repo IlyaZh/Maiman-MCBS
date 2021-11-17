@@ -48,7 +48,7 @@ struct Const {
     // Длительность "покраснения" поля ввода параметров при неверном значении
     static const int CURR_VALUE_BG_ERROR_TIMEOUT;
 
-    static const unsigned int COM_PORT_TIMEOUT;
+    static const unsigned int ComPortTimeout;
 
     static const quint16 COM_COMMAND_SEND_DELAY;
 

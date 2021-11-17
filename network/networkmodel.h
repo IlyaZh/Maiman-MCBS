@@ -2,26 +2,18 @@
 #define NETWORKMODEL_H
 
 #include <QtWidgets>
-//#include <QObject>
-//#include <QPointer>
-//#include <QIODevice>
-//#include <QVector>
-#include "protocols/modbusprotocol.h"
-#include "interfaces/ProtocolObserverInterface.h"
-#include "SoftProtocol.h"
-#include "device/devicemodel.h"
-#include "model/devicefactory.h"
-//#include <QPointer>
-#include "mainfacade.h"
-#include "datasource.h"
 #include "constants.h"
-//#include <QQueue>
-//#include <QTimer>
-//#include <QSharedPointer>
 
 //#include "enums.h"
 
 class MainViewFacade;
+class DataSource;
+class MainFacade;
+class DeviceFactory;
+struct DeviceModel;
+class SoftProtocol;
+class ModbusProtocol;
+class Device;
 
 class NetworkModel :
         public QObject
@@ -48,7 +40,7 @@ private slots:
     void bytesWritten(qint64 bytes);
     void errorOccured(const QString& msg);
     void sendTimeout();
-    void delayTimeout();
+//    void delayTimeout();
     void getBaudrate();
 
 private:
@@ -67,6 +59,8 @@ private:
     QTimer m_delayTimer;
     int m_timeoutMs = 300;
     int m_delayMs = 0;
+    QByteArray m_rxPacket;
+    qint64 m_waitForBytes = 0;
 
     void clear();
     void initDevice(quint8 addr, quint16 id);
