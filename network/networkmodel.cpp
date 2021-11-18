@@ -232,6 +232,8 @@ void NetworkModel::sendTimeout() {
         auto device = m_devices.value(addr);
         if(device) {
             device->unlink();
+            device->destroy();
+            this->disconnect();
         }
     }
     m_lastTxPackage.clear();
