@@ -36,7 +36,6 @@ Device::~Device() {
 void Device::dataIncome(quint16 reg, quint16 value) {
     auto cmd = m_Commands.value(reg, nullptr);
     if(cmd) {
-        m_isLink = true;
         emit linkChanged(m_isLink);
         //        m_timer->stop();
         //        if(m_timeoutEnabled)
@@ -46,9 +45,9 @@ void Device::dataIncome(quint16 reg, quint16 value) {
     }
 }
 
-void Device::destroy() {
-    this->disconnect();
-}
+//void Device::destroy() {
+//    this->disconnect();
+//}
 
 QString Device::name() {
     return m_Name;
@@ -92,6 +91,10 @@ void Device::changeTemperatureUnit(Const::TemperatureUnitId id) {
 
 void Device::unlink() {
     m_isLink = false;
+    m_cmdRequests.clear();
+    for(auto& command : m_Commands.values()) {
+        disconnect(command.get(), &DevCommand::sendValueSignal, this, &Device::dataFromCommand);
+    }
     emit linkChanged(m_isLink);
 }
 
@@ -141,7 +144,8 @@ void Device::createCommandsRequests() {
 
 void Device::dataFromCommand(quint16 reg, quint16 value) {
     qDebug() << "DataFromCommand" << reg << value;
-    emit dataToModel(m_addr, reg, value);
+    if (m_isLink)
+        emit dataToModel(m_addr, reg, value);
 }
 
 //void Device::timeout() {

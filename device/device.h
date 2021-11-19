@@ -21,7 +21,7 @@ public:
     explicit Device(quint8 addr, const DeviceModel& config, QObject *parent = nullptr);
     ~Device();
     void dataIncome(quint16 reg, quint16 value);
-    void destroy();
+    //void destroy();
     QString name();
     quint16 id();
     quint8 addr();
