@@ -24,11 +24,11 @@ const QString DeviceWidget::linkStyleOff = "QLabel { \
         border-radius: 3px; \
 }";
 
-const QString DeviceWidget::idStyleOn = "QLabel { \
+const QString DeviceWidget:: labelEnableStyle = "QLabel { \
         color: rgb(255,255,255); \
 }";
 
-const QString DeviceWidget::idStyleOff = "QLabel { \
+const QString DeviceWidget::labelDisableStyle = "QLabel { \
     color: rgb(153,153,153); \
 }";
 
@@ -238,8 +238,8 @@ void DeviceWidget::setAddress(int addr) {
 
 void DeviceWidget::setLink(bool link) {
     ui->linkLabel->setStyleSheet(link ? linkStyleOn : linkStyleOff);
-    ui->idLabel->setStyleSheet(link ? idStyleOn : idStyleOff);
-    ui->modelLabel->setStyleSheet(link ? idStyleOn : idStyleOff);
+    ui->idLabel->setStyleSheet(link ? labelEnableStyle : labelDisableStyle);
+    ui->modelLabel->setStyleSheet(link ? labelEnableStyle : labelDisableStyle);
 }
 
 // private methods

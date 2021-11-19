@@ -117,8 +117,8 @@ private:
 
     static const QString linkStyleOn;
     static const QString linkStyleOff;
-    static const QString idStyleOn;
-    static const QString idStyleOff;
+    static const QString labelEnableStyle;
+    static const QString labelDisableStyle;
 
 private slots:
     void setLaserButton(quint16 value);
