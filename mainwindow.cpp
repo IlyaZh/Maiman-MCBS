@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , m_portGroup(new QActionGroup(this))
     , m_baudrateGroup(new QActionGroup(this))
-    , m_updater(new UpdateWidget)
+    , m_updater(new UpdateWidget(this))
       //      m_cntrl(nullptr),
 //      m_portList(nullptr),
 //      m_baudList(nullptr)
