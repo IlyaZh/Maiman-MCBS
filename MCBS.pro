@@ -1,4 +1,4 @@
-QT       += core gui network xml testlib concurrent serialport
+QT       += core gui network xml testlib concurrent serialport network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 #lessThan(QT_MAJOR_VERSION, 6): QT += serialport
@@ -24,6 +24,8 @@ TEMPLATE = app
 
 SOURCES += \
     DebugMode.cpp \
+    FileDownloader.cpp \
+    UpdateDownloader.cpp \
     appsettings.cpp \
     constants.cpp \
     datasource.cpp \
@@ -39,6 +41,7 @@ SOURCES += \
     mainfacade.cpp \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
+    updatewidget.cpp \
     widgets/connectionwidget.cpp \
     model/device/devicewidget.cpp \
     model/devicefactory.cpp \
@@ -55,6 +58,9 @@ SOURCES += \
 
 HEADERS += \
     DebugMode.h \
+    FileDownloader.h \
+    UpdateDownloader.h \
+    UpdateDownloader_global.h \
     appsettings.h \
     constants.h \
     datasource.h \
@@ -70,6 +76,7 @@ HEADERS += \
     mainfacade.h \
     mainwindow.h \
     model/device/HiddenWidget.h \
+    updatewidget.h \
     widgets/connectionwidget.h \
     model/device/devicepollrequest.h \
     model/device/devicewidget.h \
@@ -82,7 +89,8 @@ HEADERS += \
     tests/test_modbus/test_modbus.h \
     widgets/binarywidget.h \
     widgets/controlwidget.h \
-    widgets/readparameterwidget.h
+    widgets/readparameterwidget.h \
+    version.h
 
 FORMS += \
     mainwindow.ui \
@@ -104,3 +112,7 @@ RESOURCES += \
     resources.qrc
 
 RC_ICONS = icon.ico
+
+version.input = version.h.in
+version.output = ../Maiman-MCBS-debug/version.h
+QMAKE_SUBSTITUTES += version
