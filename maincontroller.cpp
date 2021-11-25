@@ -11,8 +11,6 @@ MainController::MainController(MainWindow& window, NetworkModel& networkModel, Q
     connect(&window, &MainWindow::refreshComPortsSignal, this, &MainController::refreshComPorts);
     connect(&window, &MainWindow::tempratureUnitsChanged, &m_network, &NetworkModel::temperatureUnitsChanged);
     refreshComPorts();
-
-    connect(&m_window,&MainWindow::finishedDownloadUpdate, this, &MainController::finishedDownloadUpdate);
 }
 
 
@@ -57,6 +55,3 @@ void MainController::connectToNetwork(QVariant value) {
     }
 }
 
-void MainController::finishedDownloadUpdate(){
-    qDebug()<<"Download end";
-}

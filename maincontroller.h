@@ -16,7 +16,6 @@ public:
 private slots:
     void refreshComPorts();
     void connectToNetwork(QVariant value);
-    void finishedDownloadUpdate();
 
 signals:
 

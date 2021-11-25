@@ -19,7 +19,6 @@ private:
 
 signals:
     void updateApp(QCoreApplication* app);
-    void downloadApp();
     void downloadFinished();
 
 private slots:

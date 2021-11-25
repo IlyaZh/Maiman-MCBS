@@ -7,7 +7,8 @@
 //class MainWindowControllerInterface;
 //#include <QtWidgets>
 #include "constants.h"
-#include "updatewidget.h"
+
+class UpdateWidget;
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -30,11 +31,12 @@ signals:
     void refreshComPortsSignal();
     void connectToNetwork(QVariant value);
     void tempratureUnitsChanged(Const::TemperatureUnitId id);
-    void finishedDownloadUpdate();
+
 public slots:
     void setConnectMessage(QString msg);
     void setConnected(bool flag);
     void setStatusMessage(const QString& msg, int timeout = 10);
+    void updateDownloadingfinished();
 private slots:
     void adjust(const QSize& size = QSize());
     void connectTriggered();
@@ -47,7 +49,7 @@ private:
     QGridLayout* m_workFieldLayout;
     QPointer<QActionGroup> m_portGroup;
     QPointer<QActionGroup> m_baudrateGroup;
-    QScopedPointer<UpdateWidget> m_updater;
+    UpdateWidget* m_updater;
 
 protected:
     void closeEvent(QCloseEvent *event) override;

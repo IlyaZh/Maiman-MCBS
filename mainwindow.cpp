@@ -6,8 +6,8 @@
 #include <QtWidgets>
 #include <QSerialPortInfo>
 #include <QDebug>
+#include "updatewidget.h"
 
-class UpdateWidget;
 //const QString MainWindow::SettingsPath {"window/"};
 
 MainWindow::MainWindow(QWidget *parent)
@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , m_portGroup(new QActionGroup(this))
     , m_baudrateGroup(new QActionGroup(this))
-    , m_updater(new UpdateWidget(this))
+    , m_updater(new UpdateWidget)
       //      m_cntrl(nullptr),
 //      m_portList(nullptr),
 //      m_baudList(nullptr)
@@ -99,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent)
         emit tempratureUnitsChanged(id);
 
     });
-    connect(m_updater.data(),&UpdateWidget::downloadFinished,this,&MainWindow::finishedDownloadUpdate);
+    connect(m_updater,&UpdateWidget::downloadFinished,this,&MainWindow::updateDownloadingfinished);
 }
 
 MainWindow::~MainWindow()
@@ -261,4 +261,8 @@ void MainWindow::setStatusBarMessage(QString message){
     ui->statusbar->showMessage(message, Const::ConsoleMaxLinesToShow);
 }
 
+void MainWindow::updateDownloadingfinished(){
+    ui->actionConnect->setCheckable(false);
+    qDebug()<<"start update";
+}
 

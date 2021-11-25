@@ -33,7 +33,7 @@ const int Const::ConsoleMaxLinesToShow = 1000;
 
 const int Const::MaxFilesInMenu = 5;
 
-const int Const::StatusbarMessageTimeout = 5000; // ms
+const int Const::StatusbarMessageTimeout = 10000; // ms
 
 //const QString Const::TemperatureUnitDefault = "C";
 
