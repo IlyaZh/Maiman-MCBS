@@ -24,8 +24,8 @@ TEMPLATE = app
 
 SOURCES += \
     DebugMode.cpp \
-    FileDownloader.cpp \
-    UpdateDownloader.cpp \
+    updater/FileDownloader.cpp \
+    updater/UpdateDownloader.cpp \
     appsettings.cpp \
     constants.cpp \
     datasource.cpp \
@@ -58,9 +58,8 @@ SOURCES += \
 
 HEADERS += \
     DebugMode.h \
-    FileDownloader.h \
-    UpdateDownloader.h \
-    UpdateDownloader_global.h \
+    updater/FileDownloader.h \
+    updater/UpdateDownloader.h \
     appsettings.h \
     constants.h \
     datasource.h \
@@ -105,6 +104,8 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+INCLUDEPATH += updater/
 
 #SUBDIRS += tests
 

@@ -185,7 +185,6 @@ void NetworkModel::readyRead() {
         if(m_protocol.isError()) {
             quint8 addr = static_cast<quint8>(m_rxPacket.at(0));
             if(m_devices.contains(addr)) {
-                qDebug() << addr << "UNLINK";
                 m_devices[addr]->unlink();
             }
         } else {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "UpdateDownloader_global.h"
 #include <QObject>
 #include <QtNetwork>
 #include "FileDownloader.h"
@@ -37,6 +36,9 @@ class UpdateDownloader : public QObject
     bool needToDownload();
     bool tryToUpdate(QFile* file);
 public:
+    /*!
+     * \brief The UpdaterErrorFlag enum
+     */
     enum UpdaterErrorFlag {
         NoError = 0
     };

@@ -10,6 +10,11 @@
 #include <QString>
 #include <QCryptographicHash>
 
+/*!
+ * \brief UpdateDownloader::bytesToString
+ * \param value
+ * \return
+ */
 QString UpdateDownloader::bytesToString(qint64 value) {
     static const QString units = "KMGT";
     int idx = -1;
@@ -25,6 +30,11 @@ QString UpdateDownloader::bytesToString(qint64 value) {
 
 }
 
+/*!
+ * \brief UpdateDownloader::UpdateDownloader
+ * \param versionFileUrl
+ * \param parent
+ */
 UpdateDownloader::UpdateDownloader(const QString& versionFileUrl, QObject* parent) :
     QObject(parent),
     m_versionFile(versionFileUrl),
@@ -36,14 +46,26 @@ UpdateDownloader::UpdateDownloader(const QString& versionFileUrl, QObject* paren
 }
 
 // TODO:: Добавиь где надо const к функциям
+/*!
+ * \brief UpdateDownloader::errorString
+ * \return
+ */
 QString UpdateDownloader::errorString() {
     return m_errorString;
 }
 
+/*!
+ * \brief UpdateDownloader::error
+ * \return
+ */
 UpdateDownloader::UpdaterError UpdateDownloader::error() {
     return m_error;
 }
 
+/*!
+ * \brief UpdateDownloader::checkForUpdate
+ * \param releaseNum
+ */
 void UpdateDownloader::checkForUpdate(qint64 releaseNum) {
     qDebug() << "checkForUpdate()";
     m_releaseNum = releaseNum;
@@ -52,13 +74,16 @@ void UpdateDownloader::checkForUpdate(qint64 releaseNum) {
     startDownload(m_versionFile);
 }
 
+/*!
+ * \brief UpdateDownloader::download
+ */
 void UpdateDownloader::download() {
     qDebug() << "download()";
     if(m_state == State::Available && !m_installerPath.isEmpty()) {
         m_queue = FileQueue::Installer;
         QString filePath = m_downloader->globaltoLocalPath(m_installerPath);
 
-        QScopedPointer<QFile> file(new QFile(filePath));
+        QSharedPointer<QFile> file(new QFile(filePath));
         qDebug() << "download() check " << filePath;
         if(!tryToUpdate(file.data())) {
             qDebug() << "DOWNLOAD ONE MORE TIME";
@@ -69,6 +94,10 @@ void UpdateDownloader::download() {
     }
 }
 
+/*!
+ * \brief UpdateDownloader::startUpdate
+ * \param app
+ */
 void UpdateDownloader::startUpdate(QCoreApplication* app) {
     qDebug() << "startUpdate";
     if(m_state == State::ReadyForInstall && !m_installerLocalPath.isEmpty()) {
@@ -102,6 +131,7 @@ void UpdateDownloader::slot_stepFinished() {
             m_state = State::None;
             return;
         }
+
         auto fileData = file->readAll();
         QJsonParseError jError;
         jError.error = QJsonParseError::NoError;
@@ -123,7 +153,7 @@ void UpdateDownloader::slot_stepFinished() {
                     m_installerPath = updateMap.value("installer").toString();
                     m_hash = updateMap.value("sha-256").toString();
                     m_state = State::Available;
-                }    
+                }
                 emit updatesAvailable(available);
             } else {
                 emit errorOccured("Wrong data received from update server");
@@ -163,9 +193,11 @@ void UpdateDownloader::startDownload(const QString& file) {
 }
 
 bool UpdateDownloader::hashIsEquals(QFile* file) {
-    if(!file->open(QIODevice::ReadOnly)) {
+    qDebug() << "hashIsEquals" << file->fileName() << file->isOpen();
+    if(!file->isOpen() && !file->open(QIODevice::ReadOnly)) {
         emit errorOccured(file->errorString());
-        m_state = State::None;
+        qDebug() << "hashIsEquals error" << file->errorString();
+//        m_state = State::None; // TODO: может откоментить обратно
         return false;
     }
     QCryptographicHash hash(QCryptographicHash::Sha256);

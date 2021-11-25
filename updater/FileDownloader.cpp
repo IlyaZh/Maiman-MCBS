@@ -16,6 +16,7 @@ FileDownloader::FileDownloader(const QString& url, const QString& dirName, QObje
         m_dir.mkpath(m_dir.absolutePath());
 
     m_manager->setTransferTimeout(10000);
+	m_manager->setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     m_filePath = globaltoLocalPath(m_url);
 }
@@ -32,7 +33,11 @@ QString FileDownloader::filePath() {
 
 QString FileDownloader::globaltoLocalPath(const QString& file) {
     QString fileName = file.split("/").last();
-    return m_dir.absolutePath()+QDir::separator()+fileName;
+    auto path = m_dir.absolutePath();
+    if(!path.endsWith("\\") || !path.endsWith("/")) {
+//        path.append(QDir::separator());
+    }
+    return path+fileName;
 }
 
 QByteArray FileDownloader::hash() {
@@ -66,8 +71,8 @@ void FileDownloader::start(DownloadType type) {
 
     QNetworkRequest request;
     request.setUrl(QUrl(m_url));
-    //request.setAttribute(QNetworkRequest::FollowRedirectsAttribute , true);
-    m_manager->setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
+    //request.setAttribute(QNetworkRequest::RedirectionTargetAttribute, true);
+
 
     switch(m_type) {
     case NoOverwrite:
@@ -86,6 +91,7 @@ void FileDownloader::start(DownloadType type) {
         m_tempFile.reset(new QTemporaryFile());
         break;
     }
+
 
     if(!m_tempFile->open(QIODevice::ReadWrite)) {
 #ifdef QT_DEBUG
