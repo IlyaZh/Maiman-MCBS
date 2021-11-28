@@ -1,6 +1,6 @@
 #include "updatewidget.h"
 
-const QString UpdateWidget::m_Url = "http://telegraphy.ru/updates.txt";
+const QString UpdateWidget::m_Url = "https://telegraphy.ru/updates.txt";
 
 UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent),
     m_downloader(new UpdateDownloader(m_Url))
@@ -8,6 +8,9 @@ UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent),
     connect(m_downloader,&UpdateDownloader::updatesAvailable,this,&UpdateWidget::updateCheck);
     connect(m_downloader,&UpdateDownloader::readyForUpdate,this,&UpdateWidget::downloadFinished);
     connect(m_downloader,&UpdateDownloader::errorOccured,this,&UpdateWidget::acceptError);
+    connect(m_downloader, &UpdateDownloader::downloadProgress, this, [this](auto received, auto total){
+        qDebug() << "progress" << received << total;
+    });
     m_downloader->checkForUpdate(0);
 }
 
@@ -49,5 +52,5 @@ void UpdateWidget::updateCheck(bool state){
 }
 
 void UpdateWidget::acceptError(QString errorMsg){
-    qDebug()<<errorMsg;
+    qDebug()<< "[ERROR]" << errorMsg;
 }

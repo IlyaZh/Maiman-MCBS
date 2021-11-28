@@ -11,6 +11,11 @@
 #include <QCryptographicHash>
 
 /*!
+ * \brief UpdateDownloader::DefaultTimeout
+ */
+const int UpdateDownloader::DefaultTimeout = 10000;
+
+/*!
  * \brief UpdateDownloader::bytesToString
  * \param value
  * \return
@@ -40,6 +45,7 @@ UpdateDownloader::UpdateDownloader(const QString& versionFileUrl, QObject* paren
     m_versionFile(versionFileUrl),
 //    m_dir(dir),
     m_queue(FileQueue::Description),
+    m_size(0),
     m_state(State::None)
 {
 
@@ -63,6 +69,63 @@ UpdateDownloader::UpdaterError UpdateDownloader::error() {
 }
 
 /*!
+ * \brief UpdateDownloader::size
+ * \return
+ */
+qint64 UpdateDownloader::size() {
+    return m_size;
+}
+
+/*!
+ * \brief UpdateDownloader::description
+ * \return
+ */
+QString UpdateDownloader::whatsNew() {
+    return m_whatsnew;
+}
+
+/*!
+ * \brief UpdateDownloader::instructions
+ * \return
+ */
+QString UpdateDownloader::instructions() {
+    return m_instructions;
+}
+
+/*!
+ * \brief UpdateDownloader::url
+ * \return
+ */
+QString UpdateDownloader::url() {
+    return m_installerPath;
+}
+
+/*!
+ * \brief UpdateDownloader::releaseNumber
+ * \return
+ */
+int UpdateDownloader::releaseNumber() {
+
+    return m_remoteReleaseNum;
+}
+
+/*!
+ * \brief UpdateDownloader::sha256
+ * \return
+ */
+QString UpdateDownloader::sha256() {
+    return m_hash;
+}
+
+/*!
+ * \brief UpdateDownloader::setTimeout
+ * \param value
+ */
+void UpdateDownloader::setTimeout(int value) {
+    m_timeout = value;
+}
+
+/*!
  * \brief UpdateDownloader::checkForUpdate
  * \param releaseNum
  */
@@ -72,6 +135,7 @@ void UpdateDownloader::checkForUpdate(qint64 releaseNum) {
     m_queue = FileQueue::Description;
     m_state = State::Check;
     startDownload(m_versionFile);
+    emit started();
 }
 
 /*!
@@ -83,7 +147,7 @@ void UpdateDownloader::download() {
         m_queue = FileQueue::Installer;
         QString filePath = m_downloader->globaltoLocalPath(m_installerPath);
 
-        QSharedPointer<QFile> file(new QFile(filePath));
+        QScopedPointer<QFile> file(new QFile(filePath));
         qDebug() << "download() check " << filePath;
         if(!tryToUpdate(file.data())) {
             qDebug() << "DOWNLOAD ONE MORE TIME";
@@ -117,6 +181,13 @@ void UpdateDownloader::startUpdate(QCoreApplication* app) {
     }
 }
 
+/*!
+ * \brief UpdateDownloader::stop
+ */
+void UpdateDownloader::stop() {
+    m_downloader->stop();
+}
+
 // private slots
 
 // TODO: сделай ошибки в виде перечислений и метод errorString()
@@ -147,12 +218,17 @@ void UpdateDownloader::slot_stepFinished() {
             auto updateMap = jDataMap.value("data").toMap();
             if(updateMap.contains("release_number")
                     && updateMap.contains("installer")
-                    && updateMap.contains("sha-256")) {
-                bool available = (updateMap.value("release_number").toLongLong() > m_releaseNum);
+                    && updateMap.contains("sha-256")
+                    && updateMap.contains("size")) {
+                m_remoteReleaseNum = updateMap.value("release_number").toLongLong();
+                bool available = (m_remoteReleaseNum > m_releaseNum);
                 if(available) {
                     m_installerPath = updateMap.value("installer").toString();
                     m_hash = updateMap.value("sha-256").toString();
                     m_state = State::Available;
+                    m_size = updateMap.value("size").toLongLong();
+                    m_whatsnew = updateMap.value("whats_new", QString()).toString();
+                    m_instructions = updateMap.value("instructions", QString()).toString();
                 }
                 emit updatesAvailable(available);
             } else {
@@ -178,15 +254,16 @@ void UpdateDownloader::slot_stepFinished() {
 
 void UpdateDownloader::startDownload(const QString& file) {
     qDebug() << "startDownload" << file;
-    if(m_downloader) {
-        m_downloader->disconnect();
-        m_downloader->deleteLater();
-    }
+//    if(m_downloader) {
+//        m_downloader->disconnect();
+//        m_downloader->deleteLater();
+//    }
     m_downloader = new FileDownloader(file, "updates");
+    m_downloader->setTimeout(m_timeout);
 
     connect(m_downloader.data(), &FileDownloader::downloadProgress, this, &UpdateDownloader::downloadProgress);
     connect(m_downloader.data(), &FileDownloader::errorOccured, this, &UpdateDownloader::errorOccured);
-    connect(m_downloader.data(), &FileDownloader::started, this, &UpdateDownloader::started);
+//    connect(m_downloader.data(), &FileDownloader::started, this, &UpdateDownloader::started);
     connect(m_downloader.data(), &FileDownloader::finished, this, &UpdateDownloader::slot_stepFinished);
 
     m_downloader->start(FileDownloader::OverwriteIfNotTheSame);
@@ -194,6 +271,9 @@ void UpdateDownloader::startDownload(const QString& file) {
 
 bool UpdateDownloader::hashIsEquals(QFile* file) {
     qDebug() << "hashIsEquals" << file->fileName() << file->isOpen();
+    if(!file->exists()) {
+        return false;
+    }
     if(!file->isOpen() && !file->open(QIODevice::ReadOnly)) {
         emit errorOccured(file->errorString());
         qDebug() << "hashIsEquals error" << file->errorString();

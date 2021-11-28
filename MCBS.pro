@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 #lessThan(QT_MAJOR_VERSION, 6): QT += serialport
 #greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
 
-CONFIG += c++14 testcase #warn_on depend_includepath console
+CONFIG += c++17 testcase #warn_on depend_includepath console
 debug:CONFIG += console
 
 # The following define makes your compiler emit warnings if you use
@@ -117,3 +117,6 @@ RC_ICONS = icon.ico
 version.input = version.h.in
 version.output = ../Maiman-MCBS-debug/version.h
 QMAKE_SUBSTITUTES += version
+
+INCLUDEPATH += "C:\Qt\Tools\OpenSSL\Win_x64\include"
+LIBS += -LC:\Qt\Tools\OpenSSL\Win_x64\bin -llibcrypto-1_1-x64 -llibssl-1_1-x64
