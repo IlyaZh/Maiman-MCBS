@@ -44,8 +44,8 @@ UpdateDownloader::UpdateDownloader(const QString& versionFileUrl, QObject* paren
     QObject(parent),
     m_versionFile(versionFileUrl),
 //    m_dir(dir),
-    m_queue(FileQueue::Description),
     m_size(0),
+    m_queue(FileQueue::Description),
     m_state(State::None)
 {
 
@@ -254,10 +254,10 @@ void UpdateDownloader::slot_stepFinished() {
 
 void UpdateDownloader::startDownload(const QString& file) {
     qDebug() << "startDownload" << file;
-//    if(m_downloader) {
-//        m_downloader->disconnect();
-//        m_downloader->deleteLater();
-//    }
+    if(m_downloader) {
+        m_downloader->disconnect();
+        m_downloader->deleteLater();
+    }
     m_downloader = new FileDownloader(file, "updates");
     m_downloader->setTimeout(m_timeout);
 

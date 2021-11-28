@@ -107,10 +107,13 @@ void FileDownloader::start(DownloadType type) {
     }
 
     m_reply = m_manager->get(request);
+    if(m_reply)
+        qDebug() << "REPLY GOOD";
+    else
+        qDebug() << "REPLY BAD";
     bool st = connect(m_reply, &QNetworkReply::downloadProgress, this, &FileDownloader::downloadProgress);
     Q_ASSERT(st);
-    qDebug() << "Create request errors:" << m_reply->errorString() << m_reply->error();
-    st = connect(m_reply, &QNetworkReply::readyRead, this, &FileDownloader::slot_readyRead);
+    st = connect(m_reply, &QIODevice::readyRead, this, &FileDownloader::slot_readyRead);
     Q_ASSERT(st);
     st = connect(m_reply, &QNetworkReply::errorOccurred, this, [this](){
         emit errorOccured(m_reply->errorString());
@@ -184,6 +187,7 @@ void FileDownloader::slot_requestFinished(QNetworkReply* reply) {
         m_tempFile->remove();
     }
     m_reply->reset();
+    m_reply->deleteLater();
 }
 
 void FileDownloader::slot_readyRead() {
