@@ -43,6 +43,7 @@ SOURCES += \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
     updatewidget.cpp \
+    widgets/aboutdialog.cpp \
     widgets/connectionwidget.cpp \
     model/device/devicewidget.cpp \
     model/devicefactory.cpp \
@@ -78,6 +79,7 @@ HEADERS += \
     mainwindow.h \
     model/device/HiddenWidget.h \
     updatewidget.h \
+    widgets/aboutdialog.h \
     widgets/connectionwidget.h \
     model/device/devicepollrequest.h \
     model/device/devicewidget.h \
@@ -96,6 +98,7 @@ HEADERS += \
 FORMS += \
     mainwindow.ui \
     model/device/HiddenWidget.ui \
+    widgets/aboutdialog.ui \
     widgets/connectionwidget.ui \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
@@ -119,3 +122,5 @@ RC_ICONS = icon.ico
 version.input = version.h.in
 version.output = ../Maiman-MCBS-debug/version.h
 QMAKE_SUBSTITUTES += version
+
+DISTFILES +=
