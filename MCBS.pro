@@ -24,6 +24,7 @@ TEMPLATE = app
 
 SOURCES += \
     DebugMode.cpp \
+    model/device/devicecondition.cpp \
     updater/FileDownloader.cpp \
     updater/UpdateDownloader.cpp \
     appsettings.cpp \
@@ -58,6 +59,7 @@ SOURCES += \
 
 HEADERS += \
     DebugMode.h \
+    model/device/devicecondition.h \
     updater/FileDownloader.h \
     updater/UpdateDownloader.h \
     appsettings.h \

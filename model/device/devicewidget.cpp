@@ -10,6 +10,7 @@
 #include "widgets/controlwidget.h"
 #include "widgets/readparameterwidget.h"
 #include "model/device/HiddenWidget.h"
+#include "model/device/devicecondition.h"
 #include <algorithm>
 
 const QString DeviceWidget::linkStyleOn = "QLabel { \
@@ -40,7 +41,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_widgetLayout(new QGridLayout())
 {
     ui->setupUi(this);
-
+    m_widgetLayout->setAlignment(Qt::AlignBottom);
     m_widgetLayout->setMargin(6);
     m_widgetLayout->setSpacing(9);
 
@@ -201,7 +202,8 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         }
 
         if(pButton) {
-            pButton->setMinimumSize(200, 36);
+            pButton->setMinimumSize(220, 36);
+            pButton->setMaximumHeight(36);
             pButton->setFont(QFont("Share Tech Mono", 18));
             pButton->setStyleSheet("QPushButton \
                                    { \
@@ -218,13 +220,18 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             pButton->setChecked(false);
             pButton->setVisible(true);
             ui->buttonsLayout->addWidget(pButton);
+            ui->buttonsLayout->setAlignment(pButton,Qt::AlignBottom);
         }
     }
 
     ui->widgetBox->setLayout(m_widgetLayout);
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
-    adjust();
+    m_condiotion = new DeviceCondition(m_commands,m_description.leds,ui->conditionLabel);
+    //ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
+    //adjust();
+
+    //TODO:: label_2, для отображения строки состояния драйвера, команда 0700
 }
 
 DeviceWidget::~DeviceWidget()

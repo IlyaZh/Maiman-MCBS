@@ -7,6 +7,7 @@ class DevCommand;
 class ControlWidget;
 class BinaryWidget;
 class HiddenWidget;
+class DeviceCondition;
 
 struct Content {
     QString fileName;
@@ -110,6 +111,7 @@ private:
     bool m_hideControls {false};
     QPushButton* m_laserButton {nullptr};
     QPushButton* m_tecButton {nullptr};
+    DeviceCondition* m_condiotion;
 
     void paintEvent(QPaintEvent*) override;
     void adjust();
