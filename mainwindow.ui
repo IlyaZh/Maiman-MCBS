@@ -136,8 +136,8 @@ QPushButton:checked {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1219</width>
-         <height>543</height>
+         <width>1222</width>
+         <height>540</height>
         </rect>
        </property>
       </widget>
@@ -221,17 +221,17 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
    </widget>
    <widget class="QMenu" name="menuConnect">
     <property name="title">
-     <string>Connect</string>
+     <string>Port</string>
     </property>
     <widget class="QMenu" name="menuPorts">
      <property name="title">
-      <string>Ports</string>
+      <string>Select Port</string>
      </property>
      <addaction name="actionRefresh_port"/>
     </widget>
     <widget class="QMenu" name="menuBaudrates">
      <property name="title">
-      <string>Baudrates</string>
+      <string>Select Baudrate</string>
      </property>
      <addaction name="actionRefresh_baud"/>
     </widget>

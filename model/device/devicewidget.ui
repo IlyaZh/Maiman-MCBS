@@ -70,7 +70,7 @@ QLabel {
     <number>15</number>
    </property>
    <item row="4" column="0" colspan="6">
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="conditionLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -102,7 +102,7 @@ border-bottom-left-radius: 6px;
 border-bottom-right-radius: 6px;</string>
      </property>
      <property name="text">
-      <string>Intlock</string>
+      <string/>
      </property>
     </widget>
    </item>
