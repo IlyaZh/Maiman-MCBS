@@ -41,9 +41,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_widgetLayout(new QGridLayout())
 {
     ui->setupUi(this);
-    m_widgetLayout->setAlignment(Qt::AlignBottom);
-    m_widgetLayout->setMargin(6);
-    m_widgetLayout->setSpacing(9);
 
     ui->modelLabel->setText(QString("Model: %1").arg(m_description.name));
     setAddress(m_description.id);
@@ -223,12 +220,15 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             ui->buttonsLayout->setAlignment(pButton,Qt::AlignBottom);
         }
     }
-
+    m_widgetLayout->setAlignment(Qt::AlignBottom);
+    m_widgetLayout->setMargin(0);//6
+    m_widgetLayout->setContentsMargins(0,25,0,0);//6,18,6,6
+    m_widgetLayout->setSpacing(0);//9
     ui->widgetBox->setLayout(m_widgetLayout);
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     m_condiotion = new DeviceCondition(m_commands,m_description.leds,ui->conditionLabel);
-    //ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
+    ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
     //adjust();
 
     //TODO:: label_2, для отображения строки состояния драйвера, команда 0700
