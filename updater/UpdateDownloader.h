@@ -7,13 +7,21 @@
 class UpdateDownloader : public QObject
 {
     Q_OBJECT
+    static const int DefaultTimeout;
+
     QString m_versionFile;
     QString m_dir;
     QString m_installerPath;
     QString m_installerLocalPath;
-    QString m_hash;
+    QString m_hash = "";
+    qint64 m_size {0};
+    QString m_whatsnew = "";
+    QString m_instructions = "";
     qint64 m_releaseNum = 0;
+    qint64 m_remoteReleaseNum = 0;
     QString m_errorString;
+    int m_timeout = DefaultTimeout;
+
     QPointer<FileDownloader> m_downloader;
 
     enum FileQueue {
@@ -49,10 +57,18 @@ public:
     explicit UpdateDownloader(const QString& versionFileUrl, QObject* parent = nullptr);
     QString errorString();
     UpdaterError error();
+    qint64 size();
+    QString whatsNew();
+    QString instructions();
+    QString url();
+    int releaseNumber();
+    QString sha256();
+    void setTimeout(int value);
 public slots:
     void checkForUpdate(qint64 releaseNum);
     void download();
     void startUpdate(QCoreApplication* app);
+    void stop();
 signals:
     void started();
     void updatesAvailable(bool state);

@@ -1,6 +1,6 @@
 #include "updatewidget.h"
 
-const QString UpdateWidget::m_Url = "http://telegraphy.ru/updates.txt";
+const QString UpdateWidget::m_Url = "https://telegraphy.ru/updates.txt";
 
 UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent),
     m_downloader(new UpdateDownloader(m_Url))
@@ -49,5 +49,5 @@ void UpdateWidget::updateCheck(bool state){
 }
 
 void UpdateWidget::acceptError(QString errorMsg){
-    qDebug()<<errorMsg;
+    qDebug()<< "[ERROR]" << errorMsg;
 }

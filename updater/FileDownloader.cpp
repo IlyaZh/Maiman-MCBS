@@ -1,5 +1,6 @@
 #include "FileDownloader.h"
 #include <QtCore>
+#include <QtGlobal>
 #ifdef QT_DEBUG
 #include <QDebug>
 #endif
@@ -16,7 +17,7 @@ FileDownloader::FileDownloader(const QString& url, const QString& dirName, QObje
         m_dir.mkpath(m_dir.absolutePath());
 
     m_manager->setTransferTimeout(10000);
-	m_manager->setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
+    m_manager->setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 
     m_filePath = globaltoLocalPath(m_url);
 }
@@ -37,7 +38,7 @@ QString FileDownloader::globaltoLocalPath(const QString& file) {
     if(!path.endsWith("\\") || !path.endsWith("/")) {
 //        path.append(QDir::separator());
     }
-    return path+fileName;
+    return path+QDir::separator()+fileName;
 }
 
 QByteArray FileDownloader::hash() {
@@ -63,6 +64,9 @@ void FileDownloader::clear() {
     m_hash->reset();
 }
 
+void FileDownloader::setTimeout(int value) {
+    m_manager->setTransferTimeout(value);
+}
 
 void FileDownloader::start(DownloadType type) {
     m_type = type;
@@ -71,13 +75,14 @@ void FileDownloader::start(DownloadType type) {
 
     QNetworkRequest request;
     request.setUrl(QUrl(m_url));
-    //request.setAttribute(QNetworkRequest::RedirectionTargetAttribute, true);
+    qDebug() << "REQUEST" << m_url  << __FILE__ << __LINE__;
+//    request.setAttribute(QNetworkRequest::RedirectionTargetAttribute, true);
 
 
     switch(m_type) {
     case NoOverwrite:
         if(QFile::exists(m_filePath)) {
-            QString errorStr = QString("File %1 is exist! Can't overwrite it. Break!").arg(m_filePath);
+            QString errorStr = QString("File %1 is exist! Can't overwrite it. Break! %2 %3").arg(m_filePath).arg(__FILE__).arg(__LINE__);
             emit errorOccured(errorStr);
             clear();
             return;
@@ -97,29 +102,46 @@ void FileDownloader::start(DownloadType type) {
 #ifdef QT_DEBUG
         qDebug() << "Can't create temp file" << m_tempFile->fileName();
 #endif
-        emit errorOccured("Can't create a temporary file!");
+        emit errorOccured(QString("Can't create a temporary file!").arg(__FILE__).arg(__LINE__));
         return;
     }
 
-    auto reply = m_manager->get(request);
-    connect(reply, &QNetworkReply::downloadProgress, this, &FileDownloader::downloadProgress);
-    connect(reply, &QNetworkReply::readyRead, this, &FileDownloader::slot_readyRead);
-    connect(reply, &QNetworkReply::errorOccurred, this, [this, reply](){
-        emit errorOccured(reply->errorString());
+    m_reply = m_manager->get(request);
+    if(m_reply)
+        qDebug() << "REPLY GOOD";
+    else
+        qDebug() << "REPLY BAD";
+    bool st = connect(m_reply, &QNetworkReply::downloadProgress, this, &FileDownloader::downloadProgress);
+    Q_ASSERT(st);
+    st = connect(m_reply, &QIODevice::readyRead, this, &FileDownloader::slot_readyRead);
+    Q_ASSERT(st);
+    st = connect(m_reply, &QNetworkReply::errorOccurred, this, [this](){
+        emit errorOccured(m_reply->errorString());
+        qDebug() << "REQUEST ERROR " << m_reply->errorString()  << __FILE__ << __LINE__;
         clear();
     });
-    connect(reply, &QNetworkReply::sslErrors, this, [this](const QList<QSslError> &errors){
+    Q_ASSERT(st);
+    st = connect(m_reply, &QNetworkReply::sslErrors, this, [this](const QList<QSslError> &errors){
         QString errorString;
+        qDebug() << errors;
 
         for(const auto& error : errors) {
             errorString += error.errorString()+ "; ";
         }
         if(errorString.isEmpty()) {
-            emit errorOccured(errorString);
+            emit errorOccured(errorString + __FILE__ +QString::number(__LINE__));
         }
         clear();
     });
+    Q_ASSERT(st);
     emit started();
+    m_reply->dumpObjectInfo();
+    qDebug() << "started()";
+}
+
+void FileDownloader::stop() {
+    if(m_reply)
+        m_reply->abort();
 }
 
 // private slots
@@ -141,6 +163,7 @@ void FileDownloader::slot_requestFinished(QNetworkReply* reply) {
                 qDebug() << "NO REWRITE";
 #endif
                 break;
+// Если перезапись не нужна, то покидаем switch, иначе не попадаем в этот if и проходим в следующий case
             }
 #ifdef QT_DEBUG
             qDebug() << "REWRITE";
@@ -159,15 +182,17 @@ void FileDownloader::slot_requestFinished(QNetworkReply* reply) {
 #ifdef QT_DEBUG
         qDebug() << "ERROR 3";
 #endif
-        emit errorOccured(reply->errorString());
+        emit errorOccured(reply->errorString() +  __FILE__ + QString::number(__LINE__));
         m_tempFile->close();
         m_tempFile->remove();
     }
-
+    m_reply->reset();
+    m_reply->deleteLater();
 }
 
 void FileDownloader::slot_readyRead() {
     QNetworkReply* reply = static_cast<QNetworkReply*>(QObject::sender());
+    qDebug() << "ReadyRead" << __FILE__ << __LINE__;
     if(m_tempFile) {
         auto data = reply->readAll();
         if(m_tempFile && m_tempFile->isOpen())
@@ -185,7 +210,7 @@ void FileDownloader::rewriteFile() {
     QScopedPointer<QFile> m_file;
     m_file.reset(new QFile(m_filePath));
     if(!m_file->open(QIODevice::WriteOnly)) {
-        emit errorOccured(QString("Can't open fiele [%1]").arg(m_filePath));
+        emit errorOccured(QString("Can't open fiele [%1] %2 %3").arg(m_filePath).arg(__FILE__).arg(__LINE__));
         return;
     }
     m_tempFile->seek(0);

@@ -27,8 +27,10 @@ public:
     QString errorString();
     DownloaderError error();
     void clear();
+    void setTimeout(int);
 public slots:
     void start(DownloadType type = OverwriteIfNotTheSame);
+    void stop();
 signals:
     void started();
     void finished();
@@ -44,6 +46,7 @@ private:
     QString m_url;
     QSharedPointer<QFile> m_tempFile;
     QNetworkAccessManager* m_manager;
+    QPointer<QNetworkReply> m_reply;
     DownloadType m_type {NoOverwrite};
     QDir m_dir;
     QString m_filePath;
