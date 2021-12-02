@@ -71,3 +71,7 @@ Thumbs.db
 *.dll
 *.exe
 
+build-*/
+common/
+MWB_Release/
+MWB_Debug/

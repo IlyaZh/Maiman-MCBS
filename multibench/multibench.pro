@@ -17,10 +17,54 @@ VERSION = 1.0.0
 TARGET = MaimanMultibench
 TEMPLATE = app
 
+CONFIG(debug, debug|release) {
+    DESTDIR = $OUT_PWD/../../MWB_Debug
+} else {
+    DESTDIR = $OUT_PWD/../../MWB_Release
+}
+MOC_DIR = ../common/build/moc
+RCC_DIR = ../common/build/rcc
+UI_DIR = ../common/build/ui
+unix:OBJECTS_DIR = ../common/build/o/unix
+win32:OBJECTS_DIR = ../common/build/o/win
+macx:OBJECTS_DIR = ../common/build/o/mac
+
+CONFIG(debug, debug|release) {
+    QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$OUT_PWD/../MWB_Debug
+} else {
+    QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$OUT_PWD/../MWB_Release
+}
+
+version.input = version.h.in
+version.output = $$PWD/version.h
+#version.output = version.h
+QMAKE_SUBSTITUTES += version
+
+conf_db.input = device_db.xml.in
+CONFIG(debug, debug|release) {
+    conf_db.output = $OUT_PWD/../../MWB_Debug/device_db.xml
+} else {
+    conf_db.output = $OUT_PWD/../../MWB_Release/device_db.xml
+}
+QMAKE_SUBSTITUTES += conf_db
+
+conf_gui.input = device_gui.xml.in
+CONFIG(debug, debug|release) {
+    conf_gui.output = $OUT_PWD/../../MWB_Debug/device_gui.xml
+} else {
+    conf_gui.output = $OUT_PWD/../../MWB_Release/device_gui.xml
+}
+QMAKE_SUBSTITUTES += conf_gui
+
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+INCLUDEPATH += updater/
+
+INCLUDEPATH += "C:\Qt\Tools\OpenSSL\Win_x64\include"
+LIBS += -LC:\Qt\Tools\OpenSSL\Win_x64\bin -llibcrypto-1_1-x64 -llibssl-1_1-x64
 
 SOURCES += \
     DebugMode.cpp \
@@ -105,13 +149,6 @@ FORMS += \
     widgets/controlwidget.ui \
     widgets/readparameterwidget.ui
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
-
-INCLUDEPATH += updater/
-
 #SUBDIRS += tests
 
 RESOURCES += \
@@ -119,7 +156,9 @@ RESOURCES += \
 
 RC_ICONS = icon.ico
 
-version.input = version.h.in
-version.output = ../Maiman-MCBS-debug/version.h
-QMAKE_SUBSTITUTES += version
+# Default rules for deployment.
+#qnx: target.path = /tmp/$${TARGET}/bin
+#else: unix:!android: target.path = /opt/$${TARGET}/bin
+#!isEmpty(target.path): INSTALLS += target
+
 

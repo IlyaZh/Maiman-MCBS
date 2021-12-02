@@ -63,11 +63,11 @@ int main(int argc, char *argv[])
 
     DataSource dataSource;
 
-    GuiFactory guiFactory("DeviceGUI.xml");
+    GuiFactory guiFactory("device_gui.xml");
 //    MainViewFacade mvCntrl(dataSource, settings, guiFactory);
 //    mvCntrl.addView(&w);
 
-    DeviceFactory deviceFactory("DeviceDB.xml");
+    DeviceFactory deviceFactory("device_db.xml");
 
     // Фасад для управления потоками данных от модели к представлению
     MainFacade mainFacade(w, guiFactory);

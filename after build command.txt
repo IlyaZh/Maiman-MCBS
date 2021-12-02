@@ -1,0 +1,4 @@
+C:/Qt/Tools/QtInstallerFramework/4.2/bin/repogen -p C:/Development/Projects/Maiman/Maiman-MB/Maiman-MB/installer/packages -i com.maimanelectronics.MWB --update C:/Development/Projects/Maiman/Maiman-MB/build-Maiman-MB-Desktop_Qt_5_15_2_MinGW_64_bit-Release/repository
+
+Command: %{Compiler:Executable}\..\..\..\QtInstallerFramework\4.2\bin\repogen.exe
+Arguments: -p %{buildDir}\..\Maiman-MB\Maiman-MB\installer\packages -i com.maimanelectronics.MWB --update %{buildDir}\repository

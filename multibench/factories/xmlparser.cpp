@@ -28,7 +28,7 @@ bool XmlParser::start() {
         }
 
         if(xml->hasError()) {
-            makeError(xml->errorString());
+            makeError(xml->errorString() + "at row=" + QString::number(xml->lineNumber()) + " col="+ QString::number(xml->columnNumber()));
             xml->clear();
             delete xml;
             return false;
@@ -82,7 +82,7 @@ TreeItem* XmlParser::parseTag(QXmlStreamReader* xml) {
     }
 
     if(xml->hasError()) {
-        makeError(xml->errorString());
+        makeError(xml->errorString() + "at row=" + QString::number(xml->lineNumber()) + " col="+ QString::number(xml->columnNumber()));
     }
 
     return item;
