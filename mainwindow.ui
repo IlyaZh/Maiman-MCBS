@@ -239,9 +239,16 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
     <addaction name="menuBaudrates"/>
     <addaction name="actionConnect"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuConnect"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="font">
@@ -292,6 +299,14 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
   <action name="actionConnect">
    <property name="text">
     <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

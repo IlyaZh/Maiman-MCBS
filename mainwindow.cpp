@@ -7,6 +7,7 @@
 #include <QSerialPortInfo>
 #include <QDebug>
 #include "updatewidget.h"
+#include "widgets/aboutdialog.h"
 
 //const QString MainWindow::SettingsPath {"window/"};
 
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_portGroup(new QActionGroup(this))
     , m_baudrateGroup(new QActionGroup(this))
     , m_updater(new UpdateWidget(this))
+    , m_About(new AboutDialog(this))
       //      m_cntrl(nullptr),
 //      m_portList(nullptr),
 //      m_baudList(nullptr)
@@ -100,6 +102,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     });
     connect(m_updater,&UpdateWidget::downloadFinished,this,&MainWindow::updateDownloadingfinished);
+    connect(ui->actionAbout,&QAction::triggered,this,&MainWindow::callAboutDialog);
 }
 
 MainWindow::~MainWindow()
@@ -138,7 +141,7 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         qDebug() << "addDeviceWidget" << count;
         m_workFieldLayout->addWidget(widget);
         //        m_workFieldLayout->addItem(new QSpacerItem(2,2, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding), count+1,0);
-        connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
+        //connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
         adjust(widget->sizeHint());
         //        widget->setMaximumHeight(widget->sizeHint().height());
         //        auto widgetSize = ui->workFieldWidget->size();
@@ -266,3 +269,6 @@ void MainWindow::updateDownloadingfinished(){
     qDebug()<<"start update";
 }
 
+void MainWindow::callAboutDialog(){
+    m_About->show();
+}

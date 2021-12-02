@@ -7,7 +7,7 @@
 //class MainWindowControllerInterface;
 //#include <QtWidgets>
 #include "constants.h"
-
+class AboutDialog;
 class UpdateWidget;
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,6 +40,7 @@ public slots:
 private slots:
     void adjust(const QSize& size = QSize());
     void connectTriggered();
+    void callAboutDialog();
 private:
     Ui::MainWindow *ui;
 //    MainWindowControllerInterface* m_cntrl;
@@ -50,7 +51,7 @@ private:
     QPointer<QActionGroup> m_portGroup;
     QPointer<QActionGroup> m_baudrateGroup;
     UpdateWidget* m_updater;
-
+    QPointer<AboutDialog> m_About;
 protected:
     void closeEvent(QCloseEvent *event) override;
 

@@ -8,10 +8,7 @@ UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent),
     connect(m_downloader,&UpdateDownloader::updatesAvailable,this,&UpdateWidget::updateCheck);
     connect(m_downloader,&UpdateDownloader::readyForUpdate,this,&UpdateWidget::downloadFinished);
     connect(m_downloader,&UpdateDownloader::errorOccured,this,&UpdateWidget::acceptError);
-    connect(m_downloader, &UpdateDownloader::downloadProgress, this, [this](auto received, auto total){
-        qDebug() << "progress" << received << total;
-    });
-    m_downloader->checkForUpdate(0);
+    m_downloader->checkForUpdate(5);
 }
 
 void UpdateWidget::updateCheck(bool state){
