@@ -141,7 +141,7 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         qDebug() << "addDeviceWidget" << count;
         m_workFieldLayout->addWidget(widget);
         //        m_workFieldLayout->addItem(new QSpacerItem(2,2, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding), count+1,0);
-        connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
+        //connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
         adjust(widget->sizeHint());
         //        widget->setMaximumHeight(widget->sizeHint().height());
         //        auto widgetSize = ui->workFieldWidget->size();

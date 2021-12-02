@@ -47,7 +47,10 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
     // Инициализация кнопки (Hide controls)
     auto m_hideControlsButton = new QPushButton("    "+tr("Hide controls"));
-    m_hideControlsButton->setStyleSheet("border: 2px solid rgb(26,26,26);\nborder-radius: 3px;\nbackground: rgb(51,51,51);\ncolor: rgb(255,255,255);\npadding: 0px;\nmargin: 0px;");
+    m_hideControlsButton->setStyleSheet("border: 2px solid rgb(26,26,26);\nborder-radius: 3px;\nbackground: rgb(51,51,51);\ncolor: rgb(255,255,255);\n"
+                                        "padding: 0px;\n"
+                                        "margin-left: 10px;\n"
+                                        "margin-bottom: 10px;");
     m_hideControlsButton->setCheckable(true);
     m_hideControlsButton->setChecked(false);
     m_hideControlsButton->setIconSize(QSize(10, 10));
@@ -56,14 +59,14 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     icon1.addFile(QString::fromUtf8(":/resources/images/showcontrols-icon.png"), QSize(), QIcon::Normal, QIcon::On);
     m_hideControlsButton->setIcon(icon1);
     m_hideControlsButton->setObjectName(QString::fromUtf8("hideControlButton"));
-    m_hideControlsButton->setMinimumSize(QSize(135, 20));
-    m_hideControlsButton->setMaximumSize(QSize(135, 20));
+    m_hideControlsButton->setMinimumSize(QSize(145, 30));
+    m_hideControlsButton->setMaximumSize(QSize(145, 30));
     QFont font1;
     font1.setFamily(QString::fromUtf8("Share Tech Mono"));
     m_hideControlsButton->setFont(font1);
 
     connect(m_hideControlsButton, &QPushButton::clicked, this, &DeviceWidget::hideControlsButtonClicked);
-    m_widgetLayout->addWidget(m_hideControlsButton, 0, 0, Qt::AlignCenter);
+    m_widgetLayout->addWidget(m_hideControlsButton, 0, 0, Qt::AlignLeft);
 
     // Инициализация виджетов
     QVector<ReadParameterWidget*> readOnlyWidgets;
@@ -80,6 +83,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             // Обработка изменяемых параметров
             auto hiddenWidget = new HiddenWidget(this);
             auto widget = new ControlWidget(control.name, valueCmd, maxCmd, minCmd, realCmd, hiddenWidget);
+            hiddenWidget->layout()->setContentsMargins(10,0,10,0);
             m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
             hiddenWidget->addWidget(widget);
             if(control.name == "current")
@@ -91,6 +95,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     if(readOnlyWidgets.count() > 0) {
         auto hiddenWidget = new HiddenWidget(this);
         for(auto item : readOnlyWidgets) {
+            hiddenWidget->layout()->setContentsMargins(10,0,10,0);
             hiddenWidget->addWidget(item);
         }
         readOnlyWidgets.clear();
@@ -105,6 +110,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             hiddenWidget = new HiddenWidget(this);
         auto cmd = m_commands.value(item.code, nullptr);
         if(cmd) {
+            hiddenWidget->layout()->setContentsMargins(10,0,10,0);
             hiddenWidget->addWidget(new BinaryWidget(item, cmd, hiddenWidget));
         }
 
@@ -124,12 +130,14 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         pinButton->setSizePolicy(sizePolicy1);
         pinButton->setMinimumSize(QSize(16, 16));
         pinButton->setMaximumSize(QSize(16, 16));
+        pinButton->setMaximumWidth(36);
         pinButton->setStyleSheet(QString::fromUtf8("border: 2px solid rgb(26,26,26);\n"
                                                    "border-radius: 3px;\n"
                                                    "background: rgb(17,17,17);\n"
                                                    "color: rgb(255,255,255);\n"
                                                    "padding: 0px;\n"
-                                                   "margin: 0px;"));
+                                                   "margin-right: 10px;\n"
+                                                   "margin-left: 10px;"));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/resources/images/pinSymbol-disactivated.png"), QSize(), QIcon::Normal, QIcon::Off);
         icon.addFile(QString::fromUtf8(":/resources/images/pinSymbol-activated.png"), QSize(), QIcon::Normal, QIcon::On);
@@ -216,6 +224,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             pButton->setCheckable(true);
             pButton->setChecked(false);
             pButton->setVisible(true);
+            ui->buttonsLayout->setContentsMargins(0,0,0,0);
             ui->buttonsLayout->addWidget(pButton);
             ui->buttonsLayout->setAlignment(pButton,Qt::AlignBottom);
         }
@@ -228,8 +237,8 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     m_condiotion = new DeviceCondition(m_commands,m_description.leds,ui->conditionLabel);
-    ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
-    //adjust();
+    //ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
+    adjust();
 
     //TODO:: label_2, для отображения строки состояния драйвера, команда 0700
 }
@@ -263,7 +272,7 @@ void DeviceWidget::adjust() {
     this->adjustSize();
     this->setMinimumSize(this->size());
 
-    emit sizeChanged(this->size());
+    //emit sizeChanged(this->size());
 }
 
 //void DeviceWidget::resizeEvent(QResizeEvent *event) {
@@ -328,11 +337,15 @@ void DeviceWidget::hideControlsButtonClicked(bool flag) {
         if(m_hideControls) {
             if(!widget->isPinned()) {
                 widget->setShown(false);
+                widget->layout()->setContentsMargins(0,0,0,0);
+                widget->layout()->setSpacing(0);
                 if(pinButton != nullptr) pinButton->setVisible(false);
             }
         } else {
             if(!widget->isShown()) {
                 widget->setShown(true);
+                widget->layout()->setContentsMargins(10,0,10,0);
+                widget->layout()->setSpacing(10);
                 if(pinButton != nullptr) pinButton->setVisible(true);
             }
         }

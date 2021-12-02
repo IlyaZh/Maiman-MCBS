@@ -96,8 +96,8 @@ public:
 public slots:
     void setLink(bool link);
 
-signals:
-    void sizeChanged(const QSize& size);
+//signals:
+//    void sizeChanged(const QSize& size);
 
 private:
     Ui::DeviceWidget *ui;

@@ -26,6 +26,12 @@
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
    <item row="1" column="0">
     <widget class="QLabel" name="Real">
      <property name="minimumSize">
@@ -160,7 +166,7 @@
      </property>
      <property name="maximumSize">
       <size>
-       <width>150</width>
+       <width>168</width>
        <height>25</height>
       </size>
      </property>
