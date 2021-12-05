@@ -23,6 +23,8 @@
 #include "tests/globaltest.h"
 #endif
 
+#include "UpdatesChecker.h"
+
 QLocale wlocale;
 bool debugMode = false;
 
@@ -37,6 +39,17 @@ int main(int argc, char *argv[])
     debugMode = true;
     setlocale(LC_CTYPE, "rus");
 #endif
+
+    UpdatesChecker checker;
+    QObject::connect(&checker, &UpdatesChecker::updatesAvailable, [&checker](bool available){
+        if(available) {
+            qDebug() << "UPDATES AVAILABLE" << checker.sizeFormated() << checker.version();
+            checker.startUpdate(qApp);
+        }
+        else
+            qDebug() << "NO UPDATES AVAILABLE";
+    });
+    checker.checkForUpdates();
 
     QCommandLineParser cliParser;
     QCommandLineOption debugOption(QStringList() << "d" << "debug");

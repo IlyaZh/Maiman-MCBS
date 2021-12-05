@@ -38,7 +38,7 @@ public slots:
     void setStatusMessage(const QString& msg, int timeout = 10);
     void updateDownloadingfinished();
 private slots:
-    void adjust(const QSize& size = QSize());
+//    void adjust(const QSize& size = QSize());
     void connectTriggered();
     void callAboutDialog();
 private:

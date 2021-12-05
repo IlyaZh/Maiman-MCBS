@@ -6,7 +6,7 @@
 #include <QtWidgets>
 #include <QSerialPortInfo>
 #include <QDebug>
-#include "updatewidget.h"
+#include "widgets/updatewidget.h"
 #include "widgets/aboutdialog.h"
 
 //const QString MainWindow::SettingsPath {"window/"};
@@ -142,7 +142,7 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         m_workFieldLayout->addWidget(widget);
         //        m_workFieldLayout->addItem(new QSpacerItem(2,2, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding), count+1,0);
         //connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
-        adjust(widget->sizeHint());
+//        adjust(widget->sizeHint());
         //        widget->setMaximumHeight(widget->sizeHint().height());
         //        auto widgetSize = ui->workFieldWidget->size();
         qDebug() << "addDeviceWidget size=" << widget->size() << widget->sizeHint();
@@ -235,14 +235,14 @@ void MainWindow::setStatusMessage(const QString& msg, int timeout) {
 //    });
 //}
 
-void MainWindow::adjust(const QSize& size) {
+//void MainWindow::adjust(const QSize& size) {
 //    ui->workFieldWidget->adjustSize();
 //    ui->workFieldWidget->setMinimumSize(ui->workFieldWidget->size());
 //    if(!size.isEmpty()) {
 //        ui->scrollArea->setMinimumWidth(size.width()+2*ui->scrollArea->frameWidth()+ui->scrollArea->verticalScrollBar()->sizeHint().width());
 //    }
 //    ui->workFieldWidget->updateGeometry();
-}
+//}
 
 // protected methods
 

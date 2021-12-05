@@ -62,6 +62,7 @@ QMAKE_SUBSTITUTES += conf_gui
 
 SOURCES += \
     DebugMode.cpp \
+    UpdatesChecker.cpp \
     model/device/devicecondition.cpp \
     appsettings.cpp \
     constants.cpp \
@@ -78,7 +79,7 @@ SOURCES += \
     mainfacade.cpp \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
-    updatewidget.cpp \
+    widgets/updatewidget.cpp \
     widgets/aboutdialog.cpp \
     widgets/connectionwidget.cpp \
     model/device/devicewidget.cpp \
@@ -96,6 +97,7 @@ SOURCES += \
 
 HEADERS += \
     DebugMode.h \
+    UpdatesChecker.h \
     model/device/devicecondition.h \
     appsettings.h \
     constants.h \
@@ -112,7 +114,7 @@ HEADERS += \
     mainfacade.h \
     mainwindow.h \
     model/device/HiddenWidget.h \
-    updatewidget.h \
+    widgets/updatewidget.h \
     widgets/aboutdialog.h \
     widgets/connectionwidget.h \
     model/device/devicepollrequest.h \
