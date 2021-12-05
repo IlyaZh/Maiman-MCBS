@@ -1,10 +1,12 @@
-QT       += core gui network xml testlib concurrent serialport network
+QT       += core gui network xml serialport network
+debug:QT+=testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 #lessThan(QT_MAJOR_VERSION, 6): QT += serialport
 #greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
 
-CONFIG += c++17 testcase #warn_on depend_includepath console
+CONFIG += c++17
+debug:CONFIG+=testcase #warn_on depend_includepath console
 debug:CONFIG += console
 
 # The following define makes your compiler emit warnings if you use
@@ -29,15 +31,12 @@ unix:OBJECTS_DIR = ../common/build/o/unix
 win32:OBJECTS_DIR = ../common/build/o/win
 macx:OBJECTS_DIR = ../common/build/o/mac
 
-CONFIG(debug, debug|release) {
-    QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$OUT_PWD/../MWB_Debug
-} else {
+CONFIG(release, debug|release) {
     QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$OUT_PWD/../MWB_Release
 }
 
 version.input = version.h.in
 version.output = $$PWD/version.h
-#version.output = version.h
 QMAKE_SUBSTITUTES += version
 
 conf_db.input = device_db.xml.in
@@ -61,16 +60,9 @@ QMAKE_SUBSTITUTES += conf_gui
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += updater/
-
-INCLUDEPATH += "C:\Qt\Tools\OpenSSL\Win_x64\include"
-LIBS += -LC:\Qt\Tools\OpenSSL\Win_x64\bin -llibcrypto-1_1-x64 -llibssl-1_1-x64
-
 SOURCES += \
     DebugMode.cpp \
     model/device/devicecondition.cpp \
-    updater/FileDownloader.cpp \
-    updater/UpdateDownloader.cpp \
     appsettings.cpp \
     constants.cpp \
     datasource.cpp \
@@ -105,8 +97,6 @@ SOURCES += \
 HEADERS += \
     DebugMode.h \
     model/device/devicecondition.h \
-    updater/FileDownloader.h \
-    updater/UpdateDownloader.h \
     appsettings.h \
     constants.h \
     datasource.h \
@@ -149,7 +139,7 @@ FORMS += \
     widgets/controlwidget.ui \
     widgets/readparameterwidget.ui
 
-#SUBDIRS += tests
+debug:SUBDIRS += tests
 
 RESOURCES += \
     resources.qrc

@@ -5,8 +5,9 @@
 #include <QMessageBox>
 #include <QDebug>
 #include "constants.h"
-#include "UpdateDownloader.h"
+//#include "UpdateDownloader.h"
 #include "version.h"
+#include <QtCore>
 
 class UpdateWidget : public QWidget
 {
@@ -15,7 +16,7 @@ public:
     explicit UpdateWidget(QWidget *parent = nullptr);
 private:
     static const QString m_Url;
-    UpdateDownloader* m_downloader;
+//    UpdateDownloader* m_downloader;
 
 signals:
     void updateApp(QCoreApplication* app);

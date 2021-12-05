@@ -2,13 +2,13 @@
 
 const QString UpdateWidget::m_Url = "https://telegraphy.ru/updates.txt";
 
-UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent),
-    m_downloader(new UpdateDownloader(m_Url))
+UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent)/*,
+    m_downloader(new UpdateDownloader(m_Url))*/
 {
-    connect(m_downloader,&UpdateDownloader::updatesAvailable,this,&UpdateWidget::updateCheck);
-    connect(m_downloader,&UpdateDownloader::readyForUpdate,this,&UpdateWidget::downloadFinished);
-    connect(m_downloader,&UpdateDownloader::errorOccured,this,&UpdateWidget::acceptError);
-    m_downloader->checkForUpdate(5);
+//    connect(m_downloader,&UpdateDownloader::updatesAvailable,this,&UpdateWidget::updateCheck);
+//    connect(m_downloader,&UpdateDownloader::readyForUpdate,this,&UpdateWidget::downloadFinished);
+//    connect(m_downloader,&UpdateDownloader::errorOccured,this,&UpdateWidget::acceptError);
+//    m_downloader->checkForUpdate(5);
 }
 
 void UpdateWidget::updateCheck(bool state){
@@ -37,7 +37,7 @@ void UpdateWidget::updateCheck(bool state){
         switch (answer) {
         case QMessageBox::Yes:
             qDebug()<<"Yes";
-            m_downloader->download();
+//            m_downloader->download();
             break;
         case QMessageBox::No:
             qDebug()<<"No";
