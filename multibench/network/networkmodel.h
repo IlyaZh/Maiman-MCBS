@@ -30,13 +30,14 @@ public:
     void start(DataSource &iodevice);
     bool isStart();
     void stop();
-    void rescanNetwork();
+
     void clearNetwork();
 
 
 public slots:
     void dataOutcome(quint8 addr, quint16 reg, quint16 value);
     void temperatureUnitsChanged(Const::TemperatureUnitId id);
+    void rescanNetwork();
 private slots:
     void readyRead();
     void bytesWritten(qint64 bytes);
@@ -44,6 +45,7 @@ private slots:
     void sendTimeout();
     //    void delayTimeout();
     void getBaudrate();
+
 
 private:
     DeviceFactory& m_deviceModelFactory;

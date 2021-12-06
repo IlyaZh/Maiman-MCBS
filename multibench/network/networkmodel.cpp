@@ -104,7 +104,6 @@ void NetworkModel::rescanNetwork()
 
 void NetworkModel::clearNetwork(){
     QSet<quint8> addresses;
-    addresses.clear();
     AppSettings::setDeviceAddresses(addresses);
 }
 

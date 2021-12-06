@@ -128,5 +128,5 @@ void AppSettings::setKeepAddresses(bool flag){
 }
 
 bool AppSettings::getKeepAddresses(){
-     return settings->value("userSettings/keepAddresses").toBool();
+     return settings->value("userSettings/keepAddresses", false).toBool();
 }

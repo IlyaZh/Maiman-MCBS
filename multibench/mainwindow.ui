@@ -238,6 +238,7 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
     <addaction name="menuPorts"/>
     <addaction name="menuBaudrates"/>
     <addaction name="actionKeepAddresses"/>
+    <addaction name="actionRescan"/>
     <addaction name="actionConnect"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -316,6 +317,11 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
    </property>
    <property name="text">
     <string>Keep Addresses</string>
+   </property>
+  </action>
+  <action name="actionRescan">
+   <property name="text">
+    <string>Rescan</string>
    </property>
   </action>
  </widget>
