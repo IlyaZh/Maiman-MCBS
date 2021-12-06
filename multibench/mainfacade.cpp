@@ -32,7 +32,3 @@ void MainFacade::createWidgetFor(Device* device) {
 void MainFacade::setBaudRates(const QStringList& bauds) {
     m_window.setBaudRates(bauds);
 }
-
-bool MainFacade::getKeepAddresses(){
-    return m_window.getKeepAddresses();
-}

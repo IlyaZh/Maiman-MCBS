@@ -103,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
     connect(m_updater,&UpdateWidget::downloadFinished,this,&MainWindow::updateDownloadingfinished);
     connect(ui->actionAbout,&QAction::triggered,this,&MainWindow::callAboutDialog);
+    connect(ui->actionKeepAddresses, &QAction::triggered,this, &MainWindow::getKeepAddresses);
 }
 
 MainWindow::~MainWindow()
@@ -225,8 +226,8 @@ void MainWindow::setStatusMessage(const QString& msg, int timeout) {
     ui->statusbar->showMessage(msg, timeout);
 }
 
-bool MainWindow::getKeepAddresses(){
-    return ui->actionKeepAddresses->isChecked();
+void MainWindow::getKeepAddresses(){
+    AppSettings::setKeepAddresses(ui->actionKeepAddresses->isChecked());
 }
 
 // private methods

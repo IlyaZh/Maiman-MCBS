@@ -29,7 +29,6 @@ NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& prot
 
     //    m_delayTimer.setSingleShot(true);
     m_timeoutTimer.setSingleShot(true);
-    m_addresses.clear();
 }
 
 NetworkModel::~NetworkModel() {
@@ -87,7 +86,7 @@ void NetworkModel::rescanNetwork()
 {
     clear();
     QSet<quint8> addresses(AppSettings::getDeviceAddresses());//TODO: dont work
-    if (!m_facade.getKeepAddresses()){
+    if (!AppSettings::getKeepAddresses()){
         addresses.clear();
         clearNetwork();
     }
@@ -140,10 +139,9 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
 
     m_devices.insert(addr, newDevice);
 
-    m_addresses = AppSettings::getDeviceAddresses();
-    m_addresses.insert(addr);
-    AppSettings::setDeviceAddresses(m_addresses);
-    m_addresses.clear();
+    QSet<quint8> addresses(AppSettings::getDeviceAddresses());
+    addresses.insert(addr);
+    AppSettings::setDeviceAddresses(addresses);
 
     connect(newDevice.get(), SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
 

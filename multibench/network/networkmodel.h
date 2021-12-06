@@ -63,7 +63,6 @@ private:
     int m_delayMs = 0;
     QByteArray m_rxPacket;
     qint64 m_waitForBytes = 0;
-    QSet<quint8> m_addresses;
 
     void clear();
     void initDevice(quint8 addr, quint16 id);

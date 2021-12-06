@@ -38,6 +38,7 @@ public:
     static NetworkData_s getNetworkData();
     static uint getDeviceTimeout();
     static QSet<quint8> getDeviceAddresses();
+    static bool getKeepAddresses();
     //    QSize getWindowSize();
 
 private:
@@ -61,7 +62,8 @@ public slots:
     static void setComStopBits(int);
     static void setNetworkData(/*NetworkData_s*/QVariant netData);
     static void setDeviceTimeout(quint16 timeoutMs);
-    static void setDeviceAddresses(const QSet<quint8> addr);
+    static void setDeviceAddresses(const QSet<quint8>& addr);
+    static void setKeepAddresses(bool flag);
     //    static void setWindowSize(QSize);
 };
 

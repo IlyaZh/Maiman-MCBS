@@ -18,7 +18,6 @@ public:
     ~MainFacade();
     void createWidgetFor(Device* device);
     void setBaudRates(const QStringList& bauds);
-    bool getKeepAddresses();
 private:
     MainWindow& m_window;
     GuiFactory& m_factory;

@@ -102,7 +102,8 @@ void AppSettings::setDeviceTimeout(quint16 timeoutMs) {
     settings->setValue("deviceDefaultTimeout", timeoutMs);
 }
 
-void AppSettings::setDeviceAddresses(const QSet<quint8> addr){
+void AppSettings::setDeviceAddresses(const QSet<quint8>& addr){
+    settings->remove("userSettings/addresses");
     settings->beginWriteArray("userSettings/addresses");
     for(const auto item : addr){
         settings->setArrayIndex(item);
@@ -120,4 +121,12 @@ QSet<quint8> AppSettings::getDeviceAddresses(){
     }
     settings->endArray();
     return map;
+}
+
+void AppSettings::setKeepAddresses(bool flag){
+    settings->setValue("userSettings/keepAddresses", flag);
+}
+
+bool AppSettings::getKeepAddresses(){
+     return settings->value("userSettings/keepAddresses").toBool();
 }
