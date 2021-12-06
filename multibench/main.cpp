@@ -40,17 +40,6 @@ int main(int argc, char *argv[])
     setlocale(LC_CTYPE, "rus");
 #endif
 
-    UpdatesChecker checker;
-    QObject::connect(&checker, &UpdatesChecker::updatesAvailable, [&checker](bool available){
-        if(available) {
-            qDebug() << "UPDATES AVAILABLE" << checker.sizeFormated() << checker.version();
-            checker.startUpdate(qApp);
-        }
-        else
-            qDebug() << "NO UPDATES AVAILABLE";
-    });
-    checker.checkForUpdates();
-
     QCommandLineParser cliParser;
     QCommandLineOption debugOption(QStringList() << "d" << "debug");
     cliParser.addOption(debugOption);
