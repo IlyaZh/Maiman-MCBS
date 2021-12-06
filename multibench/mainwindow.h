@@ -31,16 +31,19 @@ signals:
     void refreshComPortsSignal();
     void connectToNetwork(QVariant value);
     void tempratureUnitsChanged(Const::TemperatureUnitId id);
+    void rescanNetwork();
 
 public slots:
     void setConnectMessage(QString msg);
     void setConnected(bool flag);
     void setStatusMessage(const QString& msg, int timeout = 10);
     void updateDownloadingfinished();
+    void triggeredRescanNetwork();
 private slots:
 //    void adjust(const QSize& size = QSize());
     void connectTriggered();
     void callAboutDialog();
+    void getKeepAddresses();
 private:
     Ui::MainWindow *ui;
 //    MainWindowControllerInterface* m_cntrl;

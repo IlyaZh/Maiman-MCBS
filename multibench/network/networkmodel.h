@@ -2,6 +2,7 @@
 #define NETWORKMODEL_H
 
 #include <QtWidgets>
+#include <QSet>
 #include "constants.h"
 
 //#include "enums.h"
@@ -16,7 +17,7 @@ class ModbusProtocol;
 class Device;
 
 class NetworkModel :
-        public QObject
+                     public QObject
 {
     Q_OBJECT
 public:
@@ -29,19 +30,22 @@ public:
     void start(DataSource &iodevice);
     bool isStart();
     void stop();
-    void rescanNetwork();
+
+    void clearNetwork();
 
 
 public slots:
     void dataOutcome(quint8 addr, quint16 reg, quint16 value);
     void temperatureUnitsChanged(Const::TemperatureUnitId id);
+    void rescanNetwork();
 private slots:
     void readyRead();
     void bytesWritten(qint64 bytes);
     void errorOccured(const QString& msg);
     void sendTimeout();
-//    void delayTimeout();
+    //    void delayTimeout();
     void getBaudrate();
+
 
 private:
     DeviceFactory& m_deviceModelFactory;

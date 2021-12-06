@@ -103,6 +103,8 @@ MainWindow::MainWindow(QWidget *parent)
     });
     connect(m_updater,&UpdateWidget::downloadFinished,this,&MainWindow::updateDownloadingfinished);
     connect(ui->actionAbout,&QAction::triggered,this,&MainWindow::callAboutDialog);
+    connect(ui->actionKeepAddresses, &QAction::triggered,this, &MainWindow::getKeepAddresses);
+    connect(ui->actionRescan,&QAction::triggered,this,&MainWindow::triggeredRescanNetwork);
 }
 
 MainWindow::~MainWindow()
@@ -225,6 +227,10 @@ void MainWindow::setStatusMessage(const QString& msg, int timeout) {
     ui->statusbar->showMessage(msg, timeout);
 }
 
+void MainWindow::getKeepAddresses(){
+    AppSettings::setKeepAddresses(ui->actionKeepAddresses->isChecked());
+}
+
 // private methods
 //void MainWindow::setConnections() {
 // network connection button
@@ -271,4 +277,12 @@ void MainWindow::updateDownloadingfinished(){
 
 void MainWindow::callAboutDialog(){
     m_About->show();
+}
+
+void MainWindow::triggeredRescanNetwork(){
+    for(const auto item:m_workWidgets){
+        m_workFieldLayout->removeWidget(item);
+    }
+    m_workWidgets.clear();
+    emit rescanNetwork();
 }

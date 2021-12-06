@@ -17,16 +17,16 @@ QScopedPointer<QSettings> AppSettings::settings(new QSettings(QSettings::NativeF
     }
     // Считываем файл настроек и передаем в главное окно
 
-    QJsonParseError jParseErrorObj;
-    QJsonDocument jDoc = QJsonDocument::fromJson(file->readAll(), &jParseErrorObj);
-    if(jDoc.isNull()) {
-        qDebug() << "[E][AppSettings] Can't parse settings file:" << jParseErrorObj.errorString();
-    } else {
+QJsonParseError jParseErrorObj;
+QJsonDocument jDoc = QJsonDocument::fromJson(file->readAll(), &jParseErrorObj);
+if(jDoc.isNull()) {
+    qDebug() << "[E][AppSettings] Can't parse settings file:" << jParseErrorObj.errorString();
+} else {
 
-    }
+}
 }*/
 
-quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", Const::BaudRateDefault).toUInt(); }
+    quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", Const::BaudRateDefault).toUInt(); }
 
 QString AppSettings::getComPort() { return settings->value("userSettings/comPort/port", "").toString(); }
 
@@ -100,4 +100,33 @@ void AppSettings::setNetworkData(/*NetworkData_s*/QVariant netData) {
 
 void AppSettings::setDeviceTimeout(quint16 timeoutMs) {
     settings->setValue("deviceDefaultTimeout", timeoutMs);
+}
+
+void AppSettings::setDeviceAddresses(const QSet<quint8>& addr){
+    settings->remove("userSettings/addresses");
+    settings->beginWriteArray("userSettings/addresses");
+    for(const auto item : addr){
+        settings->setArrayIndex(item);
+        settings->setValue("userSettings/addresses", item);
+    }
+    settings->endArray();
+}
+
+QSet<quint8> AppSettings::getDeviceAddresses(){
+    QSet<quint8> map;
+    int size = settings->beginReadArray("userSettings/addresses");
+    for (int i = 1; i < size; ++i) {
+        settings->setArrayIndex(i);
+        map.insert(settings->value("userSettings/addresses").toUInt());
+    }
+    settings->endArray();
+    return map;
+}
+
+void AppSettings::setKeepAddresses(bool flag){
+    settings->setValue("userSettings/keepAddresses", flag);
+}
+
+bool AppSettings::getKeepAddresses(){
+     return settings->value("userSettings/keepAddresses", false).toBool();
 }

@@ -3,6 +3,7 @@
 	<BaudRate value="9600"/>
 	<BaudRate value="57600"/>
 	<BaudRate value="115200"/>
+	<BaudRate value="230400"/>
 	<!-- Список устройств с одинаковым айди -->
 	<CommonIDDevices>
 		<CIDD id="201">SF6015 v2</CIDD>

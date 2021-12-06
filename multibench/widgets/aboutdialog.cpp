@@ -1,5 +1,6 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
+#include "version.h"
 const QString SECRET_CODE_COMBINATION = "3.1415926";
 
 AboutDialog::AboutDialog(QWidget *parent) :
@@ -12,13 +13,12 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->updateButton->hide();
     connect(ui->updateButton, SIGNAL(clicked(bool)), this, SLOT(updateButtonPressed()));
 
-    QString str = "Version:1";
 //    QString str = "Version: " + QString::number(MAJOR_VERSION) + "." + QString::number(MINOR_VERSION) + "." + QString::number(PATCH_VERSION);
 //    if (!updateUrl.isEmpty()) {
 //        str.append("<br><b>Update is available!</b>");
 //        ui->updateButton->show();
 //    }
-    ui->softwareInfoLabel->setText(str);
+    ui->softwareInfoLabel->setText(Version);
 
     // Вызов информации о версии Qt
     connect(ui->aboutQtButton, SIGNAL(clicked(bool)), QApplication::instance(), SLOT(aboutQt()));
