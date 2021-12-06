@@ -10,6 +10,7 @@
 #include "device/devicemodel.h"
 #include "model/devicefactory.h"
 #include "mainfacade.h"
+#include "appsettings.h"
 
 const quint16 NetworkModel::TIMEOUT_MS = 50*10;
 const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug замени
@@ -28,6 +29,7 @@ NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& prot
 
     //    m_delayTimer.setSingleShot(true);
     m_timeoutTimer.setSingleShot(true);
+    m_addresses.clear();
 }
 
 NetworkModel::~NetworkModel() {
@@ -84,10 +86,27 @@ void NetworkModel::stop()
 void NetworkModel::rescanNetwork()
 {
     clear();
-    for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr) {
-        m_queue.enqueue(m_protocol.getDataValue(iAddr, NetworkModel::IDENTIFY_REG_ID_DEFAULT));
+    QSet<quint8> addresses(AppSettings::getDeviceAddresses());//TODO: dont work
+    if (!m_facade.getKeepAddresses()){
+        addresses.clear();
+        clearNetwork();
     }
+    if (addresses.isEmpty()){
+        for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr) {
+            addresses.insert(iAddr);
+        }
+    }
+    for(const auto item:addresses){
+        m_queue.enqueue(m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT));
+    }
+
     tryToSend();
+}
+
+void NetworkModel::clearNetwork(){
+    QSet<quint8> addresses;
+    addresses.clear();
+    AppSettings::setDeviceAddresses(addresses);
 }
 
 // private methods
@@ -120,6 +139,12 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
     }
 
     m_devices.insert(addr, newDevice);
+
+    m_addresses = AppSettings::getDeviceAddresses();
+    m_addresses.insert(addr);
+    AppSettings::setDeviceAddresses(m_addresses);
+    m_addresses.clear();
+
     connect(newDevice.get(), SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
 
     m_facade.createWidgetFor(newDevice.get());

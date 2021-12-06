@@ -237,6 +237,7 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
     </widget>
     <addaction name="menuPorts"/>
     <addaction name="menuBaudrates"/>
+    <addaction name="actionKeepAddresses"/>
     <addaction name="actionConnect"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -307,6 +308,14 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
    </property>
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionKeepAddresses">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Keep Addresses</string>
    </property>
   </action>
  </widget>

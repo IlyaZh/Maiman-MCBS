@@ -8,6 +8,7 @@
 //#include <QPoint>
 //#include <QSize>
 //#include <QDir>
+#include <QSet>
 #include "constants.h"
 #include "datasource.h"
 //#include <QScopedPointer>
@@ -36,11 +37,12 @@ public:
     static int getComStopBits();
     static NetworkData_s getNetworkData();
     static uint getDeviceTimeout();
-//    QSize getWindowSize();
+    static QSet<quint8> getDeviceAddresses();
+    //    QSize getWindowSize();
 
 private:
     static QScopedPointer<QSettings> settings;
-//    QString m_errorString;
+    //    QString m_errorString;
 
 signals:
 
@@ -59,7 +61,8 @@ public slots:
     static void setComStopBits(int);
     static void setNetworkData(/*NetworkData_s*/QVariant netData);
     static void setDeviceTimeout(quint16 timeoutMs);
-//    static void setWindowSize(QSize);
+    static void setDeviceAddresses(const QSet<quint8> addr);
+    //    static void setWindowSize(QSize);
 };
 
 #endif // APPSETTINGS_H

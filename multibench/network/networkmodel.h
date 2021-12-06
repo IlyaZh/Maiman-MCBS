@@ -2,6 +2,7 @@
 #define NETWORKMODEL_H
 
 #include <QtWidgets>
+#include <QSet>
 #include "constants.h"
 
 //#include "enums.h"
@@ -16,7 +17,7 @@ class ModbusProtocol;
 class Device;
 
 class NetworkModel :
-        public QObject
+                     public QObject
 {
     Q_OBJECT
 public:
@@ -30,6 +31,7 @@ public:
     bool isStart();
     void stop();
     void rescanNetwork();
+    void clearNetwork();
 
 
 public slots:
@@ -40,7 +42,7 @@ private slots:
     void bytesWritten(qint64 bytes);
     void errorOccured(const QString& msg);
     void sendTimeout();
-//    void delayTimeout();
+    //    void delayTimeout();
     void getBaudrate();
 
 private:
@@ -61,6 +63,7 @@ private:
     int m_delayMs = 0;
     QByteArray m_rxPacket;
     qint64 m_waitForBytes = 0;
+    QSet<quint8> m_addresses;
 
     void clear();
     void initDevice(quint8 addr, quint16 id);

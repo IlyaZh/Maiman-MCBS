@@ -26,6 +26,7 @@ public:
     void setComPorts(const QStringList& portList);
     void setBaudRates(const QStringList& baudsList);
     void setStatusBarMessage(QString message);
+    bool getKeepAddresses();
 
 signals:
     void refreshComPortsSignal();

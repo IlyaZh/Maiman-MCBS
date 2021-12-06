@@ -225,6 +225,10 @@ void MainWindow::setStatusMessage(const QString& msg, int timeout) {
     ui->statusbar->showMessage(msg, timeout);
 }
 
+bool MainWindow::getKeepAddresses(){
+    return ui->actionKeepAddresses->isChecked();
+}
+
 // private methods
 //void MainWindow::setConnections() {
 // network connection button
