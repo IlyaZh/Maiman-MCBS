@@ -16,7 +16,7 @@ public:
 private slots:
     void refreshComPorts();
     void connectToNetwork(QVariant value);
-    void triggeredRescan();
+    void rescan();
 
 signals:
     void rescanNetwork();
