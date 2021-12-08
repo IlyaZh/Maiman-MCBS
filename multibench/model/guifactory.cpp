@@ -34,6 +34,12 @@ DeviceWidget* GuiFactory::createWidget(quint16 id, const QMap<quint16, QSharedPo
     return nullptr;
 }
 
+DeviceWidgetDesc* GuiFactory::getDeviceWidgetDesc(quint16 id){
+    if(m_deviceWidgets.contains(id)) {
+        return &m_deviceWidgets[id];
+    }
+    return nullptr;
+}
 // private slots
 
 void GuiFactory::parsingFinished() {

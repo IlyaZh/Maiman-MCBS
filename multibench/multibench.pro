@@ -79,6 +79,7 @@ SOURCES += \
     mainfacade.cpp \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
+    widgets/calibratedialog.cpp \
     widgets/updatewidget.cpp \
     widgets/aboutdialog.cpp \
     widgets/connectionwidget.cpp \
@@ -114,6 +115,7 @@ HEADERS += \
     mainfacade.h \
     mainwindow.h \
     model/device/HiddenWidget.h \
+    widgets/calibratedialog.h \
     widgets/updatewidget.h \
     widgets/aboutdialog.h \
     widgets/connectionwidget.h \
@@ -135,6 +137,7 @@ FORMS += \
     mainwindow.ui \
     model/device/HiddenWidget.ui \
     widgets/aboutdialog.ui \
+    widgets/calibratedialog.ui \
     widgets/connectionwidget.ui \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \

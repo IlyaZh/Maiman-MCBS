@@ -9,6 +9,7 @@
 #include "constants.h"
 class AboutDialog;
 class UpdateWidget;
+class CalibrateDialog;
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -26,6 +27,7 @@ public:
     void setComPorts(const QStringList& portList);
     void setBaudRates(const QStringList& baudsList);
     void setStatusBarMessage(QString message);
+    void addCalibrateWidget(quint16 id,QVector<CalibrateDialog*> widget);
 
 signals:
     void refreshComPortsSignal();

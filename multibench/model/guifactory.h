@@ -5,6 +5,7 @@
 #include <QtWidgets>
 #include "factories/parserworker.h"
 #include "device/devicewidget.h"
+#include "widgets/calibratedialog.h"
 
 class DevCommand;
 
@@ -15,7 +16,7 @@ public:
     explicit GuiFactory(const QString& fileName, QObject *parent = nullptr);
     void start();
     DeviceWidget* createWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
-
+    DeviceWidgetDesc* getDeviceWidgetDesc(quint16 id);
 
 
 private slots:

@@ -247,9 +247,15 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuCalibration">
+    <property name="title">
+     <string>Calibration</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuConnect"/>
+   <addaction name="menuCalibration"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">

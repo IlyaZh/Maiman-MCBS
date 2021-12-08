@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CalibrateDialog</class>
+ <widget class="QDialog" name="CalibrateDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>401</width>
+    <height>130</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Share Tech Mono</family>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Set calibration coef. dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+	background: rgb(51,51,51);
+}
+QLabel {
+	color: #fff;
+}
+
+QPushButton {
+	color: rgb(255, 255, 255);
+	background-color: rgb(51, 51, 51);
+	border: 1px solid #999999;
+	border-radius: 4px;
+	padding: 4px;
+	width: 50px
+}</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="3" column="0">
+    <widget class="QLabel" name="minLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>95</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLabel" name="maxLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>105</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QDoubleSpinBox" name="valueDoubleSpinBox">
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QDoubleSpinBox {
+	background: rgb(51,51,51);
+	color: #fff;
+}
+</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
+    <widget class="QSlider" name="valueSlider">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"> QSlider::groove:horizontal {
+      background: rgb(51,51,51);
+      position: absolute; /* absolutely position 4px from the left and right of the widget. setting margins on the widget should work too... */
+      top: 8px; bottom: 8px;
+      height: 15px;
+  }
+
+  QSlider::handle:horizontal {
+      width: 30px;
+      background: rgb(90, 90, 90);
+      margin: -8px 0; /* expand outside the groove */
+      border: 1px solid rgb(13,33,40);
+  	  border-radius: 15px;
+  }
+
+  QSlider::add-page:horizontal {
+      /*background: rgb(0,102,52);*/
+	  border: 1px solid rgb(13,33,40);
+	  border-radius: 7px;
+  }
+
+  QSlider::sub-page:horizontal {
+      /*background: rgb(51,51,51);*/
+     background: rgb(0,102,52);
+      border: 1px solid rgb(13,33,40);
+  	  border-radius: 7px;
+  }
+
+  QSlider::add-page:horizontal:disabled {
+/*     background: rgb(0,102,52);*/
+	background: rgb(60,162,102);
+	  border: 1px solid rgb(13,33,40);
+	  border-radius: 7px;
+  }
+
+</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="3">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="titleLabel">
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Коэффициент тока</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="3">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="minimumSize">
+      <size>
+       <width>347</width>
+       <height>23</height>
+      </size>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -28,7 +28,6 @@ void UpdateWidget::updateCheck(bool state){
             QMessageBox *{\
                 background: rgb(51,51,51);\
                 color: rgb(255, 255, 255);\
-                qproperty-alignment: AlignHCenter;\
             }\
             QPushButton {\
                 color: rgb(255, 255, 255);\

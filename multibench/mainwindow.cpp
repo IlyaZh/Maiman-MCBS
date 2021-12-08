@@ -8,6 +8,7 @@
 #include <QDebug>
 #include "widgets/updatewidget.h"
 #include "widgets/aboutdialog.h"
+#include "widgets/calibratedialog.h"
 
 //const QString MainWindow::SettingsPath {"window/"};
 
@@ -105,6 +106,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionAbout,&QAction::triggered,this,&MainWindow::callAboutDialog);
     connect(ui->actionKeepAddresses, &QAction::triggered,this, &MainWindow::getKeepAddresses);
     connect(ui->actionRescan,&QAction::triggered,this,&MainWindow::triggeredRescanNetwork);
+    AppSettings::setKeepAddresses(false);
 }
 
 MainWindow::~MainWindow()
@@ -153,6 +155,18 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
     }
 }
 
+void MainWindow::addCalibrateWidget(quint16 id,QVector<CalibrateDialog*> widget){
+    QMenu* calibration = new QMenu(QString("ID:%1").arg(id),this);
+    for(auto& item:widget){
+            auto action = new QAction(item->getName(),this);
+            calibration->addAction(action);
+            connect(action,&QAction::triggered,this,[item](){
+                item->setStruct();
+                item->show();
+            });
+    }
+    ui->menuCalibration->addMenu(calibration);
+}
 
 void MainWindow::setComPorts(const QStringList& portList) {
     ui->menuPorts->clear();
@@ -283,6 +297,7 @@ void MainWindow::triggeredRescanNetwork(){
     for(const auto item:m_workWidgets){
         m_workFieldLayout->removeWidget(item);
     }
+    ui->menuCalibration->clear();
     m_workWidgets.clear();
     emit rescanNetwork();
 }
