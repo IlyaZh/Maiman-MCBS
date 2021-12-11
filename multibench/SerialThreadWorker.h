@@ -20,7 +20,7 @@ public slots:
     void setTimeout(int MSecs);
     void configure(PortType portType, QVariant host, QVariant arg);
 //    void write(const QByteArray& msg);
-    void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes);
+    void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority = false);
     void stop();
 //    void setWaitRxBytes(qint64 count);
 //    void clear();
@@ -45,6 +45,7 @@ private:
     QByteArray m_lastWrittenMsg;
     QByteArray m_buffer;
     QQueue<QPair<QByteArray, qint64>> m_queue;
+    QQueue<QPair<QByteArray, qint64>> m_priorityQueue;
     QSemaphore m_sem;
     bool m_isWork {false};
     QMutex m_mtx;

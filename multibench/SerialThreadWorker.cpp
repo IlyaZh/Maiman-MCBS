@@ -23,9 +23,13 @@ void SerialThreadWorker::configure(PortType portType, QVariant host, QVariant ar
     m_arg = arg;
 }
 
-void SerialThreadWorker::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes) {
+void SerialThreadWorker::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority) {
     QMutexLocker locker(&m_mtx);
-    m_queue.enqueue({msg, waitBytes});
+    auto pair = qMakePair(msg, waitBytes);
+    if(priority)
+        m_priorityQueue.enqueue(pair);
+    else
+        m_queue.enqueue(pair);
     m_sem.release(1);
 }
 

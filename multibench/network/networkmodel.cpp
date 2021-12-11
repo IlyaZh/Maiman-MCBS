@@ -90,9 +90,9 @@ void NetworkModel::start(QVariant connectionData) {
         // TODO: Остановился тута
 //        connect(m_worker, &QThread::finished, m_worker, &QObject::deleteLater);
         connect(m_worker, &SerialThreadWorker::connected, this, [this](){
-                m_facade.
+            m_facade.setConnected(true);
         });
-        connect(m_worker, &SerialThreadWorker::readyWrite, this, [this](){
+        connect(m_worker, &SerialThreadWorker::readyToWrite, this, [this](){
 
         });
         connect(m_worker, &SerialThreadWorker::timeout, this, [this](){
@@ -100,11 +100,13 @@ void NetworkModel::start(QVariant connectionData) {
         });
         connect(m_worker, &SerialThreadWorker::errorOccured, this, [this](QString msg){
             qDebug() << "Error:" << msg;
+            // TODO: выведи сообщение в статусбар главного окна
         });
         connect(m_worker, &SerialThreadWorker::readyRead, this, [this](QByteArray msg){
 
         });
         connect(m_worker, &SerialThreadWorker::finished, this, [this](){
+            m_facade.setConnected(false);
             m_worker->deleteLater();
         });
 
@@ -135,9 +137,11 @@ void NetworkModel::rescanNetwork()
             addresses.insert(iAddr);
         }
     }
-    for(const auto item:addresses){
-        m_queue.enqueue(m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT));
-    }
+
+    if(m_worker)
+        for(const auto item : addresses){
+            m_queue.enqueue(m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT));
+        }
 
     tryToSend();
 }
