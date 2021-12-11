@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "device/commandsettings.h"
 
+class CalibrationAndLimitsWidget;
 struct CalibrationKoef;
 
 namespace Ui {
@@ -15,16 +16,13 @@ class CalibrateDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit CalibrateDialog(CalibrationKoef* calibration, QSharedPointer<DevCommand> command, QWidget *parent = nullptr);
+    explicit CalibrateDialog(QVector<CalibrationAndLimitsWidget*> calibrations,QVector<CalibrationAndLimitsWidget*> limits, QWidget *parent = nullptr);
     ~CalibrateDialog();
-    void setStruct();
-    QString getName();
+    void setValues();
 private:
-    QSharedPointer<CalibrationKoef> m_calibraion;
-    QSharedPointer<DevCommand> m_command;
+    QVector<CalibrationAndLimitsWidget*> m_calibrationWidgets;
+    QVector<CalibrationAndLimitsWidget*> m_limitsWidgets;
     Ui::CalibrateDialog *ui;
-    int divider;
-
 private slots:
     void saveResult();
 

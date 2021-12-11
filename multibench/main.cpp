@@ -17,6 +17,7 @@
 #include "mainfacade.h"
 //#include "DebugMode.h"
 #include <QFontDatabase>
+#include "modelguimediator.h"
 
 #include <QDebug>
 #ifdef QT_DEBUG
@@ -83,16 +84,18 @@ int main(int argc, char *argv[])
     DeviceFactory deviceFactory("device_db.xml");
 
     // Фасад для управления потоками данных от модели к представлению
-    MainFacade mainFacade(w, guiFactory);
+    //MainFacade mainFacade(w, guiFactory);
 
     ModbusProtocol modbus;
     // Модель данных (подключается к источнику данных и забирает их)
-    NetworkModel model(deviceFactory, modbus, mainFacade);
+    //NetworkModel model(deviceFactory, modbus, mainFacade);
+    NetworkModel model(deviceFactory, modbus);
 //    model.setDelay(100);
     model.setTimeout(300);
 
     // Контроллер главного окна, управляет потоком данных от GUI к моделии
-    MainController mainCtrl(w, model);
+    //MainController mainCtrl(w, model);
+    ModelGuiMediator mainMediator(w,guiFactory,model);
 
 #ifdef QT_DEBUG
     GlobalTest tests(argc, argv);

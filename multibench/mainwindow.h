@@ -10,6 +10,7 @@
 class AboutDialog;
 class UpdateWidget;
 class CalibrateDialog;
+class CalibrationAndLimitsWidget;
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -27,20 +28,20 @@ public:
     void setComPorts(const QStringList& portList);
     void setBaudRates(const QStringList& baudsList);
     void setStatusBarMessage(QString message);
-    void addCalibrateWidget(quint16 id,QVector<CalibrateDialog*> widget);
 
 signals:
     void refreshComPortsSignal();
     void connectToNetwork(QVariant value);
     void tempratureUnitsChanged(Const::TemperatureUnitId id);
     void rescanNetwork();
+    void createCalibAndLimitsWidgets(quint8 addr);
 
 public slots:
     void setConnectMessage(QString msg);
     void setConnected(bool flag);
     void setStatusMessage(const QString& msg, int timeout = 10);
-    void updateDownloadingfinished();
     void triggeredRescanNetwork();
+    void addCalibrationDialog(quint16 id, QVector<CalibrationAndLimitsWidget*> calibrations,QVector<CalibrationAndLimitsWidget*> limits);
 private slots:
 //    void adjust(const QSize& size = QSize());
     void connectTriggered();
@@ -57,6 +58,7 @@ private:
     QPointer<QActionGroup> m_baudrateGroup;
     UpdateWidget* m_updater;
     QPointer<AboutDialog> m_About;
+    QVector<CalibrateDialog*> m_calibrationDialogs;
 protected:
     void closeEvent(QCloseEvent *event) override;
 

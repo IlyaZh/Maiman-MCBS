@@ -15,7 +15,7 @@ struct DeviceModel;
 class SoftProtocol;
 class ModbusProtocol;
 class Device;
-
+class DevCommand;
 class NetworkModel :
                      public QObject
 {
@@ -23,14 +23,14 @@ class NetworkModel :
 public:
     static const quint16 IDENTIFY_REG_ID_DEFAULT;
     static const quint16 TIMEOUT_MS;
-    explicit NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, MainFacade& facade, QObject *parent = nullptr);
+    explicit NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, QObject *parent = nullptr);
     ~NetworkModel();
     void setDelay(int delay);
     void setTimeout(int timeout);
     void start(DataSource &iodevice);
     bool isStart();
     void stop();
-
+    QMap<quint16, QSharedPointer<DevCommand>> getCommands(quint8 addr);
     void clearNetwork();
 
 
@@ -38,19 +38,22 @@ public slots:
     void dataOutcome(quint8 addr, quint16 reg, quint16 value);
     void temperatureUnitsChanged(Const::TemperatureUnitId id);
     void rescanNetwork();
+    void getBaudrate();
 private slots:
     void readyRead();
     void bytesWritten(qint64 bytes);
     void errorOccured(const QString& msg);
     void sendTimeout();
     //    void delayTimeout();
-    void getBaudrate();
 
+signals:
+    void createWidgetFor(Device* device);
+    void setBaudrateToWindow(QStringList);
 
 private:
     DeviceFactory& m_deviceModelFactory;
     QScopedPointer<DataSource> m_port;
-    MainFacade& m_facade;
+//    MainFacade& m_facade;
     SoftProtocol& m_protocol;
     QMap<quint8, QSharedPointer<Device>> m_devices;
     bool m_bIsStart = false;

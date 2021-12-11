@@ -20,20 +20,13 @@ MainFacade::~MainFacade() {
 }
 
 void MainFacade::createWidgetFor(Device* device) {
-    QPointer<DeviceWidget> widget(m_factory.createWidget(device->id(), device->commands()));
-    QVector<CalibrateDialog*> calibVec;
+    QPointer<DeviceWidget> widget(m_factory.createDeviceWidget(device->id(), device->commands()));
     if(widget) {
         widget->setAddress(static_cast<int>(device->addr()));
         connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);
         m_window.addDeviceWidget(widget);
-        auto& calibration = m_factory.getDeviceWidgetDesc(device->id())->calibration;
-        for (auto& item:calibration){
-            for (auto command:device->commands()){
-                if(command->code() == item.code)
-                    calibVec.append(new CalibrateDialog(&item, command));
-            }
-        }
-        m_window.addCalibrateWidget(device->addr(),calibVec);
+
+        m_window.addCalibrationDialog(device->addr(),m_factory.createDeviceCalibrationWidget(device->id(), device->commands()),m_factory.createDeviceLimitsWidget(device->id(), device->commands()));
     } else {
         qWarning() << "Can't find device widget with id=" << device->id();
     }

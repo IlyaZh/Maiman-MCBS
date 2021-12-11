@@ -9,6 +9,7 @@ class GuiFactory;
 class MainWindow;
 class Device;
 class DeviceWidget;
+class CalibrationAndLimitsWidget;
 
 class MainFacade : public QObject
 {

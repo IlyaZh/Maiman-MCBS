@@ -9,6 +9,7 @@
 #include "widgets/updatewidget.h"
 #include "widgets/aboutdialog.h"
 #include "widgets/calibratedialog.h"
+#include "widgets/calibrationandlimitswidget.h"
 
 //const QString MainWindow::SettingsPath {"window/"};
 
@@ -102,11 +103,10 @@ MainWindow::MainWindow(QWidget *parent)
         emit tempratureUnitsChanged(id);
 
     });
-    connect(m_updater,&UpdateWidget::downloadFinished,this,&MainWindow::updateDownloadingfinished);
     connect(ui->actionAbout,&QAction::triggered,this,&MainWindow::callAboutDialog);
     connect(ui->actionKeepAddresses, &QAction::triggered,this, &MainWindow::getKeepAddresses);
     connect(ui->actionRescan,&QAction::triggered,this,&MainWindow::triggeredRescanNetwork);
-    AppSettings::setKeepAddresses(false);
+    ui->actionKeepAddresses->setChecked(AppSettings::getKeepAddresses());
 }
 
 MainWindow::~MainWindow()
@@ -140,6 +140,7 @@ void MainWindow::connectTriggered(){
 
 void MainWindow::addDeviceWidget(DeviceWidget* widget) {
     if(!m_workWidgets.contains(widget)) {
+        widget->setParent(this);
         m_workWidgets.append(widget);
         int count = m_workWidgets.size();
         qDebug() << "addDeviceWidget" << count;
@@ -154,11 +155,12 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         //        ui->scrollArea->setMinimumSize(widgetSize);
     }
 }
-
-void MainWindow::addCalibrateWidget(quint16 id,QVector<CalibrateDialog*> widget){
+/*
+void MainWindow::addCalibrationDialog(quint16 id,QVector<CalibrateDialog*> widget){
     QMenu* calibration = new QMenu(QString("ID:%1").arg(id),this);
     for(auto& item:widget){
-            auto action = new QAction(item->getName(),this);
+        item->setParent(this);
+            auto action = new QAction(item->getName());
             calibration->addAction(action);
             connect(action,&QAction::triggered,this,[item](){
                 item->setStruct();
@@ -166,6 +168,16 @@ void MainWindow::addCalibrateWidget(quint16 id,QVector<CalibrateDialog*> widget)
             });
     }
     ui->menuCalibration->addMenu(calibration);
+}
+*/
+void MainWindow::addCalibrationDialog(quint16 id,QVector<CalibrationAndLimitsWidget*> calibrations,QVector<CalibrationAndLimitsWidget*> limits){
+    CalibrateDialog* dialog = new CalibrateDialog(calibrations, limits);
+    m_calibrationDialogs.append(dialog);
+    QAction* action = new QAction(QString("ID:%1").arg(id),this);
+    connect(action,&QAction::triggered,this,[dialog](){
+        dialog->show();
+    });
+    ui->menuCalibration->addAction(action);
 }
 
 void MainWindow::setComPorts(const QStringList& portList) {
@@ -282,11 +294,6 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
 void MainWindow::setStatusBarMessage(QString message){
     ui->statusbar->showMessage(message, Const::ConsoleMaxLinesToShow);
-}
-
-void MainWindow::updateDownloadingfinished(){
-    ui->actionConnect->setCheckable(false);
-    qDebug()<<"start update";
 }
 
 void MainWindow::callAboutDialog(){

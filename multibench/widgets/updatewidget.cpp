@@ -7,7 +7,6 @@ UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent),
     m_updater(new UpdatesChecker())
 {
     connect(m_updater,&UpdatesChecker::updatesAvailable,this,&UpdateWidget::updateCheck);
-//    connect(m_downloader,&UpdateDownloader::readyForUpdate,this,&UpdateWidget::downloadFinished);
     connect(m_updater,&UpdatesChecker::errorOccured,this,&UpdateWidget::acceptError);
     m_updater->checkForUpdates();
 }

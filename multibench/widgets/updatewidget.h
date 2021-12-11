@@ -22,7 +22,6 @@ private:
 
 signals:
     void updateApp(QCoreApplication* app);
-    void downloadFinished();
 
 private slots:
     void acceptError(QString errorMsg);
