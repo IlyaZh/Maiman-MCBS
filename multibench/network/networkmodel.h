@@ -16,6 +16,7 @@ class SoftProtocol;
 class ModbusProtocol;
 class Device;
 class DevCommand;
+class SerialThreadWorker;
 class NetworkModel :
                      public QObject
 {
@@ -27,12 +28,13 @@ public:
     ~NetworkModel();
     void setDelay(int delay);
     void setTimeout(int timeout);
-    void start(DataSource &iodevice);
+//    void start(DataSource &iodevice);
+    void start(QVariant value);
     bool isStart();
     void stop();
     QMap<quint16, QSharedPointer<DevCommand>> getCommands(quint8 addr);
     void clearNetwork();
-
+signals:
 
 public slots:
     void dataOutcome(quint8 addr, quint16 reg, quint16 value);
@@ -50,24 +52,27 @@ signals:
     void createWidgetFor(Device* device);
     void setBaudrateToWindow(QStringList);
 
+
+
 private:
     DeviceFactory& m_deviceModelFactory;
     QScopedPointer<DataSource> m_port;
 //    MainFacade& m_facade;
     SoftProtocol& m_protocol;
     QMap<quint8, QSharedPointer<Device>> m_devices;
-    bool m_bIsStart = false;
-    bool m_portIsBusy = false;
-    QQueue<QByteArray> m_queue;
-    QQueue<QByteArray> m_priorityQueue;
-    qint64 m_bytesWritten;
-    QByteArray m_lastTxPackage;
-    QTimer m_timeoutTimer;
-    QTimer m_delayTimer;
-    int m_timeoutMs = 300;
-    int m_delayMs = 0;
+//    bool m_isStart = false;
+//    bool m_portIsBusy = false;
+//    QQueue<QByteArray> m_queue;
+//    QQueue<QByteArray> m_priorityQueue;
+//    qint64 m_bytesWritten;
+//    QByteArray m_lastTxPackage;
+//    QTimer m_timeoutTimer;
+//    QTimer m_delayTimer;
+//    int m_timeoutMs = 300;
+//    int m_delayMs = 0;
     QByteArray m_rxPacket;
-    qint64 m_waitForBytes = 0;
+//    qint64 m_waitForBytes = 0;
+    QPointer<SerialThreadWorker> m_worker;
 
     void clear();
     void initDevice(quint8 addr, quint16 id);

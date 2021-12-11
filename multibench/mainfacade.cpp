@@ -35,3 +35,7 @@ void MainFacade::createWidgetFor(Device* device) {
 void MainFacade::setBaudRates(const QStringList& bauds) {
     m_window.setBaudRates(bauds);
 }
+
+void MainFacade::setConnected(bool state) {
+    m_window.setConnected(state);
+}

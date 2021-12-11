@@ -11,6 +11,7 @@
 #include "model/devicefactory.h"
 #include "mainfacade.h"
 #include "appsettings.h"
+#include "SerialThreadWorker.h"
 
 const quint16 NetworkModel::TIMEOUT_MS = 50*10;
 const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug замени
@@ -21,7 +22,7 @@ NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& prot
     //m_facade(facade),
     m_protocol(protocol)
 {
-    m_bIsStart = false;
+    m_isStart = false;
     m_deviceModelFactory.start();
     connect(&m_deviceModelFactory,&DeviceFactory::parsingIsFinished, this, &NetworkModel::getBaudrate);
     //    connect(&m_delayTimer, &QTimer::timeout, this, &NetworkModel::delayTimeout);
@@ -50,36 +51,77 @@ void NetworkModel::setTimeout(int timeout) {
 }
 
 
-void NetworkModel::start(DataSource& networkDevice)
-{
-    //m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
-    qDebug()<<m_deviceModelFactory.getBaudrate();
-    if(!m_port.isNull()) {
-        m_port->disconnect();
-        //        m_port->deleteLater();
+//void NetworkModel::start(DataSource& networkDevice)
+//{
+//    //m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
+//    qDebug()<<m_deviceModelFactory.getBaudrate();
+//    if(!m_port.isNull()) {
+//        m_port->disconnect();
+//        //        m_port->deleteLater();
+//    }
+//    m_port.reset(&networkDevice);
+//    connect(m_port.get(), &DataSource::bytesWritten, this, &NetworkModel::bytesWritten);
+//    connect(m_port.get(), &DataSource::readyRead, this, &NetworkModel::readyRead);
+//    connect(m_port.get(), &DataSource::errorOccured, this, &NetworkModel::errorOccured);
+//    connect(m_port.get(), &DataSource::deviceOpen, this, [=](bool state){
+//        qDebug() << "NetworkModel protocol state" << state;
+//    });
+//    m_portIsBusy = false;
+
+//    m_bIsStart = true;
+
+//    rescanNetwork();
+//}
+
+void NetworkModel::start(QVariant connectionData) {
+    if(m_isStart) {
+        m_isStart = false;
+        m_worker->stop();
+    } else {
+        auto portSettings = connectionData.toMap();
+        auto type = static_cast<PortType>(portSettings["type"].toInt());
+        m_worker = new SerialThreadWorker;
+        if(type == PortType::TCP) {
+            m_worker->configure(type, portSettings["host"], portSettings["port"]);
+        } else if(type == PortType::Com) {
+            m_worker->configure(type, portSettings["comport"], portSettings["baudrate"]);
+        } else {
+            return;
+        }
+        // TODO: Остановился тута
+//        connect(m_worker, &QThread::finished, m_worker, &QObject::deleteLater);
+        connect(m_worker, &SerialThreadWorker::connected, this, [this](){
+            m_facade.setConnected(true);
+        });
+        connect(m_worker, &SerialThreadWorker::readyToWrite, this, [this](){
+
+        });
+        connect(m_worker, &SerialThreadWorker::timeout, this, [this](){
+
+        });
+        connect(m_worker, &SerialThreadWorker::errorOccured, this, [this](QString msg){
+            qDebug() << "Error:" << msg;
+            // TODO: выведи сообщение в статусбар главного окна
+        });
+        connect(m_worker, &SerialThreadWorker::readyRead, this, [this](QByteArray msg){
+
+        });
+        connect(m_worker, &SerialThreadWorker::finished, this, [this](){
+            m_facade.setConnected(false);
+            m_worker->deleteLater();
+        });
+
     }
-    m_port.reset(&networkDevice);
-    connect(m_port.get(), &DataSource::bytesWritten, this, &NetworkModel::bytesWritten);
-    connect(m_port.get(), &DataSource::readyRead, this, &NetworkModel::readyRead);
-    connect(m_port.get(), &DataSource::errorOccured, this, &NetworkModel::errorOccured);
-    connect(m_port.get(), &DataSource::deviceOpen, this, [=](bool state){
-        qDebug() << "NetworkModel protocol state" << state;
-    });
-    m_portIsBusy = false;
-
-    m_bIsStart = true;
-
-    rescanNetwork();
 }
 
 bool NetworkModel::isStart() {
-    return m_bIsStart;
+    return m_isStart;
 }
 
 void NetworkModel::stop()
 {
     clear();
-    m_bIsStart = false;
+    m_isStart = false;
     m_portIsBusy = false;
 }
 
@@ -90,7 +132,7 @@ QMap<quint16, QSharedPointer<DevCommand>> NetworkModel::getCommands(quint8 addr)
 void NetworkModel::rescanNetwork()
 {
     clear();
-    QSet<quint8> addresses(AppSettings::getDeviceAddresses());//TODO: dont work
+    QSet<quint8> addresses(AppSettings::getDeviceAddresses());
     if (!AppSettings::getKeepAddresses()){
         addresses.clear();
         clearNetwork();
@@ -100,9 +142,11 @@ void NetworkModel::rescanNetwork()
             addresses.insert(iAddr);
         }
     }
-    for(const auto item:addresses){
-        m_queue.enqueue(m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT));
-    }
+
+    if(m_worker)
+        for(const auto item : addresses){
+            m_queue.enqueue(m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT));
+        }
 
     tryToSend();
 }

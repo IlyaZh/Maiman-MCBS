@@ -19,6 +19,7 @@ public:
     ~MainFacade();
     void createWidgetFor(Device* device);
     void setBaudRates(const QStringList& bauds);
+    void setConnected(bool state);
 private:
     MainWindow& m_window;
     GuiFactory& m_factory;

@@ -62,6 +62,7 @@ QMAKE_SUBSTITUTES += conf_gui
 
 SOURCES += \
     DebugMode.cpp \
+    SerialThreadWorker.cpp \
     UpdatesChecker.cpp \
     model/device/devicecondition.cpp \
     appsettings.cpp \
@@ -100,6 +101,7 @@ SOURCES += \
 
 HEADERS += \
     DebugMode.h \
+    SerialThreadWorker.h \
     UpdatesChecker.h \
     model/device/devicecondition.h \
     appsettings.h \

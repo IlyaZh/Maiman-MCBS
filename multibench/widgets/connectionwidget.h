@@ -5,7 +5,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include "network/networkmodel.h"
-#include "datasource.h"
+#include "constants.h"
 
 namespace Ui {
 class ConnectionWidget;
@@ -23,7 +23,7 @@ public:
     void setBaudList(const QStringList& baudrateList);
     void setPortList(const QStringList& portList);
     void setCurrentComPort(QStringView port);
-    void setProtocol(NetworkType type);
+    void setProtocol(PortType type);
     void setCurrentIp(QStringView ip);
     void setCurrentTcpPort(int port);
 
@@ -31,10 +31,10 @@ public:
     void setConnected(bool isConnected);
 
 private slots:
-    void connectIsClicked(NetworkType type);
+    void connectIsClicked(PortType type);
 
 signals:
-    void connectButtonClicked(QVariant value);
+    void connectButtonClicked(PortType type, QVariant value);
     void refreshComPorts();
 
 private:

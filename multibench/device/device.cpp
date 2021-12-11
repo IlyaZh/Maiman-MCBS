@@ -92,8 +92,8 @@ void Device::changeTemperatureUnit(Const::TemperatureUnitId id) {
 void Device::unlink() {
     m_isLink = false;
     m_cmdRequests.clear();
-    for(auto& command : m_Commands.values()) {
-        disconnect(command.get(), &DevCommand::sendValueSignal, this, &Device::dataFromCommand);
+    for(auto it = m_Commands.begin(); it != m_Commands.end(); ++it) {
+        disconnect(it.value().get(), &DevCommand::sendValueSignal, this, &Device::dataFromCommand);
     }
     emit linkChanged(m_isLink);
 }
