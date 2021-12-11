@@ -31,29 +31,41 @@ void MainController::connectToNetwork(QVariant value) {
     AppSettings::setNetworkData(value);
 
     QVariantMap portSettings = value.toMap();
+
+
     if(m_network.isStart()) {
         m_network.stop();
-        m_device->close();
-        m_window.setConnected(m_device->isOpen());
-//            device->deleteLater();
     } else {
-        NetworkType type = static_cast<NetworkType>(portSettings["type"].toInt());
-        if(type == NetworkType::Tcp) {
-            m_device = new DataSource;
-            m_device->setSettings(type, portSettings["host"], portSettings["port"]);
-            m_device->open();
-            m_window.setConnected(m_device->isOpen());
-            m_network.start(*m_device);
-        } else if(type == NetworkType::SerialPort) {
-            m_device = new DataSource;
-            AppSettings::setComPort(portSettings["comport"].toString());
-            AppSettings::setComBaudrate(portSettings["baudrate"].toInt());
-            m_device->setSettings(type, portSettings["comport"], portSettings["baudrate"]);
-            m_device->open();
-            m_window.setConnected(m_device->isOpen());
-            m_network.start(*m_device);
-        }
+        m_network.start(value);
     }
+
+
+
+
+
+//    if(m_network.isStart()) {
+//        m_network.stop();
+//        m_device->close();
+//        m_window.setConnected(m_device->isOpen());
+//            device->deleteLater();
+//    } else {
+//        NetworkType type = static_cast<NetworkType>(portSettings["type"].toInt());
+//        if(type == NetworkType::Tcp) {
+//            m_device = new DataSource;
+//            m_device->setSettings(type, portSettings["host"], portSettings["port"]);
+//            m_device->open();
+//            m_window.setConnected(m_device->isOpen());
+//            m_network.start(*m_device);
+//        } else if(type == NetworkType::SerialPort) {
+//            m_device = new DataSource;
+//            AppSettings::setComPort(portSettings["comport"].toString());
+//            AppSettings::setComBaudrate(portSettings["baudrate"].toInt());
+//            m_device->setSettings(type, portSettings["comport"], portSettings["baudrate"]);
+//            m_device->open();
+//            m_window.setConnected(m_device->isOpen());
+//            m_network.start(*m_device);
+//        }
+//    }
 }
 
 void MainController::triggeredRescan(){

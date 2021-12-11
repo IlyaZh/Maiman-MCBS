@@ -2,13 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-//#include "interfaces/mainwindowco1ntrollerinterface.h"
-#include "model/device/devicewidget.h"
-//class MainWindowControllerInterface;
-//#include <QtWidgets>
 #include "constants.h"
+
 class AboutDialog;
 class UpdateWidget;
+class DeviceWidget;
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -18,7 +17,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-//    static const QString SettingsPath;
 
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
@@ -40,15 +38,11 @@ public slots:
     void updateDownloadingfinished();
     void triggeredRescanNetwork();
 private slots:
-//    void adjust(const QSize& size = QSize());
     void connectTriggered();
     void callAboutDialog();
     void getKeepAddresses();
 private:
     Ui::MainWindow *ui;
-//    MainWindowControllerInterface* m_cntrl;
-//    QVector<QString> *m_portList;
-//    QVector<int> *m_baudList;
     QVector<DeviceWidget*> m_workWidgets;
     QGridLayout* m_workFieldLayout;
     QPointer<QActionGroup> m_portGroup;
@@ -57,7 +51,5 @@ private:
     QPointer<AboutDialog> m_About;
 protected:
     void closeEvent(QCloseEvent *event) override;
-
-//    void setConnections();
 };
 #endif // MAINWINDOW_H

@@ -20,6 +20,7 @@
 
 #include <QDebug>
 #ifdef QT_DEBUG
+#include <locale.h>
 #include "tests/globaltest.h"
 #endif
 
@@ -37,7 +38,7 @@ int main(int argc, char *argv[])
 
 #ifdef QT_DEBUG
     debugMode = true;
-    setlocale(LC_CTYPE, "rus");
+    setlocale(LC_CTYPE, "ru-RU");
 #endif
 
     QCommandLineParser cliParser;

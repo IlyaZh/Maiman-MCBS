@@ -6,6 +6,12 @@
 
 bool isEqual(double first, double second);
 
+enum class PortType {
+    None,
+    TCP,
+    Com
+};
+
 struct Const {
     // Название организации
     static const QString OrgName;
@@ -19,6 +25,7 @@ struct Const {
         Celsius,
         Fahrenheit
     };
+    static const int NetworkTimeoutMSecs;
 
     static const QString SecretCodeCombination;
     static const QString ApplicationDefaultFontPath;

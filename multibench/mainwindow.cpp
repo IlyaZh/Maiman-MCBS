@@ -8,8 +8,8 @@
 #include <QDebug>
 #include "widgets/updatewidget.h"
 #include "widgets/aboutdialog.h"
-
-//const QString MainWindow::SettingsPath {"window/"};
+#include "model/device/devicewidget.h"
+#include <utility>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,9 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
     , m_baudrateGroup(new QActionGroup(this))
     , m_updater(new UpdateWidget(this))
     , m_About(new AboutDialog(this))
-      //      m_cntrl(nullptr),
-//      m_portList(nullptr),
-//      m_baudList(nullptr)
 {
     ui->setupUi(this);
 
@@ -32,13 +29,13 @@ MainWindow::MainWindow(QWidget *parent)
     #ifndef QT_DEBUG
     ui->connectionWidget->hide();
     #endif
-    ui->connectionWidget->setProtocol(NetworkType::Tcp);
+    ui->connectionWidget->setProtocol(PortType::TCP);
     ui->connectionWidget->setBaudList(Const::BaudRates);
     switch(netData.type) {
-    case NetworkType::SerialPort:
+    case PortType::Com:
         ui->connectionWidget->setCurrentComPort(netData.host);
         break;
-    case NetworkType::Tcp:
+    case PortType::TCP:
         ui->connectionWidget->setCurrentIp(netData.host);
         ui->connectionWidget->setCurrentTcpPort(netData.port);
         break;
@@ -280,7 +277,7 @@ void MainWindow::callAboutDialog(){
 }
 
 void MainWindow::triggeredRescanNetwork(){
-    for(const auto item:m_workWidgets){
+    for(const auto item : std::as_const(m_workWidgets)){
         m_workFieldLayout->removeWidget(item);
     }
     m_workWidgets.clear();

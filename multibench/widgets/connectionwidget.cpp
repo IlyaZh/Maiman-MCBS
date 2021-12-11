@@ -22,10 +22,10 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
     ui->networkIpLineEdit->setValidator(ipValidator);
 
     connect(ui->networkConnectButton, &QPushButton::clicked, this, [this](){
-        connectIsClicked(NetworkType::Tcp);
+        connectIsClicked(PortType::TCP);
     });
     connect(ui->connectComPortButton, &QPushButton::clicked, this, [this](){
-        connectIsClicked(NetworkType::SerialPort);
+        connectIsClicked(PortType::Com);
     });
     connect(ui->refreshComPortButton, &QPushButton::clicked, this, &ConnectionWidget::refreshComPorts);
 }
@@ -81,33 +81,33 @@ void ConnectionWidget::setCurrentTcpPort(int port){
     ui->networkPortLineEdit->setText(QString::number(port));
 }
 
-void ConnectionWidget::setProtocol(NetworkType type){
+void ConnectionWidget::setProtocol(PortType type){
 
-    if (type == NetworkType::Tcp){
+    if (type == PortType::TCP){
         ui->ConnectionTab->setCurrentWidget(ui->TcpTab);
     }
-    else if(type == NetworkType::SerialPort){
+    else if(type == PortType::Com){
         ui->ConnectionTab->setCurrentWidget(ui->ComTab);
     }
     else
         return;
 }
 
-void ConnectionWidget::connectIsClicked(NetworkType type){
+void ConnectionWidget::connectIsClicked(PortType type){
     QVariantHash networkMap;
     networkMap.insert("type",  static_cast<quint8>(type));
-    if (type == NetworkType::Tcp){
+    if (type == PortType::TCP){
         networkMap.insert("host", ui->networkIpLineEdit->text());
         networkMap.insert("port", ui->networkPortLineEdit->text());
     }
-    else if(type == NetworkType::SerialPort){
+    else if(type == PortType::Com){
         networkMap.insert("comport", ui->comPortComboBox->currentText());
         networkMap.insert("baudrate", ui->baudrateComboBox->currentText());
     }
     else
         return;
 
-    emit connectButtonClicked(networkMap);
+    emit connectButtonClicked(type, networkMap);
 }
 
 // private methods

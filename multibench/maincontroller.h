@@ -23,7 +23,7 @@ signals:
 private:
     MainWindow& m_window;
     NetworkModel& m_network;
-    QPointer<DataSource> m_device;
+//    QPointer<DataSource> m_device;
 
 };
 

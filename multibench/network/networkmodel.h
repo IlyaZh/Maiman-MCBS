@@ -15,6 +15,7 @@ struct DeviceModel;
 class SoftProtocol;
 class ModbusProtocol;
 class Device;
+class SerialThreadWorker;
 
 class NetworkModel :
                      public QObject
@@ -27,17 +28,18 @@ public:
     ~NetworkModel();
     void setDelay(int delay);
     void setTimeout(int timeout);
-    void start(DataSource &iodevice);
+//    void start(DataSource &iodevice);
+    void start(QVariant value);
     bool isStart();
     void stop();
 
     void clearNetwork();
 
-
 public slots:
     void dataOutcome(quint8 addr, quint16 reg, quint16 value);
     void temperatureUnitsChanged(Const::TemperatureUnitId id);
     void rescanNetwork();
+
 private slots:
     void readyRead();
     void bytesWritten(qint64 bytes);
@@ -47,13 +49,15 @@ private slots:
     void getBaudrate();
 
 
+
+
 private:
     DeviceFactory& m_deviceModelFactory;
     QScopedPointer<DataSource> m_port;
     MainFacade& m_facade;
     SoftProtocol& m_protocol;
     QMap<quint8, QSharedPointer<Device>> m_devices;
-    bool m_bIsStart = false;
+    bool m_isStart = false;
     bool m_portIsBusy = false;
     QQueue<QByteArray> m_queue;
     QQueue<QByteArray> m_priorityQueue;
@@ -65,6 +69,7 @@ private:
     int m_delayMs = 0;
     QByteArray m_rxPacket;
     qint64 m_waitForBytes = 0;
+    SerialThreadWorker* m_worker {nullptr};
 
     void clear();
     void initDevice(quint8 addr, quint16 id);
