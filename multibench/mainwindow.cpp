@@ -8,6 +8,8 @@
 #include <QDebug>
 #include "widgets/updatewidget.h"
 #include "widgets/aboutdialog.h"
+#include "widgets/calibratedialog.h"
+#include "widgets/calibrationandlimitswidget.h"
 #include "model/device/devicewidget.h"
 #include <utility>
 
@@ -98,10 +100,10 @@ MainWindow::MainWindow(QWidget *parent)
         emit tempratureUnitsChanged(id);
 
     });
-    connect(m_updater,&UpdateWidget::downloadFinished,this,&MainWindow::updateDownloadingfinished);
     connect(ui->actionAbout,&QAction::triggered,this,&MainWindow::callAboutDialog);
     connect(ui->actionKeepAddresses, &QAction::triggered,this, &MainWindow::getKeepAddresses);
     connect(ui->actionRescan,&QAction::triggered,this,&MainWindow::triggeredRescanNetwork);
+    ui->actionKeepAddresses->setChecked(AppSettings::getKeepAddresses());
 }
 
 MainWindow::~MainWindow()
@@ -135,6 +137,7 @@ void MainWindow::connectTriggered(){
 
 void MainWindow::addDeviceWidget(DeviceWidget* widget) {
     if(!m_workWidgets.contains(widget)) {
+        widget->setParent(this);
         m_workWidgets.append(widget);
         int count = m_workWidgets.size();
         qDebug() << "addDeviceWidget" << count;
@@ -149,7 +152,30 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         //        ui->scrollArea->setMinimumSize(widgetSize);
     }
 }
-
+/*
+void MainWindow::addCalibrationDialog(quint16 id,QVector<CalibrateDialog*> widget){
+    QMenu* calibration = new QMenu(QString("ID:%1").arg(id),this);
+    for(auto& item:widget){
+        item->setParent(this);
+            auto action = new QAction(item->getName());
+            calibration->addAction(action);
+            connect(action,&QAction::triggered,this,[item](){
+                item->setStruct();
+                item->show();
+            });
+    }
+    ui->menuCalibration->addMenu(calibration);
+}
+*/
+void MainWindow::addCalibrationDialog(quint16 id,QVector<CalibrationAndLimitsWidget*> calibrations,QVector<CalibrationAndLimitsWidget*> limits){
+    CalibrateDialog* dialog = new CalibrateDialog(calibrations, limits);
+    m_calibrationDialogs.append(dialog);
+    QAction* action = new QAction(QString("ID:%1").arg(id),this);
+    connect(action,&QAction::triggered,this,[dialog](){
+        dialog->show();
+    });
+    ui->menuCalibration->addAction(action);
+}
 
 void MainWindow::setComPorts(const QStringList& portList) {
     ui->menuPorts->clear();
@@ -267,11 +293,6 @@ void MainWindow::setStatusBarMessage(QString message){
     ui->statusbar->showMessage(message, Const::ConsoleMaxLinesToShow);
 }
 
-void MainWindow::updateDownloadingfinished(){
-    ui->actionConnect->setCheckable(false);
-    qDebug()<<"start update";
-}
-
 void MainWindow::callAboutDialog(){
     m_About->show();
 }
@@ -280,6 +301,7 @@ void MainWindow::triggeredRescanNetwork(){
     for(const auto item : std::as_const(m_workWidgets)){
         m_workFieldLayout->removeWidget(item);
     }
+    ui->menuCalibration->clear();
     m_workWidgets.clear();
     emit rescanNetwork();
 }

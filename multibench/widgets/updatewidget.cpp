@@ -1,21 +1,23 @@
 #include "updatewidget.h"
+#include "version.h"
 
 const QString UpdateWidget::m_Url = "https://telegraphy.ru/updates.txt";
 
-UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent)/*,
-    m_downloader(new UpdateDownloader(m_Url))*/
+UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent),
+    m_updater(new UpdatesChecker())
 {
-//    connect(m_downloader,&UpdateDownloader::updatesAvailable,this,&UpdateWidget::updateCheck);
-//    connect(m_downloader,&UpdateDownloader::readyForUpdate,this,&UpdateWidget::downloadFinished);
-//    connect(m_downloader,&UpdateDownloader::errorOccured,this,&UpdateWidget::acceptError);
-//    m_downloader->checkForUpdate(5);
+    connect(m_updater,&UpdatesChecker::updatesAvailable,this,&UpdateWidget::updateCheck);
+    connect(m_updater,&UpdatesChecker::errorOccured,this,&UpdateWidget::acceptError);
+    m_updater->checkForUpdates();
 }
 
 void UpdateWidget::updateCheck(bool state){
     if (state){
         QMessageBox msgBox;
-        msgBox.setWindowTitle("Update");
-        msgBox.setText("Do you want to update software?");
+        QString message = QString("Do you want to download and install new update?");
+        msgBox.setWindowTitle("Updates Available");
+        msgBox.setText(message);
+        msgBox.setContentsMargins(0,0,0,0);
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setStyleSheet("* {	\
                 background: rgb(51,51,51);\
@@ -37,7 +39,7 @@ void UpdateWidget::updateCheck(bool state){
         switch (answer) {
         case QMessageBox::Yes:
             qDebug()<<"Yes";
-//            m_downloader->download();
+            m_updater->startUpdate(qApp);
             break;
         case QMessageBox::No:
             qDebug()<<"No";

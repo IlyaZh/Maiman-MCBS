@@ -16,10 +16,10 @@
 const quint16 NetworkModel::TIMEOUT_MS = 50*10;
 const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug замени
 
-NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, MainFacade& facade, QObject *parent) :
+NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, QObject *parent) :
     QObject(parent),
     m_deviceModelFactory(deviceModelFactory),
-    m_facade(facade),
+    //m_facade(facade),
     m_protocol(protocol)
 {
     m_isStart = false;
@@ -38,7 +38,8 @@ NetworkModel::~NetworkModel() {
 // controller to model interface overrides
 
 void NetworkModel::getBaudrate(){
-    m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
+    //m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
+    emit setBaudrateToWindow(m_deviceModelFactory.getBaudrate());
 }
 
 void NetworkModel::setDelay(int delay) {
@@ -124,6 +125,10 @@ void NetworkModel::stop()
     m_portIsBusy = false;
 }
 
+QMap<quint16, QSharedPointer<DevCommand>> NetworkModel::getCommands(quint8 addr){
+    return m_devices.value(addr)->commands();
+}
+
 void NetworkModel::rescanNetwork()
 {
     clear();
@@ -188,7 +193,8 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
 
     connect(newDevice.get(), SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
 
-    m_facade.createWidgetFor(newDevice.get());
+    emit createWidgetFor(newDevice.get());
+    //m_facade.createWidgetFor(newDevice.get());
 }
 
 void NetworkModel::tryToSend() {

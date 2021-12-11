@@ -11,7 +11,7 @@ MainController::MainController(MainWindow& window, NetworkModel& networkModel, Q
     connect(&window, &MainWindow::refreshComPortsSignal, this, &MainController::refreshComPorts);
     connect(&window, &MainWindow::tempratureUnitsChanged, &m_network, &NetworkModel::temperatureUnitsChanged);
     refreshComPorts();
-    connect(&window,&MainWindow::rescanNetwork,this,&MainController::triggeredRescan);
+    connect(&window,&MainWindow::rescanNetwork,this,&MainController::rescan);
 }
 
 
@@ -68,7 +68,7 @@ void MainController::connectToNetwork(QVariant value) {
 //    }
 }
 
-void MainController::triggeredRescan(){
+void MainController::rescan(){
     m_network.clearNetwork();
     m_network.rescanNetwork();
 }

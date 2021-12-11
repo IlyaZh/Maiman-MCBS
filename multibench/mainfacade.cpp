@@ -5,6 +5,7 @@
 #include "device/device.h"
 #include "mainwindow.h"
 #include "model/guifactory.h"
+#include "widgets/calibratedialog.h"
 
 MainFacade::MainFacade(MainWindow& window, GuiFactory& factory, QObject* parent) :
     QObject(parent),
@@ -19,11 +20,13 @@ MainFacade::~MainFacade() {
 }
 
 void MainFacade::createWidgetFor(Device* device) {
-    QPointer<DeviceWidget> widget(m_factory.createWidget(device->id(), device->commands()));
+    QPointer<DeviceWidget> widget(m_factory.createDeviceWidget(device->id(), device->commands()));
     if(widget) {
         widget->setAddress(static_cast<int>(device->addr()));
         connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);
         m_window.addDeviceWidget(widget);
+
+        m_window.addCalibrationDialog(device->addr(),m_factory.createDeviceCalibrationWidget(device->id(), device->commands()),m_factory.createDeviceLimitsWidget(device->id(), device->commands()));
     } else {
         qWarning() << "Can't find device widget with id=" << device->id();
     }

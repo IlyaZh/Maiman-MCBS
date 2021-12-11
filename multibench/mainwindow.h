@@ -6,6 +6,8 @@
 
 class AboutDialog;
 class UpdateWidget;
+class CalibrateDialog;
+class CalibrationAndLimitsWidget;
 class DeviceWidget;
 
 QT_BEGIN_NAMESPACE
@@ -30,13 +32,14 @@ signals:
     void connectToNetwork(QVariant value);
     void tempratureUnitsChanged(Const::TemperatureUnitId id);
     void rescanNetwork();
+    void createCalibAndLimitsWidgets(quint8 addr);
 
 public slots:
     void setConnectMessage(QString msg);
     void setConnected(bool flag);
     void setStatusMessage(const QString& msg, int timeout = 10);
-    void updateDownloadingfinished();
     void triggeredRescanNetwork();
+    void addCalibrationDialog(quint16 id, QVector<CalibrationAndLimitsWidget*> calibrations,QVector<CalibrationAndLimitsWidget*> limits);
 private slots:
     void connectTriggered();
     void callAboutDialog();
@@ -49,6 +52,7 @@ private:
     QPointer<QActionGroup> m_baudrateGroup;
     UpdateWidget* m_updater;
     QPointer<AboutDialog> m_About;
+    QVector<CalibrateDialog*> m_calibrationDialogs;
 protected:
     void closeEvent(QCloseEvent *event) override;
 };

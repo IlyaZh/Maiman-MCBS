@@ -27,12 +27,51 @@ void GuiFactory::start() {
     m_thread->start();
 }
 
-DeviceWidget* GuiFactory::createWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands) {
+DeviceWidget* GuiFactory::createDeviceWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands) {
     if(m_deviceWidgets.contains(id)) {
         return new DeviceWidget(m_deviceWidgets[id], commands);
     }
     return nullptr;
 }
+QVector<CalibrationAndLimitsWidget*> GuiFactory::createDeviceCalibrationWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands){
+    if(m_deviceWidgets.contains(id)) {
+        QVector<CalibrationAndLimitsWidget*> widgets;
+        auto& calibration = m_deviceWidgets[id].calibration;
+        for (auto& item:calibration){
+            widgets.append(new CalibrationAndLimitsWidget(&item, commands.value(item.code)));
+        }
+        return widgets;
+    }
+    return QVector<CalibrationAndLimitsWidget*>();
+}
+
+QVector<CalibrationAndLimitsWidget*> GuiFactory::createDeviceLimitsWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>> &commands){
+    if(m_deviceWidgets.contains(id)) {
+        QVector<CalibrationAndLimitsWidget*> widgets;
+        auto& limits = m_deviceWidgets[id].limits;
+        for (auto& item:limits){
+            widgets.append(new CalibrationAndLimitsWidget(&item, commands.value(item.code),commands.value(item.maxCode)));
+        }
+        return widgets;
+    }
+    return QVector<CalibrationAndLimitsWidget*>();
+}
+/*
+QVector<CalibrateDialog*> GuiFactory::createDeviceCalibrationDialog(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands){
+    if(m_deviceWidgets.contains(id)) {
+        QVector<CalibrateDialog*> calibVec;
+        auto& calibration = m_deviceWidgets[id].calibration;
+        for (auto& item:calibration){
+            for (auto command:commands){
+                if(command->code() == item.code)
+                    calibVec.append(new CalibrateDialog(&item, command));
+            }
+        }
+        return calibVec;
+    }
+    return QVector<CalibrateDialog*>();
+}
+*/
 
 // private slots
 

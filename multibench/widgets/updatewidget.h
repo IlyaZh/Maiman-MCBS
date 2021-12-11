@@ -6,6 +6,7 @@
 #include <QDebug>
 #include "constants.h"
 //#include "UpdateDownloader.h"
+#include "UpdatesChecker.h"
 #include "version.h"
 #include <QtCore>
 
@@ -16,11 +17,11 @@ public:
     explicit UpdateWidget(QWidget *parent = nullptr);
 private:
     static const QString m_Url;
+    UpdatesChecker* m_updater;
 //    UpdateDownloader* m_downloader;
 
 signals:
     void updateApp(QCoreApplication* app);
-    void downloadFinished();
 
 private slots:
     void acceptError(QString errorMsg);
