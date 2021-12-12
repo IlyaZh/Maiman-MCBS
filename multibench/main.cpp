@@ -13,8 +13,6 @@
 #include <QCommandLineOption>
 #include "factories/Parser.h"
 #include "datasource.h"
-#include "maincontroller.h"
-#include "mainfacade.h"
 //#include "DebugMode.h"
 #include <QFontDatabase>
 #include "modelguimediator.h"
@@ -85,7 +83,7 @@ int main(int argc, char *argv[])
 
     // Контроллер главного окна, управляет потоком данных от GUI к моделии
     //MainController mainCtrl(w, model);
-    ModelGuiMediator mainMediator(w,guiFactory,model);
+    ModelGuiMediator mainMediator(w, guiFactory, model);
 
 #ifdef QT_DEBUG
     GlobalTest tests(argc, argv);

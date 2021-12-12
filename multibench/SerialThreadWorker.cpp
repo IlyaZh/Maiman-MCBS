@@ -1,9 +1,8 @@
 #include "SerialThreadWorker.h"
 #include <QtSerialPort>
 
-SerialThreadWorker::SerialThreadWorker(QObject *parent)
-    : QThread{parent},
-      m_portType{PortType::None}
+SerialThreadWorker::SerialThreadWorker(/*QObject *parent*/)
+    : m_portType{PortType::None}
 {
 
 }
@@ -24,6 +23,7 @@ void SerialThreadWorker::configure(PortType portType, QVariant host, QVariant ar
 }
 
 void SerialThreadWorker::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority) {
+    qDebug() << "writeAndWaitBytes" << msg;
     QMutexLocker locker(&m_mtx);
     auto pair = qMakePair(msg, waitBytes);
     if(priority)
@@ -38,26 +38,27 @@ void SerialThreadWorker::stop() {
 }
 
 // private slots
-void SerialThreadWorker::readData() {
+/*void SerialThreadWorker::readData() {
     m_buffer.append(m_device->readAll());
     if(m_buffer.size() > m_waitRxBytes) {
         emit readyRead(m_buffer);
         m_buffer.clear();
     }
-}
+}*/
 
 // private methods
 
 void SerialThreadWorker::run() {
     if(m_host.canConvert(QMetaType::QString) && m_arg.canConvert(QMetaType::Int)) {
+        QScopedPointer<QIODevice> m_device;
         if(m_portType == PortType::Com) {
-            auto serialPort = new QSerialPort(m_host.toString(), this);
+            auto serialPort = new QSerialPort(m_host.toString());
             serialPort->setBaudRate(m_arg.toInt());
-            m_device = serialPort;
+            m_device.reset(serialPort);
         } else if(m_portType == PortType::TCP) {
-            auto tcpPort = new QTcpSocket(this);
+            auto tcpPort = new QTcpSocket();
             tcpPort->bind(QHostAddress(m_host.toString()), m_arg.toInt());
-            m_device = tcpPort;
+            m_device.reset(tcpPort);
         }
 
         if(m_device->open(QIODevice::ReadWrite)) {
@@ -65,40 +66,50 @@ void SerialThreadWorker::run() {
             m_isWork = true;
         } else {
             emit errorOccured(m_device->errorString());
-            emit finished();
+//            emit finished();
             return;
         }
 
         while(m_isWork) {
-            m_sem.acquire(1);
-            QPair<QByteArray, qint64> package;
-            {
-                QMutexLocker locker(&m_mtx);
-                package = m_queue.dequeue();
-            }
-            m_lastWrittenMsg = package.first;
-            m_waitRxBytes = package.second;
-            m_device->write(m_lastWrittenMsg);
-            if(!m_device->waitForBytesWritten(Const::NetworkTimeoutMSecs)) {
-                emit errorOccured(m_device->errorString());
-                emit timeout();
-            } else {
-                if(!m_device->waitForReadyRead(Const::NetworkTimeoutMSecs)) {
-                    if(m_waitRxBytes == 0) {
-                        emit readyToWrite();
-                    } else {
-                        emit errorOccured(m_device->errorString());
-                        emit timeout();
-                    }
-                } else {
-                    readData();
+            if(m_sem.tryAcquire(1)) {
+                QPair<QByteArray, qint64> package;
+                {
+                    QMutexLocker locker(&m_mtx);
+                    if(!m_priorityQueue.isEmpty())
+                        package = m_priorityQueue.dequeue();
+                    else
+                        package = m_queue.dequeue();
+
                 }
+                qDebug() << package.second << package.first;
+                m_lastWrittenMsg = package.first;
+                m_waitRxBytes = package.second;
+                m_device->write(m_lastWrittenMsg);
+                if(!m_device->waitForBytesWritten(Const::NetworkTimeoutMSecs)) {
+                    emit errorOccured(m_device->errorString());
+                    emit timeout();
+                } else {
+                    if(!m_device->waitForReadyRead(Const::NetworkTimeoutMSecs)) {
+                        if(m_waitRxBytes == 0) {
+                            emit readyToWrite();
+                        } else {
+                            emit errorOccured(m_device->errorString());
+                            emit timeout();
+                        }
+                    } else {
+                        m_buffer.append(m_device->readAll());
+                        if(m_buffer.size() > m_waitRxBytes) {
+                            emit readyRead(m_buffer);
+                            m_buffer.clear();
+                        }
+                    }
+                }
+                exec();
             }
-            exec();
         }
 
         m_device->close();
-        emit finished();
+//        emit finished();
     }
 }
 

@@ -24,14 +24,13 @@ private:
     MainWindow& m_window;
     GuiFactory& m_factory;
     NetworkModel& m_network;
-    QPointer<DataSource> m_device;
+//    QPointer<DataSource> m_device;
 
-public slots:
+private slots:
     void createWidgetFor(Device* device);
     void createCalibAndLimitsWidgets(quint8 addr);
-private slots:
     void refreshComPorts();
-    void connectToNetwork(QVariant value);
+    void connectToNetwork(PortType type, QVariant value);
     void rescan();
     void setBaudrateToWindow(QStringList baud);
 signals:

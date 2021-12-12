@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtWidgets>
 #include "constants.h"
 
 class AboutDialog;
@@ -29,7 +30,7 @@ public:
 
 signals:
     void refreshComPortsSignal();
-    void connectToNetwork(QVariant value);
+    void connectToNetwork(PortType type, QVariant value);
     void tempratureUnitsChanged(Const::TemperatureUnitId id);
     void rescanNetwork();
     void createCalibAndLimitsWidgets(quint8 addr);

@@ -76,8 +76,6 @@ SOURCES += \
     factories/treeitem.cpp \
     factories/xmlparser.cpp \
     main.cpp \
-    maincontroller.cpp \
-    mainfacade.cpp \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
     modelguimediator.cpp \
@@ -115,8 +113,6 @@ HEADERS += \
     factories/treeitem.h \
     factories/xmlparser.h \
     interfaces/ProtocolObserverInterface.h \
-    maincontroller.h \
-    mainfacade.h \
     mainwindow.h \
     model/device/HiddenWidget.h \
     modelguimediator.h \

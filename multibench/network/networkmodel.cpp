@@ -9,7 +9,7 @@
 #include "SoftProtocol.h"
 #include "device/devicemodel.h"
 #include "model/devicefactory.h"
-#include "mainfacade.h"
+//#include "mainfacade.h"
 #include "appsettings.h"
 #include "SerialThreadWorker.h"
 
@@ -26,10 +26,10 @@ NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& prot
     m_deviceModelFactory.start();
     connect(&m_deviceModelFactory,&DeviceFactory::parsingIsFinished, this, &NetworkModel::getBaudrate);
     //    connect(&m_delayTimer, &QTimer::timeout, this, &NetworkModel::delayTimeout);
-    connect(&m_timeoutTimer, &QTimer::timeout, this, &NetworkModel::sendTimeout);
+//    connect(&m_timeoutTimer, &QTimer::timeout, this, &NetworkModel::sendTimeout);
 
     //    m_delayTimer.setSingleShot(true);
-    m_timeoutTimer.setSingleShot(true);
+//    m_timeoutTimer.setSingleShot(true);
 }
 
 NetworkModel::~NetworkModel() {
@@ -39,11 +39,7 @@ NetworkModel::~NetworkModel() {
 
 void NetworkModel::getBaudrate(){
     //m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
-    emit setBaudrateToWindow(m_deviceModelFactory.getBaudrate());
-}
-
-void NetworkModel::setDelay(int delay) {
-    m_delayMs = delay;
+    emit signal_setBaudrateToWindow(m_deviceModelFactory.getBaudrate());
 }
 
 void NetworkModel::setTimeout(int timeout) {
@@ -51,67 +47,31 @@ void NetworkModel::setTimeout(int timeout) {
 }
 
 
-//void NetworkModel::start(DataSource& networkDevice)
-//{
-//    //m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
-//    qDebug()<<m_deviceModelFactory.getBaudrate();
-//    if(!m_port.isNull()) {
-//        m_port->disconnect();
-//        //        m_port->deleteLater();
-//    }
-//    m_port.reset(&networkDevice);
-//    connect(m_port.get(), &DataSource::bytesWritten, this, &NetworkModel::bytesWritten);
-//    connect(m_port.get(), &DataSource::readyRead, this, &NetworkModel::readyRead);
-//    connect(m_port.get(), &DataSource::errorOccured, this, &NetworkModel::errorOccured);
-//    connect(m_port.get(), &DataSource::deviceOpen, this, [=](bool state){
-//        qDebug() << "NetworkModel protocol state" << state;
-//    });
-//    m_portIsBusy = false;
-
-//    m_bIsStart = true;
-
-//    rescanNetwork();
-//}
-
-void NetworkModel::start(QVariant connectionData) {
-    if(m_isStart) {
-        m_isStart = false;
-        m_worker->stop();
-    } else {
-        auto portSettings = connectionData.toMap();
-        auto type = static_cast<PortType>(portSettings["type"].toInt());
-        m_worker = new SerialThreadWorker;
-        if(type == PortType::TCP) {
-            m_worker->configure(type, portSettings["host"], portSettings["port"]);
-        } else if(type == PortType::Com) {
-            m_worker->configure(type, portSettings["comport"], portSettings["baudrate"]);
-        } else {
-            return;
-        }
-        // TODO: Остановился тута
-//        connect(m_worker, &QThread::finished, m_worker, &QObject::deleteLater);
-        connect(m_worker, &SerialThreadWorker::connected, this, [this](){
-            m_facade.setConnected(true);
+void NetworkModel::start(SerialThreadWorker* worker)
+{
+    m_worker = worker;
+//    if(m_isStart) {
+//        m_isStart = false;
+//        m_worker->stop();
+//    } else {
+        connect(m_worker, &SerialThreadWorker::connected, this, [this]() {
+            qDebug() << "lambda connected";
+            emit signal_connected(true);
+            m_isStart = true;
         });
-        connect(m_worker, &SerialThreadWorker::readyToWrite, this, [this](){
-
-        });
-        connect(m_worker, &SerialThreadWorker::timeout, this, [this](){
-
-        });
-        connect(m_worker, &SerialThreadWorker::errorOccured, this, [this](QString msg){
-            qDebug() << "Error:" << msg;
-            // TODO: выведи сообщение в статусбар главного окна
-        });
-        connect(m_worker, &SerialThreadWorker::readyRead, this, [this](QByteArray msg){
-
-        });
+        connect(m_worker, &SerialThreadWorker::readyToWrite, this, &NetworkModel::pollRequest);
+        connect(m_worker, &SerialThreadWorker::timeout, this, &NetworkModel::timeout);
+        connect(m_worker, &SerialThreadWorker::errorOccured, this, &NetworkModel::signal_errorOccured);
+        connect(m_worker, &SerialThreadWorker::readyRead, this, &NetworkModel::readyRead);
         connect(m_worker, &SerialThreadWorker::finished, this, [this](){
-            m_facade.setConnected(false);
-            m_worker->deleteLater();
+            emit signal_connected(false);
+            m_isStart = false;
+            qDebug() << "lambda disconnect and delete";
         });
-
-    }
+        connect(m_worker, &SerialThreadWorker::finished, this, &QObject::deleteLater);
+//    }
+        qDebug() << "NetworkModel::start";
+        m_worker->start();
 }
 
 bool NetworkModel::isStart() {
@@ -120,9 +80,11 @@ bool NetworkModel::isStart() {
 
 void NetworkModel::stop()
 {
+    if(m_worker) {
+        m_worker->stop();
+    }
     clear();
     m_isStart = false;
-    m_portIsBusy = false;
 }
 
 QMap<quint16, QSharedPointer<DevCommand>> NetworkModel::getCommands(quint8 addr){
@@ -143,12 +105,15 @@ void NetworkModel::rescanNetwork()
         }
     }
 
+    qDebug() << "Rescan network";
     if(m_worker)
         for(const auto item : addresses){
-            m_queue.enqueue(m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT));
+            auto package = m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
+            qint64 waitForBytes = m_protocol.waitForBytes(package);
+            m_worker->writeAndWaitBytes(package, waitForBytes, true);
         }
 
-    tryToSend();
+//    tryToSend();
 }
 
 void NetworkModel::clearNetwork(){
@@ -158,13 +123,9 @@ void NetworkModel::clearNetwork(){
 
 // private methods
 void NetworkModel::clear() {
-    m_delayTimer.stop();
-    m_timeoutTimer.stop();
-    m_priorityQueue.clear();
-    m_queue.clear();
     for(auto& item : m_devices) {
         item->disconnect();
-        item->deleteLater();
+//        item->deleteLater();
     }
     m_devices.clear();
 }
@@ -193,39 +154,8 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
 
     connect(newDevice.get(), SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
 
-    emit createWidgetFor(newDevice.get());
+    emit signal_createWidgetFor(newDevice.get());
     //m_facade.createWidgetFor(newDevice.get());
-}
-
-void NetworkModel::tryToSend() {
-    if(!m_portIsBusy) {
-        m_portIsBusy = true;
-        if(!m_port.isNull()) {
-            if (!m_priorityQueue.isEmpty()) {
-                m_lastTxPackage = m_priorityQueue.dequeue();
-            } else if (!m_queue.isEmpty()) {
-                m_lastTxPackage = m_queue.dequeue();
-            } else {
-                // poll devices state
-                for(const auto& dev : qAsConst(m_devices)) {
-                    const DevicePollRequest request = dev->nextPollRequest();
-                    if(request.code != 0) {
-                        m_queue.enqueue(m_protocol.getDataValue(request.addr, request.code, request.count));
-                    }
-                }
-                if(!m_queue.isEmpty())
-                    m_lastTxPackage = m_queue.dequeue();
-                //            tryToSend();
-                //                delayTimeout();
-            }
-            if(!m_lastTxPackage.isEmpty()) {
-                m_port->write(m_lastTxPackage);
-                m_waitForBytes = m_protocol.waitForBytes(m_lastTxPackage);
-            }
-            //        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "Write! " << m_lastTxPackage.toHex(' ');
-        }
-    }
-
 }
 
 // public slots
@@ -233,8 +163,11 @@ void NetworkModel::tryToSend() {
 
 void NetworkModel::dataOutcome(quint8 addr, quint16 reg, quint16 value)
 {
-    m_priorityQueue.enqueue(m_protocol.setDataValue(addr, reg, value));
-    tryToSend();
+    if(m_worker) {
+        auto package = m_protocol.setDataValue(addr, reg, value);
+        qint64 waitForBytes = m_protocol.waitForBytes(package);
+        m_worker->writeAndWaitBytes(package, waitForBytes, true);
+    }
 }
 
 void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
@@ -246,95 +179,51 @@ void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
 }
 
 // private slots
-void NetworkModel::readyRead() {
-    m_rxPacket.append(m_port->readAll());
-    if(m_rxPacket.size() >= m_waitForBytes) {
-        //    qDebug() << "RX" << rxPacket.toHex(' ');
-        m_timeoutTimer.stop();
-        SoftProtocol::DataVector result = m_protocol.execute(m_rxPacket, m_lastTxPackage);
-
-        m_lastTxPackage.clear();
-        if(m_protocol.isError()) {
-            quint8 addr = static_cast<quint8>(m_rxPacket.at(0));
-            if(m_devices.contains(addr)) {
-                m_devices[addr]->unlink();
+void NetworkModel::timeout() {
+    if(m_worker) {
+        auto package = m_worker->lastPackage();
+        if(!package.isEmpty()) {
+            auto device = m_devices.value(static_cast<quint8>(package.at(0)));
+            if(device) {
+                device->unlink();
             }
-        } else {
-            for(const auto& item : qAsConst(result)) {
-                if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
-                    initDevice(item.addr, item.value);
-                } else {
-                    if(m_devices.contains(item.addr)) {
-                        m_devices[item.addr]->dataIncome(item.reg, item.value);
-                    }
+        }
+    }
+}
+
+void NetworkModel::pollRequest() {
+    if(m_worker) {
+        // poll devices state
+        for(const auto& dev : qAsConst(m_devices)) {
+            const DevicePollRequest request = dev->nextPollRequest();
+            if(request.code != 0) {
+                auto package = m_protocol.getDataValue(request.addr, request.code, request.count);
+                qint64 waitForBytes = m_protocol.waitForBytes(package);
+                m_worker->writeAndWaitBytes(package, waitForBytes, true);
+            }
+        }
+    }
+}
+
+void NetworkModel::readyRead(const QByteArray& rxPackage) {
+    auto result = m_protocol.execute(rxPackage, m_worker->lastPackage());
+    if(m_protocol.isError()) {
+        quint8 addr = static_cast<quint8>(rxPackage.at(0));
+        if(m_devices.contains(addr)) {
+            m_devices[addr]->unlink();
+        }
+    } else {
+        for(const auto& item : qAsConst(result)) {
+            if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
+                initDevice(item.addr, item.value);
+            } else {
+                if(m_devices.contains(item.addr)) {
+                    m_devices[item.addr]->dataIncome(item.reg, item.value);
                 }
             }
         }
-        m_rxPacket.clear();
-        m_portIsBusy = false;
-        tryToSend();
     }
 }
 
-void NetworkModel::bytesWritten(qint64 bytes) {
-    m_bytesWritten += bytes;
-    if(m_bytesWritten >= m_lastTxPackage.size()) {
-        //        qDebug() << "Written bytes";
-        m_bytesWritten = 0;
-        if(m_protocol.needWaitForAnswer(m_lastTxPackage)) {
-            m_timeoutTimer.start(m_timeoutMs);
-            //            qDebug() << "Start interval timeout";
-        } else {
-            tryToSend();
-        }
-    }
-}
-
-void NetworkModel::errorOccured(const QString& msg) {
-    qWarning() << "NetworkModel error" << msg;
-}
-
-void NetworkModel::sendTimeout() {
-    m_timeoutTimer.stop();
-    m_portIsBusy = false;
-
-    if(!m_lastTxPackage.isEmpty()) {
-        quint8 addr = static_cast<quint8>(m_lastTxPackage.at(0));
-        auto device = m_devices.value(addr);
-        if(device) {
-            device->unlink();
-        }
-    }
-    m_lastTxPackage.clear();
-
-    //    qDebug() << "Timeout";
-    tryToSend();
-}
-
-//void NetworkModel::delayTimeout() {
-////    m_delayTimer.stop();
-//    if(!m_port.isNull()) {
-//        if (!m_priorityQueue.isEmpty()) {
-//            m_lastTxPackage = m_priorityQueue.dequeue();
-//        } else if (!m_queue.isEmpty()) {
-//            m_lastTxPackage = m_queue.dequeue();
-//        } else {
-//            // poll devices state
-//            for(const auto& dev : qAsConst(m_devices)) {
-//                const DevicePollRequest request = dev->nextPollRequest();
-//                if(request.code != 0) {
-//                    m_queue.enqueue(m_protocol.getDataValue(request.addr, request.code, request.count));
-//                }
-//            }
-//            //            tryToSend();
-//            delayTimeout();
-//            return;
-//        }
-
-//        m_port->write(m_lastTxPackage);
-////        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "Write! " << m_lastTxPackage.toHex(' ');
-//    }
-//}
-// =====================
 
 
