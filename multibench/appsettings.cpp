@@ -115,7 +115,7 @@ void AppSettings::setDeviceAddresses(const QSet<quint8>& addr){
 QSet<quint8> AppSettings::getDeviceAddresses(){
     QSet<quint8> map;
     int size = settings->beginReadArray("userSettings/addresses");
-    for (int i = 1; i < size; ++i) {
+    for (int i = 1; i < size; ++i) { // TODO: Почему с единицы??
         settings->setArrayIndex(i);
         map.insert(settings->value("userSettings/addresses").toUInt());
     }

@@ -58,13 +58,12 @@ void ModelGuiMediator::refreshComPorts() {
 }
 
 void ModelGuiMediator:: connectToNetwork(PortType type, QVariant value) {
-    AppSettings::setNetworkData(value);
-
     QVariantMap portSettings = value.toMap();
     if(m_network.isStart()) {
         m_network.stop();
 //        m_device->close();
     } else {
+        AppSettings::setNetworkData(value);
         auto serialWorker = new SerialThreadWorker;
         if(type == PortType::TCP) {
             serialWorker->configure(type, portSettings["host"], portSettings["port"]);

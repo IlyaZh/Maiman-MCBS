@@ -10,6 +10,7 @@ class SerialThreadWorker : public QThread
     Q_OBJECT
 public:
     explicit SerialThreadWorker(/*QObject *parent = nullptr*/);
+    ~SerialThreadWorker();
     QByteArray lastPackage() const;
 public slots:
     void setTimeout(int MSecs);

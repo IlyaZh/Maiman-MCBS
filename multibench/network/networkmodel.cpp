@@ -58,6 +58,7 @@ void NetworkModel::start(SerialThreadWorker* worker)
             qDebug() << "lambda connected";
             emit signal_connected(true);
             m_isStart = true;
+            rescanNetwork();
         });
         connect(m_worker, &SerialThreadWorker::readyToWrite, this, &NetworkModel::pollRequest);
         connect(m_worker, &SerialThreadWorker::timeout, this, &NetworkModel::timeout);
@@ -67,8 +68,9 @@ void NetworkModel::start(SerialThreadWorker* worker)
             emit signal_connected(false);
             m_isStart = false;
             qDebug() << "lambda disconnect and delete";
+            m_worker->deleteLater();
         });
-        connect(m_worker, &SerialThreadWorker::finished, this, &QObject::deleteLater);
+//        connect(m_worker, &SerialThreadWorker::finished, this, &QObject::deleteLater);
 //    }
         qDebug() << "NetworkModel::start";
         m_worker->start();
@@ -106,12 +108,14 @@ void NetworkModel::rescanNetwork()
     }
 
     qDebug() << "Rescan network";
-    if(m_worker)
+    if(m_worker) {
         for(const auto item : addresses){
             auto package = m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
             qint64 waitForBytes = m_protocol.waitForBytes(package);
             m_worker->writeAndWaitBytes(package, waitForBytes, true);
         }
+        qDebug() << "Data queued";
+    }
 
 //    tryToSend();
 }
@@ -180,6 +184,7 @@ void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
 
 // private slots
 void NetworkModel::timeout() {
+    qDebug() << "NetworkModel::timeout()";
     if(m_worker) {
         auto package = m_worker->lastPackage();
         if(!package.isEmpty()) {

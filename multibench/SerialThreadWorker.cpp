@@ -7,6 +7,10 @@ SerialThreadWorker::SerialThreadWorker(/*QObject *parent*/)
 
 }
 
+SerialThreadWorker::~SerialThreadWorker() {
+    qDebug() << "~SerialThreadWorker()";
+}
+
 QByteArray SerialThreadWorker::lastPackage() const {
     return m_lastWrittenMsg;
 }
@@ -23,7 +27,6 @@ void SerialThreadWorker::configure(PortType portType, QVariant host, QVariant ar
 }
 
 void SerialThreadWorker::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority) {
-    qDebug() << "writeAndWaitBytes" << msg;
     QMutexLocker locker(&m_mtx);
     auto pair = qMakePair(msg, waitBytes);
     if(priority)
@@ -49,26 +52,39 @@ void SerialThreadWorker::stop() {
 // private methods
 
 void SerialThreadWorker::run() {
+    qDebug() << "Thread start" << m_host.canConvert(QMetaType::QString) << m_arg.canConvert(QMetaType::Int);
     if(m_host.canConvert(QMetaType::QString) && m_arg.canConvert(QMetaType::Int)) {
         QScopedPointer<QIODevice> m_device;
         if(m_portType == PortType::Com) {
             auto serialPort = new QSerialPort(m_host.toString());
             serialPort->setBaudRate(m_arg.toInt());
             m_device.reset(serialPort);
+            if(serialPort->open(QIODevice::ReadWrite)) {
+                emit connected();
+                m_isWork = true;
+                qDebug() << "PORT IS OPEN";
+            } else {
+                emit errorOccured(serialPort->errorString());
+                qDebug() << "PORT ERROR " << serialPort->errorString();
+                return;
+            }
         } else if(m_portType == PortType::TCP) {
             auto tcpPort = new QTcpSocket();
-            tcpPort->bind(QHostAddress(m_host.toString()), m_arg.toInt());
+            qDebug() << "host" << m_host.toString() << m_arg.toInt();
             m_device.reset(tcpPort);
+            tcpPort->connectToHost(QHostAddress(m_host.toString()), m_arg.toInt());
+            if(tcpPort->waitForConnected()) {
+                emit connected();
+                m_isWork = true;
+                qDebug() << "PORT IS OPEN";
+            } else {
+                qDebug() << "wait for connected" << tcpPort->errorString();
+                emit errorOccured(tcpPort->errorString());
+                return;
+            }
         }
 
-        if(m_device->open(QIODevice::ReadWrite)) {
-            emit connected();
-            m_isWork = true;
-        } else {
-            emit errorOccured(m_device->errorString());
-//            emit finished();
-            return;
-        }
+
 
         while(m_isWork) {
             if(m_sem.tryAcquire(1)) {
@@ -81,7 +97,7 @@ void SerialThreadWorker::run() {
                         package = m_queue.dequeue();
 
                 }
-                qDebug() << package.second << package.first;
+                qDebug() << package.second << package.first.toHex(' ');
                 m_lastWrittenMsg = package.first;
                 m_waitRxBytes = package.second;
                 m_device->write(m_lastWrittenMsg);
@@ -104,9 +120,10 @@ void SerialThreadWorker::run() {
                         }
                     }
                 }
-                exec();
+//                exec();
             }
         }
+        qDebug() << "[THREAD]" << "Out of while cycle";
 
         m_device->close();
 //        emit finished();
