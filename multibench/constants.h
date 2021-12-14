@@ -26,6 +26,7 @@ struct Const {
         Fahrenheit
     };
     static const int NetworkTimeoutMSecs;
+    static const int NetworkDelayMSecs;
 
     static const QString SecretCodeCombination;
     static const QString ApplicationDefaultFontPath;

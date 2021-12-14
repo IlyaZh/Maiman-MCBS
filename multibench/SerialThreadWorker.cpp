@@ -1,5 +1,6 @@
 #include "SerialThreadWorker.h"
 #include <QtSerialPort>
+#include "constants.h"
 
 SerialThreadWorker::SerialThreadWorker(/*QObject *parent*/)
     : m_portType{PortType::None}
@@ -8,7 +9,7 @@ SerialThreadWorker::SerialThreadWorker(/*QObject *parent*/)
 }
 
 SerialThreadWorker::~SerialThreadWorker() {
-    qDebug() << "~SerialThreadWorker()";
+
 }
 
 QByteArray SerialThreadWorker::lastPackage() const {
@@ -16,8 +17,12 @@ QByteArray SerialThreadWorker::lastPackage() const {
 }
 
 // public slots
-void SerialThreadWorker::setTimeout(int MSecs) {
+void SerialThreadWorker::setTimeout(qint64 MSecs) {
     m_timeout = MSecs;
+}
+
+void SerialThreadWorker::setDelay(qint64 MSecs) {
+    m_delay = MSecs;
 }
 
 void SerialThreadWorker::configure(PortType portType, QVariant host, QVariant arg) {
@@ -28,11 +33,13 @@ void SerialThreadWorker::configure(PortType portType, QVariant host, QVariant ar
 
 void SerialThreadWorker::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority) {
     QMutexLocker locker(&m_mtx);
-    auto pair = qMakePair(msg, waitBytes);
+    Package pack;
+    pack.m_data = msg;
+    pack.m_waitSize = waitBytes;
     if(priority)
-        m_priorityQueue.enqueue(pair);
+        m_priorityQueue.enqueue(pack);
     else
-        m_queue.enqueue(pair);
+        m_queue.enqueue(pack);
     m_sem.release(1);
 }
 
@@ -83,12 +90,11 @@ void SerialThreadWorker::run() {
                 return;
             }
         }
-
-
-
+// TODO: вынеси управление портами в отдельные классы с общим интерфейсом
         while(m_isWork) {
+            QThread::msleep(m_delay);
             if(m_sem.tryAcquire(1)) {
-                QPair<QByteArray, qint64> package;
+                Package package;
                 {
                     QMutexLocker locker(&m_mtx);
                     if(!m_priorityQueue.isEmpty())
@@ -97,30 +103,40 @@ void SerialThreadWorker::run() {
                         package = m_queue.dequeue();
 
                 }
-                qDebug() << package.second << package.first.toHex(' ');
-                m_lastWrittenMsg = package.first;
-                m_waitRxBytes = package.second;
+//                qDebug() << package.m_waitSize << package.m_data.toHex(' ');
+                m_lastWrittenMsg = package.m_data;
+                m_waitRxBytes = package.m_waitSize;
                 m_device->write(m_lastWrittenMsg);
                 if(!m_device->waitForBytesWritten(Const::NetworkTimeoutMSecs)) {
-                    emit errorOccured(m_device->errorString());
                     emit timeout();
                 } else {
-                    if(!m_device->waitForReadyRead(Const::NetworkTimeoutMSecs)) {
-                        if(m_waitRxBytes == 0) {
-                            emit readyToWrite();
+                    QByteArray buffer;
+                    bool noError = true;
+                    auto avail = m_device->bytesAvailable();
+                    if(avail > 0)
+                        qDebug() << "available" << avail;
+                    while(buffer.size() < package.m_waitSize && noError) {
+                        if(!m_device->waitForReadyRead(Const::NetworkTimeoutMSecs)) {
+                            if(m_waitRxBytes != 0) {
+                                emit timeout();
+                                noError = false;
+                            }
                         } else {
-                            emit errorOccured(m_device->errorString());
-                            emit timeout();
-                        }
-                    } else {
-                        m_buffer.append(m_device->readAll());
-                        if(m_buffer.size() > m_waitRxBytes) {
-                            emit readyRead(m_buffer);
-                            m_buffer.clear();
+                            qint64 need = package.m_waitSize-buffer.size();
+                            buffer.append(m_device->read(need));
+//                            qDebug() << "RX" << buffer.size() << m_waitRxBytes << buffer.toHex(' ');
                         }
                     }
+                    if(m_waitRxBytes != 0 && buffer.size() == package.m_waitSize) {
+                        qDebug() << "OUT TO" << buffer.size() <<  package.m_waitSize << buffer.toHex(' ');
+                        emit readyRead(buffer);
+                        buffer.clear();
+                    }
+
                 }
 //                exec();
+            } else {
+                emit readyToWrite();
             }
         }
         qDebug() << "[THREAD]" << "Out of while cycle";

@@ -114,7 +114,6 @@ void NetworkModel::rescanNetwork()
             qint64 waitForBytes = m_protocol.waitForBytes(package);
             m_worker->writeAndWaitBytes(package, waitForBytes, true);
         }
-        qDebug() << "Data queued";
     }
 
 //    tryToSend();
@@ -184,7 +183,6 @@ void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
 
 // private slots
 void NetworkModel::timeout() {
-    qDebug() << "NetworkModel::timeout()";
     if(m_worker) {
         auto package = m_worker->lastPackage();
         if(!package.isEmpty()) {
@@ -211,6 +209,7 @@ void NetworkModel::pollRequest() {
 }
 
 void NetworkModel::readyRead(const QByteArray& rxPackage) {
+    qDebug() << "NetworkModel::readyRead";
     auto result = m_protocol.execute(rxPackage, m_worker->lastPackage());
     if(m_protocol.isError()) {
         quint8 addr = static_cast<quint8>(rxPackage.at(0));

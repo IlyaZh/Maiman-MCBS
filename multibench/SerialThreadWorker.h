@@ -13,7 +13,8 @@ public:
     ~SerialThreadWorker();
     QByteArray lastPackage() const;
 public slots:
-    void setTimeout(int MSecs);
+    void setTimeout(qint64 MSecs);
+    void setDelay(qint64 MSecs);
     void configure(PortType portType, QVariant host, QVariant arg);
     void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority = false);
     void stop();
@@ -29,16 +30,22 @@ signals:
     void readyToWrite();
 
 private:
+    struct Package {
+        QByteArray m_data {};
+        qint64 m_waitSize {0};
+    };
+
     PortType m_portType;
     QVariant m_host;
     QVariant m_arg;
 //    QScopedPointer<QIODevice> m_device;
-    int m_timeout {Const::NetworkTimeoutMSecs};
+    qint64 m_timeout {Const::NetworkTimeoutMSecs};
+    qint64 m_delay {Const::NetworkDelayMSecs};
     qint64 m_waitRxBytes {-1};
     QByteArray m_lastWrittenMsg;
-    QByteArray m_buffer;
-    QQueue<QPair<QByteArray, qint64>> m_queue;
-    QQueue<QPair<QByteArray, qint64>> m_priorityQueue;
+//    QByteArray m_buffer;
+    QQueue<Package> m_queue;
+    QQueue<Package> m_priorityQueue;
     QSemaphore m_sem;
     bool m_isWork {false};
     QMutex m_mtx;
