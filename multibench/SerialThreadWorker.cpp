@@ -128,15 +128,16 @@ void SerialThreadWorker::run() {
                         }
                     }
                     if(m_waitRxBytes != 0 && buffer.size() == package.m_waitSize) {
-                        qDebug() << "OUT TO" << buffer.size() <<  package.m_waitSize << buffer.toHex(' ');
                         emit readyRead(buffer);
                         buffer.clear();
                     }
 
                 }
+
+                if(m_sem.available() == 0)
+                    emit readyToWrite();
 //                exec();
-            } else {
-                emit readyToWrite();
+
             }
         }
         qDebug() << "[THREAD]" << "Out of while cycle";

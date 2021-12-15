@@ -17,8 +17,8 @@ class ModbusProtocol;
 class Device;
 class DevCommand;
 class SerialThreadWorker;
-class NetworkModel :
-                     public QObject
+
+class NetworkModel : public QObject
 {
     Q_OBJECT
 public:

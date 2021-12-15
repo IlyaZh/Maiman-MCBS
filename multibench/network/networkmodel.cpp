@@ -174,8 +174,6 @@ void NetworkModel::dataOutcome(quint8 addr, quint16 reg, quint16 value)
 }
 
 void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
-    qDebug() << "NetworkModel::temperatureUnitsChanged" << static_cast<int>(id);
-
     for(auto& device : m_devices) {
         device->changeTemperatureUnit(id);
     }
@@ -209,7 +207,6 @@ void NetworkModel::pollRequest() {
 }
 
 void NetworkModel::readyRead(const QByteArray& rxPackage) {
-    qDebug() << "NetworkModel::readyRead";
     auto result = m_protocol.execute(rxPackage, m_worker->lastPackage());
     if(m_protocol.isError()) {
         quint8 addr = static_cast<quint8>(rxPackage.at(0));
