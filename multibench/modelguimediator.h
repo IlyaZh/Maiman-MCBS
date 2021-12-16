@@ -30,7 +30,7 @@ private slots:
     void createWidgetFor(Device* device);
     void createCalibAndLimitsWidgets(quint8 addr);
     void refreshComPorts();
-    void connectToNetwork(PortType type, QVariant value);
+    void changeConnectState(PortType type, QVariantMap value);
     void rescan();
     void setBaudrateToWindow(QStringList baud);
 signals:

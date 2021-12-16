@@ -50,8 +50,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->connectionWidget, &ConnectionWidget::refreshComPorts,
             this, &MainWindow::refreshComPortsSignal);
-    connect(ui->connectionWidget, &ConnectionWidget::connectButtonClicked,
-            this, &MainWindow::connectToNetwork);
+    connect(ui->connectionWidget, &ConnectionWidget::changeConnectState,
+            this, &MainWindow::changeConnectState);
 
     const QString AppTitle = QString("%1 v.%2").arg(Const::AppNameTitle, QCoreApplication::applicationVersion());
     setWindowTitle(AppTitle);
@@ -116,9 +116,10 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::connectTriggered(){
-    QVariantHash networkMap;
+    QVariantMap networkMap;
     PortType type = PortType::None;
     networkMap.insert("type",  static_cast<quint8>(type));
+    // TODO: эт че такое? ))
     if (ui->actionConnect->isChecked() and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
         if (type == PortType::TCP){
             networkMap.insert("host", "127.0.1.0");
@@ -131,7 +132,7 @@ void MainWindow::connectTriggered(){
         else
             return;
     }
-    emit connectToNetwork(type, networkMap);
+    emit changeConnectState(type, networkMap);
 }
 
 void MainWindow::addDeviceWidget(DeviceWidget* widget) {

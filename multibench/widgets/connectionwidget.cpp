@@ -22,10 +22,10 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
     ui->networkIpLineEdit->setValidator(ipValidator);
 
     connect(ui->networkConnectButton, &QPushButton::clicked, this, [this](){
-        connectIsClicked(PortType::TCP);
+        connectClicked(PortType::TCP);
     });
     connect(ui->connectComPortButton, &QPushButton::clicked, this, [this](){
-        connectIsClicked(PortType::Com);
+        connectClicked(PortType::Com);
     });
     connect(ui->refreshComPortButton, &QPushButton::clicked, this, &ConnectionWidget::refreshComPorts);
 }
@@ -93,8 +93,8 @@ void ConnectionWidget::setProtocol(PortType type){
         return;
 }
 
-void ConnectionWidget::connectIsClicked(PortType type){
-    QVariantHash networkMap;
+void ConnectionWidget::connectClicked(PortType type){
+    QVariantMap networkMap;
     networkMap.insert("type",  static_cast<quint8>(type));
     if (type == PortType::TCP){
         networkMap.insert("host", ui->networkIpLineEdit->text());
@@ -107,7 +107,7 @@ void ConnectionWidget::connectIsClicked(PortType type){
     else
         return;
 
-    emit connectButtonClicked(type, networkMap);
+    emit changeConnectState(type, networkMap);
 }
 
 // private methods

@@ -19,7 +19,7 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
     connect(&networkModel, &NetworkModel::signal_setBaudrateToWindow,this,&ModelGuiMediator::setBaudrateToWindow);
     connect(&networkModel, &NetworkModel::signal_connected, &window, &MainWindow::setConnected);
 
-    connect(&window, &MainWindow::connectToNetwork, this, &ModelGuiMediator::connectToNetwork);
+    connect(&window, &MainWindow::changeConnectState, this, &ModelGuiMediator::changeConnectState);
     connect(&window, &MainWindow::refreshComPortsSignal, this, &ModelGuiMediator::refreshComPorts);
     connect(&window, &MainWindow::tempratureUnitsChanged, &m_network, &NetworkModel::temperatureUnitsChanged);
     refreshComPorts();
@@ -57,13 +57,12 @@ void ModelGuiMediator::refreshComPorts() {
 
 }
 
-void ModelGuiMediator:: connectToNetwork(PortType type, QVariant value) {
-    QVariantMap portSettings = value.toMap();
+void ModelGuiMediator:: changeConnectState(PortType type, QVariantMap portSettings) {
     if(m_network.isStart()) {
         m_network.stop();
 //        m_device->close();
     } else {
-        AppSettings::setNetworkData(value);
+        AppSettings::setNetworkData(portSettings);
         auto serialWorker = new SerialThreadWorker;
         if(type == PortType::TCP) {
             serialWorker->configure(type, portSettings["host"], portSettings["port"]);

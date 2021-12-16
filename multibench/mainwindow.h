@@ -30,7 +30,7 @@ public:
 
 signals:
     void refreshComPortsSignal();
-    void connectToNetwork(PortType type, QVariant value);
+    void changeConnectState(PortType type, QVariantMap value);
     void tempratureUnitsChanged(Const::TemperatureUnitId id);
     void rescanNetwork();
     void createCalibAndLimitsWidgets(quint8 addr);

@@ -31,10 +31,10 @@ public:
     void setConnected(bool isConnected);
 
 private slots:
-    void connectIsClicked(PortType type);
+    void connectClicked(PortType type);
 
 signals:
-    void connectButtonClicked(PortType type, QVariant value);
+    void changeConnectState(PortType type, QVariantMap value);
     void refreshComPorts();
 
 private:
