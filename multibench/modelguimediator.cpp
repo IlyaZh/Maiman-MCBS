@@ -22,6 +22,7 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
     connect(&window, &MainWindow::tempratureUnitsChanged, &m_network, &NetworkModel::temperatureUnitsChanged);
     refreshComPorts();
     connect(&window,&MainWindow::rescanNetwork,this,&ModelGuiMediator::rescan);
+    connect(&window,&MainWindow::createCalibAndLimitsWidgets,this,&ModelGuiMediator::createCalibAndLimitsWidgets);
 }
 
 void ModelGuiMediator::createWidgetFor(Device* device) {
@@ -30,11 +31,17 @@ void ModelGuiMediator::createWidgetFor(Device* device) {
         widget->setAddress(static_cast<int>(device->addr()));
         connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);
         m_window.addDeviceWidget(widget);
-
-        m_window.addCalibrationDialog(device->addr(),m_factory.createDeviceCalibrationWidget(device->id(), device->commands()),m_factory.createDeviceLimitsWidget(device->id(), device->commands()));
+        m_window.addCalibrationDialog(device->addr(),device->id());
+        //m_window.addCalibrationDialog(device->addr(),m_factory.createDeviceCalibrationWidget(device->id(), device->commands()),m_factory.createDeviceLimitsWidget(device->id(), device->commands()));
     } else {
         qWarning() << "Can't find device widget with id=" << device->id();
     }
+}
+
+void ModelGuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id){
+    CalibrateDialog* dialog = m_factory.createCalibrationAndLimitsDialog(id,m_network.getCommands(addr));
+    //dialog->setParent(&m_window);
+    dialog->show();
 }
 
 void ModelGuiMediator::setBaudrateToWindow(QStringList baud) {

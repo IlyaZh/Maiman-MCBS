@@ -20,11 +20,16 @@ public:
     ~CalibrateDialog();
     void setValues();
 private:
+
     QVector<CalibrationAndLimitsWidget*> m_calibrationWidgets;
     QVector<CalibrationAndLimitsWidget*> m_limitsWidgets;
     Ui::CalibrateDialog *ui;
+
+    static const QString styleButtonOn;
+    static const QString styleButtonOff;
 private slots:
     void saveResult();
+    void setButtonState(bool state);
 
 signals:
     void sendData(QString);

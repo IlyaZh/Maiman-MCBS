@@ -52,20 +52,20 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>400</width>
+       <width>500</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>400</width>
+       <width>500</width>
        <height>16777215</height>
       </size>
      </property>
      <property name="styleSheet">
       <string notr="true">
 color: rgb(255, 255, 255);
-font: 16pt &quot;Share Tech Mono&quot;;</string>
+font: 18pt &quot;Share Tech Mono&quot;;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -117,7 +117,7 @@ QPushButton::disabled {
      </property>
      <property name="maximumSize">
       <size>
-       <width>60</width>
+       <width>70</width>
        <height>30</height>
       </size>
      </property>
@@ -140,7 +140,7 @@ QLineEdit::disabled {
 </string>
      </property>
      <property name="text">
-      <string>0</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

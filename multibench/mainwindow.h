@@ -34,14 +34,14 @@ signals:
     void connectToNetwork(QVariant value);
     void tempratureUnitsChanged(Const::TemperatureUnitId id);
     void rescanNetwork();
-    void createCalibAndLimitsWidgets(quint8 addr);
+    void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
 
 public slots:
     void setConnectMessage(QString msg);
     void setConnected(bool flag);
     void setStatusMessage(const QString& msg, int timeout = 10);
     void triggeredRescanNetwork();
-    void addCalibrationDialog(quint16 id, QVector<CalibrationAndLimitsWidget*> calibrations,QVector<CalibrationAndLimitsWidget*> limits);
+    void addCalibrationDialog(quint8 addr,quint16 id);
 private slots:
 //    void adjust(const QSize& size = QSize());
     void connectTriggered();

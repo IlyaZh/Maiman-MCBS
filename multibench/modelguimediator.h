@@ -28,7 +28,7 @@ private:
 
 public slots:
     void createWidgetFor(Device* device);
-    void createCalibAndLimitsWidgets(quint8 addr);
+    void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
 private slots:
     void refreshComPorts();
     void connectToNetwork(QVariant value);

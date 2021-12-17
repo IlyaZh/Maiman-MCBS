@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     if(cliParser.isSet(debugOption)) {
         debugMode = true;
     }
-
+    QLocale::setDefault(QLocale::English);
     wlocale = QLocale(QLocale::system());
 
     ////========================

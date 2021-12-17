@@ -157,25 +157,19 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
 }
 /*
 void MainWindow::addCalibrationDialog(quint16 id,QVector<CalibrateDialog*> widget){
-    QMenu* calibration = new QMenu(QString("ID:%1").arg(id),this);
-    for(auto& item:widget){
-        item->setParent(this);
-            auto action = new QAction(item->getName());
-            calibration->addAction(action);
-            connect(action,&QAction::triggered,this,[item](){
-                item->setStruct();
-                item->show();
-            });
-    }
-    ui->menuCalibration->addMenu(calibration);
-}
-*/
-void MainWindow::addCalibrationDialog(quint16 id,QVector<CalibrationAndLimitsWidget*> calibrations,QVector<CalibrationAndLimitsWidget*> limits){
     CalibrateDialog* dialog = new CalibrateDialog(calibrations, limits);
     m_calibrationDialogs.append(dialog);
     QAction* action = new QAction(QString("ID:%1").arg(id),this);
     connect(action,&QAction::triggered,this,[dialog](){
         dialog->show();
+    });
+    ui->menuCalibration->addAction(action);
+}
+*/
+void MainWindow::addCalibrationDialog(quint8 addr,quint16 id){
+    QAction* action = new QAction(QString("ID:%1").arg(addr),this);
+    connect(action,&QAction::triggered,this,[this,addr, id](){
+        emit createCalibAndLimitsWidgets(addr, id);
     });
     ui->menuCalibration->addAction(action);
 }
@@ -246,6 +240,7 @@ void MainWindow::setConnected(bool isConnected) {
     if(!isConnected) {
         qDeleteAll(m_workWidgets);
         m_workWidgets.clear();
+        ui->menuCalibration->clear();
     }
 }
 

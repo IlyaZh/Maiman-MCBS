@@ -6,6 +6,8 @@
 #include <QLabel>
 #include <QLayout>
 #include "device/commandsettings.h"
+#include <QDoubleValidator>
+
 struct CalibrationKoef;
 struct Limit;
 namespace Ui {
@@ -18,24 +20,33 @@ class CalibrationAndLimitsWidget : public QDialog
 
 public:
     explicit CalibrationAndLimitsWidget(CalibrationKoef* calibration, QSharedPointer<DevCommand> command,QWidget *parent = nullptr);
-    explicit CalibrationAndLimitsWidget(Limit* limit,QSharedPointer<DevCommand> command,QSharedPointer<DevCommand> limitCommand,QWidget *parent = nullptr);
+    explicit CalibrationAndLimitsWidget(Limit* limit,QSharedPointer<DevCommand> command,QSharedPointer<DevCommand> maxCommand,QSharedPointer<DevCommand> minCommand,QWidget *parent = nullptr);
     ~CalibrationAndLimitsWidget();
     void sendValue();
+    bool m_state = true;
 private slots:
     void increment();
     void decrement();
+
+    void finishedEdit();
+    void rejectedEdit();
+
+signals:
+    void checkValueRange(bool state);
 
 private:
     CalibrationKoef* m_calibration;
     Limit* m_limit;
     QSharedPointer<DevCommand> m_command;
-    QSharedPointer<DevCommand> m_limitCommand;
+    QSharedPointer<DevCommand> m_limitMaxCommand;
+    QSharedPointer<DevCommand> m_limitMinCommand;
     Ui::CalibrationAndLimitsWidget *ui;
+    QDoubleValidator* m_validator;
+    double minValue=0;
+    double maxValue=0;
 
-    static const QString nameStyle;
-    static const QString minorParametersStyle;
-    static const QString buttonsStyle;
-    static const QString lineEditStyle;
+    static const QString styleSheetOK;
+    static const QString styleSheetERROR;
 };
 
 #endif // CALIBRATIONANDLIMITSWIDGET_H
