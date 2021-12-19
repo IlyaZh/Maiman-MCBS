@@ -117,17 +117,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::connectTriggered(){
     QVariantMap networkMap;
-    PortType type = PortType::None;
+    PortType type = PortType::Com;
     networkMap.insert("type",  static_cast<quint8>(type));
-    // TODO: эт че такое? ))
     if (ui->actionConnect->isChecked() and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
         if (type == PortType::TCP){
             networkMap.insert("host", "127.0.1.0");
             networkMap.insert("port", "9999");
         }
         else if(type == PortType::Com){
-            networkMap.insert("comport", m_portGroup->checkedAction()->iconText());
-            networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->iconText());
+            networkMap.insert("comport", m_portGroup->checkedAction()->text());
+            networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->text());
         }
         else
             return;

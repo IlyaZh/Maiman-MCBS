@@ -1,7 +1,6 @@
 #include "tcpdatasource.h"
 
 TcpDataSource::TcpDataSource() :
-    m_device(new QTcpSocket()),
     m_host(QString()),
     m_port(0)
 {
@@ -17,10 +16,21 @@ void TcpDataSource::init(const QVariantMap& portSettings) {
     }
 }
 
-bool TcpDataSource::open() {
-    return m_dev
+QIODevice* TcpDataSource::createAndConnect() {
+    m_device = new QTcpSocket();
+    m_device->connectToHost(m_host, m_port);
+    return m_device;
 }
 
-QIODevice* TcpDataSource::device() {
-    return m_device.get();
+//bool TcpDataSource::open() {
+//    m_device->connectToHost(m_host, m_port);
+//    return true;
+//}
+
+bool TcpDataSource::isOpen() {
+    return (m_device->state() == QAbstractSocket::ConnectedState);
 }
+
+//QIODevice* TcpDataSource::device() {
+//    return m_device.get();
+//}

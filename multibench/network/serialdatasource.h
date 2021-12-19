@@ -2,15 +2,16 @@
 
 #include "IDataSource.h"
 #include <QtNetwork>
+#include <QtSerialPort>
 
-class TcpDataSource : public IDataSource
+class SerialDataSource : public IDataSource
 {
-    QPointer<QTcpSocket> m_device;
-    QString m_host {};
-    int m_port {0};
+    QPointer<QSerialPort> m_device;
+    QString m_port {};
+    int m_baud {0};
 public:
-    TcpDataSource();
-    ~TcpDataSource() override = default;
+    SerialDataSource();
+    ~SerialDataSource() override = default;
     void init(const QVariantMap& portSettings) override;
     QIODevice* createAndConnect() override;
 //    bool open() override;

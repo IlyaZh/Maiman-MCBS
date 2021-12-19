@@ -9,6 +9,8 @@ public:
     IDataSource() {}
     virtual ~IDataSource() {}
     virtual void init(const QVariantMap& portSettings) = 0;
-    virtual bool open() = 0;
-    virtual QIODevice* device() = 0;
+    virtual QIODevice* createAndConnect() = 0;
+//    virtual bool open() = 0;
+    virtual bool isOpen() = 0;
+//    virtual QIODevice* device() = 0;
 };

@@ -79,6 +79,8 @@ SOURCES += \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
     modelguimediator.cpp \
+    network/datasourcefactory.cpp \
+    network/serialdatasource.cpp \
     network/tcpdatasource.cpp \
     widgets/calibratedialog.cpp \
     widgets/calibrationandlimitswidget.cpp \
@@ -118,7 +120,8 @@ HEADERS += \
     model/device/HiddenWidget.h \
     modelguimediator.h \
     network/IDataSource.h \
-    network/INetworkSource.h \
+    network/datasourcefactory.h \
+    network/serialdatasource.h \
     network/tcpdatasource.h \
     widgets/calibratedialog.h \
     widgets/calibrationandlimitswidget.h \

@@ -3,12 +3,7 @@
 #include "constants.h"
 
 SerialThreadWorker::SerialThreadWorker(/*QObject *parent*/)
-    : m_portType{PortType::None}
 {
-
-}
-
-SerialThreadWorker::~SerialThreadWorker() {
 
 }
 
@@ -25,10 +20,8 @@ void SerialThreadWorker::setDelay(qint64 MSecs) {
     m_delay = MSecs;
 }
 
-void SerialThreadWorker::configure(PortType portType, QVariant host, QVariant arg) {
-    m_portType = portType;
-    m_host = host;
-    m_arg = arg;
+void SerialThreadWorker::configure(IDataSource* source) {
+    m_dataSource.reset(source);
 }
 
 void SerialThreadWorker::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority) {
@@ -59,36 +52,15 @@ void SerialThreadWorker::stop() {
 // private methods
 
 void SerialThreadWorker::run() {
-    qDebug() << "Thread start" << m_host.canConvert(QMetaType::QString) << m_arg.canConvert(QMetaType::Int);
-    if(m_host.canConvert(QMetaType::QString) && m_arg.canConvert(QMetaType::Int)) {
-        QScopedPointer<QIODevice> m_device;
-        if(m_portType == PortType::Com) {
-            auto serialPort = new QSerialPort(m_host.toString());
-            serialPort->setBaudRate(m_arg.toInt());
-            m_device.reset(serialPort);
-            if(serialPort->open(QIODevice::ReadWrite)) {
-                emit connected();
-                m_isWork = true;
-                qDebug() << "PORT IS OPEN";
-            } else {
-                emit errorOccured(serialPort->errorString());
-                qDebug() << "PORT ERROR " << serialPort->errorString();
+        QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
+        int waitForConnected = Const::NetworkTimeoutMSecs;
+        while(!m_dataSource->isOpen()) {
+            --waitForConnected;
+            if(waitForConnected == 0) {
+                emit errorOccured("Can't open connection. " + m_device->errorString());
                 return;
             }
-        } else if(m_portType == PortType::TCP) {
-            auto tcpPort = new QTcpSocket();
-            qDebug() << "host" << m_host.toString() << m_arg.toInt();
-            m_device.reset(tcpPort);
-            tcpPort->connectToHost(QHostAddress(m_host.toString()), m_arg.toInt());
-            if(tcpPort->waitForConnected()) {
-                emit connected();
-                m_isWork = true;
-                qDebug() << "PORT IS OPEN";
-            } else {
-                qDebug() << "wait for connected" << tcpPort->errorString();
-                emit errorOccured(tcpPort->errorString());
-                return;
-            }
+            QThread::msleep(1);
         }
 // TODO: вынеси управление портами в отдельные классы с общим интерфейсом
         while(m_isWork) {
@@ -144,6 +116,6 @@ void SerialThreadWorker::run() {
 
         m_device->close();
 //        emit finished();
-    }
+
 }
 

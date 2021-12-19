@@ -4,18 +4,19 @@
 #include <QtCore>
 #include <QtNetwork>
 #include "constants.h"
+#include "network/IDataSource.h"
 
 class SerialThreadWorker : public QThread
 {
     Q_OBJECT
 public:
     explicit SerialThreadWorker(/*QObject *parent = nullptr*/);
-    ~SerialThreadWorker();
+    ~SerialThreadWorker() = default;
     QByteArray lastPackage() const;
 public slots:
     void setTimeout(qint64 MSecs);
     void setDelay(qint64 MSecs);
-    void configure(PortType portType, QVariant host, QVariant arg);
+    void configure(IDataSource* source);
     void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority = false);
     void stop();
 private slots:
@@ -35,9 +36,9 @@ private:
         qint64 m_waitSize {0};
     };
 
-    PortType m_portType;
-    QVariant m_host;
-    QVariant m_arg;
+//    PortType m_portType;
+//    QVariant m_host;
+//    QVariant m_arg;
 //    QScopedPointer<QIODevice> m_device;
     qint64 m_timeout {Const::NetworkTimeoutMSecs};
     qint64 m_delay {Const::NetworkDelayMSecs};
@@ -49,6 +50,7 @@ private:
     QSemaphore m_sem;
     bool m_isWork {false};
     QMutex m_mtx;
+    QScopedPointer<IDataSource> m_dataSource;
 
     void run() override;
 };

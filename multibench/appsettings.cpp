@@ -105,8 +105,9 @@ void AppSettings::setDeviceTimeout(quint16 timeoutMs) {
 void AppSettings::setDeviceAddresses(const QSet<quint8>& addr){
     settings->remove("userSettings/addresses");
     settings->beginWriteArray("userSettings/addresses");
-    for(const auto item : addr){
-        settings->setArrayIndex(item);
+    int i = 0;
+    for(const auto& item : addr){
+        settings->setArrayIndex(i++);
         settings->setValue("userSettings/addresses", item);
     }
     settings->endArray();
@@ -115,7 +116,7 @@ void AppSettings::setDeviceAddresses(const QSet<quint8>& addr){
 QSet<quint8> AppSettings::getDeviceAddresses(){
     QSet<quint8> map;
     int size = settings->beginReadArray("userSettings/addresses");
-    for (int i = 1; i < size; ++i) { // TODO: Почему с единицы??
+    for (int i = 0; i < size; ++i) {
         settings->setArrayIndex(i);
         map.insert(settings->value("userSettings/addresses").toUInt());
     }

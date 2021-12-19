@@ -7,6 +7,8 @@
 #include "model/guifactory.h"
 #include "widgets/calibratedialog.h"
 #include "SerialThreadWorker.h"
+#include "network/IDataSource.h"
+#include "network/datasourcefactory.h"
 
 ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,NetworkModel& networkModel,QObject *parent) :
     QObject(parent),
@@ -63,17 +65,14 @@ void ModelGuiMediator:: changeConnectState(PortType type, QVariantMap portSettin
 //        m_device->close();
     } else {
         AppSettings::setNetworkData(portSettings);
-        auto serialWorker = new SerialThreadWorker;
-        if(type == PortType::TCP) {
-            serialWorker->configure(type, portSettings["host"], portSettings["port"]);
-        } else if(type == PortType::Com) {
-            serialWorker->configure(type, portSettings["comport"], portSettings["baudrate"]);;
-        } else {
-            serialWorker->deleteLater();
-            return;
-        }
 
-        m_network.start(serialWorker);
+        auto dataSource = DataSourceFactory::createSource(type);
+        if(dataSource != nullptr) {
+            auto serialWorker = new SerialThreadWorker;
+            dataSource->init(portSettings);
+            serialWorker->configure(dataSource);
+            m_network.start(serialWorker);
+        }
     }
 }
 
