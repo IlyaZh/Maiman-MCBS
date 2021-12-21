@@ -81,7 +81,7 @@ SOURCES += \
     model/device/HiddenWidget.cpp \
     modelguimediator.cpp \
     widgets/calibrationandlimitswidget.cpp \
-    widgets/calibrationmenu.cpp \
+    widgets/calibrationdialog.cpp \
     widgets/updatewidget.cpp \
     widgets/aboutdialog.cpp \
     widgets/connectionwidget.cpp \
@@ -119,7 +119,7 @@ HEADERS += \
     model/device/HiddenWidget.h \
     modelguimediator.h \
     widgets/calibrationandlimitswidget.h \
-    widgets/calibrationmenu.h \
+    widgets/calibrationdialog.h \
     widgets/updatewidget.h \
     widgets/aboutdialog.h \
     widgets/connectionwidget.h \
@@ -142,7 +142,7 @@ FORMS += \
     model/device/HiddenWidget.ui \
     widgets/aboutdialog.ui \
     widgets/calibrationandlimitswidget.ui \
-    widgets/calibrationmenu.ui \
+    widgets/calibrationdialog.ui \
     widgets/connectionwidget.ui \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \

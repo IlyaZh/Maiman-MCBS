@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CalibrationMenu</class>
- <widget class="QDialog" name="CalibrationMenu">
+ <class>CalibrationDialog</class>
+ <widget class="QDialog" name="CalibrationDialog">
   <property name="geometry">
    <rect>
     <x>0</x>

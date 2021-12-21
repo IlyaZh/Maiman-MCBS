@@ -19,8 +19,8 @@ class CalibrationAndLimitsWidget : public QDialog
     Q_OBJECT
 
 public:
-    explicit CalibrationAndLimitsWidget(CalibrationKoef* calibration, QSharedPointer<DevCommand> command,QWidget *parent = nullptr);
-    explicit CalibrationAndLimitsWidget(Limit* limit,QSharedPointer<DevCommand> command,QSharedPointer<DevCommand> maxCommand,QSharedPointer<DevCommand> minCommand,QWidget *parent = nullptr);
+    explicit CalibrationAndLimitsWidget(const CalibrationKoef& calibration, QSharedPointer<DevCommand> command,QWidget *parent = nullptr);
+    explicit CalibrationAndLimitsWidget(const Limit& limit,QSharedPointer<DevCommand> command,QSharedPointer<DevCommand> maxCommand,QSharedPointer<DevCommand> minCommand,QWidget *parent = nullptr);
     ~CalibrationAndLimitsWidget();
     void sendValue();
     bool getState();
@@ -35,13 +35,14 @@ signals:
     void editFinished();
 
 private:
-    CalibrationKoef* m_calibration;
-    Limit* m_limit;
     QSharedPointer<DevCommand> m_command;
     QSharedPointer<DevCommand> m_limitMaxCommand;
     QSharedPointer<DevCommand> m_limitMinCommand;
     Ui::CalibrationAndLimitsWidget *ui;
     QDoubleValidator* m_validator;
+    //const CalibrationKoef& m_calibration;
+    //const Limit& m_limit;
+
     double minValue=0;
     double maxValue=0;
     bool m_state = true;

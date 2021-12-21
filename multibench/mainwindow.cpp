@@ -8,7 +8,7 @@
 #include <QDebug>
 #include "widgets/updatewidget.h"
 #include "widgets/aboutdialog.h"
-#include "widgets/calibrationmenu.h"
+#include "widgets/calibrationdialog.h"
 #include "widgets/calibrationandlimitswidget.h"
 
 //const QString MainWindow::SettingsPath {"window/"};

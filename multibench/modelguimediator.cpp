@@ -5,7 +5,7 @@
 #include "device/device.h"
 #include "mainwindow.h"
 #include "model/guifactory.h"
-#include "widgets/calibrationmenu.h"
+#include "widgets/calibrationdialog.h"
 
 ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,NetworkModel& networkModel,QObject *parent) :
     QObject(parent),
@@ -39,7 +39,7 @@ void ModelGuiMediator::createWidgetFor(Device* device) {
 }
 
 void ModelGuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id){
-    CalibrationMenu* dialog = m_factory.createCalibrationMenu(id,m_network.getCommands(addr));
+    CalibrationDialog* dialog = m_factory.createCalibrationDialog(id,m_network.getCommands(addr));
     //dialog->setObjectName("calibMenu");
     //dialog->setParent(&m_window);
     //dialog->setStyleSheet("");

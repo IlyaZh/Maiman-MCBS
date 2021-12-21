@@ -9,25 +9,24 @@ class CalibrationAndLimitsWidget;
 struct CalibrationKoef;
 
 namespace Ui {
-class CalibrationMenu;
+class CalibrationDialog;
 }
 
-class CalibrationMenu : public QDialog
+class CalibrationDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit CalibrationMenu(quint16 id,QMap<quint16, DeviceWidgetDesc> deviceDesc, const QMap<quint16, QSharedPointer<DevCommand>>& commands, QWidget *parent = nullptr);
-    ~CalibrationMenu();
+    explicit CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const QMap<quint16, QSharedPointer<DevCommand>>& commands, QWidget *parent = nullptr);
+    ~CalibrationDialog();
     void setValues();
 private:
 
     QVector<CalibrationAndLimitsWidget*> m_calibrationWidgets;
     QVector<CalibrationAndLimitsWidget*> m_limitsWidgets;
-    Ui::CalibrationMenu *ui;
-    quint16 m_id;
+    Ui::CalibrationDialog *ui;
     const QMap<quint16, QSharedPointer<DevCommand>>& m_commands;
-    QMap<quint16, DeviceWidgetDesc> m_deviceWidgets;
+    const DeviceWidgetDesc& m_deviceWidgetsDesc;
 
     static const QString styleButtonOn;
     static const QString styleButtonOff;

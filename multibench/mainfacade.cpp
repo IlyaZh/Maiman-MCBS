@@ -5,7 +5,7 @@
 #include "device/device.h"
 #include "mainwindow.h"
 #include "model/guifactory.h"
-#include "widgets/calibrationmenu.h"
+#include "widgets/calibrationdialog.h"
 
 MainFacade::MainFacade(MainWindow& window, GuiFactory& factory, QObject* parent) :
     QObject(parent),

@@ -33,16 +33,16 @@ const QString CalibrationAndLimitsWidget::styleSheetERROR = "\
         padding: 5px 0;\
 }";
 
-CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(CalibrationKoef* calibration, QSharedPointer<DevCommand> command,QWidget *parent) :
+CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(const CalibrationKoef& calibration, QSharedPointer<DevCommand> command,QWidget *parent) :
     QDialog(parent),
-    m_calibration(calibration),
     m_command(command),
     ui(new Ui::CalibrationAndLimitsWidget)
+    //m_calibration(calibration)
 {
     ui->setupUi(this);
-    maxValue = m_calibration->max;
-    minValue = m_calibration->min;
-    ui->nameParameter->setText(m_calibration->name);
+    maxValue = calibration.max;
+    minValue = calibration.min;
+    ui->nameParameter->setText(calibration.name);
     ui->value->setText(m_command->valueStr());
     m_validator = new QDoubleValidator(minValue,maxValue,m_command->tolerance());
     ui->maxParameter->setText(QString("Max:%1").arg(maxValue));
@@ -54,28 +54,28 @@ CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(CalibrationKoef* calibrat
     connect(ui->value,&QLineEdit::inputRejected,this,&CalibrationAndLimitsWidget::rejectedEdit);
 }
 
-CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(Limit* limit,QSharedPointer<DevCommand> command,QSharedPointer<DevCommand> maxCommand,QSharedPointer<DevCommand> minCommand, QWidget *parent) :
+CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(const Limit& limit,QSharedPointer<DevCommand> command,QSharedPointer<DevCommand> maxCommand,QSharedPointer<DevCommand> minCommand, QWidget *parent) :
     QDialog(parent),
-    m_limit(limit),
     m_command(command),
     m_limitMaxCommand(maxCommand),
     m_limitMinCommand(minCommand),
     ui(new Ui::CalibrationAndLimitsWidget)
+    //m_limit(limit)
 {
     ui->setupUi(this);
-    ui->nameParameter->setText(m_limit->name);
+    ui->nameParameter->setText(limit.name);
     ui->value->setText(m_command->valueStr());
 
     if(!m_limitMaxCommand.isNull())
         maxValue = m_limitMaxCommand->valueDouble();
     else
-        maxValue = m_limit->maxValue;
+        maxValue = limit.maxValue;
     ui->maxParameter->setText(QString("Max:%1").arg(maxValue));
 
     if(!m_limitMinCommand.isNull())
         minValue = m_limitMinCommand->valueDouble();
     else
-        minValue = m_limit->minValue;
+        minValue = limit.minValue;
     ui->minParameter->setText(QString("Min:%1").arg(minValue));
 
     m_validator = new QDoubleValidator(minValue,maxValue,m_command->tolerance());

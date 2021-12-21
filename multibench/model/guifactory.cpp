@@ -34,9 +34,9 @@ DeviceWidget* GuiFactory::createDeviceWidget(quint16 id, const QMap<quint16, QSh
     return nullptr;
 }
 
-CalibrationMenu* GuiFactory::createCalibrationMenu(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>> &commands){
+CalibrationDialog* GuiFactory::createCalibrationDialog(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>> &commands){
     if(m_deviceWidgets.contains(id)) {
-        return new CalibrationMenu(id, m_deviceWidgets,commands);
+        return new CalibrationDialog(m_deviceWidgets[id],commands);
     }
     return nullptr;
 }
