@@ -24,14 +24,12 @@ const QString CalibrationDialog::styleButtonOff = "QPushButton {\
 
 CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const QMap<quint16, QSharedPointer<DevCommand>>& commands, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::CalibrationDialog),
-    m_commands(commands),
-    m_deviceWidgetsDesc(deviceDesc)
+    ui(new Ui::CalibrationDialog)
 {
     ui->setupUi(this);
     QDialog::setWindowTitle("Calibrations And Limits");
 
-    for (const auto& item : m_deviceWidgetsDesc.calibration){
+    for (const auto& item : deviceDesc.calibration){
         auto calibrationWidget = new CalibrationAndLimitsWidget(item, commands.value(item.code));
         calibrationWidget->setParent(this);
         ui->calibrationLayout->addWidget(calibrationWidget);
@@ -39,7 +37,7 @@ CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const Q
         connect(calibrationWidget, &CalibrationAndLimitsWidget::editFinished, this, &CalibrationDialog::widgetsAreValid);
     }
 
-    for (const auto& item : m_deviceWidgetsDesc.limits){
+    for (const auto& item : deviceDesc.limits){
         auto limitWidget = new CalibrationAndLimitsWidget(item, commands.value(item.code), commands.value(item.maxCode), commands.value(item.minCode));
         limitWidget->setParent(this);
         ui->limitsLayout->addWidget(limitWidget);

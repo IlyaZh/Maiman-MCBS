@@ -47,18 +47,20 @@ CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(const CalibrationKoef& ca
     m_validator = new QDoubleValidator(minValue,maxValue,m_command->tolerance());
     ui->maxParameter->setText(QString("Max:%1").arg(maxValue));
     ui->minParameter->setText(QString("Min:%1").arg(minValue));
+
+    delta = 1.0/m_command->divider();
+
     connect(ui->downValue,&QPushButton::clicked,this,&CalibrationAndLimitsWidget::decrement);
     connect(ui->upValue,&QPushButton::clicked,this,&CalibrationAndLimitsWidget::increment);
 
-    connect(ui->value,&QLineEdit::editingFinished,this,&CalibrationAndLimitsWidget::editedValue);
+    connect(ui->value,&QLineEdit::textChanged,this,&CalibrationAndLimitsWidget::editedValue);
     connect(ui->value,&QLineEdit::inputRejected,this,&CalibrationAndLimitsWidget::rejectedEdit);
+    connect(ui->value,&QLineEdit::editingFinished,this,&CalibrationAndLimitsWidget::inputCompleted);
 }
 
 CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(const Limit& limit,QSharedPointer<DevCommand> command,QSharedPointer<DevCommand> maxCommand,QSharedPointer<DevCommand> minCommand, QWidget *parent) :
     QDialog(parent),
     m_command(command),
-    m_limitMaxCommand(maxCommand),
-    m_limitMinCommand(minCommand),
     ui(new Ui::CalibrationAndLimitsWidget)
     //m_limit(limit)
 {
@@ -66,25 +68,27 @@ CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(const Limit& limit,QShare
     ui->nameParameter->setText(limit.name);
     ui->value->setText(m_command->valueStr());
 
-    if(!m_limitMaxCommand.isNull())
-        maxValue = m_limitMaxCommand->valueDouble();
+    if(!maxCommand.isNull())
+        maxValue = maxCommand->valueDouble();
     else
         maxValue = limit.maxValue;
     ui->maxParameter->setText(QString("Max:%1").arg(maxValue));
 
-    if(!m_limitMinCommand.isNull())
-        minValue = m_limitMinCommand->valueDouble();
+    if(!minCommand.isNull())
+        minValue = minCommand->valueDouble();
     else
         minValue = limit.minValue;
     ui->minParameter->setText(QString("Min:%1").arg(minValue));
+
+    delta = 1.0/m_command->divider();
 
     m_validator = new QDoubleValidator(minValue,maxValue,m_command->tolerance());
     connect(ui->downValue,&QPushButton::clicked,this,&CalibrationAndLimitsWidget::decrement);
     connect(ui->upValue,&QPushButton::clicked,this,&CalibrationAndLimitsWidget::increment);
 
-    connect(ui->value,&QLineEdit::editingFinished,this,&CalibrationAndLimitsWidget::editedValue);
+    connect(ui->value,&QLineEdit::textChanged,this,&CalibrationAndLimitsWidget::editedValue);
     connect(ui->value,&QLineEdit::inputRejected,this,&CalibrationAndLimitsWidget::rejectedEdit);
-
+    connect(ui->value,&QLineEdit::editingFinished,this,&CalibrationAndLimitsWidget::inputCompleted);
 }
 
 CalibrationAndLimitsWidget::~CalibrationAndLimitsWidget()
@@ -94,16 +98,16 @@ CalibrationAndLimitsWidget::~CalibrationAndLimitsWidget()
 
 void CalibrationAndLimitsWidget::increment(){
     double value = ui->value->text().toDouble();
-    value = value + 1.0/m_command->divider();
+    value += delta;
+    value = qBound(minValue, value, maxValue);
     ui->value->setText(QString::number(value,'f',m_command->tolerance()));
-    editedValue();
 }
 
 void CalibrationAndLimitsWidget::decrement(){
     double value = ui->value->text().toDouble();
-    value = value - 1.0/m_command->divider();
+    value -= delta;
+    value = qBound(minValue, value, maxValue);
     ui->value->setText(QString::number(value,'f',m_command->tolerance()));
-    editedValue();
 }
 
 void CalibrationAndLimitsWidget::sendValue(){
@@ -116,8 +120,6 @@ void CalibrationAndLimitsWidget::editedValue(){
     int pos = 0;
     if(m_validator->validate(v,pos) == QValidator::Acceptable){
         ui->value->setStyleSheet(styleSheetOK);
-        double value = ui->value->text().toDouble();
-        ui->value->setText(QString::number(value,'f',m_command->tolerance()));
         m_state = true;
     }
     else{
@@ -126,8 +128,13 @@ void CalibrationAndLimitsWidget::editedValue(){
     }
     emit editFinished();
 }
+
+void CalibrationAndLimitsWidget::inputCompleted(){
+    double value = ui->value->text().toDouble();
+    ui->value->setText(QString::number(value,'f',m_command->tolerance()));
+}
+
 void CalibrationAndLimitsWidget::rejectedEdit(){
-    qDebug()<<"INPUT REJECTED";
     ui->value->clear();
     ui->value->setText(m_command->valueStr());
 }

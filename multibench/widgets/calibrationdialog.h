@@ -25,8 +25,6 @@ private:
     QVector<CalibrationAndLimitsWidget*> m_calibrationWidgets;
     QVector<CalibrationAndLimitsWidget*> m_limitsWidgets;
     Ui::CalibrationDialog *ui;
-    const QMap<quint16, QSharedPointer<DevCommand>>& m_commands;
-    const DeviceWidgetDesc& m_deviceWidgetsDesc;
 
     static const QString styleButtonOn;
     static const QString styleButtonOff;

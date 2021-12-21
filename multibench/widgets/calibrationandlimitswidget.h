@@ -30,21 +30,19 @@ private slots:
 
     void editedValue();
     void rejectedEdit();
+    void inputCompleted();
 
 signals:
     void editFinished();
 
 private:
     QSharedPointer<DevCommand> m_command;
-    QSharedPointer<DevCommand> m_limitMaxCommand;
-    QSharedPointer<DevCommand> m_limitMinCommand;
     Ui::CalibrationAndLimitsWidget *ui;
     QDoubleValidator* m_validator;
-    //const CalibrationKoef& m_calibration;
-    //const Limit& m_limit;
 
-    double minValue=0;
-    double maxValue=0;
+    double minValue = 0;
+    double maxValue = 0;
+    double delta = 0;
     bool m_state = true;
 
     static const QString styleSheetOK;
