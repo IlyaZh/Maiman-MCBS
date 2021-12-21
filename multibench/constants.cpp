@@ -17,6 +17,10 @@ const QString Const::AppNameTitle = "Maiman BenchSoft Multichannel";
 
 const QStringList Const::TemperatureUnitNames({"Celsius", "Fahrenheit"});
 
+const int Const::NetworkTimeoutMSecs = 300;
+
+const int Const::NetworkDelayMSecs = 50;
+
 const QString Const::SecretCodeCombination = "3.1415926";
 
 const QString Const::ApplicationDefaultFontPath = ":/resources/fonts/ShareTechMono-Regular.ttf";

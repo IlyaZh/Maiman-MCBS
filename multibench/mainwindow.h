@@ -35,6 +35,7 @@ signals:
     void tempratureUnitsChanged(Const::TemperatureUnitId id);
     void rescanNetwork();
     void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
+    void finishEditedNetworkTimeout(quint16 timeout);
 
 public slots:
     void setConnectMessage(QString msg);
@@ -47,6 +48,7 @@ private slots:
     void connectTriggered();
     void callAboutDialog();
     void getKeepAddresses();
+    void setNetworkTimeout();
 private:
     Ui::MainWindow *ui;
 //    MainWindowControllerInterface* m_cntrl;

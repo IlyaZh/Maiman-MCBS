@@ -10,6 +10,7 @@
 #include "widgets/aboutdialog.h"
 #include "widgets/calibrationdialog.h"
 #include "widgets/calibrationandlimitswidget.h"
+#include <QInputDialog>
 
 //const QString MainWindow::SettingsPath {"window/"};
 
@@ -106,6 +107,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionAbout,&QAction::triggered,this,&MainWindow::callAboutDialog);
     connect(ui->actionKeepAddresses, &QAction::triggered,this, &MainWindow::getKeepAddresses);
     connect(ui->actionRescan,&QAction::triggered,this,&MainWindow::triggeredRescanNetwork);
+    connect(ui->actionTimeout,&QAction::triggered,this,&MainWindow::setNetworkTimeout);
     ui->actionKeepAddresses->setChecked(AppSettings::getKeepAddresses());
 }
 
@@ -295,6 +297,13 @@ void MainWindow::setStatusBarMessage(QString message){
 
 void MainWindow::callAboutDialog(){
     m_About->show();
+}
+
+void MainWindow::setNetworkTimeout(){
+    bool ok;
+    quint16 timeout = QInputDialog::getInt(this,"Network Timeout","Timeout",AppSettings::getNetworkTimeout(),0,1000,1,&ok);
+    if (ok)
+        emit finishEditedNetworkTimeout(timeout);
 }
 
 void MainWindow::triggeredRescanNetwork(){

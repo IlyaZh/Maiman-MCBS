@@ -23,6 +23,8 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
     refreshComPorts();
     connect(&window,&MainWindow::rescanNetwork,this,&ModelGuiMediator::rescan);
     connect(&window,&MainWindow::createCalibAndLimitsWidgets,this,&ModelGuiMediator::createCalibAndLimitsWidgets);
+
+    connect(&window, &MainWindow::finishEditedNetworkTimeout, this, &ModelGuiMediator::setNetworkTimeout);
 }
 
 void ModelGuiMediator::createWidgetFor(Device* device) {
@@ -93,4 +95,8 @@ void ModelGuiMediator::connectToNetwork(QVariant value) {
 void ModelGuiMediator::rescan(){
     m_network.clearNetwork();
     m_network.rescanNetwork();
+}
+
+void ModelGuiMediator::setNetworkTimeout(quint16 timeout){
+
 }

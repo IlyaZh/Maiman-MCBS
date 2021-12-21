@@ -34,6 +34,7 @@ private slots:
     void connectToNetwork(QVariant value);
     void rescan();
     void setBaudrateToWindow(QStringList baud);
+    void setNetworkTimeout(quint16 timeout);
 signals:
     void rescanNetwork();
 

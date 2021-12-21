@@ -56,8 +56,8 @@ NetworkData_s AppSettings::getNetworkData() {
     return netData;
 }
 
-uint AppSettings::getDeviceTimeout() {
-    return settings->value("deviceDefaultTimeout", 1000).toUInt();
+uint AppSettings::getNetworkTimeout() {
+    return settings->value("networkTimeout", Const::NetworkTimeoutMSecs).toUInt();
 }
 
 // slots
@@ -98,8 +98,8 @@ void AppSettings::setNetworkData(/*NetworkData_s*/QVariant netData) {
     settings->setValue("network", netData);
 }
 
-void AppSettings::setDeviceTimeout(quint16 timeoutMs) {
-    settings->setValue("deviceDefaultTimeout", timeoutMs);
+void AppSettings::setNetworkTimeout(quint16 timeoutMs) {
+    settings->setValue("networkTimeout", timeoutMs);
 }
 
 void AppSettings::setDeviceAddresses(const QSet<quint8>& addr){

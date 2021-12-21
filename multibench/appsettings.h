@@ -36,7 +36,7 @@ public:
     static QPoint getWindowPosition();
     static int getComStopBits();
     static NetworkData_s getNetworkData();
-    static uint getDeviceTimeout();
+    static uint getNetworkTimeout();
     static QSet<quint8> getDeviceAddresses();
     static bool getKeepAddresses();
     //    QSize getWindowSize();
@@ -61,7 +61,7 @@ public slots:
     static void setWindowPosition(QPoint);
     static void setComStopBits(int);
     static void setNetworkData(/*NetworkData_s*/QVariant netData);
-    static void setDeviceTimeout(quint16 timeoutMs);
+    static void setNetworkTimeout(quint16 timeoutMs);
     static void setDeviceAddresses(const QSet<quint8>& addr);
     static void setKeepAddresses(bool flag);
     //    static void setWindowSize(QSize);
