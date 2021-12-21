@@ -11,8 +11,7 @@
 #include "widgets/calibrationdialog.h"
 #include "widgets/calibrationandlimitswidget.h"
 #include <QInputDialog>
-
-//const QString MainWindow::SettingsPath {"window/"};
+#include <utility>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,9 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     , m_baudrateGroup(new QActionGroup(this))
     , m_updater(new UpdateWidget(this))
     , m_About(new AboutDialog(this))
-      //      m_cntrl(nullptr),
-//      m_portList(nullptr),
-//      m_baudList(nullptr)
 {
     ui->setupUi(this);
 
@@ -35,13 +31,13 @@ MainWindow::MainWindow(QWidget *parent)
     #ifndef QT_DEBUG
     ui->connectionWidget->hide();
     #endif
-    ui->connectionWidget->setProtocol(NetworkType::Tcp);
+    ui->connectionWidget->setProtocol(PortType::TCP);
     ui->connectionWidget->setBaudList(Const::BaudRates);
     switch(netData.type) {
-    case NetworkType::SerialPort:
+    case PortType::Com:
         ui->connectionWidget->setCurrentComPort(netData.host);
         break;
-    case NetworkType::Tcp:
+    case PortType::TCP:
         ui->connectionWidget->setCurrentIp(netData.host);
         ui->connectionWidget->setCurrentTcpPort(netData.port);
         break;
@@ -49,13 +45,10 @@ MainWindow::MainWindow(QWidget *parent)
         break;
     }
 
-    //    refreshMenuPortList();
-    //    refreshMenuPortBaudsList();
-
     connect(ui->connectionWidget, &ConnectionWidget::refreshComPorts,
             this, &MainWindow::refreshComPortsSignal);
-    connect(ui->connectionWidget, &ConnectionWidget::connectButtonClicked,
-            this, &MainWindow::connectToNetwork);
+    connect(ui->connectionWidget, &ConnectionWidget::changeConnectState,
+            this, &MainWindow::changeConnectState);
 
     const QString AppTitle = QString("%1 v.%2").arg(Const::AppNameTitle, QCoreApplication::applicationVersion());
     setWindowTitle(AppTitle);
@@ -121,23 +114,22 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::connectTriggered(){
-    QVariantHash networkMap;
-    NetworkType type;
-    type = NetworkType::SerialPort;
+    QVariantMap networkMap;
+    auto type = PortType::Com;
     networkMap.insert("type",  static_cast<quint8>(type));
     if (ui->actionConnect->isChecked() and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
-        if (type == NetworkType::Tcp){
+        if (type == PortType::TCP){
             networkMap.insert("host", "127.0.1.0");
             networkMap.insert("port", "9999");
         }
-        else if(type == NetworkType::SerialPort){
-            networkMap.insert("comport", m_portGroup->checkedAction()->iconText());
-            networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->iconText());
+        else if(type == PortType::Com){
+            networkMap.insert("comport", m_portGroup->checkedAction()->text());
+            networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->text());
         }
         else
             return;
     }
-    emit connectToNetwork(networkMap);
+    emit changeConnectState(type, networkMap);
 }
 
 void MainWindow::addDeviceWidget(DeviceWidget* widget) {
@@ -145,14 +137,14 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         widget->setParent(this);
         m_workWidgets.append(widget);
         int count = m_workWidgets.size();
-        qDebug() << "addDeviceWidget" << count;
+//        qDebug() << "addDeviceWidget" << count;
         m_workFieldLayout->addWidget(widget);
         //        m_workFieldLayout->addItem(new QSpacerItem(2,2, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding), count+1,0);
         //connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
 //        adjust(widget->sizeHint());
         //        widget->setMaximumHeight(widget->sizeHint().height());
         //        auto widgetSize = ui->workFieldWidget->size();
-        qDebug() << "addDeviceWidget size=" << widget->size() << widget->sizeHint();
+//        qDebug() << "addDeviceWidget size=" << widget->size() << widget->sizeHint();
         //        ui->workFieldWidget->setMinimumSize(widgetSize);
         //        ui->scrollArea->setMinimumSize(widgetSize);
     }
@@ -307,7 +299,7 @@ void MainWindow::setNetworkTimeout(){
 }
 
 void MainWindow::triggeredRescanNetwork(){
-    for(const auto item:m_workWidgets){
+    for(const auto item : std::as_const(m_workWidgets)){
         m_workFieldLayout->removeWidget(item);
     }
     ui->menuCalibration->clear();

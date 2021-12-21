@@ -2,15 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-//#include "interfaces/mainwindowco1ntrollerinterface.h"
 #include "model/device/devicewidget.h"
-//class MainWindowControllerInterface;
-//#include <QtWidgets>
 #include "constants.h"
+
 class AboutDialog;
 class UpdateWidget;
 class CalibrationMenu;
 class CalibrationAndLimitsWidget;
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -20,8 +19,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-//    static const QString SettingsPath;
-
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
     void addDeviceWidget(DeviceWidget* widget);
@@ -31,7 +28,7 @@ public:
 
 signals:
     void refreshComPortsSignal();
-    void connectToNetwork(QVariant value);
+    void changeConnectState(PortType type, QVariantMap value);
     void tempratureUnitsChanged(Const::TemperatureUnitId id);
     void rescanNetwork();
     void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
@@ -44,16 +41,12 @@ public slots:
     void triggeredRescanNetwork();
     void addCalibrationMenu(quint8 addr,quint16 id);
 private slots:
-//    void adjust(const QSize& size = QSize());
     void connectTriggered();
     void callAboutDialog();
     void getKeepAddresses();
     void setNetworkTimeout();
 private:
     Ui::MainWindow *ui;
-//    MainWindowControllerInterface* m_cntrl;
-//    QVector<QString> *m_portList;
-//    QVector<int> *m_baudList;
     QVector<DeviceWidget*> m_workWidgets;
     QGridLayout* m_workFieldLayout;
     QPointer<QActionGroup> m_portGroup;
@@ -64,6 +57,5 @@ private:
 protected:
     void closeEvent(QCloseEvent *event) override;
 
-//    void setConnections();
 };
 #endif // MAINWINDOW_H

@@ -6,6 +6,9 @@
 #include "mainwindow.h"
 #include "model/guifactory.h"
 #include "widgets/calibrationdialog.h"
+#include "SerialThreadWorker.h"
+#include "network/IDataSource.h"
+#include "network/datasourcefactory.h"
 
 ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,NetworkModel& networkModel,QObject *parent) :
     QObject(parent),
@@ -14,10 +17,11 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
     m_network(networkModel)
 {
     factory.start();
-    connect(&networkModel, &NetworkModel::createWidgetFor,this,&ModelGuiMediator::createWidgetFor);
-    connect(&networkModel, &NetworkModel::setBaudrateToWindow,this,&ModelGuiMediator::setBaudrateToWindow);
+    connect(&networkModel, &NetworkModel::signal_createWidgetFor,this,&ModelGuiMediator::createWidgetFor);
+    connect(&networkModel, &NetworkModel::signal_setBaudrateToWindow,this,&ModelGuiMediator::setBaudrateToWindow);
+    connect(&networkModel, &NetworkModel::signal_connected, &window, &MainWindow::setConnected);
 
-    connect(&window, &MainWindow::connectToNetwork, this, &ModelGuiMediator::connectToNetwork);
+    connect(&window, &MainWindow::changeConnectState, this, &ModelGuiMediator::changeConnectState);
     connect(&window, &MainWindow::refreshComPortsSignal, this, &ModelGuiMediator::refreshComPorts);
     connect(&window, &MainWindow::tempratureUnitsChanged, &m_network, &NetworkModel::temperatureUnitsChanged);
     refreshComPorts();
@@ -63,31 +67,18 @@ void ModelGuiMediator::refreshComPorts() {
 
 }
 
-void ModelGuiMediator::connectToNetwork(QVariant value) {
-    AppSettings::setNetworkData(value);
-
-    QVariantMap portSettings = value.toMap();
+void ModelGuiMediator:: changeConnectState(PortType type, QVariantMap portSettings) {
     if(m_network.isStart()) {
         m_network.stop();
-        m_device->close();
-        m_window.setConnected(m_device->isOpen());
-        //            device->deleteLater();
     } else {
-        NetworkType type = static_cast<NetworkType>(portSettings["type"].toInt());
-        if(type == NetworkType::Tcp) {
-            m_device = new DataSource;
-            m_device->setSettings(type, portSettings["host"], portSettings["port"]);
-            m_device->open();
-            m_window.setConnected(m_device->isOpen());
-            m_network.start(*m_device);
-        } else if(type == NetworkType::SerialPort) {
-            m_device = new DataSource;
-            AppSettings::setComPort(portSettings["comport"].toString());
-            AppSettings::setComBaudrate(portSettings["baudrate"].toInt());
-            m_device->setSettings(type, portSettings["comport"], portSettings["baudrate"]);
-            m_device->open();
-            m_window.setConnected(m_device->isOpen());
-            m_network.start(*m_device);
+        AppSettings::setNetworkData(portSettings);
+
+        auto dataSource = DataSourceFactory::createSource(type);
+        if(dataSource != nullptr) {
+            auto serialWorker = new SerialThreadWorker;
+            dataSource->init(portSettings);
+            serialWorker->configure(dataSource);
+            m_network.start(serialWorker);
         }
     }
 }

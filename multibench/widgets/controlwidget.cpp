@@ -20,7 +20,7 @@ ControlWidget::ControlWidget(QStringView name,
 
     ui->WidgetName->setText(name.toString());
 
-    if (m_Value and m_Max and m_Min){
+    if (m_Value && m_Max && m_Min){
 //        m_Validator = new QDoubleValidator(this);
 //        m_Validator->setRange(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
 

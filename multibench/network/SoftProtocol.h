@@ -1,14 +1,12 @@
 #pragma once
 
 #include <QObject>
-//#include <QIODevice>
 #include "datasource.h"
 #include <QPointer>
 #include <QTimer>
 #include <QQueue>
 #include <QVector>
 #include "datasource.h"
-//#include "interfaces/ProtocolObserverInterface.h"
 
 struct SoftProtocolData {
     quint8 addr;

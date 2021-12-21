@@ -13,14 +13,13 @@
 #include <QCommandLineOption>
 #include "factories/Parser.h"
 #include "datasource.h"
-#include "maincontroller.h"
-#include "mainfacade.h"
 //#include "DebugMode.h"
 #include <QFontDatabase>
 #include "modelguimediator.h"
 
 #include <QDebug>
 #ifdef QT_DEBUG
+#include <locale.h>
 #include "tests/globaltest.h"
 #endif
 
@@ -38,20 +37,9 @@ int main(int argc, char *argv[])
 
 #ifdef QT_DEBUG
     debugMode = true;
-    setlocale(LC_CTYPE, "rus");
+    setlocale(LC_CTYPE, "ru-RU");
 #endif
-
-//    UpdatesChecker checker;
-//    QObject::connect(&checker, &UpdatesChecker::updatesAvailable, [&checker](bool available){
-//        if(available) {
-//            qDebug() << "UPDATES AVAILABLE" << checker.sizeFormated() << checker.version();
-//            checker.startUpdate(qApp);
-//        }
-//        else
-//            qDebug() << "NO UPDATES AVAILABLE";
-//    });
-//    checker.checkForUpdates();
-
+  
     QCommandLineParser cliParser;
     QCommandLineOption debugOption(QStringList() << "d" << "debug");
     cliParser.addOption(debugOption);
@@ -95,7 +83,7 @@ int main(int argc, char *argv[])
 
     // Контроллер главного окна, управляет потоком данных от GUI к моделии
     //MainController mainCtrl(w, model);
-    ModelGuiMediator mainMediator(w,guiFactory,model);
+    ModelGuiMediator mainMediator(w, guiFactory, model);
 
 #ifdef QT_DEBUG
     GlobalTest tests(argc, argv);

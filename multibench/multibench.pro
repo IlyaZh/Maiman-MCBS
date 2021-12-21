@@ -2,8 +2,6 @@ QT       += core gui network xml serialport network
 debug:QT+=testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-#lessThan(QT_MAJOR_VERSION, 6): QT += serialport
-#greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
 
 CONFIG += c++17
 debug:CONFIG+=testcase #warn_on depend_includepath console
@@ -62,6 +60,7 @@ QMAKE_SUBSTITUTES += conf_gui
 
 SOURCES += \
     DebugMode.cpp \
+    SerialThreadWorker.cpp \
     UpdatesChecker.cpp \
     model/device/devicecondition.cpp \
     appsettings.cpp \
@@ -75,8 +74,6 @@ SOURCES += \
     factories/treeitem.cpp \
     factories/xmlparser.cpp \
     main.cpp \
-    maincontroller.cpp \
-    mainfacade.cpp \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
     modelguimediator.cpp \
@@ -91,6 +88,9 @@ SOURCES += \
     network/SoftProtocol.cpp \
     network/networkmodel.cpp \
     network/protocols/modbusprotocol.cpp \
+    network/datasourcefactory.cpp \
+    network/serialdatasource.cpp \
+    network/tcpdatasource.cpp \
     tests/globaltest.cpp \
     tests/test_modbus/test_modbus.cpp \
     absoluteToleranceCompare.cpp \
@@ -101,6 +101,7 @@ SOURCES += \
 HEADERS += \
     DebugMode.h \
     UpdatesChecker.h \
+    SerialThreadWorker.h \
     model/device/devicecondition.h \
     appsettings.h \
     constants.h \
@@ -113,8 +114,6 @@ HEADERS += \
     factories/treeitem.h \
     factories/xmlparser.h \
     interfaces/ProtocolObserverInterface.h \
-    maincontroller.h \
-    mainfacade.h \
     mainwindow.h \
     model/device/HiddenWidget.h \
     modelguimediator.h \
@@ -130,6 +129,10 @@ HEADERS += \
     network/SoftProtocol.h \
     network/networkmodel.h \
     network/protocols/modbusprotocol.h \
+    network/IDataSource.h \
+    network/datasourcefactory.h \
+    network/serialdatasource.h \
+    network/tcpdatasource.h \
     tests/globaltest.h \
     tests/test_modbus/test_modbus.h \
     widgets/binarywidget.h \
@@ -160,5 +163,3 @@ RC_ICONS = icon.ico
 #qnx: target.path = /tmp/$${TARGET}/bin
 #else: unix:!android: target.path = /opt/$${TARGET}/bin
 #!isEmpty(target.path): INSTALLS += target
-
-

@@ -39,8 +39,6 @@ const int Const::MaxFilesInMenu = 5;
 
 const int Const::StatusbarMessageTimeout = 10000; // ms
 
-//const QString Const::TemperatureUnitDefault = "C";
-
 const QStringList Const::BaudRates({"9600", "115200","230400"});
 
 const int Const::BaudRateDefault = 115200;
@@ -48,7 +46,6 @@ const int Const::BaudRateDefault = 115200;
 const double Const::DoubleEpsilon = 0.000001;
 
 const QPoint Const::WINDOW_DEFAULT_POSITION = QPoint(-1, -1);
-//const QSize Const::WINDOW_DEFAULT_SIZE = QSize(-1,-1);
 
 const QString Const::DEVICE_STATUS_COMMAND = "0004";
 const QString Const::TEC_STATUS_COMMAND = "0A1A";
@@ -64,5 +61,5 @@ const unsigned int Const::ComPortTimeout = 100; // [ms]
 
 const quint16 Const::COM_COMMAND_SEND_DELAY = 150; // ms
 
-const QString Const::DEFAULT_LOG_FILENAME = "consoleLog " + QDate::currentDate().toString("dd.MM.yyyy") + ".log";
-const QString Const::DEFAULT_LOG_FILEPATH = QDir::currentPath()+"/logs/";
+const QString Const::DEFAULT_LOG_FILENAME("consoleLog " + QDate::currentDate().toString("dd.MM.yyyy") + ".log");
+const QString Const::DEFAULT_LOG_FILEPATH(QDir::currentPath()+"/logs/");

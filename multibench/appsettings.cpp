@@ -5,28 +5,7 @@
 
 QScopedPointer<QSettings> AppSettings::settings(new QSettings(QSettings::NativeFormat, QSettings::UserScope, Const::OrgName, Const::AppName));
 
-/*bool AppSettings::parseFileSettings(QString fileName) {
-    QScopedPointer<QFile> file(new QFile(fileName));
-    if(!file->exists()) {
-        m_errorString = QString("File \"%1\" isn't exist!").arg(fileName);
-        return false;
-    }
-    if(!file->open(QIODevice::ReadOnly | QIODevice::Text)) {
-        m_errorString = QString("Can't open the file. \"%1\"").arg(fileName);
-        return false;
-    }
-    // Считываем файл настроек и передаем в главное окно
-
-QJsonParseError jParseErrorObj;
-QJsonDocument jDoc = QJsonDocument::fromJson(file->readAll(), &jParseErrorObj);
-if(jDoc.isNull()) {
-    qDebug() << "[E][AppSettings] Can't parse settings file:" << jParseErrorObj.errorString();
-} else {
-
-}
-}*/
-
-    quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", Const::BaudRateDefault).toUInt(); }
+quint32 AppSettings::getComBaudrate() { return settings->value("userSettings/comPort/baudRate", Const::BaudRateDefault).toUInt(); }
 
 QString AppSettings::getComPort() { return settings->value("userSettings/comPort/port", "").toString(); }
 
@@ -49,7 +28,7 @@ int AppSettings::getComStopBits() { return settings->value("userSettings/comPort
 
 NetworkData_s AppSettings::getNetworkData() {
     NetworkData_s netData;
-    netData.type = static_cast<NetworkType>(settings->value("network/type", 0).toUInt());
+    netData.type = static_cast<PortType>(settings->value("network/type", 0).toUInt());
     netData.host = settings->value("network/host", "").toString();
     netData.port = settings->value("network/port", 0).toInt();
 
@@ -91,10 +70,7 @@ void AppSettings::setWindowPosition(QPoint pos) { settings->setValue("window/pos
 
 void AppSettings::setComStopBits(int value) { settings->setValue("userSettings/comPort/stopBits", value); }
 
-void AppSettings::setNetworkData(/*NetworkData_s*/QVariant netData) {
-    /*settings->setValue("network/type", static_cast<uint>(netData.type));
-    settings->setValue("network/host", netData.host);
-    settings->setValue("network/port", netData.port);*/
+void AppSettings::setNetworkData(QVariant netData) {
     settings->setValue("network", netData);
 }
 
@@ -105,8 +81,9 @@ void AppSettings::setNetworkTimeout(quint16 timeoutMs) {
 void AppSettings::setDeviceAddresses(const QSet<quint8>& addr){
     settings->remove("userSettings/addresses");
     settings->beginWriteArray("userSettings/addresses");
-    for(const auto item : addr){
-        settings->setArrayIndex(item);
+    int i = 0;
+    for(const auto& item : addr){
+        settings->setArrayIndex(i++);
         settings->setValue("userSettings/addresses", item);
     }
     settings->endArray();
@@ -115,7 +92,7 @@ void AppSettings::setDeviceAddresses(const QSet<quint8>& addr){
 QSet<quint8> AppSettings::getDeviceAddresses(){
     QSet<quint8> map;
     int size = settings->beginReadArray("userSettings/addresses");
-    for (int i = 1; i < size; ++i) {
+    for (int i = 0; i < size; ++i) {
         settings->setArrayIndex(i);
         map.insert(settings->value("userSettings/addresses").toUInt());
     }
