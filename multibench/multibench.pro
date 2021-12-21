@@ -2,8 +2,6 @@ QT       += core gui network xml serialport network
 debug:QT+=testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-#lessThan(QT_MAJOR_VERSION, 6): QT += serialport
-#greaterThan(QT_MAJOR_VERSION, 6): QT += core5compat
 
 CONFIG += c++17
 debug:CONFIG+=testcase #warn_on depend_includepath console
@@ -79,11 +77,8 @@ SOURCES += \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
     modelguimediator.cpp \
-    network/datasourcefactory.cpp \
-    network/serialdatasource.cpp \
-    network/tcpdatasource.cpp \
-    widgets/calibratedialog.cpp \
     widgets/calibrationandlimitswidget.cpp \
+    widgets/calibrationdialog.cpp \
     widgets/updatewidget.cpp \
     widgets/aboutdialog.cpp \
     widgets/connectionwidget.cpp \
@@ -93,6 +88,9 @@ SOURCES += \
     network/SoftProtocol.cpp \
     network/networkmodel.cpp \
     network/protocols/modbusprotocol.cpp \
+    network/datasourcefactory.cpp \
+    network/serialdatasource.cpp \
+    network/tcpdatasource.cpp \
     tests/globaltest.cpp \
     tests/test_modbus/test_modbus.cpp \
     absoluteToleranceCompare.cpp \
@@ -102,8 +100,8 @@ SOURCES += \
 
 HEADERS += \
     DebugMode.h \
-    SerialThreadWorker.h \
     UpdatesChecker.h \
+    SerialThreadWorker.h \
     model/device/devicecondition.h \
     appsettings.h \
     constants.h \
@@ -119,12 +117,8 @@ HEADERS += \
     mainwindow.h \
     model/device/HiddenWidget.h \
     modelguimediator.h \
-    network/IDataSource.h \
-    network/datasourcefactory.h \
-    network/serialdatasource.h \
-    network/tcpdatasource.h \
-    widgets/calibratedialog.h \
     widgets/calibrationandlimitswidget.h \
+    widgets/calibrationdialog.h \
     widgets/updatewidget.h \
     widgets/aboutdialog.h \
     widgets/connectionwidget.h \
@@ -135,6 +129,10 @@ HEADERS += \
     network/SoftProtocol.h \
     network/networkmodel.h \
     network/protocols/modbusprotocol.h \
+    network/IDataSource.h \
+    network/datasourcefactory.h \
+    network/serialdatasource.h \
+    network/tcpdatasource.h \
     tests/globaltest.h \
     tests/test_modbus/test_modbus.h \
     widgets/binarywidget.h \
@@ -146,8 +144,8 @@ FORMS += \
     mainwindow.ui \
     model/device/HiddenWidget.ui \
     widgets/aboutdialog.ui \
-    widgets/calibratedialog.ui \
     widgets/calibrationandlimitswidget.ui \
+    widgets/calibrationdialog.ui \
     widgets/connectionwidget.ui \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
@@ -165,5 +163,3 @@ RC_ICONS = icon.ico
 #qnx: target.path = /tmp/$${TARGET}/bin
 #else: unix:!android: target.path = /opt/$${TARGET}/bin
 #!isEmpty(target.path): INSTALLS += target
-
-
