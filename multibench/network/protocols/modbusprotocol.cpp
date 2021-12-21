@@ -79,7 +79,6 @@ ModbusProtocol::DataVector ModbusProtocol::execute(const QByteArray& rxPackage, 
             case WriteOne:
                 reg = static_cast<quint16>((static_cast<quint16>(rxPackage.at(2)) << 8) + static_cast<quint16>(rxPackage.at(3)));
                 value = static_cast<quint16>(((static_cast<quint16>(rxPackage.at(4)) << 8)&0xff00) + static_cast<quint8>(rxPackage.at(5)));
-                //                value = static_cast<quint16>((static_cast<quint16>(rxPackage.at(4)) << 8) + static_cast<quint16>(rxPackage.at(5)));
                 resultVector.append({addr, reg, value});
                 break;
             default:

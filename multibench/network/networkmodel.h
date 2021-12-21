@@ -5,8 +5,6 @@
 #include <QSet>
 #include "constants.h"
 
-//#include "enums.h"
-
 class MainViewFacade;
 class DataSource;
 class MainFacade;
@@ -56,7 +54,6 @@ private:
     QMap<quint8, QSharedPointer<Device>> m_devices;
     bool m_isStart = false;
     int m_timeoutMs {300};
-//    QByteArray m_rxPacket;
     QPointer<SerialThreadWorker> m_worker;
 
     void clear();

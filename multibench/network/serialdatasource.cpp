@@ -16,23 +16,14 @@ void SerialDataSource::init(const QVariantMap& portSettings) {
 }
 
 QIODevice* SerialDataSource::createAndConnect() {
+    if(m_device) {
+        if(m_device->isOpen())
+            m_device->close();
+        m_device->deleteLater();
+    }
     m_device = new QSerialPort;
     m_device->setBaudRate(m_baud);
     m_device->setPortName(m_port);
     m_device->open(QIODevice::ReadWrite);
     return m_device;
 }
-
-//bool SerialDataSource::open() {
-//    m_device->setBaudRate(m_baud);
-//    m_device->setPortName(m_port);
-//    return m_device->open(QIODevice::ReadWrite);
-//}
-
-bool SerialDataSource::isOpen() {
-    return (m_device->isOpen());
-}
-
-//QIODevice* SerialDataSource::device() {
-//    return m_device.get();
-//}

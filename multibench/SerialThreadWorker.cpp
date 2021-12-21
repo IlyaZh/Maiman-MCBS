@@ -40,29 +40,21 @@ void SerialThreadWorker::stop() {
     m_isWork = false;
 }
 
-// private slots
-/*void SerialThreadWorker::readData() {
-    m_buffer.append(m_device->readAll());
-    if(m_buffer.size() > m_waitRxBytes) {
-        emit readyRead(m_buffer);
-        m_buffer.clear();
-    }
-}*/
-
 // private methods
 
 void SerialThreadWorker::run() {
-        QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
+    QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
         int waitForConnected = Const::NetworkTimeoutMSecs;
-        while(!m_dataSource->isOpen()) {
+        while(!m_device->isOpen()) {
             --waitForConnected;
             if(waitForConnected == 0) {
-                emit errorOccured("Can't open connection. " + m_device->errorString());
+                emit errorOccured("Can't сonnect. " + m_device->errorString());
                 return;
             }
             QThread::msleep(1);
         }
-// TODO: вынеси управление портами в отдельные классы с общим интерфейсом
+        emit connected();
+
         while(m_isWork) {
             QThread::msleep(m_delay);
             if(m_sem.tryAcquire(1)) {
@@ -75,7 +67,6 @@ void SerialThreadWorker::run() {
                         package = m_queue.dequeue();
 
                 }
-//                qDebug() << package.m_waitSize << package.m_data.toHex(' ');
                 m_lastWrittenMsg = package.m_data;
                 m_waitRxBytes = package.m_waitSize;
                 m_device->write(m_lastWrittenMsg);
@@ -85,8 +76,6 @@ void SerialThreadWorker::run() {
                     QByteArray buffer;
                     bool noError = true;
                     auto avail = m_device->bytesAvailable();
-                    if(avail > 0)
-                        qDebug() << "available" << avail;
                     while(buffer.size() < package.m_waitSize && noError) {
                         if(!m_device->waitForReadyRead(Const::NetworkTimeoutMSecs)) {
                             if(m_waitRxBytes != 0) {
@@ -96,7 +85,6 @@ void SerialThreadWorker::run() {
                         } else {
                             qint64 need = package.m_waitSize-buffer.size();
                             buffer.append(m_device->read(need));
-//                            qDebug() << "RX" << buffer.size() << m_waitRxBytes << buffer.toHex(' ');
                         }
                     }
                     if(m_waitRxBytes != 0 && buffer.size() == package.m_waitSize) {
@@ -108,14 +96,9 @@ void SerialThreadWorker::run() {
 
                 if(m_sem.available() == 0)
                     emit readyToWrite();
-//                exec();
-
             }
         }
-        qDebug() << "[THREAD]" << "Out of while cycle";
-
         m_device->close();
-//        emit finished();
 
 }
 

@@ -1,5 +1,5 @@
 #include "networkmodel.h"
-#
+
 #include <QDebug>
 #include "model/device/devicepollrequest.h"
 #include <QTcpSocket>
@@ -9,7 +9,6 @@
 #include "SoftProtocol.h"
 #include "device/devicemodel.h"
 #include "model/devicefactory.h"
-//#include "mainfacade.h"
 #include "appsettings.h"
 #include "SerialThreadWorker.h"
 
@@ -19,17 +18,11 @@ const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug заме�
 NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, QObject *parent) :
     QObject(parent),
     m_deviceModelFactory(deviceModelFactory),
-    //m_facade(facade),
     m_protocol(protocol)
 {
     m_isStart = false;
     m_deviceModelFactory.start();
     connect(&m_deviceModelFactory,&DeviceFactory::parsingIsFinished, this, &NetworkModel::getBaudrate);
-    //    connect(&m_delayTimer, &QTimer::timeout, this, &NetworkModel::delayTimeout);
-//    connect(&m_timeoutTimer, &QTimer::timeout, this, &NetworkModel::sendTimeout);
-
-    //    m_delayTimer.setSingleShot(true);
-//    m_timeoutTimer.setSingleShot(true);
 }
 
 NetworkModel::~NetworkModel() {
@@ -38,7 +31,6 @@ NetworkModel::~NetworkModel() {
 // controller to model interface overrides
 
 void NetworkModel::getBaudrate(){
-    //m_facade.setBaudRates(m_deviceModelFactory.getBaudrate());
     emit signal_setBaudrateToWindow(m_deviceModelFactory.getBaudrate());
 }
 
@@ -50,12 +42,7 @@ void NetworkModel::setTimeout(int timeout) {
 void NetworkModel::start(SerialThreadWorker* worker)
 {
     m_worker = worker;
-//    if(m_isStart) {
-//        m_isStart = false;
-//        m_worker->stop();
-//    } else {
         connect(m_worker, &SerialThreadWorker::connected, this, [this]() {
-            qDebug() << "lambda connected";
             emit signal_connected(true);
             m_isStart = true;
             rescanNetwork();
@@ -67,12 +54,8 @@ void NetworkModel::start(SerialThreadWorker* worker)
         connect(m_worker, &SerialThreadWorker::finished, this, [this](){
             emit signal_connected(false);
             m_isStart = false;
-            qDebug() << "lambda disconnect and delete";
             m_worker->deleteLater();
         });
-//        connect(m_worker, &SerialThreadWorker::finished, this, &QObject::deleteLater);
-//    }
-        qDebug() << "NetworkModel::start";
         m_worker->start();
 }
 
@@ -107,7 +90,6 @@ void NetworkModel::rescanNetwork()
         }
     }
 
-    qDebug() << "Rescan network";
     if(m_worker) {
         for(const auto item : addresses){
             auto package = m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
@@ -115,8 +97,6 @@ void NetworkModel::rescanNetwork()
             m_worker->writeAndWaitBytes(package, waitForBytes, true);
         }
     }
-
-//    tryToSend();
 }
 
 void NetworkModel::clearNetwork(){
@@ -128,7 +108,6 @@ void NetworkModel::clearNetwork(){
 void NetworkModel::clear() {
     for(auto& item : m_devices) {
         item->disconnect();
-//        item->deleteLater();
     }
     m_devices.clear();
 }
@@ -158,7 +137,6 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
     connect(newDevice.get(), SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
 
     emit signal_createWidgetFor(newDevice.get());
-    //m_facade.createWidgetFor(newDevice.get());
 }
 
 // public slots

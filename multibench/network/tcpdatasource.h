@@ -13,9 +13,6 @@ public:
     ~TcpDataSource() override = default;
     void init(const QVariantMap& portSettings) override;
     QIODevice* createAndConnect() override;
-//    bool open() override;
-    bool isOpen() override;
-//    QIODevice* device() override;
 };
 
 

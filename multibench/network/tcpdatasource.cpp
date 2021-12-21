@@ -1,4 +1,5 @@
 #include "tcpdatasource.h"
+#include <QDebug>
 
 TcpDataSource::TcpDataSource() :
     m_host(QString()),
@@ -17,20 +18,13 @@ void TcpDataSource::init(const QVariantMap& portSettings) {
 }
 
 QIODevice* TcpDataSource::createAndConnect() {
+    if(m_device) {
+        if(m_device->isOpen())
+            m_device->close();
+        m_device->deleteLater();
+    }
     m_device = new QTcpSocket();
     m_device->connectToHost(m_host, m_port);
+    qDebug() << "TcpDataSource connect" << m_host << m_port << m_device->isOpen();
     return m_device;
 }
-
-//bool TcpDataSource::open() {
-//    m_device->connectToHost(m_host, m_port);
-//    return true;
-//}
-
-bool TcpDataSource::isOpen() {
-    return (m_device->state() == QAbstractSocket::ConnectedState);
-}
-
-//QIODevice* TcpDataSource::device() {
-//    return m_device.get();
-//}
