@@ -2,11 +2,6 @@
 #include <QtSerialPort>
 #include "constants.h"
 
-SerialThreadWorker::SerialThreadWorker(/*QObject *parent*/)
-{
-
-}
-
 QByteArray SerialThreadWorker::lastPackage() const {
     return m_lastWrittenMsg;
 }

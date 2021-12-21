@@ -11,14 +11,14 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+   <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1000</width>
+    <width>1001</width>
     <height>32</height>
    </size>
   </property>
@@ -29,8 +29,10 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">	background: rgb(51,51,51);
-	color: rgb(255, 255, 255);</string>
+   <string notr="true">QDialog#CalibrationAndLimitsWidget{
+background: rgb(51,51,51);
+color: rgb(255, 255, 255);
+}</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
@@ -45,7 +47,7 @@
    <item>
     <widget class="QLabel" name="nameParameter">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -58,7 +60,7 @@
      </property>
      <property name="maximumSize">
       <size>
-       <width>400</width>
+       <width>800</width>
        <height>16777215</height>
       </size>
      </property>
@@ -117,7 +119,7 @@ QPushButton::disabled {
      </property>
      <property name="maximumSize">
       <size>
-       <width>60</width>
+       <width>70</width>
        <height>30</height>
       </size>
      </property>
@@ -140,7 +142,7 @@ QLineEdit::disabled {
 </string>
      </property>
      <property name="text">
-      <string>0</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

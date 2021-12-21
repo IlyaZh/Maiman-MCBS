@@ -10,8 +10,6 @@ class SerialThreadWorker : public QThread
 {
     Q_OBJECT
 public:
-    explicit SerialThreadWorker();
-    ~SerialThreadWorker() = default;
     QByteArray lastPackage() const;
 
 public slots:
@@ -21,7 +19,7 @@ public slots:
     void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority = false);
     void stop();
 
-signals:
+Q_SIGNALS:
     void connected();
     void readyRead(QByteArray msg);
     void timeout();

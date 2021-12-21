@@ -19,20 +19,20 @@ class ModelGuiMediator : public QObject
 public:
     explicit ModelGuiMediator(MainWindow& window, GuiFactory& factory,NetworkModel& networkModel, QObject* parent = nullptr);
 
-    //void setBaudRates();
 private:
     MainWindow& m_window;
     GuiFactory& m_factory;
     NetworkModel& m_network;
-//    QPointer<DataSource> m_device;
 
 private slots:
     void createWidgetFor(Device* device);
-    void createCalibAndLimitsWidgets(quint8 addr);
+    void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
+private slots:
     void refreshComPorts();
     void changeConnectState(PortType type, QVariantMap value);
     void rescan();
     void setBaudrateToWindow(QStringList baud);
+    void setNetworkTimeout(quint16 timeout);
 signals:
     void rescanNetwork();
 

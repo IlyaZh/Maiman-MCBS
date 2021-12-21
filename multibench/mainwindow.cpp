@@ -8,9 +8,9 @@
 #include <QDebug>
 #include "widgets/updatewidget.h"
 #include "widgets/aboutdialog.h"
-#include "widgets/calibratedialog.h"
+#include "widgets/calibrationdialog.h"
 #include "widgets/calibrationandlimitswidget.h"
-#include "model/device/devicewidget.h"
+#include <QInputDialog>
 #include <utility>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -44,9 +44,6 @@ MainWindow::MainWindow(QWidget *parent)
     default:
         break;
     }
-
-    //    refreshMenuPortList();
-    //    refreshMenuPortBaudsList();
 
     connect(ui->connectionWidget, &ConnectionWidget::refreshComPorts,
             this, &MainWindow::refreshComPortsSignal);
@@ -103,6 +100,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionAbout,&QAction::triggered,this,&MainWindow::callAboutDialog);
     connect(ui->actionKeepAddresses, &QAction::triggered,this, &MainWindow::getKeepAddresses);
     connect(ui->actionRescan,&QAction::triggered,this,&MainWindow::triggeredRescanNetwork);
+    connect(ui->actionTimeout,&QAction::triggered,this,&MainWindow::setNetworkTimeout);
     ui->actionKeepAddresses->setChecked(AppSettings::getKeepAddresses());
 }
 
@@ -117,7 +115,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::connectTriggered(){
     QVariantMap networkMap;
-    PortType type = PortType::Com;
+    auto type = PortType::Com;
     networkMap.insert("type",  static_cast<quint8>(type));
     if (ui->actionConnect->isChecked() and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
         if (type == PortType::TCP){
@@ -139,39 +137,33 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         widget->setParent(this);
         m_workWidgets.append(widget);
         int count = m_workWidgets.size();
-        qDebug() << "addDeviceWidget" << count;
+//        qDebug() << "addDeviceWidget" << count;
         m_workFieldLayout->addWidget(widget);
         //        m_workFieldLayout->addItem(new QSpacerItem(2,2, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding), count+1,0);
         //connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
 //        adjust(widget->sizeHint());
         //        widget->setMaximumHeight(widget->sizeHint().height());
         //        auto widgetSize = ui->workFieldWidget->size();
-        qDebug() << "addDeviceWidget size=" << widget->size() << widget->sizeHint();
+//        qDebug() << "addDeviceWidget size=" << widget->size() << widget->sizeHint();
         //        ui->workFieldWidget->setMinimumSize(widgetSize);
         //        ui->scrollArea->setMinimumSize(widgetSize);
     }
 }
 /*
 void MainWindow::addCalibrationDialog(quint16 id,QVector<CalibrateDialog*> widget){
-    QMenu* calibration = new QMenu(QString("ID:%1").arg(id),this);
-    for(auto& item:widget){
-        item->setParent(this);
-            auto action = new QAction(item->getName());
-            calibration->addAction(action);
-            connect(action,&QAction::triggered,this,[item](){
-                item->setStruct();
-                item->show();
-            });
-    }
-    ui->menuCalibration->addMenu(calibration);
-}
-*/
-void MainWindow::addCalibrationDialog(quint16 id,QVector<CalibrationAndLimitsWidget*> calibrations,QVector<CalibrationAndLimitsWidget*> limits){
     CalibrateDialog* dialog = new CalibrateDialog(calibrations, limits);
     m_calibrationDialogs.append(dialog);
     QAction* action = new QAction(QString("ID:%1").arg(id),this);
     connect(action,&QAction::triggered,this,[dialog](){
         dialog->show();
+    });
+    ui->menuCalibration->addAction(action);
+}
+*/
+void MainWindow::addCalibrationMenu(quint8 addr,quint16 id){
+    auto action = new QAction(QString("ID:%1").arg(addr),this);
+    connect(action,&QAction::triggered,this,[this,addr, id](){
+        emit createCalibAndLimitsWidgets(addr, id);
     });
     ui->menuCalibration->addAction(action);
 }
@@ -236,13 +228,13 @@ void MainWindow::setConnectMessage(QString msg) {
 }
 
 void MainWindow::setConnected(bool isConnected) {
-    qDebug() << "MainWindow::setConnected" << isConnected;
     ui->connectionWidget->setConnected(isConnected);
     ui->menuPorts->setEnabled(!isConnected);
     ui->menuBaudrates->setEnabled(!isConnected);
     if(!isConnected) {
         qDeleteAll(m_workWidgets);
         m_workWidgets.clear();
+        ui->menuCalibration->clear();
     }
 }
 
@@ -279,7 +271,9 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     auto dialog = QMessageBox::question(this, "Do you want to quit?", "Do you really want to quit?");
     switch (dialog) {
     case QMessageBox::Yes:
-        event->accept();
+        //event->accept();
+        event->ignore();
+        qApp->quit();
         break;
     case QMessageBox::No:
         event->ignore();
@@ -295,6 +289,13 @@ void MainWindow::setStatusBarMessage(QString message){
 
 void MainWindow::callAboutDialog(){
     m_About->show();
+}
+
+void MainWindow::setNetworkTimeout(){
+    bool ok;
+    quint16 timeout = QInputDialog::getInt(this,"Network Timeout","Timeout",AppSettings::getNetworkTimeout(),0,1000,1,&ok);
+    if (ok)
+        emit finishEditedNetworkTimeout(timeout);
 }
 
 void MainWindow::triggeredRescanNetwork(){

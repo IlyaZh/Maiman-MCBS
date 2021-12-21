@@ -6,6 +6,7 @@
 #include "factories/parserworker.h"
 #include "device/devicewidget.h"
 #include "widgets/calibrationandlimitswidget.h"
+#include "widgets/calibrationdialog.h"
 
 class DevCommand;
 
@@ -16,8 +17,7 @@ public:
     explicit GuiFactory(const QString& fileName, QObject *parent = nullptr);
     void start();
     DeviceWidget* createDeviceWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
-    QVector<CalibrationAndLimitsWidget*> createDeviceCalibrationWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
-    QVector<CalibrationAndLimitsWidget*> createDeviceLimitsWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
+    CalibrationDialog* createCalibrationDialog(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
 
 private slots:
     void parsingFinished();

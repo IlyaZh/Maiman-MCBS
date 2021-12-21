@@ -5,7 +5,7 @@
 #include "device/device.h"
 #include "mainwindow.h"
 #include "model/guifactory.h"
-#include "widgets/calibratedialog.h"
+#include "widgets/calibrationdialog.h"
 #include "SerialThreadWorker.h"
 #include "network/IDataSource.h"
 #include "network/datasourcefactory.h"
@@ -26,6 +26,9 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
     connect(&window, &MainWindow::tempratureUnitsChanged, &m_network, &NetworkModel::temperatureUnitsChanged);
     refreshComPorts();
     connect(&window,&MainWindow::rescanNetwork,this,&ModelGuiMediator::rescan);
+    connect(&window,&MainWindow::createCalibAndLimitsWidgets,this,&ModelGuiMediator::createCalibAndLimitsWidgets);
+
+    connect(&window, &MainWindow::finishEditedNetworkTimeout, this, &ModelGuiMediator::setNetworkTimeout);
 }
 
 void ModelGuiMediator::createWidgetFor(Device* device) {
@@ -34,15 +37,20 @@ void ModelGuiMediator::createWidgetFor(Device* device) {
         widget->setAddress(static_cast<int>(device->addr()));
         connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);
         m_window.addDeviceWidget(widget);
-
-        m_window.addCalibrationDialog(device->addr(),m_factory.createDeviceCalibrationWidget(device->id(), device->commands()),m_factory.createDeviceLimitsWidget(device->id(), device->commands()));
+        m_window.addCalibrationMenu(device->addr(),device->id());
+        //m_window.addCalibrationDialog(device->addr(),m_factory.createDeviceCalibrationWidget(device->id(), device->commands()),m_factory.createDeviceLimitsWidget(device->id(), device->commands()));
     } else {
         qWarning() << "Can't find device widget with id=" << device->id();
     }
 }
 
-void ModelGuiMediator::createCalibAndLimitsWidgets(quint8 addr) {
-
+void ModelGuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id){
+    CalibrationDialog* dialog = m_factory.createCalibrationDialog(id,m_network.getCommands(addr));
+    //dialog->setObjectName("calibMenu");
+    //dialog->setParent(&m_window);
+    //dialog->setStyleSheet("");
+    dialog->setModal(false);
+    dialog->show();
 }
 
 void ModelGuiMediator::setBaudrateToWindow(QStringList baud) {
@@ -62,7 +70,6 @@ void ModelGuiMediator::refreshComPorts() {
 void ModelGuiMediator:: changeConnectState(PortType type, QVariantMap portSettings) {
     if(m_network.isStart()) {
         m_network.stop();
-//        m_device->close();
     } else {
         AppSettings::setNetworkData(portSettings);
 
@@ -79,4 +86,8 @@ void ModelGuiMediator:: changeConnectState(PortType type, QVariantMap portSettin
 void ModelGuiMediator::rescan(){
     m_network.clearNetwork();
     m_network.rescanNetwork();
+}
+
+void ModelGuiMediator::setNetworkTimeout(quint16 timeout){
+
 }

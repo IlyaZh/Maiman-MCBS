@@ -3,28 +3,34 @@
 
 #include <QDialog>
 #include "device/commandsettings.h"
+#include "model/device/devicewidget.h"
 
 class CalibrationAndLimitsWidget;
 struct CalibrationKoef;
 
 namespace Ui {
-class CalibrateDialog;
+class CalibrationDialog;
 }
 
-class CalibrateDialog : public QDialog
+class CalibrationDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit CalibrateDialog(QVector<CalibrationAndLimitsWidget*> calibrations,QVector<CalibrationAndLimitsWidget*> limits, QWidget *parent = nullptr);
-    ~CalibrateDialog();
+    explicit CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const QMap<quint16, QSharedPointer<DevCommand>>& commands, QWidget *parent = nullptr);
+    ~CalibrationDialog();
     void setValues();
 private:
+
     QVector<CalibrationAndLimitsWidget*> m_calibrationWidgets;
     QVector<CalibrationAndLimitsWidget*> m_limitsWidgets;
-    Ui::CalibrateDialog *ui;
+    Ui::CalibrationDialog *ui;
+
+    static const QString styleButtonOn;
+    static const QString styleButtonOff;
 private slots:
     void saveResult();
+    void widgetsAreValid();
 
 signals:
     void sendData(QString);
