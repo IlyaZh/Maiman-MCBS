@@ -23,16 +23,16 @@ public:
     explicit CalibrationAndLimitsWidget(Limit* limit,QSharedPointer<DevCommand> command,QSharedPointer<DevCommand> maxCommand,QSharedPointer<DevCommand> minCommand,QWidget *parent = nullptr);
     ~CalibrationAndLimitsWidget();
     void sendValue();
-    bool m_state = true;
+    bool getState();
 private slots:
     void increment();
     void decrement();
 
-    void finishedEdit();
+    void editedValue();
     void rejectedEdit();
 
 signals:
-    void checkValueRange(bool state);
+    void editFinished();
 
 private:
     CalibrationKoef* m_calibration;
@@ -44,6 +44,7 @@ private:
     QDoubleValidator* m_validator;
     double minValue=0;
     double maxValue=0;
+    bool m_state = true;
 
     static const QString styleSheetOK;
     static const QString styleSheetERROR;

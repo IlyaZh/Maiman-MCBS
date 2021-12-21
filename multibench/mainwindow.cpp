@@ -8,7 +8,7 @@
 #include <QDebug>
 #include "widgets/updatewidget.h"
 #include "widgets/aboutdialog.h"
-#include "widgets/calibratedialog.h"
+#include "widgets/calibrationmenu.h"
 #include "widgets/calibrationandlimitswidget.h"
 
 //const QString MainWindow::SettingsPath {"window/"};
@@ -166,8 +166,8 @@ void MainWindow::addCalibrationDialog(quint16 id,QVector<CalibrateDialog*> widge
     ui->menuCalibration->addAction(action);
 }
 */
-void MainWindow::addCalibrationDialog(quint8 addr,quint16 id){
-    QAction* action = new QAction(QString("ID:%1").arg(addr),this);
+void MainWindow::addCalibrationMenu(quint8 addr,quint16 id){
+    auto action = new QAction(QString("ID:%1").arg(addr),this);
     connect(action,&QAction::triggered,this,[this,addr, id](){
         emit createCalibAndLimitsWidgets(addr, id);
     });
@@ -277,7 +277,9 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     auto dialog = QMessageBox::question(this, "Do you want to quit?", "Do you really want to quit?");
     switch (dialog) {
     case QMessageBox::Yes:
-        event->accept();
+        //event->accept();
+        event->ignore();
+        qApp->quit();
         break;
     case QMessageBox::No:
         event->ignore();

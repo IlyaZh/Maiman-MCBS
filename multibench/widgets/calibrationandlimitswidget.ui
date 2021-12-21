@@ -11,14 +11,14 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+   <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1000</width>
+    <width>1001</width>
     <height>32</height>
    </size>
   </property>
@@ -29,8 +29,10 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">	background: rgb(51,51,51);
-	color: rgb(255, 255, 255);</string>
+   <string notr="true">QDialog#CalibrationAndLimitsWidget{
+background: rgb(51,51,51);
+color: rgb(255, 255, 255);
+}</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
@@ -45,27 +47,27 @@
    <item>
     <widget class="QLabel" name="nameParameter">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>500</width>
+       <width>400</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>500</width>
+       <width>800</width>
        <height>16777215</height>
       </size>
      </property>
      <property name="styleSheet">
       <string notr="true">
 color: rgb(255, 255, 255);
-font: 18pt &quot;Share Tech Mono&quot;;</string>
+font: 16pt &quot;Share Tech Mono&quot;;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>

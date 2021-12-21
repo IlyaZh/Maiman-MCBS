@@ -50,7 +50,7 @@ CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(CalibrationKoef* calibrat
     connect(ui->downValue,&QPushButton::clicked,this,&CalibrationAndLimitsWidget::decrement);
     connect(ui->upValue,&QPushButton::clicked,this,&CalibrationAndLimitsWidget::increment);
 
-    connect(ui->value,&QLineEdit::editingFinished,this,&CalibrationAndLimitsWidget::finishedEdit);
+    connect(ui->value,&QLineEdit::editingFinished,this,&CalibrationAndLimitsWidget::editedValue);
     connect(ui->value,&QLineEdit::inputRejected,this,&CalibrationAndLimitsWidget::rejectedEdit);
 }
 
@@ -82,7 +82,7 @@ CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(Limit* limit,QSharedPoint
     connect(ui->downValue,&QPushButton::clicked,this,&CalibrationAndLimitsWidget::decrement);
     connect(ui->upValue,&QPushButton::clicked,this,&CalibrationAndLimitsWidget::increment);
 
-    connect(ui->value,&QLineEdit::editingFinished,this,&CalibrationAndLimitsWidget::finishedEdit);
+    connect(ui->value,&QLineEdit::editingFinished,this,&CalibrationAndLimitsWidget::editedValue);
     connect(ui->value,&QLineEdit::inputRejected,this,&CalibrationAndLimitsWidget::rejectedEdit);
 
 }
@@ -96,14 +96,14 @@ void CalibrationAndLimitsWidget::increment(){
     double value = ui->value->text().toDouble();
     value = value + 1.0/m_command->divider();
     ui->value->setText(QString::number(value,'f',m_command->tolerance()));
-    finishedEdit();
+    editedValue();
 }
 
 void CalibrationAndLimitsWidget::decrement(){
     double value = ui->value->text().toDouble();
     value = value - 1.0/m_command->divider();
     ui->value->setText(QString::number(value,'f',m_command->tolerance()));
-    finishedEdit();
+    editedValue();
 }
 
 void CalibrationAndLimitsWidget::sendValue(){
@@ -111,7 +111,7 @@ void CalibrationAndLimitsWidget::sendValue(){
         m_command->setFromWidget(ui->value->text().toDouble());
 }
 
-void CalibrationAndLimitsWidget::finishedEdit(){
+void CalibrationAndLimitsWidget::editedValue(){
     QString v=ui->value->text();
     int pos = 0;
     if(m_validator->validate(v,pos) == QValidator::Acceptable){
@@ -124,10 +124,14 @@ void CalibrationAndLimitsWidget::finishedEdit(){
         ui->value->setStyleSheet(styleSheetERROR);
         m_state = false;
     }
-    emit checkValueRange(m_state);
+    emit editFinished();
 }
 void CalibrationAndLimitsWidget::rejectedEdit(){
     qDebug()<<"INPUT REJECTED";
     ui->value->clear();
     ui->value->setText(m_command->valueStr());
+}
+
+bool CalibrationAndLimitsWidget::getState(){
+    return m_state;
 }

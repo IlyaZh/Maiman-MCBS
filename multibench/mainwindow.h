@@ -9,7 +9,7 @@
 #include "constants.h"
 class AboutDialog;
 class UpdateWidget;
-class CalibrateDialog;
+class CalibrationMenu;
 class CalibrationAndLimitsWidget;
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,7 +41,7 @@ public slots:
     void setConnected(bool flag);
     void setStatusMessage(const QString& msg, int timeout = 10);
     void triggeredRescanNetwork();
-    void addCalibrationDialog(quint8 addr,quint16 id);
+    void addCalibrationMenu(quint8 addr,quint16 id);
 private slots:
 //    void adjust(const QSize& size = QSize());
     void connectTriggered();
@@ -58,7 +58,7 @@ private:
     QPointer<QActionGroup> m_baudrateGroup;
     UpdateWidget* m_updater;
     QPointer<AboutDialog> m_About;
-    QVector<CalibrateDialog*> m_calibrationDialogs;
+    QVector<CalibrationMenu*> m_calibrationDialogs;
 protected:
     void closeEvent(QCloseEvent *event) override;
 

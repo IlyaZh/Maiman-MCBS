@@ -34,36 +34,13 @@ DeviceWidget* GuiFactory::createDeviceWidget(quint16 id, const QMap<quint16, QSh
     return nullptr;
 }
 
-CalibrateDialog* GuiFactory::createCalibrationAndLimitsDialog(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>> &commands){
+CalibrationMenu* GuiFactory::createCalibrationMenu(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>> &commands){
     if(m_deviceWidgets.contains(id)) {
-        return new CalibrateDialog(createDeviceCalibrationWidget(id, commands),createDeviceLimitsWidget(id, commands));
+        return new CalibrationMenu(id, m_deviceWidgets,commands);
     }
     return nullptr;
 }
 
-QVector<CalibrationAndLimitsWidget*> GuiFactory::createDeviceCalibrationWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands){
-    if(m_deviceWidgets.contains(id)) {
-        QVector<CalibrationAndLimitsWidget*> widgets;
-        auto& calibration = m_deviceWidgets[id].calibration;
-        for (auto& item:calibration){
-            widgets.append(new CalibrationAndLimitsWidget(&item, commands.value(item.code)));
-        }
-        return widgets;
-    }
-    return QVector<CalibrationAndLimitsWidget*>();
-}
-
-QVector<CalibrationAndLimitsWidget*> GuiFactory::createDeviceLimitsWidget(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>> &commands){
-    if(m_deviceWidgets.contains(id)) {
-        QVector<CalibrationAndLimitsWidget*> widgets;
-        auto& limits = m_deviceWidgets[id].limits;
-        for (auto& item:limits){
-            widgets.append(new CalibrationAndLimitsWidget(&item, commands.value(item.code),commands.value(item.maxCode),commands.value(item.minCode)));
-        }
-        return widgets;
-    }
-    return QVector<CalibrationAndLimitsWidget*>();
-}
 /*
 QVector<CalibrateDialog*> GuiFactory::createDeviceCalibrationDialog(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands){
     if(m_deviceWidgets.contains(id)) {

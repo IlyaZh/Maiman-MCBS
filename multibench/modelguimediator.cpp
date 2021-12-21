@@ -5,7 +5,7 @@
 #include "device/device.h"
 #include "mainwindow.h"
 #include "model/guifactory.h"
-#include "widgets/calibratedialog.h"
+#include "widgets/calibrationmenu.h"
 
 ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,NetworkModel& networkModel,QObject *parent) :
     QObject(parent),
@@ -31,7 +31,7 @@ void ModelGuiMediator::createWidgetFor(Device* device) {
         widget->setAddress(static_cast<int>(device->addr()));
         connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);
         m_window.addDeviceWidget(widget);
-        m_window.addCalibrationDialog(device->addr(),device->id());
+        m_window.addCalibrationMenu(device->addr(),device->id());
         //m_window.addCalibrationDialog(device->addr(),m_factory.createDeviceCalibrationWidget(device->id(), device->commands()),m_factory.createDeviceLimitsWidget(device->id(), device->commands()));
     } else {
         qWarning() << "Can't find device widget with id=" << device->id();
@@ -39,8 +39,11 @@ void ModelGuiMediator::createWidgetFor(Device* device) {
 }
 
 void ModelGuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id){
-    CalibrateDialog* dialog = m_factory.createCalibrationAndLimitsDialog(id,m_network.getCommands(addr));
+    CalibrationMenu* dialog = m_factory.createCalibrationMenu(id,m_network.getCommands(addr));
+    //dialog->setObjectName("calibMenu");
     //dialog->setParent(&m_window);
+    //dialog->setStyleSheet("");
+    dialog->setModal(false);
     dialog->show();
 }
 
