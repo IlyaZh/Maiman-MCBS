@@ -2,13 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "model/device/devicewidget.h"
+#include <QtWidgets>
 #include "constants.h"
 
 class AboutDialog;
 class UpdateWidget;
 class CalibrationMenu;
 class CalibrationAndLimitsWidget;
+class DeviceWidget;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

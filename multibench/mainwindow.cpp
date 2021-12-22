@@ -62,21 +62,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->scrollFieldWidget->setLayout(m_workFieldLayout);
     ui->scrollFieldWidget->setMaximumHeight(m_workFieldLayout->maximumSize().height());
 
-    //    emit mainWindowReady();
-
     // setup menu's
     ui->actionConnect->setCheckable(true);
     ui->actionConnect->setChecked(false);
-    //setBaudRates(Const::BaudRates);
     connect(ui->actionRefresh_port, &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
     connect(ui->actionConnect, &QAction::triggered,
             this, &MainWindow::connectTriggered);
-/*
-    for(auto& port : m_baudrateGroup->actions()) {
-        if (port->text().toUInt() == AppSettings::getComBaudrate()){
-            port->setChecked(true);
-        }
-    }*/
+
     connect(ui->actionExit, &QAction::triggered, qApp, &QApplication::closeAllWindows, Qt::QueuedConnection);
     auto temperatureGroup = new QActionGroup(this);
     temperatureGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
@@ -106,10 +98,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    //    if(m_cntrl != nullptr) delete m_cntrl;
-//    if(m_portList != nullptr) delete m_portList;
-//    if(m_baudList != nullptr) delete m_baudList;
-
     delete ui;
 }
 
@@ -136,30 +124,10 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
     if(!m_workWidgets.contains(widget)) {
         widget->setParent(this);
         m_workWidgets.append(widget);
-        int count = m_workWidgets.size();
-//        qDebug() << "addDeviceWidget" << count;
         m_workFieldLayout->addWidget(widget);
-        //        m_workFieldLayout->addItem(new QSpacerItem(2,2, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding), count+1,0);
-        //connect(widget, &DeviceWidget::sizeChanged, this, &MainWindow::adjust);
-//        adjust(widget->sizeHint());
-        //        widget->setMaximumHeight(widget->sizeHint().height());
-        //        auto widgetSize = ui->workFieldWidget->size();
-//        qDebug() << "addDeviceWidget size=" << widget->size() << widget->sizeHint();
-        //        ui->workFieldWidget->setMinimumSize(widgetSize);
-        //        ui->scrollArea->setMinimumSize(widgetSize);
     }
 }
-/*
-void MainWindow::addCalibrationDialog(quint16 id,QVector<CalibrateDialog*> widget){
-    CalibrateDialog* dialog = new CalibrateDialog(calibrations, limits);
-    m_calibrationDialogs.append(dialog);
-    QAction* action = new QAction(QString("ID:%1").arg(id),this);
-    connect(action,&QAction::triggered,this,[dialog](){
-        dialog->show();
-    });
-    ui->menuCalibration->addAction(action);
-}
-*/
+
 void MainWindow::addCalibrationMenu(quint8 addr,quint16 id){
     auto action = new QAction(QString("ID:%1").arg(addr),this);
     connect(action,&QAction::triggered,this,[this,addr, id](){
@@ -180,7 +148,6 @@ void MainWindow::setComPorts(const QStringList& portList) {
         ui->menuPorts->addAction(action);
         if (port == AppSettings::getComPort())
             action->setChecked(true);
-        //m_portGroup->addAction(ui->menuPorts->addAction(port))->setCheckable(true);
     }
     ui->menuPorts->addSeparator();
     connect(ui->menuPorts->addAction("Refresh"), &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
@@ -190,7 +157,6 @@ void MainWindow::setComPorts(const QStringList& portList) {
 }
 
 void MainWindow::setBaudRates(const QStringList& baudsList) {
-    //ui->connectionWidget->setBaudList(baudsList);
     ui->menuBaudrates->clear();
     if (m_baudrateGroup)
         m_baudrateGroup->deleteLater();
@@ -206,22 +172,6 @@ void MainWindow::setBaudRates(const QStringList& baudsList) {
         //m_baudrateGroup->addAction(ui->menuBaudrates->addAction(baudrate))->setCheckable(true);
     }
 }
-
-//void MainWindow::addSettingsCntrl(AppSettings* settings) {
-//    m_settings = settings;
-//}
-
-/*void MainWindow::addController(MainWindowControllerInterface* cntrl) {
-    clearController();
-    m_cntrl = cntrl;
-}*/
-
-/*void MainWindow::clearController() {
-    if(m_cntrl != nullptr) {
-        delete m_cntrl;
-        m_cntrl = nullptr;
-    }
-}*/
 
 void MainWindow::setConnectMessage(QString msg) {
     ui->connectionWidget->setConnectMessage(msg);
@@ -246,41 +196,13 @@ void MainWindow::getKeepAddresses(){
     AppSettings::setKeepAddresses(ui->actionKeepAddresses->isChecked());
 }
 
-// private methods
-//void MainWindow::setConnections() {
-// network connection button
-//    connect(ui->networkConnectButton, &QPushButton::clicked, [=]{
-//        emit this->networkConnectButtonSignal();
-
-
-//    });
-//}
-
-//void MainWindow::adjust(const QSize& size) {
-//    ui->workFieldWidget->adjustSize();
-//    ui->workFieldWidget->setMinimumSize(ui->workFieldWidget->size());
-//    if(!size.isEmpty()) {
-//        ui->scrollArea->setMinimumWidth(size.width()+2*ui->scrollArea->frameWidth()+ui->scrollArea->verticalScrollBar()->sizeHint().width());
-//    }
-//    ui->workFieldWidget->updateGeometry();
-//}
-
 // protected methods
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    auto dialog = QMessageBox::question(this, "Do you want to quit?", "Do you really want to quit?");
-    switch (dialog) {
-    case QMessageBox::Yes:
-        //event->accept();
-        event->ignore();
+    auto result = QMessageBox::question(this, "Do you want to quit?", "Do you really want to quit?");
+    event->ignore();
+    if(result == QMessageBox::Yes)
         qApp->quit();
-        break;
-    case QMessageBox::No:
-        event->ignore();
-        break;
-    default:
-        break;
-    }
 }
 
 void MainWindow::setStatusBarMessage(QString message){

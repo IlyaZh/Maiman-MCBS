@@ -70,7 +70,6 @@ void SerialThreadWorker::run() {
                 } else {
                     QByteArray buffer;
                     bool noError = true;
-                    auto avail = m_device->bytesAvailable();
                     while(buffer.size() < package.m_waitSize && noError) {
                         if(!m_device->waitForReadyRead(Const::NetworkTimeoutMSecs)) {
                             if(m_waitRxBytes != 0) {
