@@ -11,6 +11,7 @@
 #include "model/devicefactory.h"
 #include "appsettings.h"
 #include "SerialThreadWorker.h"
+#include "network/IDataSource.h"
 
 const quint16 NetworkModel::TIMEOUT_MS = 50*10;
 const quint16 NetworkModel::IDENTIFY_REG_ID_DEFAULT = 0x0001; // debug замени
@@ -36,12 +37,16 @@ void NetworkModel::getBaudrate(){
 
 void NetworkModel::setTimeout(int timeout) {
     m_timeoutMs = timeout;
+    if(m_worker)
+        m_worker->setTimeout(m_timeoutMs);
 }
 
 
-void NetworkModel::start(SerialThreadWorker* worker)
+void NetworkModel::start(QScopedPointer<IDataSource>& source)
 {
-    m_worker = worker;
+    m_worker = new SerialThreadWorker;
+    m_worker->setTimeout(m_timeoutMs);
+    m_worker->configure(source);
         connect(m_worker, &SerialThreadWorker::connected, this, [this]() {
             emit signal_connected(true);
             m_isStart = true;

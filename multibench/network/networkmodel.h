@@ -15,6 +15,7 @@ class ModbusProtocol;
 class Device;
 class DevCommand;
 class SerialThreadWorker;
+class IDataSource;
 
 class NetworkModel : public QObject
 {
@@ -25,7 +26,7 @@ public:
     explicit NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, QObject *parent = nullptr);
     ~NetworkModel();
     void setTimeout(int timeout);
-    void start(SerialThreadWorker* worker);
+    void start(QScopedPointer<IDataSource>& source);
     bool isStart();
     void stop();
     QMap<quint16, QSharedPointer<DevCommand>> getCommands(quint8 addr);

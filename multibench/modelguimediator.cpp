@@ -6,7 +6,6 @@
 #include "mainwindow.h"
 #include "model/guifactory.h"
 #include "widgets/calibrationdialog.h"
-#include "SerialThreadWorker.h"
 #include "network/IDataSource.h"
 #include "network/datasourcefactory.h"
 
@@ -25,10 +24,10 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
     connect(&window, &MainWindow::refreshComPortsSignal, this, &ModelGuiMediator::refreshComPorts);
     connect(&window, &MainWindow::tempratureUnitsChanged, &m_network, &NetworkModel::temperatureUnitsChanged);
     refreshComPorts();
-    connect(&window,&MainWindow::rescanNetwork,this,&ModelGuiMediator::rescan);
-    connect(&window,&MainWindow::createCalibAndLimitsWidgets,this,&ModelGuiMediator::createCalibAndLimitsWidgets);
+    connect(&window, &MainWindow::rescanNetwork, this, &ModelGuiMediator::rescan);
+    connect(&window, &MainWindow::createCalibAndLimitsWidgets, this, &ModelGuiMediator::createCalibAndLimitsWidgets);
 
-    connect(&window, &MainWindow::finishEditedNetworkTimeout, this, &ModelGuiMediator::setNetworkTimeout);
+    connect(&window, &MainWindow::timeoutChanged, &networkModel, &NetworkModel::setTimeout);
 }
 
 void ModelGuiMediator::createWidgetFor(Device* device) {
@@ -67,18 +66,16 @@ void ModelGuiMediator::refreshComPorts() {
 
 }
 
-void ModelGuiMediator:: changeConnectState(PortType type, QVariantMap portSettings) {
+void ModelGuiMediator::changeConnectState(PortType type, QVariantMap portSettings) {
     if(m_network.isStart()) {
         m_network.stop();
     } else {
         AppSettings::setNetworkData(portSettings);
 
-        auto dataSource = DataSourceFactory::createSource(type);
-        if(dataSource != nullptr) {
-            auto serialWorker = new SerialThreadWorker;
+        auto dataSource = QScopedPointer<IDataSource>(DataSourceFactory::createSource(type));
+        if(dataSource) {
             dataSource->init(portSettings);
-            serialWorker->configure(dataSource);
-            m_network.start(serialWorker);
+            m_network.start(dataSource);
         }
     }
 }
@@ -88,6 +85,3 @@ void ModelGuiMediator::rescan(){
     m_network.rescanNetwork();
 }
 
-void ModelGuiMediator::setNetworkTimeout(quint16 timeout){
-
-}

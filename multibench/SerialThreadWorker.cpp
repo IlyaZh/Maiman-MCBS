@@ -15,8 +15,8 @@ void SerialThreadWorker::setDelay(qint64 MSecs) {
     m_delay = MSecs;
 }
 
-void SerialThreadWorker::configure(IDataSource* source) {
-    m_dataSource.reset(source);
+void SerialThreadWorker::configure(QScopedPointer<IDataSource>& source) {
+    m_dataSource.swap(source);
 }
 
 void SerialThreadWorker::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority) {

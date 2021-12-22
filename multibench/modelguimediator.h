@@ -32,7 +32,6 @@ private slots:
     void changeConnectState(PortType type, QVariantMap value);
     void rescan();
     void setBaudrateToWindow(QStringList baud);
-    void setNetworkTimeout(quint16 timeout);
 signals:
     void rescanNetwork();
 

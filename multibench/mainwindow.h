@@ -32,7 +32,7 @@ signals:
     void tempratureUnitsChanged(Const::TemperatureUnitId id);
     void rescanNetwork();
     void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
-    void finishEditedNetworkTimeout(quint16 timeout);
+    void timeoutChanged(int timeout);
 
 public slots:
     void setConnectMessage(QString msg);

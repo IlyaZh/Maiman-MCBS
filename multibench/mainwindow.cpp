@@ -295,7 +295,7 @@ void MainWindow::setNetworkTimeout(){
     bool ok;
     quint16 timeout = QInputDialog::getInt(this,"Network Timeout","Timeout",AppSettings::getNetworkTimeout(),0,1000,1,&ok);
     if (ok)
-        emit finishEditedNetworkTimeout(timeout);
+        emit timeoutChanged(timeout);
 }
 
 void MainWindow::triggeredRescanNetwork(){

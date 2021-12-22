@@ -15,7 +15,7 @@ public:
 public slots:
     void setTimeout(qint64 MSecs);
     void setDelay(qint64 MSecs);
-    void configure(IDataSource* source);
+    void configure(QScopedPointer<IDataSource>& source);
     void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority = false);
     void stop();
 
