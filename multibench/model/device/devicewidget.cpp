@@ -96,6 +96,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         auto hiddenWidget = new HiddenWidget(this);
         for(auto item : readOnlyWidgets) {
             hiddenWidget->layout()->setContentsMargins(10,0,10,0);
+            item->setContentsMargins(0,0,0,6);
             hiddenWidget->addWidget(item);
         }
         readOnlyWidgets.clear();
@@ -110,8 +111,10 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             hiddenWidget = new HiddenWidget(this);
         auto cmd = m_commands.value(item.code, nullptr);
         if(cmd) {
-            hiddenWidget->layout()->setContentsMargins(10,0,10,0);
-            hiddenWidget->addWidget(new BinaryWidget(item, cmd, hiddenWidget));
+            hiddenWidget->layout()->setContentsMargins(0,0,10,0);
+            auto binaryWidget = new BinaryWidget(item, cmd, hiddenWidget);
+            binaryWidget->setContentsMargins(0,0,0,6);
+            hiddenWidget->addWidget(binaryWidget);
         }
 
     }
@@ -231,7 +234,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     }
     m_widgetLayout->setAlignment(Qt::AlignBottom);
     m_widgetLayout->setMargin(0);//6
-    m_widgetLayout->setContentsMargins(0,25,0,0);//6,18,6,6
+    m_widgetLayout->setContentsMargins(0,32,0,0);//6,18,6,6
     m_widgetLayout->setSpacing(0);//9
     ui->widgetBox->setLayout(m_widgetLayout);
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());

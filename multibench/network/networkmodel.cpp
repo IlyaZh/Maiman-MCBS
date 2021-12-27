@@ -90,17 +90,17 @@ QMap<quint16, QSharedPointer<DevCommand>> NetworkModel::getCommands(quint8 addr)
 void NetworkModel::rescanNetwork()
 {
     clear();
-    QSet<quint8> addresses(AppSettings::getDeviceAddresses());//TODO: dont work
+    QMap<quint8,quint8> addresses(AppSettings::getDeviceAddresses());//TODO: dont work
     if (!AppSettings::getKeepAddresses()){
         addresses.clear();
         clearNetwork();
     }
     if (addresses.isEmpty()){
         for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr) {
-            addresses.insert(iAddr);
+            addresses.insert(iAddr,0);
         }
     }
-    for(const auto item:addresses){
+    for(const auto& item : addresses.keys()){
         m_queue.enqueue(m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT));
     }
 
@@ -108,7 +108,7 @@ void NetworkModel::rescanNetwork()
 }
 
 void NetworkModel::clearNetwork(){
-    QSet<quint8> addresses;
+    QMap<quint8,quint8> addresses;
     AppSettings::setDeviceAddresses(addresses);
 }
 
@@ -143,8 +143,8 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
 
     m_devices.insert(addr, newDevice);
 
-    QSet<quint8> addresses(AppSettings::getDeviceAddresses());
-    addresses.insert(addr);
+    QMap<quint8,quint8> addresses(AppSettings::getDeviceAddresses());
+    addresses.insert(addr,0);
     AppSettings::setDeviceAddresses(addresses);
 
     connect(newDevice.get(), SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
@@ -176,9 +176,10 @@ void NetworkModel::tryToSend() {
             }
             if(!m_lastTxPackage.isEmpty()) {
                 m_port->write(m_lastTxPackage);
+                //qDebug() <<"\n"<< QDateTime::currentDateTime().toString("mm:ss.zzz") << "Write! " << m_lastTxPackage.toHex(' ');
                 m_waitForBytes = m_protocol.waitForBytes(m_lastTxPackage);
             }
-            //        qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss.zzz") << "Write! " << m_lastTxPackage.toHex(' ');
+
         }
     }
 
@@ -205,7 +206,7 @@ void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
 void NetworkModel::readyRead() {
     m_rxPacket.append(m_port->readAll());
     if(m_rxPacket.size() >= m_waitForBytes) {
-        //    qDebug() << "RX" << rxPacket.toHex(' ');
+        //qDebug() << "RX" << m_rxPacket.toHex(' ')<< QDateTime::currentDateTime().toString("mm:ss,zzz");
         m_timeoutTimer.stop();
         SoftProtocol::DataVector result = m_protocol.execute(m_rxPacket, m_lastTxPackage);
 
@@ -263,7 +264,7 @@ void NetworkModel::sendTimeout() {
     }
     m_lastTxPackage.clear();
 
-    //    qDebug() << "Timeout";
+    qDebug() << "Timeout"<<QDateTime::currentDateTime().toString("mm:ss,zzz");
     tryToSend();
 }
 
