@@ -95,8 +95,14 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     if(readOnlyWidgets.count() > 0) {
         auto hiddenWidget = new HiddenWidget(this);
         hiddenWidget->layout()->setContentsMargins(10,0,10,0);
+        //int maxUnitsLength=0;
+        auto maxUnitsLength = *std::max_element(std::begin(readOnlyWidgets),std::end(readOnlyWidgets),
+                                                [=](ReadParameterWidget* widgetA,ReadParameterWidget* widgetB){
+            return widgetA->getUnitslength()<widgetB->getUnitslength();
+        });
         for(auto item : readOnlyWidgets) {
             item->setContentsMargins(0,0,0,8);
+            item->setUnitsLength(maxUnitsLength->getUnitslength());
             hiddenWidget->addWidget(item);
         }
         readOnlyWidgets.clear();

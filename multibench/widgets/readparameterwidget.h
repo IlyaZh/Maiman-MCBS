@@ -22,6 +22,8 @@ public:
 //    explicit ReadParameterWidget(const Control &settings, int decimal, QString name, /*double value,*/ QWidget *parent = nullptr);
     ~ReadParameterWidget();
 
+    int getUnitslength();
+    void setUnitsLength(int length);
 private:
     Ui::ReadParameterWidget *ui;
 //    const Control& m_settings;
@@ -31,6 +33,7 @@ private:
     void setValue(double value, int decimal);
     void setValue(int value);
     void setUnit(QStringView unit);
+
 
 
 #ifdef QT_DEBUG
