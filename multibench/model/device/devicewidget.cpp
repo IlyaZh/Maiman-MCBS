@@ -94,32 +94,33 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     // Закидываем неизменяемые параметры в виджет
     if(readOnlyWidgets.count() > 0) {
         auto hiddenWidget = new HiddenWidget(this);
+        hiddenWidget->layout()->setContentsMargins(10,0,10,0);
         for(auto item : readOnlyWidgets) {
-            hiddenWidget->layout()->setContentsMargins(10,0,10,0);
-            item->setContentsMargins(0,0,0,6);
+            item->setContentsMargins(0,0,0,10);
             hiddenWidget->addWidget(item);
         }
         readOnlyWidgets.clear();
-        m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
+        m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size(),Qt::AlignTop);
         m_widgets.append(hiddenWidget);
     }
 
     // Инициализация checkbox'ов
     QPointer<HiddenWidget> hiddenWidget;
     for(const auto &item : m_description.checkboxes) {
-        if(!hiddenWidget)
+        if(!hiddenWidget){
             hiddenWidget = new HiddenWidget(this);
+            hiddenWidget->layout()->setContentsMargins(10,0,10,0);
+        }
         auto cmd = m_commands.value(item.code, nullptr);
         if(cmd) {
-            hiddenWidget->layout()->setContentsMargins(0,0,10,0);
             auto binaryWidget = new BinaryWidget(item, cmd, hiddenWidget);
-            binaryWidget->setContentsMargins(0,0,0,6);
+            binaryWidget->setContentsMargins(0,0,0,10);
             hiddenWidget->addWidget(binaryWidget);
         }
 
     }
     if(hiddenWidget) {
-        m_widgetLayout->addWidget(hiddenWidget.data(), 1, m_widgets.size());
+        m_widgetLayout->addWidget(hiddenWidget.data(), 1, m_widgets.size(),Qt::AlignTop);
         m_widgets.append(hiddenWidget);
     }
 
@@ -232,15 +233,15 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             ui->buttonsLayout->setAlignment(pButton,Qt::AlignBottom);
         }
     }
-    m_widgetLayout->setAlignment(Qt::AlignBottom);
-    m_widgetLayout->setMargin(0);//6
-    m_widgetLayout->setContentsMargins(0,32,0,0);//6,18,6,6
+    m_widgetLayout->setAlignment(Qt::AlignTop);
+    //m_widgetLayout->setMargin(0);//6
+    m_widgetLayout->setContentsMargins(0,6,0,0);//6,18,6,6
     m_widgetLayout->setSpacing(0);//9
     ui->widgetBox->setLayout(m_widgetLayout);
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     m_condiotion = new DeviceCondition(m_commands,m_description.leds,ui->conditionLabel);
-    //ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
+    ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
     adjust();
 
     //TODO:: label_2, для отображения строки состояния драйвера, команда 0700
