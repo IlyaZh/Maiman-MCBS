@@ -87,6 +87,9 @@ QWidget {
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
     </widget>
    </item>
    <item row="4" column="0" colspan="3">
@@ -165,6 +168,9 @@ border-radius: 5px;</string>
      <property name="text">
       <string>Max</string>
      </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
     </widget>
    </item>
    <item row="1" column="0">
@@ -195,6 +201,9 @@ border-radius: 5px;</string>
      </property>
      <property name="text">
       <string>Real</string>
+     </property>
+     <property name="indent">
+      <number>0</number>
      </property>
     </widget>
    </item>
@@ -236,6 +245,9 @@ border-radius: 5px;</string>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
     </widget>
    </item>
    <item row="3" column="0">
@@ -263,6 +275,9 @@ border-radius: 5px;</string>
      </property>
      <property name="text">
       <string>Min</string>
+     </property>
+     <property name="indent">
+      <number>0</number>
      </property>
     </widget>
    </item>
@@ -294,6 +309,9 @@ border-radius: 5px;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>0</number>
      </property>
     </widget>
    </item>
@@ -329,6 +347,9 @@ border-radius: 5px;</string>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
     </widget>
    </item>
    <item row="3" column="1">
@@ -359,6 +380,9 @@ border-radius: 5px;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>0</number>
      </property>
     </widget>
    </item>
@@ -397,12 +421,15 @@ border-radius: 5px;</string>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
     </widget>
    </item>
    <item row="0" column="0" colspan="3">
     <widget class="QLabel" name="WidgetName">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -428,6 +455,9 @@ border-radius: 5px;</string>
      <property name="contextMenuPolicy">
       <enum>Qt::DefaultContextMenu</enum>
      </property>
+     <property name="toolTipDuration">
+      <number>-1</number>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(230, 230, 230);
 padding: 0px;
@@ -440,6 +470,9 @@ alignment-baseline=&quot;middle&quot;;</string>
      <property name="frameShadow">
       <enum>QFrame::Plain</enum>
      </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
      <property name="text">
       <string>Name</string>
      </property>
@@ -447,6 +480,9 @@ alignment-baseline=&quot;middle&quot;;</string>
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
      <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="indent">
       <number>0</number>
      </property>
     </widget>
