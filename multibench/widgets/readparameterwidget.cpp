@@ -14,8 +14,7 @@ ReadParameterWidget::ReadParameterWidget(QStringView name, QSharedPointer<DevCom
     ui->labelParameter->setText(name.toString());
 
     ui->labelUnits->setText(m_command->unit());
-    //ui->labelUnits->setContentsMargins(6,0,0,0);
-    qDebug()<<"width font"<<ui->labelUnits->text().length()<<ui->labelUnits->fontMetrics().averageCharWidth();
+
     if(m_command) {
         setValue(m_command->valueDouble(), m_command->tolerance());
         connect(m_command.get(), &DevCommand::updatedValue, this, [this](){
@@ -73,7 +72,7 @@ int ReadParameterWidget::getUnitslength(){
 }
 
 void ReadParameterWidget::setUnitsLength(int length){
-    int charLength = 8;
+    int charLength = 10;
     ui->labelUnits->setMinimumWidth(length*charLength);
 }
 //testDevice

@@ -75,7 +75,7 @@ QWidget {
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -123,7 +123,8 @@ QWidget {
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 5px;</string>
+border-radius: 5px;
+color: rgb(0, 0, 0);</string>
      </property>
      <property name="text">
       <string>0</string>
@@ -159,7 +160,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -190,7 +191,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>12</pointsize>
+       <pointsize>14</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -230,7 +231,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>12</pointsize>
+       <pointsize>14</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -267,7 +268,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -298,7 +299,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -332,7 +333,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>12</pointsize>
+       <pointsize>14</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -369,7 +370,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -409,7 +410,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -449,7 +450,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>18</pointsize>
+       <pointsize>20</pointsize>
       </font>
      </property>
      <property name="contextMenuPolicy">

@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>141</width>
-    <height>16</height>
+    <width>143</width>
+    <height>20</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -87,7 +87,7 @@
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -148,7 +148,7 @@
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -193,7 +193,7 @@
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
