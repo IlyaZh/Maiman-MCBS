@@ -6,7 +6,7 @@
 #include "constants.h"
 #include "network/IDataSource.h"
 
-class SerialThreadWorker : public QThread
+class DataThread : public QThread
 {
     Q_OBJECT
 public:
@@ -21,9 +21,9 @@ public slots:
 
 Q_SIGNALS:
     void connected();
-    void readyRead(QByteArray msg);
+    void readyRead(const QByteArray msg);
     void timeout();
-    void errorOccured(QString msg);
+    void errorOccured(const QString msg);
     void readyToWrite();
 
 private:

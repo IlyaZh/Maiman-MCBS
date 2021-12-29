@@ -59,8 +59,8 @@ QMAKE_SUBSTITUTES += conf_gui
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    DataThread.cpp \
     DebugMode.cpp \
-    SerialThreadWorker.cpp \
     UpdatesChecker.cpp \
     model/device/devicecondition.cpp \
     appsettings.cpp \
@@ -99,9 +99,9 @@ SOURCES += \
     widgets/readparameterwidget.cpp
 
 HEADERS += \
+    DataThread.h \
     DebugMode.h \
     UpdatesChecker.h \
-    SerialThreadWorker.h \
     model/device/devicecondition.h \
     appsettings.h \
     constants.h \

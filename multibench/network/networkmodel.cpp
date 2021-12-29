@@ -10,7 +10,7 @@
 #include "device/devicemodel.h"
 #include "model/devicefactory.h"
 #include "appsettings.h"
-#include "SerialThreadWorker.h"
+#include "DataThread.h"
 #include "network/IDataSource.h"
 
 const quint16 NetworkModel::TIMEOUT_MS = 50*10;
@@ -44,19 +44,19 @@ void NetworkModel::setTimeout(int timeout) {
 
 void NetworkModel::start(QScopedPointer<IDataSource>& source)
 {
-    m_worker = new SerialThreadWorker;
+    m_worker = new DataThread;
     m_worker->setTimeout(m_timeoutMs);
     m_worker->configure(source);
-        connect(m_worker, &SerialThreadWorker::connected, this, [this]() {
+        connect(m_worker, &DataThread::connected, this, [this]() {
             emit signal_connected(true);
             m_isStart = true;
             rescanNetwork();
         });
-        connect(m_worker, &SerialThreadWorker::readyToWrite, this, &NetworkModel::pollRequest);
-        connect(m_worker, &SerialThreadWorker::timeout, this, &NetworkModel::timeout);
-        connect(m_worker, &SerialThreadWorker::errorOccured, this, &NetworkModel::signal_errorOccured);
-        connect(m_worker, &SerialThreadWorker::readyRead, this, &NetworkModel::readyRead);
-        connect(m_worker, &SerialThreadWorker::finished, this, [this](){
+        connect(m_worker, &DataThread::readyToWrite, this, &NetworkModel::pollRequest);
+        connect(m_worker, &DataThread::timeout, this, &NetworkModel::timeout);
+        connect(m_worker, &DataThread::errorOccured, this, &NetworkModel::signal_errorOccured);
+        connect(m_worker, &DataThread::readyRead, this, &NetworkModel::readyRead);
+        connect(m_worker, &DataThread::finished, this, [this](){
             emit signal_connected(false);
             m_isStart = false;
             m_worker->deleteLater();
@@ -169,6 +169,7 @@ void NetworkModel::timeout() {
         if(!package.isEmpty()) {
             auto device = m_devices.value(static_cast<quint8>(package.at(0)));
             if(device) {
+                qDebug() << "TIMEOUT UNLINK DEV" << device->addr();
                 device->unlink();
             }
         }
@@ -178,8 +179,10 @@ void NetworkModel::timeout() {
 void NetworkModel::pollRequest() {
     if(m_worker) {
         // poll devices state
+        qDebug() << "poll request";
         for(const auto& dev : qAsConst(m_devices)) {
             const DevicePollRequest request = dev->nextPollRequest();
+            qDebug() << request.code << request.addr << request.count;
             if(request.code != 0) {
                 auto package = m_protocol.getDataValue(request.addr, request.code, request.count);
                 qint64 waitForBytes = m_protocol.waitForBytes(package);
@@ -191,7 +194,9 @@ void NetworkModel::pollRequest() {
 
 void NetworkModel::readyRead(const QByteArray& rxPackage) {
     auto result = m_protocol.execute(rxPackage, m_worker->lastPackage());
+    qDebug() << "NetworkModel::readyRead" << m_protocol.isError() << rxPackage.toHex(' ');
     if(m_protocol.isError()) {
+        qDebug() << "PROTOCOL ERROR" << m_protocol.errorString();
         quint8 addr = static_cast<quint8>(rxPackage.at(0));
         if(m_devices.contains(addr)) {
             m_devices[addr]->unlink();

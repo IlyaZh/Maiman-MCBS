@@ -1,25 +1,25 @@
-#include "SerialThreadWorker.h"
+#include "DataThread.h"
 #include <QtSerialPort>
 #include "constants.h"
 
-QByteArray SerialThreadWorker::lastPackage() const {
+QByteArray DataThread::lastPackage() const {
     return m_lastWrittenMsg;
 }
 
 // public slots
-void SerialThreadWorker::setTimeout(qint64 MSecs) {
+void DataThread::setTimeout(qint64 MSecs) {
     m_timeout = MSecs;
 }
 
-void SerialThreadWorker::setDelay(qint64 MSecs) {
+void DataThread::setDelay(qint64 MSecs) {
     m_delay = MSecs;
 }
 
-void SerialThreadWorker::configure(QScopedPointer<IDataSource>& source) {
+void DataThread::configure(QScopedPointer<IDataSource>& source) {
     m_dataSource.swap(source);
 }
 
-void SerialThreadWorker::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority) {
+void DataThread::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority) {
     QMutexLocker locker(&m_mtx);
     Package pack;
     pack.m_data = msg;
@@ -31,13 +31,14 @@ void SerialThreadWorker::writeAndWaitBytes(const QByteArray& msg, qint64 waitByt
     m_sem.release(1);
 }
 
-void SerialThreadWorker::stop() {
+void DataThread::stop() {
     m_isWork = false;
 }
 
 // private methods
 
-void SerialThreadWorker::run() {
+void DataThread::run() {
+    static QSharedPointer<QDeadlineTimer> timeoutTmr;
     QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
         int waitForConnected = Const::NetworkTimeoutMSecs;
         while(!m_device->isOpen()) {
@@ -49,6 +50,8 @@ void SerialThreadWorker::run() {
             QThread::msleep(1);
         }
         emit connected();
+        m_timeout *=2;
+        qDebug() << "timeout=" << m_timeout;
 
         while(m_isWork) {
             QThread::msleep(m_delay);
@@ -64,28 +67,39 @@ void SerialThreadWorker::run() {
                 }
                 m_lastWrittenMsg = package.m_data;
                 m_waitRxBytes = package.m_waitSize;
+                Q_UNUSED(m_device->readAll());
                 m_device->write(m_lastWrittenMsg);
                 if(!m_device->waitForBytesWritten(Const::NetworkTimeoutMSecs)) {
                     emit timeout();
                 } else {
                     QByteArray buffer;
-                    bool noError = true;
-                    while(buffer.size() < package.m_waitSize && noError) {
-                        if(!m_device->waitForReadyRead(Const::NetworkTimeoutMSecs)) {
-                            if(m_waitRxBytes != 0) {
-                                emit timeout();
-                                noError = false;
+                    timeoutTmr.reset(new QDeadlineTimer(m_timeout));
+                    qDebug() << QDateTime::currentDateTime().time().toString("mm:ss.zzz");
+                    bool stop = false;
+                    while(!timeoutTmr->hasExpired() && !stop) {
+//                        if(m_device->bytesAvailable() > 0) {
+                            int need = m_waitRxBytes-buffer.size();
+                            if(need <= 0) {
+                                qDebug() << "rx complete";
+                                stop = true;
+                            } else {
+                                auto rx = m_device->readAll();
+                                buffer.append(rx);
+                                if(!rx.isEmpty()) {
+                                    qDebug() << "rx" << rx.toHex(' ');
+                                    qDebug() << QString(m_lastWrittenMsg.at(0)) << "wait =" << m_waitRxBytes << "available" << need;
+                                }
                             }
-                        } else {
-                            qint64 need = package.m_waitSize-buffer.size();
-                            buffer.append(m_device->read(need));
-                        }
+//                        }
                     }
-                    if(m_waitRxBytes != 0 && buffer.size() == package.m_waitSize) {
+                    if(buffer.isEmpty()) {
+                        qDebug() << "timeout" << QDateTime::currentDateTime().time().toString("mm:ss.zzz");
+                        emit timeout();
+                    } else {
+                        qDebug() << "readyRead" << QDateTime::currentDateTime().time().toString("mm:ss.zzz") << buffer.toHex(' ');
                         emit readyRead(buffer);
-                        buffer.clear();
                     }
-
+                    qDebug() << "====\n";
                 }
 
                 if(m_sem.available() == 0)

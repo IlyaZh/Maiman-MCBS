@@ -14,7 +14,7 @@ class SoftProtocol;
 class ModbusProtocol;
 class Device;
 class DevCommand;
-class SerialThreadWorker;
+class DataThread;
 class IDataSource;
 
 class NetworkModel : public QObject
@@ -55,7 +55,7 @@ private:
     QMap<quint8, QSharedPointer<Device>> m_devices;
     bool m_isStart = false;
     int m_timeoutMs {300};
-    QPointer<SerialThreadWorker> m_worker;
+    QPointer<DataThread> m_worker;
 
     void clear();
     void initDevice(quint8 addr, quint16 id);
