@@ -18,16 +18,25 @@ ReadParameterWidget::ReadParameterWidget(QStringView name, QSharedPointer<DevCom
     if(m_command) {
         setValue(m_command->valueDouble(), m_command->tolerance());
         connect(m_command.get(), &DevCommand::updatedValue, this, [this](){
-            setValue(m_command->valueDouble(), m_command->tolerance());
+            if (m_command->code() == 3){
+                setUnit(QString::number(m_command->valueDouble()));
+                setUnitsLength(getUnitslength());
+            }
+            else
+                setValue(m_command->valueDouble(), m_command->tolerance());
         });
         connect(m_command.get(), &DevCommand::updatedUnit, this, [this](QStringView unit){
-            setUnit(unit.toString());
+            if (m_command->code() == 3)
+                ui->labelValue->setText("");
+            else
+                setUnit(unit.toString());
         });
     }
 
     /*setValue(m_settings.real, value);*/
     setValue(m_command->valueDouble(), m_command->tolerance());
-
+    if (m_command->code() == 3)
+        ui->labelValue->setText("");
     this->adjustSize();
 
 }

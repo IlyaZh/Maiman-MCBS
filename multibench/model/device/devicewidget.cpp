@@ -94,14 +94,14 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     // Закидываем неизменяемые параметры в виджет
     if(readOnlyWidgets.count() > 0) {
         auto hiddenWidget = new HiddenWidget(this);
-        hiddenWidget->layout()->setContentsMargins(10,6,10,0);
+        hiddenWidget->layout()->setContentsMargins(10,14,10,0);
         //int maxUnitsLength=0;
         auto maxUnitsLength = *std::max_element(std::begin(readOnlyWidgets),std::end(readOnlyWidgets),
                                                 [=](ReadParameterWidget* widgetA,ReadParameterWidget* widgetB){
             return widgetA->getUnitslength()<widgetB->getUnitslength();
         });
         for(auto item : readOnlyWidgets) {
-            item->setContentsMargins(0,8,0,0);
+            item->setContentsMargins(0,0,0,8);
             item->setUnitsLength(maxUnitsLength->getUnitslength());
             hiddenWidget->addWidget(item);
         }
@@ -115,12 +115,12 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     for(const auto &item : m_description.checkboxes) {
         if(!hiddenWidget){
             hiddenWidget = new HiddenWidget(this);
-            hiddenWidget->layout()->setContentsMargins(10,8,10,0);
+            hiddenWidget->layout()->setContentsMargins(10,12,10,0);
         }
         auto cmd = m_commands.value(item.code, nullptr);
         if(cmd) {
             auto binaryWidget = new BinaryWidget(item, cmd, hiddenWidget);
-            binaryWidget->setContentsMargins(0,4,0,0);
+            binaryWidget->setContentsMargins(0,0,0,4);
             hiddenWidget->addWidget(binaryWidget);
         }
 
@@ -247,7 +247,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     m_condiotion = new DeviceCondition(m_commands,m_description.leds,ui->conditionLabel);
-    //ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
+    ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
     adjust();
 
     //TODO:: label_2, для отображения строки состояния драйвера, команда 0700
@@ -344,17 +344,19 @@ void DeviceWidget::hideControlsButtonClicked(bool flag) {
         int pinShift = idx-1;
         auto widget = m_widgets.at(idx);
         auto pinButton = m_pinButtons.value(pinShift, nullptr);
+        auto topMargin = widget->layout()->contentsMargins().top();
+        auto bottomMargin = widget->layout()->contentsMargins().bottom();
         if(m_hideControls) {
             if(!widget->isPinned()) {
                 widget->setShown(false);
-                widget->layout()->setContentsMargins(0,0,0,0);
+                widget->layout()->setContentsMargins(0,topMargin,0,bottomMargin);
                 widget->layout()->setSpacing(0);
                 if(pinButton != nullptr) pinButton->setVisible(false);
             }
         } else {
             if(!widget->isShown()) {
                 widget->setShown(true);
-                widget->layout()->setContentsMargins(10,0,10,0);
+                widget->layout()->setContentsMargins(10,topMargin,10,bottomMargin);
                 widget->layout()->setSpacing(10);
                 if(pinButton != nullptr) pinButton->setVisible(true);
             }
