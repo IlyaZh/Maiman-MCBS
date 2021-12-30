@@ -37,7 +37,8 @@ void DataThread::stop() {
 
 // private methods
 
-void DataThread::run() {
+void DataThread::process() //run()
+{
     static QSharedPointer<QDeadlineTimer> timeoutTmr;
     QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
         int waitForConnected = Const::NetworkTimeoutMSecs;
@@ -56,6 +57,7 @@ void DataThread::run() {
         while(m_isWork) {
             QThread::msleep(m_delay);
             if(m_sem.tryAcquire(1)) {
+                qDebug() << "ACQUIRED avail=" << m_sem.available();
                 Package package;
                 {
                     QMutexLocker locker(&m_mtx);
@@ -69,6 +71,7 @@ void DataThread::run() {
                 m_waitRxBytes = package.m_waitSize;
                 Q_UNUSED(m_device->readAll());
                 m_device->write(m_lastWrittenMsg);
+                qDebug() << QDateTime::currentDateTime().time().toString("HH:mm:ss.zzz") << m_lastWrittenMsg.toHex(' ');
                 if(!m_device->waitForBytesWritten(Const::NetworkTimeoutMSecs)) {
                     emit timeout();
                 } else {
@@ -107,6 +110,6 @@ void DataThread::run() {
             }
         }
         m_device->close();
-
+        emit finished();
 }
 

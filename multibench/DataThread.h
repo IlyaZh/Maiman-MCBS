@@ -6,7 +6,7 @@
 #include "constants.h"
 #include "network/IDataSource.h"
 
-class DataThread : public QThread
+class DataThread : public /*QThread*/ QObject
 {
     Q_OBJECT
 public:
@@ -18,6 +18,7 @@ public slots:
     void configure(QScopedPointer<IDataSource>& source);
     void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool priority = false);
     void stop();
+    void process();
 
 Q_SIGNALS:
     void connected();
@@ -25,6 +26,7 @@ Q_SIGNALS:
     void timeout();
     void errorOccured(const QString msg);
     void readyToWrite();
+    void finished();
 
 private:
     struct Package {
@@ -43,6 +45,6 @@ private:
     QMutex m_mtx;
     QScopedPointer<IDataSource> m_dataSource;
 
-    void run() override;
+//    void run() override;
 };
 

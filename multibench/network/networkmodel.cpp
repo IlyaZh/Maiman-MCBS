@@ -44,24 +44,31 @@ void NetworkModel::setTimeout(int timeout) {
 
 void NetworkModel::start(QScopedPointer<IDataSource>& source)
 {
+    auto thread = new QThread;
     m_worker = new DataThread;
     m_worker->setTimeout(m_timeoutMs);
     m_worker->configure(source);
-        connect(m_worker, &DataThread::connected, this, [this]() {
-            emit signal_connected(true);
-            m_isStart = true;
-            rescanNetwork();
-        });
-        connect(m_worker, &DataThread::readyToWrite, this, &NetworkModel::pollRequest);
-        connect(m_worker, &DataThread::timeout, this, &NetworkModel::timeout);
-        connect(m_worker, &DataThread::errorOccured, this, &NetworkModel::signal_errorOccured);
-        connect(m_worker, &DataThread::readyRead, this, &NetworkModel::readyRead);
-        connect(m_worker, &DataThread::finished, this, [this](){
-            emit signal_connected(false);
-            m_isStart = false;
-            m_worker->deleteLater();
-        });
-        m_worker->start();
+    m_worker->moveToThread(thread);
+
+    connect(m_worker, &DataThread::connected, this, [this]() {
+        emit signal_connected(true);
+        m_isStart = true;
+        rescanNetwork();
+    });
+    connect(m_worker, &DataThread::readyToWrite, this, &NetworkModel::pollRequest);
+    connect(m_worker, &DataThread::timeout, this, &NetworkModel::timeout);
+    connect(m_worker, &DataThread::errorOccured, this, &NetworkModel::signal_errorOccured);
+    connect(m_worker, &DataThread::readyRead, this, &NetworkModel::readyRead);
+    connect(m_worker, &DataThread::finished, this, [this, &thread](){
+        emit signal_connected(false);
+        m_isStart = false;
+        thread->quit();
+        m_worker->deleteLater();
+    });
+    connect(thread, &QThread::started, m_worker, &DataThread::process);
+    connect(thread, &QThread::finished, thread, &QObject::deleteLater);
+//        m_worker->start();
+    thread->start();
 }
 
 bool NetworkModel::isStart() {
