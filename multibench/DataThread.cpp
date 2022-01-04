@@ -2,8 +2,11 @@
 #include <QtSerialPort>
 #include "constants.h"
 
-QByteArray DataThread::lastPackage() const {
-    return m_lastWrittenMsg;
+DataThread::~DataThread() {
+    m_mtx.lock();
+    m_isWork = false;
+    m_condition.wakeOne();
+    m_mtx.unlock();
 }
 
 // public slots
@@ -24,23 +27,108 @@ void DataThread::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool
     Package pack;
     pack.m_data = msg;
     pack.m_waitSize = waitBytes;
-    if(priority)
-        m_priorityQueue.enqueue(pack);
-    else
-        m_queue.enqueue(pack);
-    m_sem.release(1);
+    m_next = pack;
+
+    if(!isRunning()) {
+        start(LowPriority);
+        m_isWork = true;
+    } else {
+        m_condition.wakeOne();
+    }
 }
 
 void DataThread::stop() {
+    m_mtx.lock();
     m_isWork = false;
+    if(isRunning())
+        m_condition.wakeOne();
+    m_mtx.unlock();
 }
 
 // private methods
 
-void DataThread::process() //run()
+//void DataThread::process()
+void DataThread::run() {
+    static int waitForConnected = Const::NetworkTimeoutMSecs;
+    QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
+    while(!m_device->isOpen()) {
+        --waitForConnected;
+        if(waitForConnected == 0) {
+            emit errorOccured("Can't сonnect. " + m_device->errorString());
+            return;
+        }
+        QThread::msleep(1);
+    }
+    emit connected();
+
+    while(m_isWork) {
+        Package package;
+        {
+            QMutexLocker locker(&m_mtx);
+            package = m_next;
+
+        }
+//        QScopedPointer<QDeadlineTimer> timeoutTmr(new QDeadlineTimer(m_timeout));
+        m_lastWrittenMsg = package.m_data;
+        m_waitRxBytes = package.m_waitSize;
+
+        m_device->write(m_lastWrittenMsg);
+        qDebug() << QDateTime::currentDateTime().time().toString("HH:mm:ss.zzz") << m_lastWrittenMsg.toHex(' ');
+        if(!m_device->waitForBytesWritten(m_timeout)) {
+            qDebug() << "NOT WRITTEN";
+            emit timeout(m_lastWrittenMsg);
+        } else {
+            QByteArray buffer;
+//            timeoutTmr.reset(new QDeadlineTimer(m_timeout));
+//            while(!timeoutTmr->hasExpired()) {
+                QThread::msleep(10);
+                qDebug() << "bytes = " << m_device->bytesAvailable();
+                while(m_device->waitForReadyRead(m_timeout))
+//                if(m_device->bytesAvailable() > 0)
+                {
+                    int need = m_waitRxBytes-buffer.size();
+                    if(need > 0){
+                        auto rx = m_device->readAll();
+                        buffer.append(rx);
+                        if(!rx.isEmpty()) {
+                            qDebug() << "rx" << rx.toHex(' ');
+                            qDebug() << QString(m_lastWrittenMsg.at(0)) << "wait =" << m_waitRxBytes << "available" << need;
+                        }
+                    }
+                    if(m_waitRxBytes-buffer.size() <= 0) {
+                        qDebug() << "rx complete";
+                        break;
+                    }
+//                } else {
+//                    QThread::yieldCurrentThread();
+                }
+//            }
+            if(buffer.isEmpty()) {
+                qDebug() << "timeout" << QDateTime::currentDateTime().time().toString("mm:ss.zzz");
+                emit timeout(m_lastWrittenMsg);
+            } else {
+                qDebug() << "readyRead" << QDateTime::currentDateTime().time().toString("mm:ss.zzz") << buffer.toHex(' ');
+                emit readyRead(buffer, m_lastWrittenMsg);
+            }
+            qDebug() << "====\n";
+        }
+        emit readyToWrite();
+        m_mtx.lock();
+        m_condition.wait(&m_mtx);
+        m_mtx.unlock();
+        QThread::msleep(m_delay);
+    }
+    m_device->close();
+//    emit finished();
+}
+
+
+/*
+void DataThread::run()
 {
     static QSharedPointer<QDeadlineTimer> timeoutTmr;
     QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
+    QByteArray buffer;
         int waitForConnected = Const::NetworkTimeoutMSecs;
         while(!m_device->isOpen()) {
             --waitForConnected;
@@ -51,12 +139,14 @@ void DataThread::process() //run()
             QThread::msleep(1);
         }
         emit connected();
-        m_timeout *=2;
+        m_timeout *=3;
         qDebug() << "timeout=" << m_timeout;
 
         while(m_isWork) {
-            QThread::msleep(m_delay);
-            if(m_sem.tryAcquire(1)) {
+            m_sem.acquire(1);
+//            QThread::msleep(m_delay);
+//            if(m_sem.tryAcquire(1, 0))
+            {
                 qDebug() << "ACQUIRED avail=" << m_sem.available();
                 Package package;
                 {
@@ -69,23 +159,22 @@ void DataThread::process() //run()
                 }
                 m_lastWrittenMsg = package.m_data;
                 m_waitRxBytes = package.m_waitSize;
-                Q_UNUSED(m_device->readAll());
                 m_device->write(m_lastWrittenMsg);
+//                Q_UNUSED(m_device->readAll());
                 qDebug() << QDateTime::currentDateTime().time().toString("HH:mm:ss.zzz") << m_lastWrittenMsg.toHex(' ');
                 if(!m_device->waitForBytesWritten(Const::NetworkTimeoutMSecs)) {
+                    qDebug() << "NOT WRITTEN";
                     emit timeout();
                 } else {
-                    QByteArray buffer;
+                    buffer.clear();
+//                    QByteArray buffer;
                     timeoutTmr.reset(new QDeadlineTimer(m_timeout));
-                    qDebug() << QDateTime::currentDateTime().time().toString("mm:ss.zzz");
-                    bool stop = false;
-                    while(!timeoutTmr->hasExpired() && !stop) {
-//                        if(m_device->bytesAvailable() > 0) {
+                    while(!timeoutTmr->hasExpired()) {
+                        QThread::msleep(10);
+                        if(m_device->bytesAvailable() > 0) {
+                            qDebug() << "bytesAvailable" << m_device->bytesAvailable();
                             int need = m_waitRxBytes-buffer.size();
-                            if(need <= 0) {
-                                qDebug() << "rx complete";
-                                stop = true;
-                            } else {
+                            if(need > 0){
                                 auto rx = m_device->readAll();
                                 buffer.append(rx);
                                 if(!rx.isEmpty()) {
@@ -93,7 +182,11 @@ void DataThread::process() //run()
                                     qDebug() << QString(m_lastWrittenMsg.at(0)) << "wait =" << m_waitRxBytes << "available" << need;
                                 }
                             }
-//                        }
+                            if(need <= 0) {
+                                qDebug() << "rx complete";
+                                break;
+                            }
+                        }
                     }
                     if(buffer.isEmpty()) {
                         qDebug() << "timeout" << QDateTime::currentDateTime().time().toString("mm:ss.zzz");
@@ -111,5 +204,12 @@ void DataThread::process() //run()
         }
         m_device->close();
         emit finished();
+}*/
+
+void DataThread::makeTimeout(const QByteArray& lastPackage) {
+    qDebug() << "makeTimeout" << currentThreadId();
 }
 
+void DataThread::makeAnswer(const QByteArray& msg, const QByteArray& lastPackage) {
+    qDebug() << "makeAnswer" << currentThreadId();
+}

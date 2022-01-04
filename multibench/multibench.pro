@@ -117,6 +117,7 @@ HEADERS += \
     mainwindow.h \
     model/device/HiddenWidget.h \
     modelguimediator.h \
+    network/IDataReceiver.h \
     widgets/calibrationandlimitswidget.h \
     widgets/calibrationdialog.h \
     widgets/updatewidget.h \

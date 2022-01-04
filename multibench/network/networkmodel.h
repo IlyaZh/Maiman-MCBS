@@ -37,15 +37,16 @@ public slots:
     void rescanNetwork();
     void getBaudrate();
 private slots:
-    void timeout();
+    void timeout(const QByteArray& lastPackage);
     void pollRequest();
-    void readyRead(const QByteArray& rxPackage);
+    void readyRead(const QByteArray& rxPackage, const QByteArray& lastPackage);
 
 signals:
     void signal_createWidgetFor(Device* device);
     void signal_setBaudrateToWindow(QStringList);
     void signal_connected(bool);
     void signal_errorOccured(const QString& error);
+    void signal_writeData(const QByteArray& msg, qint64 waitBytes, bool priority);
 
 
 
@@ -56,6 +57,8 @@ private:
     bool m_isStart = false;
     int m_timeoutMs {300};
     QPointer<DataThread> m_worker;
+    QQueue<QByteArray> m_queue;
+    QQueue<QByteArray> m_priorityQueue;
 
     void clear();
     void initDevice(quint8 addr, quint16 id);

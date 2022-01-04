@@ -101,13 +101,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::connectTriggered(){
+void MainWindow::connectTriggered() {
     QVariantMap networkMap;
     auto type = PortType::Com;
     networkMap.insert("type",  static_cast<quint8>(type));
+    qDebug() << "void MainWindow::connectTriggered()";
     if (ui->actionConnect->isChecked() and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
         if (type == PortType::TCP){
-            networkMap.insert("host", "127.0.1.0");
+            networkMap.insert("host", "127.0.0.1");
             networkMap.insert("port", "9999");
         }
         else if(type == PortType::Com){
