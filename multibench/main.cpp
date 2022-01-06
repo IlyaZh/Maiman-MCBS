@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     w.setFont(Const::ApplicationDefaultFontPath);
     w.show();
 
-    DataSource dataSource;
+    // DataSource dataSource;
 
     GuiFactory guiFactory("device_gui.xml");
 //    MainViewFacade mvCntrl(dataSource, settings, guiFactory);

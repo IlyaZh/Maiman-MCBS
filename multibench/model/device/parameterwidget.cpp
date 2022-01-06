@@ -86,4 +86,4 @@ void ParameterWidget::setDecimals(quint16 cmd, int decimals) {
 
 // private slots
 
-void ParameterWidget::spinBoxEditingFinished() {}
+//void ParameterWidget::spinBoxEditingFinished() {}

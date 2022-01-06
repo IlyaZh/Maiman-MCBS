@@ -17,7 +17,7 @@ class ModelGuiMediator : public QObject
 {
     Q_OBJECT
 public:
-    explicit ModelGuiMediator(MainWindow& window, GuiFactory& factory,NetworkModel& networkModel, QObject* parent = nullptr);
+    explicit ModelGuiMediator(MainWindow& window, GuiFactory& factory, NetworkModel& networkModel, QObject* parent = nullptr);
 
 private:
     MainWindow& m_window;

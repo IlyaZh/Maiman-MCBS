@@ -206,10 +206,6 @@ void MainWindow::closeEvent(QCloseEvent *event) {
         qApp->quit();
 }
 
-void MainWindow::setStatusBarMessage(QString message){
-    ui->statusbar->showMessage(message, Const::ConsoleMaxLinesToShow);
-}
-
 void MainWindow::callAboutDialog(){
     m_About->show();
 }

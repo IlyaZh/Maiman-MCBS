@@ -7,7 +7,7 @@
 
 class AboutDialog;
 class UpdateWidget;
-class CalibrationMenu;
+// class CalibrationMenu;
 class CalibrationAndLimitsWidget;
 class DeviceWidget;
 
@@ -25,7 +25,6 @@ public:
     void addDeviceWidget(DeviceWidget* widget);
     void setComPorts(const QStringList& portList);
     void setBaudRates(const QStringList& baudsList);
-    void setStatusBarMessage(QString message);
 
 signals:
     void refreshComPortsSignal();
@@ -54,7 +53,7 @@ private:
     QPointer<QActionGroup> m_baudrateGroup;
     UpdateWidget* m_updater;
     QPointer<AboutDialog> m_About;
-    QVector<CalibrationMenu*> m_calibrationDialogs;
+    // QVector<CalibrationMenu*> m_calibrationDialogs;
 protected:
     void closeEvent(QCloseEvent *event) override;
 

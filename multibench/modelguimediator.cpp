@@ -31,6 +31,7 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
 }
 
 void ModelGuiMediator::createWidgetFor(Device* device) {
+    // TODO: пронеси Device мимо этого класса в наследуемые
     QPointer<DeviceWidget> widget(m_factory.createDeviceWidget(device->id(), device->commands()));
     if(widget) {
         widget->setAddress(static_cast<int>(device->addr()));

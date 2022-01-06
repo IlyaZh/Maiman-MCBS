@@ -103,12 +103,7 @@ void NetworkModel::rescanNetwork()
         clearNetwork();
     }
     if (addresses.isEmpty()){
-#ifdef QT_DEBUG
-#warning "DEBUG DEBUG DEBUG DEBUG"
-        for(quint8 iAddr = 1; iAddr <= 6; ++iAddr)
-#else
         for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr)
-#endif
         {
             addresses.insert(iAddr);
         }
