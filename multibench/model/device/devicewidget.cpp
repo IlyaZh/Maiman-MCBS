@@ -94,14 +94,14 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     // Закидываем неизменяемые параметры в виджет
     if(readOnlyWidgets.count() > 0) {
         auto hiddenWidget = new HiddenWidget(this);
-        hiddenWidget->layout()->setContentsMargins(10,14,10,0);
+        hiddenWidget->layout()->setContentsMargins(10,12,10,0);
         //int maxUnitsLength=0;
         auto maxUnitsLength = *std::max_element(std::begin(readOnlyWidgets),std::end(readOnlyWidgets),
                                                 [=](ReadParameterWidget* widgetA,ReadParameterWidget* widgetB){
             return widgetA->getUnitslength()<widgetB->getUnitslength();
         });
         for(auto item : readOnlyWidgets) {
-            item->setContentsMargins(0,0,0,8);
+            item->setContentsMargins(0,0,0,4);
             item->setUnitsLength(maxUnitsLength->getUnitslength());
             hiddenWidget->addWidget(item);
         }
@@ -247,7 +247,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     m_condiotion = new DeviceCondition(m_commands,m_description.leds,ui->conditionLabel);
-    ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
+    //ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
     adjust();
 
     //TODO:: label_2, для отображения строки состояния драйвера, команда 0700
