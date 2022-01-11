@@ -78,23 +78,23 @@ void AppSettings::setNetworkTimeout(quint16 timeoutMs) {
     settings->setValue("networkTimeout", timeoutMs);
 }
 
-void AppSettings::setDeviceAddresses(const QSet<quint8>& addr){
+void AppSettings::setDeviceAddresses(const QMap<quint8,quint8>& addr){
     settings->remove("userSettings/addresses");
     settings->beginWriteArray("userSettings/addresses");
     int i = 0;
-    for(const auto& item : addr){
+    for(const auto& item : addr.keys()){
         settings->setArrayIndex(i++);
         settings->setValue("userSettings/addresses", item);
     }
     settings->endArray();
 }
 
-QSet<quint8> AppSettings::getDeviceAddresses(){
-    QSet<quint8> map;
+QMap<quint8,quint8> AppSettings::getDeviceAddresses(){
+    QMap<quint8,quint8> map;
     int size = settings->beginReadArray("userSettings/addresses");
     for (int i = 0; i < size; ++i) {
         settings->setArrayIndex(i);
-        map.insert(settings->value("userSettings/addresses").toUInt());
+        map.insert(settings->value("userSettings/addresses").toUInt(),0);
     }
     settings->endArray();
     return map;

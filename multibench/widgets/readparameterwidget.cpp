@@ -3,33 +3,62 @@
 #include "model/device/devicewidget.h"
 #include "device/commandsettings.h"
 
-ReadParameterWidget::ReadParameterWidget(QStringView name, QSharedPointer<DevCommand> cmd, /*int value, QString name,*/ QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::ReadParameterWidget),
-//    m_settings(settings),
-    m_command(cmd)
+ReadParameterWidget::ReadParameterWidget():
+    m_command(nullptr),
+    m_labelParameter(new QLabel),
+    m_labelValue(new QLabel),
+    m_labelUnit(new QLabel)
 {
-    ui->setupUi(this);
 
-    ui->labelParameter->setText(name.toString());
 
-    ui->labelUnits->setText(m_command->unit());
+}
+
+void ReadParameterWidget::setup(QStringView name, QSharedPointer<DevCommand> cmd){
+    m_command = cmd;
+    m_layout = new QHBoxLayout(this);
+    this->setStyleSheet("QWidget {\
+    background-color: rgb(51, 51, 51);\
+    color: rgb(153,153,153);\
+    font: 12pt Share Tech Mono;\
+}");
+    m_layout->setMargin(0);
+    m_layout->setSpacing(6);
+    m_labelParameter->setAlignment(Qt::AlignLeft);
+    m_labelValue->setAlignment(Qt::AlignRight);
+    m_labelUnit->setAlignment(Qt::AlignRight);
+    m_labelParameter->setText(name.toString());
+
+    m_labelUnit->setText(m_command->unit());
 
     if(m_command) {
         setValue(m_command->valueDouble(), m_command->tolerance());
         connect(m_command.get(), &DevCommand::updatedValue, this, [this](){
-            setValue(m_command->valueDouble(), m_command->tolerance());
+            if (m_command->code() == 3){
+                setUnit(QString::number(m_command->valueDouble()));
+                setUnitsLength(getUnitslength());
+            }
+            else
+                setValue(m_command->valueDouble(), m_command->tolerance());
         });
         connect(m_command.get(), &DevCommand::updatedUnit, this, [this](QStringView unit){
-            setUnit(unit.toString());
+            if (m_command->code() == 3)
+                m_labelValue->setText("");
+            else
+                setUnit(unit.toString());
         });
     }
 
     /*setValue(m_settings.real, value);*/
     setValue(m_command->valueDouble(), m_command->tolerance());
+    if (m_command->code() == 3)
+        m_labelValue->setText("");
+
+    m_layout->addWidget(m_labelParameter);
+    m_layout->addSpacerItem(new QSpacerItem(0,20,QSizePolicy::Expanding));
+    m_layout->addWidget(m_labelValue);
+    m_layout->addWidget(m_labelUnit);
 
     this->adjustSize();
-
 }
 
 //ReadParameterWidget::ReadParameterWidget(const Control &settings, int decimal, QString name = "Unknown", /*double value = 0,*/ QWidget *parent) :
@@ -46,27 +75,42 @@ ReadParameterWidget::ReadParameterWidget(QStringView name, QSharedPointer<DevCom
 
 //}
 
-ReadParameterWidget::~ReadParameterWidget()
-{
-    delete ui;
-}
+//ReadParameterWidget::~ReadParameterWidget()
+//{
+//    delete ui;
+//}
 
 // private methods
 
 void ReadParameterWidget::setUnit(QStringView unit){
     m_unit = unit.toString();
-    ui->labelUnits->setText(m_unit);
+    if(m_labelUnit)
+        m_labelUnit->setText(m_unit);
 }
 
 void ReadParameterWidget::setValue(double value, int decimal){
     QString realStr = QString::number(value, 'f', decimal);
-    ui->labelValue->setText(realStr);
+    if(m_labelValue)
+        m_labelValue->setText(realStr);
 }
 
 void ReadParameterWidget::setValue(int value){
-    ui->labelValue->setNum(value);
+    if(m_labelValue)
+        m_labelValue->setNum(value);
 }
 
+int ReadParameterWidget::getUnitslength(){
+    if (m_labelUnit)
+        return m_labelUnit->text().length();
+    else
+        return 0;
+}
+
+void ReadParameterWidget::setUnitsLength(int length){
+    int charLength = 10;
+    if(m_labelUnit)
+        m_labelUnit->setMinimumWidth(length*charLength);
+}
 //testDevice
 /*TestDeviceParameter::TestDeviceParameter(QObject *parent) : QObject(parent)
 {

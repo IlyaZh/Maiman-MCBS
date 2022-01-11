@@ -83,7 +83,7 @@ ModbusProtocol::DataVector ModbusProtocol::execute(const QByteArray& rxPackage, 
                 break;
             default:
                 qDebug() << QString("[%1] Wrong command %2").arg("Modbus").arg(comm);
-//                makeError(QString("[%1] Wrong command %2").arg("Modbus").arg(comm));
+                // makeError(QString("[%1] Wrong command").arg("Modbus"));
             }
 
         } else {

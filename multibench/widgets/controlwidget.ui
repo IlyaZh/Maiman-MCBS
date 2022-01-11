@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>168</width>
-    <height>136</height>
+    <height>150</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -16,137 +16,79 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>150</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
+   <string notr="true">
+QWidget {
     background-color: rgb(51, 51, 51);
     color: rgb(153,153,153);
-}</string>
+}
+</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetDefaultConstraint</enum>
+   </property>
    <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
     <number>0</number>
    </property>
    <property name="rightMargin">
     <number>0</number>
    </property>
-   <item row="1" column="0">
-    <widget class="QLabel" name="Real">
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <item row="3" column="2">
+    <widget class="QLabel" name="MinUnits">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>15</height>
+       <height>12</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>15</height>
+       <height>12</height>
       </size>
      </property>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
        <pointsize>12</pointsize>
-       <weight>50</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string>Real</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="Min">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>12</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>12</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(153, 153, 153);</string>
      </property>
      <property name="text">
-      <string>Min</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="Max">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>12</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>12</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(153, 153, 153);</string>
-     </property>
-     <property name="text">
-      <string>Max</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="MaxValue">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>12</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>12</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(153, 153, 153);</string>
-     </property>
-     <property name="text">
-      <string>0</string>
+      <string>Un</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>0</number>
      </property>
     </widget>
    </item>
@@ -181,7 +123,8 @@
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 255);
-border-radius: 5px;</string>
+border-radius: 5px;
+color: rgb(0, 0, 0);</string>
      </property>
      <property name="text">
       <string>0</string>
@@ -200,8 +143,8 @@ border-radius: 5px;</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QLabel" name="MinValue">
+   <item row="2" column="0">
+    <widget class="QLabel" name="Max">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -217,82 +160,51 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(153, 153, 153);</string>
      </property>
      <property name="text">
-      <string>0</string>
+      <string>Max</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <property name="indent">
+      <number>0</number>
      </property>
     </widget>
    </item>
-   <item row="3" column="2">
-    <widget class="QLabel" name="MinUnits">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+   <item row="1" column="0">
+    <widget class="QLabel" name="Real">
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>12</height>
+       <height>15</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>12</height>
+       <height>15</height>
       </size>
      </property>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>14</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(153, 153, 153);</string>
+      <string notr="true">color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>Un</string>
+      <string>Real</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="3">
-    <widget class="QLabel" name="WidgetName">
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>18</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(230, 230, 230);</string>
-     </property>
-     <property name="text">
-      <string>Name</string>
+     <property name="indent">
+      <number>0</number>
      </property>
     </widget>
    </item>
@@ -319,7 +231,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>12</pointsize>
+       <pointsize>14</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -333,6 +245,74 @@ border-radius: 5px;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="Min">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>12</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>12</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(153, 153, 153);</string>
+     </property>
+     <property name="text">
+      <string>Min</string>
+     </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="MaxValue">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>12</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>12</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(153, 153, 153);</string>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>0</number>
      </property>
     </widget>
    </item>
@@ -353,7 +333,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>12</pointsize>
+       <pointsize>14</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -367,6 +347,43 @@ border-radius: 5px;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLabel" name="MinValue">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>12</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>12</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(153, 153, 153);</string>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>0</number>
      </property>
     </widget>
    </item>
@@ -393,7 +410,7 @@ border-radius: 5px;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -404,6 +421,70 @@ border-radius: 5px;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="indent">
+      <number>0</number>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="WidgetName">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>168</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Share Tech Mono</family>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::DefaultContextMenu</enum>
+     </property>
+     <property name="toolTipDuration">
+      <number>-1</number>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(230, 230, 230);
+padding: 0px;
+margin: 0px;
+alignment-baseline=&quot;middle&quot;;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="text">
+      <string>Name</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="indent">
+      <number>0</number>
      </property>
     </widget>
    </item>
