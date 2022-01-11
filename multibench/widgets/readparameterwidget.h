@@ -5,30 +5,39 @@
 #include <QMap>
 #include <QTest>
 #include <QSharedPointer>
+#include <QLabel>
+#include <QLayout>
+#include <QSpacerItem>
 
 struct Control;
 class DevCommand;
 
-namespace Ui {
-class ReadParameterWidget;
-}
+//namespace Ui {
+//class ReadParameterWidget;
+//}
 
 class ReadParameterWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ReadParameterWidget(QStringView name, QSharedPointer<DevCommand> cmd, /*int value, QString name,*/ QWidget *parent = nullptr);
+//    explicit ReadParameterWidget(QStringView name, QSharedPointer<DevCommand> cmd, /*int value, QString name,*/ QWidget *parent = nullptr);
 //    explicit ReadParameterWidget(const Control &settings, int decimal, QString name, /*double value,*/ QWidget *parent = nullptr);
-    ~ReadParameterWidget();
+    ReadParameterWidget();
+    virtual ~ReadParameterWidget() = default;
 
+    virtual void setup(QStringView name, QSharedPointer<DevCommand> cmd);
     int getUnitslength();
     void setUnitsLength(int length);
-private:
-    Ui::ReadParameterWidget *ui;
+protected:
+//    Ui::ReadParameterWidget *ui;
 //    const Control& m_settings;
     QString m_unit;
     QSharedPointer<DevCommand> m_command;
+    QHBoxLayout* m_layout;
+    QLabel* m_labelParameter;
+    QLabel* m_labelValue;
+    QLabel* m_labelUnit;
 
     void setValue(double value, int decimal);
     void setValue(int value);

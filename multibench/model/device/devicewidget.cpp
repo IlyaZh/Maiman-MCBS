@@ -9,6 +9,7 @@
 #include "widgets/binarywidget.h"
 #include "widgets/controlwidget.h"
 #include "widgets/readparameterwidget.h"
+#include "widgets/readparameterfactory.h"
 #include "model/device/HiddenWidget.h"
 #include "model/device/devicecondition.h"
 #include <algorithm>
@@ -78,7 +79,8 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
         if(realCmd != nullptr and valueCmd == nullptr) {
             // Обработка неизменяемых параметров
-            readOnlyWidgets.append(new ReadParameterWidget(control.name, realCmd));
+            auto readParameterWidget = new ReadParameterFactory();
+            readOnlyWidgets.append(readParameterWidget->createReadParameter(control.name, realCmd));
         } else {
             // Обработка изменяемых параметров
             auto hiddenWidget = new HiddenWidget(this);
