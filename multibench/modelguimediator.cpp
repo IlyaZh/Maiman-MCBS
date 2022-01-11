@@ -6,6 +6,8 @@
 #include "mainwindow.h"
 #include "model/guifactory.h"
 #include "widgets/calibrationdialog.h"
+#include "network/IDataSource.h"
+#include "network/datasourcefactory.h"
 
 ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,NetworkModel& networkModel,QObject *parent) :
     QObject(parent),
@@ -14,20 +16,22 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
     m_network(networkModel)
 {
     factory.start();
-    connect(&networkModel, &NetworkModel::createWidgetFor,this,&ModelGuiMediator::createWidgetFor);
-    connect(&networkModel, &NetworkModel::setBaudrateToWindow,this,&ModelGuiMediator::setBaudrateToWindow);
+    connect(&networkModel, &NetworkModel::signal_createWidgetFor,this,&ModelGuiMediator::createWidgetFor);
+    connect(&networkModel, &NetworkModel::signal_setBaudrateToWindow,this,&ModelGuiMediator::setBaudrateToWindow);
+    connect(&networkModel, &NetworkModel::signal_connected, &window, &MainWindow::setConnected);
 
-    connect(&window, &MainWindow::connectToNetwork, this, &ModelGuiMediator::connectToNetwork);
+    connect(&window, &MainWindow::changeConnectState, this, &ModelGuiMediator::changeConnectState);
     connect(&window, &MainWindow::refreshComPortsSignal, this, &ModelGuiMediator::refreshComPorts);
     connect(&window, &MainWindow::tempratureUnitsChanged, &m_network, &NetworkModel::temperatureUnitsChanged);
     refreshComPorts();
-    connect(&window,&MainWindow::rescanNetwork,this,&ModelGuiMediator::rescan);
-    connect(&window,&MainWindow::createCalibAndLimitsWidgets,this,&ModelGuiMediator::createCalibAndLimitsWidgets);
+    connect(&window, &MainWindow::rescanNetwork, this, &ModelGuiMediator::rescan);
+    connect(&window, &MainWindow::createCalibAndLimitsWidgets, this, &ModelGuiMediator::createCalibAndLimitsWidgets);
 
-    connect(&window, &MainWindow::finishEditedNetworkTimeout, this, &ModelGuiMediator::setNetworkTimeout);
+    connect(&window, &MainWindow::timeoutChanged, &networkModel, &NetworkModel::setTimeout);
 }
 
 void ModelGuiMediator::createWidgetFor(Device* device) {
+    // TODO: пронеси Device мимо этого класса в наследуемые
     QPointer<DeviceWidget> widget(m_factory.createDeviceWidget(device->id(), device->commands()));
     if(widget) {
         widget->setAddress(static_cast<int>(device->addr()));
@@ -63,31 +67,16 @@ void ModelGuiMediator::refreshComPorts() {
 
 }
 
-void ModelGuiMediator::connectToNetwork(QVariant value) {
-    AppSettings::setNetworkData(value);
-
-    QVariantMap portSettings = value.toMap();
+void ModelGuiMediator::changeConnectState(PortType type, QVariantMap portSettings) {
     if(m_network.isStart()) {
         m_network.stop();
-        m_device->close();
-        m_window.setConnected(m_device->isOpen());
-        //            device->deleteLater();
     } else {
-        NetworkType type = static_cast<NetworkType>(portSettings["type"].toInt());
-        if(type == NetworkType::Tcp) {
-            m_device = new DataSource;
-            m_device->setSettings(type, portSettings["host"], portSettings["port"]);
-            m_device->open();
-            m_window.setConnected(m_device->isOpen());
-            m_network.start(*m_device);
-        } else if(type == NetworkType::SerialPort) {
-            m_device = new DataSource;
-            AppSettings::setComPort(portSettings["comport"].toString());
-            AppSettings::setComBaudrate(portSettings["baudrate"].toInt());
-            m_device->setSettings(type, portSettings["comport"], portSettings["baudrate"]);
-            m_device->open();
-            m_window.setConnected(m_device->isOpen());
-            m_network.start(*m_device);
+        AppSettings::setNetworkData(portSettings);
+
+        auto dataSource = QScopedPointer<IDataSource>(DataSourceFactory::createSource(type));
+        if(dataSource) {
+            dataSource->init(portSettings);
+            m_network.start(dataSource);
         }
     }
 }
@@ -97,6 +86,3 @@ void ModelGuiMediator::rescan(){
     m_network.rescanNetwork();
 }
 
-void ModelGuiMediator::setNetworkTimeout(quint16 timeout){
-
-}

@@ -8,6 +8,5 @@
         <file>resources/images/pinSymbol-activated.png</file>
         <file>resources/images/pinSymbol-disactivated.png</file>
         <file>resources/images/showcontrols-icon.png</file>
-        <file>maiman-logo-minimal.png</file>
     </qresource>
 </RCC>

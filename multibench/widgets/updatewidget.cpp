@@ -50,6 +50,6 @@ void UpdateWidget::updateCheck(bool state){
     }
 }
 
-void UpdateWidget::acceptError(QString errorMsg){
+void UpdateWidget::acceptError(const QString& errorMsg){
     qDebug()<< "[ERROR]" << errorMsg;
 }

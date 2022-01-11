@@ -38,8 +38,8 @@ private:
 //    MaimanSpinBox* valueSpinbox;
     QString m_unit;
 
-private slots:
-    void spinBoxEditingFinished();
+//private slots:
+//    void spinBoxEditingFinished();
 };
 
 #endif // PARAMETERWIDGET_H

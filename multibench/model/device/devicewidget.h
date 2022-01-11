@@ -101,10 +101,10 @@ public slots:
 
 private:
     Ui::DeviceWidget *ui;
-    const DeviceWidgetDesc& m_description;
+    DeviceWidgetDesc m_description; // TODO:: Очень жирная штука...
     QMap<quint16, QVariant> m_values;
     QVector<HiddenWidget*> m_widgets;
-    const QMap<quint16, QSharedPointer<DevCommand>>& m_commands;
+    QMap<quint16, QSharedPointer<DevCommand>> m_commands;
     QGridLayout* m_widgetLayout;
     QMap<quint16, BinaryWidget*> m_binaryWidgets;
     QVector<QPushButton*> m_pinButtons;

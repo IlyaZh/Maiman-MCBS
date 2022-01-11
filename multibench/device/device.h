@@ -33,7 +33,7 @@ public:
 //    void enableTimeout(bool enable);
 
 private:
-    bool m_isLink = true;
+    bool m_isLink {true};
     int m_addr = 0;
     int m_Id;
     const QString m_Name;

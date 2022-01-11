@@ -14,7 +14,7 @@
 //#include <QScopedPointer>
 
 typedef struct NetworkData_s {
-    NetworkType type;
+    PortType type;
     QString host;
     int port;
 } NetworkData_s;

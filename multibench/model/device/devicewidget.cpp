@@ -113,8 +113,8 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
     // Инициализация checkbox'ов
     QPointer<HiddenWidget> hiddenWidget;
-    for(const auto &item : m_description.checkboxes) {
-        if(!hiddenWidget){
+    for(const auto &item : qAsConst(m_description.checkboxes)) {
+        if(!hiddenWidget)
             hiddenWidget = new HiddenWidget(this);
             hiddenWidget->layout()->setContentsMargins(10,12,10,0);
         }
@@ -166,7 +166,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     // Инциализация кнопок Laser и TEC
 //    ui->laserButton->hide();
 //    ui->tecButton->hide();
-    for(const auto &button : m_description.buttons) {
+    for(const auto &button : qAsConst(m_description.buttons)) {
         QPointer<QPushButton> pButton;
         if(button.name.compare("laser", Qt::CaseInsensitive) == 0 && m_commands.contains(button.code)) {
             m_laserButton = new QPushButton("Laser", this);
@@ -248,10 +248,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     m_condiotion = new DeviceCondition(m_commands,m_description.leds,ui->conditionLabel);
-    //ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
     adjust();
-
-    //TODO:: label_2, для отображения строки состояния драйвера, команда 0700
 }
 
 DeviceWidget::~DeviceWidget()
@@ -295,7 +292,7 @@ void DeviceWidget::adjust() {
 // private slots
 
 void DeviceWidget::setLaserButton(quint16 value) {
-    for(const auto& button : m_description.buttons) {
+    for(const auto& button : qAsConst(m_description.buttons)) {
         if(button.name == "Laser") {
 //            ui->laserButton->setChecked((value & button.mask) != 0);
             m_laserButton->setChecked((value & button.mask) != 0);
@@ -304,7 +301,7 @@ void DeviceWidget::setLaserButton(quint16 value) {
 }
 
 void DeviceWidget::setTecButton(quint16 value) {
-    for(const auto& button : m_description.buttons) {
+    for(const auto& button : qAsConst(m_description.buttons)) {
         if(button.name == "Tec") {
 //            ui->tecButton->setChecked((value & button.mask) != 0);
             m_tecButton->setChecked((value & button.mask) != 0);
