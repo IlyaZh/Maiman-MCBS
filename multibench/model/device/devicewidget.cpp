@@ -79,8 +79,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
         if(realCmd != nullptr and valueCmd == nullptr) {
             // Обработка неизменяемых параметров
-            auto readParameterWidget = new ReadParameterFactory();
-            readOnlyWidgets.append(readParameterWidget->createReadParameter(control.name, realCmd));
+            readOnlyWidgets.append(ReadParameterFactory::createReadParameter(control.name, realCmd));
         } else {
             // Обработка изменяемых параметров
             auto hiddenWidget = new HiddenWidget(this);

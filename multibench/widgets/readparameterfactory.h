@@ -6,12 +6,14 @@
 #include "widgets/readparameterwidget.h"
 #include "widgets/readnounitparameterwidget.h"
 
+enum { SerialCommand = 0x3 };
+
 class ReadParameterFactory : public QObject
 {
         Q_OBJECT
 public:
     ReadParameterFactory();
-    ReadParameterWidget* createReadParameter(QStringView name, QSharedPointer<DevCommand> cmd);
+    static ReadParameterWidget* createReadParameter(QStringView name, QSharedPointer<DevCommand> cmd);
 };
 
 #endif // READPARAMETERFACTORY_H

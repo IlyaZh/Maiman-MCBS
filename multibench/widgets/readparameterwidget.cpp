@@ -3,7 +3,11 @@
 #include "model/device/devicewidget.h"
 #include "device/commandsettings.h"
 
-ReadParameterWidget::ReadParameterWidget()
+ReadParameterWidget::ReadParameterWidget():
+    m_command(nullptr),
+    m_labelParameter(new QLabel),
+    m_labelValue(new QLabel),
+    m_labelUnit(new QLabel)
 {
 
 
@@ -19,9 +23,6 @@ void ReadParameterWidget::setup(QStringView name, QSharedPointer<DevCommand> cmd
 }");
     m_layout->setMargin(0);
     m_layout->setSpacing(6);
-    m_labelParameter = new QLabel;
-    m_labelValue = new QLabel;
-    m_labelUnit = new QLabel;
     m_labelParameter->setAlignment(Qt::AlignLeft);
     m_labelValue->setAlignment(Qt::AlignRight);
     m_labelUnit->setAlignment(Qt::AlignRight);
@@ -83,25 +84,32 @@ void ReadParameterWidget::setup(QStringView name, QSharedPointer<DevCommand> cmd
 
 void ReadParameterWidget::setUnit(QStringView unit){
     m_unit = unit.toString();
-    m_labelUnit->setText(m_unit);
+    if(m_labelUnit)
+        m_labelUnit->setText(m_unit);
 }
 
 void ReadParameterWidget::setValue(double value, int decimal){
     QString realStr = QString::number(value, 'f', decimal);
-    m_labelValue->setText(realStr);
+    if(m_labelValue)
+        m_labelValue->setText(realStr);
 }
 
 void ReadParameterWidget::setValue(int value){
-    m_labelValue->setNum(value);
+    if(m_labelValue)
+        m_labelValue->setNum(value);
 }
 
 int ReadParameterWidget::getUnitslength(){
-    return m_labelUnit->text().length();
+    if (m_labelUnit)
+        return m_labelUnit->text().length();
+    else
+        return 0;
 }
 
 void ReadParameterWidget::setUnitsLength(int length){
     int charLength = 10;
-    m_labelUnit->setMinimumWidth(length*charLength);
+    if(m_labelUnit)
+        m_labelUnit->setMinimumWidth(length*charLength);
 }
 //testDevice
 /*TestDeviceParameter::TestDeviceParameter(QObject *parent) : QObject(parent)

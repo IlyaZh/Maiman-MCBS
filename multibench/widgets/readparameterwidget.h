@@ -34,10 +34,10 @@ protected:
 //    const Control& m_settings;
     QString m_unit;
     QSharedPointer<DevCommand> m_command;
-    QHBoxLayout* m_layout;
-    QLabel* m_labelParameter;
-    QLabel* m_labelValue;
-    QLabel* m_labelUnit;
+    QHBoxLayout* m_layout{nullptr};
+    QLabel* m_labelParameter{nullptr};
+    QLabel* m_labelValue{nullptr};
+    QLabel* m_labelUnit{nullptr};
 
     void setValue(double value, int decimal);
     void setValue(int value);
