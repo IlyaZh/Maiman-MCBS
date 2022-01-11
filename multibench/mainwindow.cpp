@@ -71,8 +71,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->actionExit, &QAction::triggered, qApp, &QApplication::closeAllWindows, Qt::QueuedConnection);
     auto temperatureGroup = new QActionGroup(this);
-    //temperatureGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
-    temperatureGroup->setExclusive(true);
+    temperatureGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::Exclusive);
     int unitIdx = static_cast<int>(AppSettings::getTemperatureUnit());
     for(const auto& unit : Const::TemperatureUnitNames) {
         auto action = new QAction(unit);

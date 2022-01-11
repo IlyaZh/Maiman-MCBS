@@ -10,8 +10,8 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->networkIpLineEdit->setPlaceholderText("127.0.0.1");
     ui->networkPortLineEdit->setPlaceholderText("500");
-    //ui->comPortComboBox->setPlaceholderText("COM4");
-    //ui->baudrateComboBox->setPlaceholderText("115200");
+    ui->comPortComboBox->setPlaceholderText("COM4");
+    ui->baudrateComboBox->setPlaceholderText("115200");
 
     QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
     QRegularExpression ipRegex ("^" + ipRange

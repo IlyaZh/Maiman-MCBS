@@ -79,8 +79,6 @@ SOURCES += \
     modelguimediator.cpp \
     widgets/calibrationandlimitswidget.cpp \
     widgets/calibrationdialog.cpp \
-    widgets/readnounitparameterwidget.cpp \
-    widgets/readparameterfactory.cpp \
     widgets/updatewidget.cpp \
     widgets/aboutdialog.cpp \
     widgets/connectionwidget.cpp \
@@ -122,8 +120,6 @@ HEADERS += \
     network/IDataReceiver.h \
     widgets/calibrationandlimitswidget.h \
     widgets/calibrationdialog.h \
-    widgets/readnounitparameterwidget.h \
-    widgets/readparameterfactory.h \
     widgets/updatewidget.h \
     widgets/aboutdialog.h \
     widgets/connectionwidget.h \

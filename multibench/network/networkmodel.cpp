@@ -97,18 +97,16 @@ void NetworkModel::rescanNetwork()
     clear();
     m_queue.clear();
     m_priorityQueue.clear();
-    QMap<quint8,quint8> addresses(AppSettings::getDeviceAddresses());//TODO: dont work
+    QSet<quint8> addresses(AppSettings::getDeviceAddresses());
     if (!AppSettings::getKeepAddresses()){
         addresses.clear();
         clearNetwork();
     }
     if (addresses.isEmpty()){
-        for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr) {
-            addresses.insert(iAddr,0);
+        for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr)
+        {
+            addresses.insert(iAddr);
         }
-    }
-    for(const auto& item : addresses.keys()){
-        m_queue.enqueue(m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT));
     }
 
     if(m_worker) {
@@ -125,17 +123,14 @@ void NetworkModel::rescanNetwork()
 }
 
 void NetworkModel::clearNetwork(){
-    QMap<quint8,quint8> addresses;
+    QSet<quint8> addresses;
     AppSettings::setDeviceAddresses(addresses);
 }
 
 // private methods
 void NetworkModel::clear() {
-    m_priorityQueue.clear();
-    m_queue.clear();
     for(auto& item : m_devices) {
         item->disconnect();
-        // item->deleteLater(); // TODO: надо ли???
     }
     m_devices.clear();
 }
@@ -158,8 +153,8 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
 
     m_devices.insert(addr, newDevice);
 
-    QMap<quint8,quint8> addresses(AppSettings::getDeviceAddresses());
-    addresses.insert(addr,0);
+    QSet<quint8> addresses(AppSettings::getDeviceAddresses());
+    addresses.insert(addr);
     AppSettings::setDeviceAddresses(addresses);
 
     connect(newDevice.get(), SIGNAL(dataToModel(quint8,quint16,quint16)), this, SLOT(dataOutcome(quint8,quint16,quint16)));
@@ -255,3 +250,6 @@ void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& last
         }
     }
 }
+
+
+
