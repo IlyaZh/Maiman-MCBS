@@ -114,7 +114,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     // Инициализация checkbox'ов
     QPointer<HiddenWidget> hiddenWidget;
     for(const auto &item : qAsConst(m_description.checkboxes)) {
-        if(!hiddenWidget)
+        if(!hiddenWidget) {
             hiddenWidget = new HiddenWidget(this);
             hiddenWidget->layout()->setContentsMargins(10,12,10,0);
         }

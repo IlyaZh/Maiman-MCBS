@@ -103,12 +103,12 @@ void NetworkModel::rescanNetwork()
     if (addresses.isEmpty()){
         for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr)
         {
-            addresses.insert(iAddr);
+            addresses.insert(iAddr, 0);
         }
     }
 
     if(m_worker) {
-        for(const auto item : addresses){
+        for(const auto item : addresses.keys()){
             auto package = m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
 //            qint64 waitForBytes = m_protocol.waitForBytes(package);
             m_priorityQueue.enqueue(package);
@@ -127,8 +127,6 @@ void NetworkModel::clearNetwork(){
 
 // private methods
 void NetworkModel::clear() {
-    m_delayTimer.stop();
-    m_timeoutTimer.stop();
     m_priorityQueue.clear();
     m_queue.clear();
     for(auto& item : m_devices) {
