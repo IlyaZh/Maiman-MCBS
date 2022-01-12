@@ -6,6 +6,12 @@
 
 bool isEqual(double first, double second);
 
+enum class PortType {
+    None,
+    TCP,
+    Com
+};
+
 struct Const {
     // Название организации
     static const QString OrgName;

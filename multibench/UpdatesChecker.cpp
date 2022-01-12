@@ -84,7 +84,6 @@ void UpdatesChecker::analyzeOutput() {
                 xml += str;
             }
             if(str == "</updates>") {
-                enableSave = false;
                 break;
             }
         }

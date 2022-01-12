@@ -28,9 +28,7 @@ color: rgb(255, 255, 255);
       </sizepolicy>
      </property>
      <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-      </font>
+      <font/>
      </property>
      <property name="styleSheet">
       <string notr="true">QTabWidget::pane {
@@ -72,9 +70,7 @@ QTabBar::tab:selected {
           </size>
          </property>
          <property name="font">
-          <font>
-           <family>Share Tech Mono</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">background: rgb(51,51,51);
@@ -96,9 +92,7 @@ padding-right: 10px;
           </size>
          </property>
          <property name="font">
-          <font>
-           <family>Share Tech Mono</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">background: rgb(51,51,51);
@@ -126,9 +120,7 @@ padding-right: 10px;
           </size>
          </property>
          <property name="font">
-          <font>
-           <family>Share Tech Mono</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">background: rgb(51,51,51);
@@ -159,9 +151,7 @@ padding-right: 10px;
           </size>
          </property>
          <property name="font">
-          <font>
-           <family>Share Tech Mono</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">background: rgb(51,51,51);
@@ -180,9 +170,7 @@ padding-right: 10px;
        <item row="1" column="0" colspan="4">
         <widget class="QLabel" name="statusComPortLabel">
          <property name="font">
-          <font>
-           <family>Share Tech Mono</family>
-          </font>
+          <font/>
          </property>
          <property name="text">
           <string/>
@@ -200,7 +188,6 @@ padding-right: 10px;
         <widget class="QLabel" name="networkIpLabel">
          <property name="font">
           <font>
-           <family>Share Tech Mono</family>
            <pointsize>8</pointsize>
           </font>
          </property>
@@ -230,16 +217,14 @@ padding-right: 10px;
           </size>
          </property>
          <property name="font">
-          <font>
-           <family>Share Tech Mono</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">border: 1px solid #ffffff;
 border-radius: 4px;</string>
          </property>
          <property name="text">
-          <string>127.0.1.0</string>
+          <string>127.0.0.1</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -250,7 +235,6 @@ border-radius: 4px;</string>
         <widget class="QLabel" name="networkPortLabel">
          <property name="font">
           <font>
-           <family>Share Tech Mono</family>
            <pointsize>8</pointsize>
           </font>
          </property>
@@ -281,7 +265,6 @@ border-radius: 4px;</string>
          </property>
          <property name="font">
           <font>
-           <family>Share Tech Mono</family>
            <pointsize>8</pointsize>
           </font>
          </property>
@@ -312,9 +295,7 @@ border: 1px solid #ffffff;</string>
           </size>
          </property>
          <property name="font">
-          <font>
-           <family>Share Tech Mono</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">background: rgb(51,51,51);
@@ -334,7 +315,6 @@ padding-right: 10px;
         <widget class="QLabel" name="networkStatusLabel">
          <property name="font">
           <font>
-           <family>Share Tech Mono</family>
            <pointsize>10</pointsize>
           </font>
          </property>

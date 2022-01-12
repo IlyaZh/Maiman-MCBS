@@ -12,36 +12,36 @@ Test_Modbus::Test_Modbus(QObject *parent) :
 
 
     QByteArray res;
-    res.append(static_cast<quint8>(0x01));
-    res.append(static_cast<quint8>(0x03));
-    res.append(static_cast<quint8>(0x00));
-    res.append(static_cast<quint8>(0x0A));
-    res.append(static_cast<quint8>(0x00));
-    res.append(static_cast<quint8>(0x02));
-    res.append(static_cast<quint8>(0xe4));
-    res.append(static_cast<quint8>(0x09));
+    res.append(static_cast<char>(0x01));
+    res.append(static_cast<char>(0x03));
+    res.append(static_cast<char>(0x00));
+    res.append(static_cast<char>(0x0A));
+    res.append(static_cast<char>(0x00));
+    res.append(static_cast<char>(0x02));
+    res.append(static_cast<char>(0xe4));
+    res.append(static_cast<char>(0x09));
     m_result.append(res);
 
     res.clear();
-    res.append(static_cast<quint8>(0x02));
-    res.append(static_cast<quint8>(0x06));
-    res.append(static_cast<quint8>(0x00));
-    res.append(static_cast<quint8>(0x03));
-    res.append(static_cast<quint8>(0x00));
-    res.append(static_cast<quint8>(0x50));
-    res.append(static_cast<quint8>(0x79));
-    res.append(static_cast<quint8>(0xc5));
+    res.append(static_cast<char>(0x02));
+    res.append(static_cast<char>(0x06));
+    res.append(static_cast<char>(0x00));
+    res.append(static_cast<char>(0x03));
+    res.append(static_cast<char>(0x00));
+    res.append(static_cast<char>(0x50));
+    res.append(static_cast<char>(0x79));
+    res.append(static_cast<char>(0xc5));
     m_result.append(res);
 
     res.clear();
-    res.append(static_cast<quint8>(0x00));
-    res.append(static_cast<quint8>(0x06));
-    res.append(static_cast<quint8>(0x00));
-    res.append(static_cast<quint8>(0x01));
-    res.append(static_cast<quint8>(0x00));
-    res.append(static_cast<quint8>(0xff));
-    res.append(static_cast<quint8>(0x99));
-    res.append(static_cast<quint8>(0x9b));
+    res.append(static_cast<char>(0x00));
+    res.append(static_cast<char>(0x06));
+    res.append(static_cast<char>(0x00));
+    res.append(static_cast<char>(0x01));
+    res.append(static_cast<char>(0x00));
+    res.append(static_cast<char>(0xff));
+    res.append(static_cast<char>(0x99));
+    res.append(static_cast<char>(0x9b));
     m_result.append(res);
 }
 
@@ -73,25 +73,25 @@ void Test_Modbus::test_SetZeroData() {
 
 void Test_Modbus::test_Execute() {
     QByteArray toDevice;
-    toDevice.append(static_cast<quint8>(0x03));
-    toDevice.append(static_cast<quint8>(0x03));
-    toDevice.append(static_cast<quint8>(0x00));
-    toDevice.append(static_cast<quint8>(0x40));
-    toDevice.append(static_cast<quint8>(0x00));
-    toDevice.append(static_cast<quint8>(0x02));
-    toDevice.append(static_cast<quint8>(0xc4));
-    toDevice.append(static_cast<quint8>(0x3d));
+    toDevice.append(static_cast<char>(0x03));
+    toDevice.append(static_cast<char>(0x03));
+    toDevice.append(static_cast<char>(0x00));
+    toDevice.append(static_cast<char>(0x40));
+    toDevice.append(static_cast<char>(0x00));
+    toDevice.append(static_cast<char>(0x02));
+    toDevice.append(static_cast<char>(0xc4));
+    toDevice.append(static_cast<char>(0x3d));
 
     QByteArray fromDevice;
-    fromDevice.append(static_cast<quint8>(0x03));
-    fromDevice.append(static_cast<quint8>(0x03));
-    fromDevice.append(static_cast<quint8>(0x04));
-    fromDevice.append(static_cast<quint8>(0x00));
-    fromDevice.append(static_cast<quint8>(0x00));
-    fromDevice.append(static_cast<quint8>(0x00));
-    fromDevice.append(static_cast<quint8>(0x00));
-    fromDevice.append(static_cast<quint8>(0xD9));
-    fromDevice.append(static_cast<quint8>(0xF3));
+    fromDevice.append(static_cast<char>(0x03));
+    fromDevice.append(static_cast<char>(0x03));
+    fromDevice.append(static_cast<char>(0x04));
+    fromDevice.append(static_cast<char>(0x00));
+    fromDevice.append(static_cast<char>(0x00));
+    fromDevice.append(static_cast<char>(0x00));
+    fromDevice.append(static_cast<char>(0x00));
+    fromDevice.append(static_cast<char>(0xD9));
+    fromDevice.append(static_cast<char>(0xF3));
 
     ModbusProtocol::DataVector result = m_protocol->execute(fromDevice, toDevice);
     ModbusProtocol::DataVector temp;

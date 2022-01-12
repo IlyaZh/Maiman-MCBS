@@ -1,5 +1,7 @@
 #include "device.h"
 #include <QMapIterator>
+#include <QDebug>
+#include <QDateTime>
 
 //Device::Device(quint16 id, quint8 addr, const QString& name, const DeviceDelays &delays, const QVector<DevCommandBuilder*> &commandsBld, QObject *parent)
 Device::Device(quint8 addr, const DeviceModel& config, QObject *parent)
@@ -65,6 +67,10 @@ const DevicePollRequest Device::nextPollRequest() {
     if(m_cmdReqIt >= m_cmdRequests.size()) m_cmdReqIt = 0;
     while(m_cmdReqIt < m_cmdRequests.size()) {
         DevicePollRequest request = m_cmdRequests.at(m_cmdReqIt);
+        if(m_addr == 1)
+            for(const auto& item : m_cmdRequests) {
+                qDebug() << "1) " << item.code << item.addr << item.count << item.interval;
+            }
         m_cmdReqIt++;
         if(request.isRequestReady()) {
             return request;
@@ -92,9 +98,10 @@ void Device::changeTemperatureUnit(Const::TemperatureUnitId id) {
 void Device::unlink() {
     m_isLink = false;
     m_cmdRequests.clear();
-    for(auto& command : m_Commands.values()) {
-        disconnect(command.get(), &DevCommand::sendValueSignal, this, &Device::dataFromCommand);
+    for(auto it = m_Commands.begin(); it != m_Commands.end(); ++it) {
+        disconnect(it.value().get(), &DevCommand::sendValueSignal, this, &Device::dataFromCommand);
     }
+    qDebug() << "Device unlink" << m_addr << QDateTime::currentDateTime().time().toString("mm:ss.zzz");
     emit linkChanged(m_isLink);
 }
 
@@ -113,8 +120,6 @@ void Device::createCommandsRequests() {
     int count = 0;
 
     QMapIterator<quint16, QSharedPointer<DevCommand>> i(m_Commands);
-
-    qDebug() << "createCommandsRequests " << m_Commands.keys();
 
     for(auto it = m_Commands.begin(); it != m_Commands.end(); ++it) {
         auto cmd = it.value();

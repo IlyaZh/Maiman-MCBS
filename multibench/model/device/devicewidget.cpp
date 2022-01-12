@@ -97,13 +97,13 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         auto hiddenWidget = new HiddenWidget(this);
         hiddenWidget->layout()->setContentsMargins(10,12,10,0);
         //int maxUnitsLength=0;
-        auto maxUnitsLength = *std::max_element(std::begin(readOnlyWidgets),std::end(readOnlyWidgets),
+        auto maxUnitsLengthIt = *std::max_element(std::begin(readOnlyWidgets),std::end(readOnlyWidgets),
                                                 [=](ReadParameterWidget* widgetA,ReadParameterWidget* widgetB){
             return widgetA->getUnitslength()<widgetB->getUnitslength();
         });
         for(auto item : readOnlyWidgets) {
             item->setContentsMargins(0,0,0,4);
-            item->setUnitsLength(maxUnitsLength->getUnitslength());
+            item->setUnitsLength(maxUnitsLengthIt->getUnitslength());
             hiddenWidget->addWidget(item);
         }
         readOnlyWidgets.clear();
@@ -113,8 +113,8 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
     // Инициализация checkbox'ов
     QPointer<HiddenWidget> hiddenWidget;
-    for(const auto &item : m_description.checkboxes) {
-        if(!hiddenWidget){
+    for(const auto &item : qAsConst(m_description.checkboxes)) {
+        if(!hiddenWidget)
             hiddenWidget = new HiddenWidget(this);
             hiddenWidget->layout()->setContentsMargins(10,12,10,0);
         }
@@ -166,7 +166,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     // Инциализация кнопок Laser и TEC
 //    ui->laserButton->hide();
 //    ui->tecButton->hide();
-    for(const auto &button : m_description.buttons) {
+    for(const auto &button : qAsConst(m_description.buttons)) {
         QPointer<QPushButton> pButton;
         if(button.name.compare("laser", Qt::CaseInsensitive) == 0 && m_commands.contains(button.code)) {
             m_laserButton = new QPushButton("Laser", this);
@@ -295,7 +295,7 @@ void DeviceWidget::adjust() {
 // private slots
 
 void DeviceWidget::setLaserButton(quint16 value) {
-    for(const auto& button : m_description.buttons) {
+    for(const auto& button : qAsConst(m_description.buttons)) {
         if(button.name == "Laser") {
 //            ui->laserButton->setChecked((value & button.mask) != 0);
             m_laserButton->setChecked((value & button.mask) != 0);
@@ -304,7 +304,7 @@ void DeviceWidget::setLaserButton(quint16 value) {
 }
 
 void DeviceWidget::setTecButton(quint16 value) {
-    for(const auto& button : m_description.buttons) {
+    for(const auto& button : qAsConst(m_description.buttons)) {
         if(button.name == "Tec") {
 //            ui->tecButton->setChecked((value & button.mask) != 0);
             m_tecButton->setChecked((value & button.mask) != 0);

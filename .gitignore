@@ -75,3 +75,5 @@ build-*/
 common/
 MWB_Release/
 MWB_Debug/
+.idea/
+.vscode/
