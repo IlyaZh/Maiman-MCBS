@@ -133,6 +133,7 @@ double DevCommand::minValue() const {
 
 // public slots
 void DevCommand::setFromDevice(quint16 value) {
+    bool check = (value != m_rawValue);
     m_rawValue = value;
 
     double d = 0;
@@ -148,9 +149,6 @@ void DevCommand::setFromDevice(quint16 value) {
         m_value = convertCelToFar(m_value);
     }
 
-    m_iValue = static_cast<int>(m_value);
-    m_strValue = QString::number(m_value, 'f', static_cast<int>(m_config.m_tolerance));
-
     if(m_logValues) {
         if(m_cmdIt < m_logValues->size()) {
             m_cmdSum -= m_logValues->at(m_cmdIt);
@@ -160,7 +158,13 @@ void DevCommand::setFromDevice(quint16 value) {
             m_cmdIt = 0;
     }
 
-    emit updatedValue();
+    m_iValue = static_cast<int>(m_value);
+    if(check || firstRun) {
+        firstRun = false;
+        m_strValue = QString::number(m_value, 'f', static_cast<int>(m_config.m_tolerance));
+
+        emit updatedValue();
+    }
 }
 
 void DevCommand::setFromWidget(int value) {

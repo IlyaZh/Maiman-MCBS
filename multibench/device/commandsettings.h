@@ -70,6 +70,7 @@ private:
     double m_cmdSum = 0;
     int m_cmdIt = 0;
     Const::TemperatureUnitId m_tempId;
+    bool firstRun{true};
 
     quint16 getRawFromValue(double value) const;
 };
