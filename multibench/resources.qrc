@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon.ico</file>
+        <file>resources/fonts/ShareTechMono-Regular.ttf</file>
+        <file>resources/images/logo.jpg</file>
+        <file>resources/images/maiman-logo-minimal.png</file>
+        <file>resources/images/hidecontrols-icon.png</file>
+        <file>resources/images/pinSymbol-activated.png</file>
+        <file>resources/images/pinSymbol-disactivated.png</file>
+        <file>resources/images/showcontrols-icon.png</file>
+    </qresource>
+</RCC>

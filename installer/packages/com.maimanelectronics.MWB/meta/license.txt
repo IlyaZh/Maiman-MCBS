@@ -1,0 +1,25 @@
+LICENSE AGREEMENT
+This program is protected by national laws and international copyright agreements. The exclusive rights to use this program belong to its author/publisher.
+The program and its components can be used for free, without license fees, for an unlimited time.
+Commercial distribution of the program is prohibited. (It is forbidden to take money for distributing the program).
+The program is delivered "as is".
+The program can be included in paid collections and placed on sites other than the copyright holder's site only with the permission of the copyright holder.
+
+LIMITATION OF WARRANTY OBLIGATIONS
+The program may contain errors. The copyright holder is not responsible for possible errors in the program.
+The copyright holder does not guarantee that the functions contained in the program will meet the stated requirements or that the program will not be interrupted due to an error.
+The copyright holder expressly disclaims all written and assumed default warranties, including limitations on the application of warranties after a certain period and the product's shelf life.
+In no event shall the copyright holder be liable to the user for any damages, whether physical or commercial, caused by this program, including lost profits, loss of data, damage to reputation, or other incidental or consequential damages resulting from the use or inability to use this program. Claims for any other property claims of the program user are also not accepted.
+
+COPYRIGHT
+All exclusive copyrights to the program belong to the copyright holder.
+You can't disassemble the program, change anything in it, or add new features to it.
+When distributing the program, you must specify the name of the copyright holder, their contact information, and the copyright holder's website.
+
+MONITORING COMPLIANCE WITH OBLIGATIONS
+This license agreement complies with national copyright laws. This agreement is based on a new version of these laws, which cancels all other agreements and agreements previously applied to this product.
+All disputes are resolved by mutual agreement of the parties, and if no agreement has been reached, then in the courts of General jurisdiction.
+
+CONTACT INFORMATION
+info@maimanelectronics.com
+Maiman Electronics © 2017

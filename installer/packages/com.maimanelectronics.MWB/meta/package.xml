@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Multi Workbench</DisplayName>
+    <Description>Multidevice Workbench for Maiman Electronics devices</Description>
+    <Version>1.0.0</Version>
+	<Licenses>
+        <License name="License Agreement" file="license.txt" />
+    </Licenses>
+	<UpdateText></UpdateText>
+    <ReleaseDate>2021-12-01</ReleaseDate>
+        <Default>true</Default>
+    <Name>com.maimanelectronics.MWB</Name>
+    <ForcedInstallation>true</ForcedInstallation>
+    <RequiresAdminRights>true</RequiresAdminRights>
+</Package>
