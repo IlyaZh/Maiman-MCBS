@@ -7,6 +7,8 @@ DataThread::~DataThread() {
     m_isWork = false;
     m_condition.wakeOne();
     m_mtx.unlock();
+    qDebug()<<"DATA THREAD DESTRUCTIOR";
+    wait();
 }
 
 // public slots
@@ -30,8 +32,9 @@ void DataThread::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool
     m_next = pack;
 
     if(!isRunning()) {
-        start(LowPriority);
-        m_isWork = true;
+        //start(LowPriority);
+        start();
+        //m_isWork = true;
     } else {
         m_condition.wakeOne();
     }
@@ -39,7 +42,9 @@ void DataThread::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool
 
 void DataThread::stop() {
     m_mtx.lock();
+    qDebug()<<"M_ISWORK stop -"<<m_isWork;
     m_isWork = false;
+    qDebug()<<"DATA THREAD STOP";
     if(isRunning())
         m_condition.wakeOne();
     m_mtx.unlock();
@@ -62,6 +67,7 @@ void DataThread::run() {
     emit connected();
 
     while(m_isWork) {
+        qDebug()<<"M_ISWORK circle -"<<m_isWork;
         Package package;
         {
             QMutexLocker locker(&m_mtx);
@@ -112,6 +118,7 @@ void DataThread::run() {
             }
             qDebug() << "====\n";
         }
+        if(!m_isWork) break;
         emit readyToWrite();
         m_mtx.lock();
         m_condition.wait(&m_mtx);
@@ -119,6 +126,7 @@ void DataThread::run() {
         QThread::msleep(m_delay);
     }
     m_device->close();
+    qDebug()<< "Thread run quit";
 //    emit finished();
 }
 

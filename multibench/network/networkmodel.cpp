@@ -67,6 +67,7 @@ void NetworkModel::start(QScopedPointer<IDataSource>& source)
         emit signal_connected(false);
         m_isStart = false;
 //        thread->quit();
+        qDebug()<<"DATA thread finished";
         m_worker->deleteLater();
     });
 //    connect(thread, &QThread::started, m_worker, &DataThread::process);
@@ -208,6 +209,7 @@ void NetworkModel::pollRequest() {
         } else if (!m_queue.isEmpty()) {
             package = m_queue.dequeue();
         } else {
+            qDebug()<<"m-deice.size()="<<m_devices.size();
             for(const auto& dev : qAsConst(m_devices)) {
                 const DevicePollRequest request = dev->nextPollRequest();
                 qDebug() << request.code << request.addr << request.count;
@@ -218,8 +220,10 @@ void NetworkModel::pollRequest() {
 //                    emit signal_writeData(package, waitForBytes, false);
                 }
             }
-            if(!m_queue.isEmpty())
+            if(!m_queue.isEmpty() && m_isStart){
                 package = m_queue.dequeue();
+                qDebug() << "QUEUE!!!!!!!";
+            }
             else
                 qDebug() << "EMPTY QUEUE!!!!!!!";
         }
