@@ -17,7 +17,9 @@ const QString Const::AppNameTitle = "Maiman BenchSoft Multichannel";
 
 const QStringList Const::TemperatureUnitNames({"Celsius", "Fahrenheit"});
 
-const int Const::NetworkTimeoutMSecs = 300;
+const int Const::NetworkTimeoutMSecs::defaultValue = 300;
+const int Const::NetworkTimeoutMSecs::min = 10;
+const int Const::NetworkTimeoutMSecs::max = 1000;
 
 const int Const::NetworkDelayMSecs = 50;
 

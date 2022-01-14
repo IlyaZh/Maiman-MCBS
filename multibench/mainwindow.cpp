@@ -213,7 +213,11 @@ void MainWindow::callAboutDialog(){
 
 void MainWindow::setNetworkTimeout(){
     bool ok;
-    quint16 timeout = QInputDialog::getInt(this,"Network Timeout","Timeout",AppSettings::getNetworkTimeout(),0,1000,1,&ok);
+    int timeout = QInputDialog::getInt(this,"Network Timeout","Timeout",
+                                       AppSettings::getNetworkTimeout(),
+                                       Const::NetworkTimeoutMSecs::min,
+                                       Const::NetworkTimeoutMSecs::max,
+                                       1,&ok);
     if (ok)
         emit timeoutChanged(timeout);
 }

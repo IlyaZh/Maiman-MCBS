@@ -29,6 +29,13 @@ public:
 signals:
 //    void valueChanged(quint16 reg, double value);
 
+private slots:
+    void setValue(/*double value, int decimal*/);
+    void setMaxValue(/*double value, int decimal*/);
+    void setMinValue(/*double value, int decimal*/);
+    void setRealValue(/*double value, int decimal*/);
+    void setUnits(QStringView units);
+
 private:
     Ui::CommandWidget *ui;
 //    const Control& m_settings;
@@ -40,11 +47,7 @@ private:
     QSharedPointer<DevCommand> m_Min;
     bool isUserEdit = false;
 
-    void setValue(/*double value, int decimal*/);
-    void setMaxValue(double value, int decimal);
-    void setMinValue(double value, int decimal);
-    void setRealValue(double value, int decimal);
-    void setUnits(QString units);
+
 
     void adjust();
 private slots:

@@ -25,41 +25,43 @@ ControlWidget::ControlWidget(QStringView name,
 //        m_Validator->setRange(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
 
         ui->Value->setValidator(m_Validator);
-        setMinValue(m_Min->valueDouble(),m_Min->tolerance());
-        setMaxValue(m_Max->valueDouble(),m_Max->tolerance());
+        setMinValue(/*m_Min->valueDouble(),m_Min->tolerance()*/);
+        setMaxValue(/*m_Max->valueDouble(),m_Max->tolerance()*/);
         setValue(/*m_Value->valueDouble(),m_Value->tolerance()*/);
         if (m_Real.isNull()){
             ui->Real->setText("Set");
-            setRealValue(m_Value->valueDouble(),m_Value->tolerance());
+            setRealValue(/*m_Value->valueDouble(),m_Value->tolerance()*/);
         }
         else{
             ui->Real->setText("Real");
-            setRealValue(m_Real->valueDouble(),m_Real->tolerance());
+            setRealValue(/*m_Real->valueDouble(),m_Real->tolerance()*/);
         }
         setUnits(m_Value->unit());
 
-        connect(m_Value.get(), &DevCommand::updatedValue, this, [this](){
-            if(!isUserEdit) {
-                setValue(/*m_Value->valueDouble(), m_Value->tolerance()*/);
-            }
-        });
-        connect(m_Value.get(), &DevCommand::updatedUnit, this, [this](QStringView unit){
-            setUnits(unit.toString());
-        });
-        connect(m_Min.get(), &DevCommand::updatedValue, this, [this](){
-            setMinValue(m_Min->valueDouble(), m_Min->tolerance());
-            m_Validator->setRange(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
-        });
-        connect(m_Max.get(), &DevCommand::updatedValue, this, [this](){
-            setMaxValue(m_Max->valueDouble(), m_Max->tolerance());
-            m_Validator->setRange(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
-        });
+//        connect(m_Value.get(), &DevCommand::updatedValue, this, [this](){
+//            if(!isUserEdit) {
+//                setValue(/*m_Value->valueDouble(), m_Value->tolerance()*/);
+//            }
+//            if (m_Value->code() == 0x07) qDebug()<<"DURATION ______________________________________________________________________________"<<m_Value->valueInt();
+//        });
+        connect(m_Value.get(), &DevCommand::updatedValue, this, &ControlWidget::setValue);
+
+        connect(m_Value.get(), &DevCommand::updatedUnit, this, &ControlWidget::setUnits);
+        setUnits(m_Value->unit());
+        connect(m_Min.get(), &DevCommand::updatedValue, this, &ControlWidget::setMinValue);
+        connect(m_Max.get(), &DevCommand::updatedValue, this, &ControlWidget::setMaxValue);
+//        connect(m_Min.get(), &DevCommand::updatedValue, this, [this](){
+//            setMinValue(m_Min->valueDouble(), m_Min->tolerance());
+//            m_Validator->setRange(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
+//        });
+//        connect(m_Max.get(), &DevCommand::updatedValue, this, [this](){
+//            setMaxValue(m_Max->valueDouble(), m_Max->tolerance());
+//            m_Validator->setRange(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
+//        });
     }
 
     if(m_Real) {
-        connect(m_Real.get(), &DevCommand::updatedValue, this, [this](){
-            setRealValue(m_Real->valueDouble(), m_Real->tolerance());
-        });
+        connect(m_Real.get(), &DevCommand::updatedValue, this, &ControlWidget::setRealValue);
     }
 
 //    connect(ui->Value, &QLineEdit::editingFinished,
@@ -96,38 +98,40 @@ void ControlWidget::userEnteredValue(){
 }
 
 void ControlWidget::setValue(/*double value, int decimal*/){
+    if (m_Value->code() == 0x07) qDebug()<<"SET VALUE ______________________________________________________________________________"<<m_Value->valueInt()<<isUserEdit;
+    const QString value = m_Value->valueStr();
     if(!isUserEdit) {
         if(m_Value) {
-            const QString value = m_Value->valueStr();
             ui->Value->setText(value);
-
-            if(m_Real.isNull()) {
-                ui->RealValue->setText(value);
-            }
         }
+    }
+    if(m_Real.isNull()) {
+        ui->RealValue->setText(value);
     }
 }
 
 
-void ControlWidget::setUnits(QString units){
-    ui->RealUnits->setText(units);
-    ui->MaxUnits->setText(units);
-    ui->MinUnits->setText(units);
+void ControlWidget::setUnits(QStringView units){
+    ui->RealUnits->setText(units.toString());
+    ui->MaxUnits->setText(units.toString());
+    ui->MinUnits->setText(units.toString());
 }
 
-void ControlWidget::setMaxValue(double value, int decimal){
+void ControlWidget::setMaxValue(/*double value, int decimal*/){
 //    QString maxStr = QString::number(value, 'f', decimal);
 //    ui->MaxValue->setText(maxStr);
     ui->MaxValue->setText(m_Max->valueStr());
+    m_Validator->setTop(m_Max->valueDouble());
 }
 
-void ControlWidget::setMinValue(double value, int decimal){
+void ControlWidget::setMinValue(/*double value, int decimal*/){
 //    QString minStr = QString::number(value, 'f', decimal);
 //    ui->MinValue->setText(minStr);
     ui->MinValue->setText(m_Min->valueStr());
+    m_Validator->setBottom(m_Min->valueDouble());
 }
 
-void ControlWidget::setRealValue(double value, int decimal){
+void ControlWidget::setRealValue(/*double value, int decimal*/){
 //    QString realStr = QString::number(value, 'f', decimal);
 //    ui->RealValue->setText(realStr);
     if(m_Real)

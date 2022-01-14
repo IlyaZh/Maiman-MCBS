@@ -36,7 +36,7 @@ private:
         qint64 m_waitSize {0};
     };
 
-    qint64 m_timeout {Const::NetworkTimeoutMSecs};
+    qint64 m_timeout {Const::NetworkTimeoutMSecs::defaultValue};
     qint64 m_delay {Const::NetworkDelayMSecs};
     qint64 m_waitRxBytes {-1};
     QByteArray m_lastWrittenMsg;
