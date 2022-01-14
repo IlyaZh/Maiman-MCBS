@@ -7,7 +7,6 @@ DataThread::~DataThread() {
     m_isWork = false;
     m_condition.wakeOne();
     m_mtx.unlock();
-    qDebug()<<"DATA THREAD DESTRUCTIOR";
     wait();
 }
 
@@ -32,9 +31,7 @@ void DataThread::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool
     m_next = pack;
 
     if(!isRunning()) {
-        //start(LowPriority);
         start();
-        //m_isWork = true;
     } else {
         m_condition.wakeOne();
     }
@@ -42,9 +39,7 @@ void DataThread::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool
 
 void DataThread::stop() {
     m_mtx.lock();
-    qDebug()<<"M_ISWORK stop -"<<m_isWork;
     m_isWork = false;
-    qDebug()<<"DATA THREAD STOP";
     if(isRunning())
         m_condition.wakeOne();
     m_mtx.unlock();
@@ -67,14 +62,12 @@ void DataThread::run() {
     emit connected();
 
     while(m_isWork) {
-        qDebug()<<"M_ISWORK circle -"<<m_isWork;
         Package package;
         {
             QMutexLocker locker(&m_mtx);
             package = m_next;
 
         }
-//        QScopedPointer<QDeadlineTimer> timeoutTmr(new QDeadlineTimer(m_timeout));
         m_lastWrittenMsg = package.m_data;
         m_waitRxBytes = package.m_waitSize;
 
@@ -85,12 +78,9 @@ void DataThread::run() {
             emit timeout(m_lastWrittenMsg);
         } else {
             QByteArray buffer;
-//            timeoutTmr.reset(new QDeadlineTimer(m_timeout));
-//            while(!timeoutTmr->hasExpired()) {
                 QThread::msleep(10);
                 qDebug() << "bytes = " << m_device->bytesAvailable();
                 while(m_device->waitForReadyRead(m_timeout))
-//                if(m_device->bytesAvailable() > 0)
                 {
                     int need = m_waitRxBytes-buffer.size();
                     if(need > 0){
@@ -105,10 +95,7 @@ void DataThread::run() {
                         qDebug() << "rx complete";
                         break;
                     }
-//                } else {
-//                    QThread::yieldCurrentThread();
                 }
-//            }
             if(buffer.isEmpty()) {
                 qDebug() << "timeout" << QDateTime::currentDateTime().time().toString("mm:ss.zzz");
                 emit timeout(m_lastWrittenMsg);
@@ -127,7 +114,6 @@ void DataThread::run() {
     }
     m_device->close();
     qDebug()<< "Thread run quit";
-//    emit finished();
 }
 
 
