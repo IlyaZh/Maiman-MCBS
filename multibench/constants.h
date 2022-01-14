@@ -25,7 +25,13 @@ struct Const {
         Celsius,
         Fahrenheit
     };
-    static const int NetworkTimeoutMSecs;
+
+    struct NetworkTimeoutMSecs {
+        static const int defaultValue;
+        static const int min;
+        static const int max;
+    };
+
     static const int NetworkDelayMSecs;
 
     static const QString SecretCodeCombination;

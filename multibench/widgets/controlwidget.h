@@ -34,6 +34,7 @@ private slots:
     void setMaxValue(/*double value, int decimal*/);
     void setMinValue(/*double value, int decimal*/);
     void setRealValue(/*double value, int decimal*/);
+    void setUnits(QStringView units);
 
 private:
     Ui::CommandWidget *ui;
@@ -46,7 +47,7 @@ private:
     QSharedPointer<DevCommand> m_Min;
     bool isUserEdit = false;
 
-    void setUnits(QString units);
+
 
     void adjust();
 private slots:

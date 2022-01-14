@@ -46,9 +46,7 @@ ControlWidget::ControlWidget(QStringView name,
 //        });
         connect(m_Value.get(), &DevCommand::updatedValue, this, &ControlWidget::setValue);
 
-//        connect(m_Value.get(), &DevCommand::updatedUnit, this, [this](QStringView unit){
-//            setUnits(unit.toString());
-//        });
+        connect(m_Value.get(), &DevCommand::updatedUnit, this, &ControlWidget::setUnits);
         setUnits(m_Value->unit());
         connect(m_Min.get(), &DevCommand::updatedValue, this, &ControlWidget::setMinValue);
         connect(m_Max.get(), &DevCommand::updatedValue, this, &ControlWidget::setMaxValue);
@@ -63,9 +61,7 @@ ControlWidget::ControlWidget(QStringView name,
     }
 
     if(m_Real) {
-        connect(m_Real.get(), &DevCommand::updatedValue, this, [this](){
-            setRealValue(/*m_Real->valueDouble(), m_Real->tolerance()*/);
-        });
+        connect(m_Real.get(), &DevCommand::updatedValue, this, &ControlWidget::setRealValue);
     }
 
 //    connect(ui->Value, &QLineEdit::editingFinished,
@@ -115,10 +111,10 @@ void ControlWidget::setValue(/*double value, int decimal*/){
 }
 
 
-void ControlWidget::setUnits(QString units){
-    ui->RealUnits->setText(units);
-    ui->MaxUnits->setText(units);
-    ui->MinUnits->setText(units);
+void ControlWidget::setUnits(QStringView units){
+    ui->RealUnits->setText(units.toString());
+    ui->MaxUnits->setText(units.toString());
+    ui->MinUnits->setText(units.toString());
 }
 
 void ControlWidget::setMaxValue(/*double value, int decimal*/){

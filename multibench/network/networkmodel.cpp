@@ -37,8 +37,10 @@ void NetworkModel::getBaudrate(){
 
 void NetworkModel::setTimeout(int timeout) {
     m_timeoutMs = timeout;
-    if(m_worker)
+    if(m_worker){
         m_worker->setTimeout(m_timeoutMs);
+        AppSettings::setNetworkTimeout(m_timeoutMs);
+    }
 }
 
 
