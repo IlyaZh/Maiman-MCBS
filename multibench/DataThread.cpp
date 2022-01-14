@@ -49,7 +49,7 @@ void DataThread::stop() {
 
 //void DataThread::process()
 void DataThread::run() {
-    static int waitForConnected = Const::NetworkTimeoutMSecs;
+    int waitForConnected = m_timeout;
     QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
     while(!m_device->isOpen()) {
         --waitForConnected;
