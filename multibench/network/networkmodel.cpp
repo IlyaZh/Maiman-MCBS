@@ -111,15 +111,10 @@ void NetworkModel::rescanNetwork()
     }
 
     if(m_worker) {
-        for(const auto item : addresses.keys()){
+        for(const auto item : addresses.keys()) {
             auto package = m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
-//            qint64 waitForBytes = m_protocol.waitForBytes(package);
             m_priorityQueue.enqueue(package);
-//            m_worker->writeAndWaitBytes(package, waitForBytes, true);
-//            qDebug() << "signal";
-//            emit signal_writeData(package, waitForBytes, true);
         }
-//        m_worker->writeAndWaitBytes(package, waitForBytes);
     }
 }
 

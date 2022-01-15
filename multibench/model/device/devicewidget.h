@@ -96,12 +96,8 @@ public:
 public slots:
     void setLink(bool link);
 
-//signals:
-//    void sizeChanged(const QSize& size);
-
 private:
     Ui::DeviceWidget *ui;
-    //const DeviceWidgetDesc &m_description; // TODO:: Очень жирная штука...
     const QMap<quint16, Button> &m_buttons;
     QMap<quint16, QVariant> m_values;
     QVector<HiddenWidget*> m_widgets;
@@ -116,7 +112,6 @@ private:
 
     void paintEvent(QPaintEvent*) override;
     void adjust();
-//    void resizeEvent(QResizeEvent *event) override;
 
     static const QString linkStyleOn;
     static const QString linkStyleOff;
@@ -126,8 +121,8 @@ private:
 private slots:
     void setLaserButton(quint16 value);
     void setTecButton(quint16 value);
-    void laserButtonClicked(bool state);
-    void tecButtonClicked(bool state);
+    void laserButtonClicked();
+    void tecButtonClicked();
     void hideControlsButtonClicked(bool flag);
     void pinButtonClicked(int idx, bool state);
 };

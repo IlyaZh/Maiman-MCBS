@@ -55,10 +55,10 @@ CalibrationDialog::~CalibrationDialog()
 }
 
 void CalibrationDialog::saveResult(){
-    for(const auto& item : m_calibrationWidgets){
+    for(const auto& item : qAsConst(m_calibrationWidgets )){
         item->sendValue();
     }
-    for(const auto& item : m_limitsWidgets){
+    for(const auto& item : qAsConst(m_limitsWidgets)) {
         item->sendValue();
     }
     this->deleteLater();

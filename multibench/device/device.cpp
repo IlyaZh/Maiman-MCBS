@@ -68,7 +68,7 @@ const DevicePollRequest Device::nextPollRequest() {
     while(m_cmdReqIt < m_cmdRequests.size()) {
         DevicePollRequest request = m_cmdRequests.at(m_cmdReqIt);
         if(m_addr == 1)
-            for(const auto& item : m_cmdRequests) {
+            for(const auto& item : qAsConst(m_cmdRequests)) {
                 qDebug() << "1) " << item.code << item.addr << item.count << item.interval;
             }
         m_cmdReqIt++;
