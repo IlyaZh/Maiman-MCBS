@@ -35,7 +35,6 @@ void ReadNoUnitParameterWidget::setup(QStringView name, QSharedPointer<DevComman
         });
     }
 
-    /*setValue(m_settings.real, value);*/
     setValue(m_command->valueDouble(), m_command->tolerance());
     m_labelValue->setText("");
 

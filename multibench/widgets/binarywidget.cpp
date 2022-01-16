@@ -30,7 +30,6 @@ BinaryWidget::~BinaryWidget()
 void BinaryWidget::checkBoxClicked(bool checked) {
     qDebug() << ((checked) ? m_settings.onCommand : m_settings.offCommand) << checked;
     m_cmd->setFromWidget((checked) ? m_settings.onCommand : m_settings.offCommand);
-//    ui->statusCheckbox->setCheckState(Qt::CheckState::PartiallyChecked);
 }
 
 // private methods

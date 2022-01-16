@@ -191,7 +191,6 @@ const QMap<quint16, CommandSettings> DeviceFactory::parseCommands(const TreeItem
             const TreeItem& child = cmd.child(i);
 
             if(child.name() == "code") {
-//                code = child.value().toUInt();
                 code = child.value().toString().toUInt(nullptr, 16);
             }
 

@@ -5,10 +5,11 @@
 #include <QtWidgets>
 #include "factories/parserworker.h"
 #include "device/devicewidget.h"
-#include "widgets/calibrationandlimitswidget.h"
-#include "widgets/calibrationdialog.h"
 
 class DevCommand;
+class CalibrationDialog;
+class CalibrationAndLimitsWidget;
+class TreeItem;
 
 class GuiFactory : public QObject
 {

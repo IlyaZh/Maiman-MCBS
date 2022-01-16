@@ -111,7 +111,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     if(readOnlyWidgets.count() > 0) {
         auto hiddenWidget = new HiddenWidget(this);
         hiddenWidget->layout()->setContentsMargins(10,12,10,0);
-        //int maxUnitsLength=0;
         auto maxUnitsLengthIt = *std::max_element(std::begin(readOnlyWidgets),std::end(readOnlyWidgets),
                                                 [=](ReadParameterWidget* widgetA,ReadParameterWidget* widgetB){
             return widgetA->getUnitslength()<widgetB->getUnitslength();
@@ -221,12 +220,11 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     }
     m_widgetLayout->setAlignment(Qt::AlignTop);
     m_widgetLayout->setContentsMargins(0,2,0,0);
-    m_widgetLayout->setSpacing(0);//9
+    m_widgetLayout->setSpacing(0);
     ui->widgetBox->setLayout(m_widgetLayout);
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
     m_condiotion = new DeviceCondition(m_commands,description.leds,ui->conditionLabel);
-    //ui->widgetBox->setStyleSheet("QWidget { border: 1px solid red; }");
     adjust();
 
     //TODO:: label_2, для отображения строки состояния драйвера, команда 0700
@@ -260,27 +258,14 @@ void DeviceWidget::adjust() {
     ui->widgetBox->adjustSize();
     this->adjustSize();
     this->setMinimumSize(this->size());
-
-    //emit sizeChanged(this->size());
 }
-
-//void DeviceWidget::resizeEvent(QResizeEvent *event) {
-
-//}
-
-//void DeviceWidget::setValue(quint16 reg, int value) {}
 
 // private slots
 
 void DeviceWidget::setLaserButton(quint16 value) {
     for(const auto& button : qAsConst(m_buttons)) {
         if(button.name == "Laser") {
-//            ui->laserButton->setChecked((value & button.mask) != 0);
-            if((value & button.mask) != 0)
-                m_laserButton->setStyleSheet(buttonOn);
-            else
-                m_laserButton->setStyleSheet(buttonOff);
-            //m_laserButton->setChecked((value & button.mask) != 0);
+            m_laserButton->setStyleSheet(((value & button.mask) != 0) ? buttonOn : buttonOff);
         }
     }
 }
@@ -288,12 +273,7 @@ void DeviceWidget::setLaserButton(quint16 value) {
 void DeviceWidget::setTecButton(quint16 value) {
     for(const auto& button : qAsConst(m_buttons)) {
         if(button.name == "Tec") {
-//            ui->tecButton->setChecked((value & button.mask) != 0);
-            if((value & button.mask) != 0)
-                m_tecButton->setStyleSheet(buttonOn);
-            else
-                m_tecButton->setStyleSheet(buttonOff);
-            //m_tecButton->setChecked((value & button.mask) != 0);
+            m_tecButton->setStyleSheet(((value & button.mask) != 0) ? buttonOn : buttonOff);
         }
     }
 }
@@ -353,7 +333,6 @@ void DeviceWidget::hideControlsButtonClicked(bool flag) {
 }
 
 void DeviceWidget::pinButtonClicked(int idx, bool state) {
-//    qDebug() << "pinButtonClicked" << idx << state;
     if(idx < m_widgets.count()) {
         auto widget = m_widgets.at(idx);
         widget->setPinned(state);

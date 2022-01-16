@@ -46,11 +46,9 @@ void NetworkModel::setTimeout(int timeout) {
 
 void NetworkModel::start(QScopedPointer<IDataSource>& source)
 {
-//    auto thread = new QThread;
     m_worker = new DataThread;
     m_worker->setTimeout(m_timeoutMs);
     m_worker->configure(source);
-//    m_worker->moveToThread(thread);
 
     rescanNetwork();
     pollRequest();
@@ -58,24 +56,18 @@ void NetworkModel::start(QScopedPointer<IDataSource>& source)
     connect(m_worker, &DataThread::connected, this, [this]() {
         emit signal_connected(true);
         m_isStart = true;
-//        rescanNetwork();
     });
-//    connect(this, &NetworkModel::signal_writeData, m_worker, &DataThread::writeAndWaitBytes);
     connect(m_worker, &DataThread::readyToWrite, this, &NetworkModel::pollRequest);
     connect(m_worker, &DataThread::timeout, this, &NetworkModel::timeout);
     connect(m_worker, &DataThread::errorOccured, this, &NetworkModel::signal_errorOccured);
     connect(m_worker, &DataThread::readyRead, this, &NetworkModel::readyRead);
-    connect(m_worker, &DataThread::finished, this, [this/*, thread*/](){
+    connect(m_worker, &DataThread::finished, this, [this](){
         emit signal_connected(false);
         m_isStart = false;
-//        thread->quit();
         qDebug()<<"DATA thread finished";
         m_worker->deleteLater();
     });
-//    connect(thread, &QThread::started, m_worker, &DataThread::process);
-//    connect(thread, &QThread::finished, thread, &QObject::deleteLater);
-        m_worker->start();
-//    thread->start();
+    m_worker->start();
 }
 
 bool NetworkModel::isStart() {
@@ -169,9 +161,6 @@ void NetworkModel::dataOutcome(quint8 addr, quint16 reg, quint16 value)
     if(m_worker) {
         auto package = m_protocol.setDataValue(addr, reg, value);
         m_priorityQueue.enqueue(package);
-//        qint64 waitForBytes = m_protocol.waitForBytes(package);
-//        m_worker->writeAndWaitBytes(package, waitForBytes, true);
-//        emit signal_writeData(package, waitForBytes, true);
     }
 }
 
@@ -184,7 +173,6 @@ void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
 // private slots
 void NetworkModel::timeout(const QByteArray& lastPackage) {
     if(m_worker) {
-//        auto package = m_worker->lastPackage();
         if(!lastPackage.isEmpty()) {
             auto device = m_devices.value(static_cast<quint8>(lastPackage.at(0)));
             if(device) {
@@ -213,16 +201,11 @@ void NetworkModel::pollRequest() {
                 if(request.code != 0) {
                     auto wrotePack = m_protocol.getDataValue(request.addr, request.code, request.count);
                     m_queue.enqueue(wrotePack);
-    //                m_worker->writeAndWaitBytes(package, waitForBytes, false);
-//                    emit signal_writeData(package, waitForBytes, false);
                 }
             }
             if(!m_queue.isEmpty() && m_isStart){
                 package = m_queue.dequeue();
-                qDebug() << "QUEUE!!!!!!!";
             }
-            else
-                qDebug() << "EMPTY QUEUE!!!!!!!";
         }
         if(!package.isEmpty()) {
             qint64 waitForBytes = m_protocol.waitForBytes(package);

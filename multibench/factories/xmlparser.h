@@ -15,8 +15,6 @@ public:
     virtual bool start() override;
 
 private:
-//    TreeItem* m_lastTree = nullptr;
-
     TreeItem* parseTag(QXmlStreamReader* xml);
     TreeItem* parseAttribs(QString name, QVariant value);
 

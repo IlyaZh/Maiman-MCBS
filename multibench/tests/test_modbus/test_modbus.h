@@ -4,7 +4,6 @@
 #include <QPointer>
 #include <QTimer>
 #include <QQueue>
-//#include "network/protocols/modbusprotocol.h"
 #include "network/SoftProtocol.h"
 
 struct Package {

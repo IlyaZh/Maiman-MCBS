@@ -46,15 +46,7 @@ void UpdatesChecker::checkForUpdates() {
         qDebug() << m_maintanceProcess->errorString();
         emit errorOccured(m_maintanceProcess->errorString());
     });
-    //    connect(maintanceProcess, &QProcess::stateChanged, this, [](QProcess::ProcessState newState){
-    //        qDebug() << newState;
-    //    });
-
-    //    connect(maintanceProcess, &QProcess::started, this, [](){
-    //        qDebug() << "started";
-    //    });
     connect(m_maintanceProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &UpdatesChecker::analyzeOutput);
-    //    connect(m_maintanceProcess, &QProcess::readyReadStandardOutput, this, &UpdatesChecker::analyzeOutput);
     m_maintanceProcess->start(m_updaterFile, args);
 }
 

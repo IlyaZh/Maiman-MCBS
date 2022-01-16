@@ -69,9 +69,3 @@ struct Const {
     static const QString DEFAULT_LOG_FILENAME;
     static const QString DEFAULT_LOG_FILEPATH;
 };
-
-//static const int DEFAULT_DIGITS_AFTER_POINT = 2;
-//#define DEFAULT_FORMAT_FOR_PARAMETERS 'f', DEFAULT_DIGITS_AFTER_POINT
-//static const char DOUBLE_FORMAT = 'f';
-
-//enum deviceStatusMask {START_STOP_MASK = 0x2, CURRENT_EXT_INT_MASK = 0x4, START_EXT_INT_MASK = 0x10, BLOCK_THERMO_MASK = 0x40, BLOCK_USE_IGNORE_MASK = 0x80};

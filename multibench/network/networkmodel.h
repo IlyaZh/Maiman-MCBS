@@ -55,7 +55,7 @@ private:
     SoftProtocol& m_protocol;
     QMap<quint8, QSharedPointer<Device>> m_devices;
     bool m_isStart = false;
-    int m_timeoutMs {300};
+    int m_timeoutMs {Const::NetworkTimeoutMSecs::defaultValue};
     QPointer<DataThread> m_worker;
     QQueue<QByteArray> m_queue;
     QQueue<QByteArray> m_priorityQueue;

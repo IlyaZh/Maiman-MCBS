@@ -26,19 +26,15 @@ public:
                            QWidget *parent = nullptr);
     ~ControlWidget();
 
-signals:
-//    void valueChanged(quint16 reg, double value);
-
 private slots:
-    void setValue(/*double value, int decimal*/);
-    void setMaxValue(/*double value, int decimal*/);
-    void setMinValue(/*double value, int decimal*/);
-    void setRealValue(/*double value, int decimal*/);
+    void setValue();
+    void setMaxValue();
+    void setMinValue();
+    void setRealValue();
     void setUnits(QStringView units);
 
 private:
     Ui::CommandWidget *ui;
-//    const Control& m_settings;
     QDoubleValidator* m_Validator;
     QVector<DevCommand> m_Commands;
     QSharedPointer<DevCommand> m_Real;

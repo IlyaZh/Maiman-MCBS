@@ -1,7 +1,5 @@
 #include "datasource.h"
 
-//DataSource* DataSource::m_im = nullptr;
-
 DataSource::DataSource(QObject* parent) :
     QObject(parent),
     m_tcpSocket(new QTcpSocket(this)),

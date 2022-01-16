@@ -3,14 +3,12 @@
 #include <QDebug>
 #include <QDateTime>
 
-//Device::Device(quint16 id, quint8 addr, const QString& name, const DeviceDelays &delays, const QVector<DevCommandBuilder*> &commandsBld, QObject *parent)
 Device::Device(quint8 addr, const DeviceModel& config, QObject *parent)
     : QObject(parent),
       m_addr(addr),
       m_Id(config.id),
       m_Name(config.name),
       m_Delays(config.delays)
-    //    m_timer(new QTimer(this))
 {
     for(const auto &cmdBuilder : config.commands) {
         auto command = new DevCommand(cmdBuilder);
@@ -20,10 +18,6 @@ Device::Device(quint8 addr, const DeviceModel& config, QObject *parent)
     }
 
     createCommandsRequests();
-
-    //    m_timer->setInterval(Const::ComPortTimeout);
-    //    m_timer->setSingleShot(true);
-    //    connect(m_timer, &QTimer::timeout, this, &Device::timeout);
 
     qDebug() << "Create device" << m_addr << m_Name << m_Id << "Counter";
 }
@@ -39,17 +33,11 @@ void Device::dataIncome(quint16 reg, quint16 value) {
     auto cmd = m_Commands.value(reg, nullptr);
     if(cmd) {
         emit linkChanged(m_isLink);
-        //        m_timer->stop();
-        //        if(m_timeoutEnabled)
-        //            m_timer->start();
 
         cmd->setFromDevice(value);
     }
 }
 
-//void Device::destroy() {
-//    this->disconnect();
-//}
 
 QString Device::name() {
     return m_Name;
@@ -105,13 +93,6 @@ void Device::unlink() {
     emit linkChanged(m_isLink);
 }
 
-//void Device::enableTimeout(bool enable) {
-//    m_timeoutEnabled = enable;
-//    if(!m_timeoutEnabled) {
-//        m_timer->stop();
-//    }
-//}
-
 // private methods
 void Device::createCommandsRequests() {
     m_cmdRequests.clear();
@@ -152,9 +133,3 @@ void Device::dataFromCommand(quint16 reg, quint16 value) {
     if (m_isLink)
         emit dataToModel(m_addr, reg, value);
 }
-
-//void Device::timeout() {
-//    m_isLink = false;
-//    emit link(m_isLink);
-//}
-

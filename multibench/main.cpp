@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-//#include "interfaces/mainwindowcontrollerinterface.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -13,7 +12,6 @@
 #include <QCommandLineOption>
 #include "factories/Parser.h"
 #include "datasource.h"
-//#include "DebugMode.h"
 #include <QFontDatabase>
 #include "modelguimediator.h"
 
@@ -50,15 +48,6 @@ int main(int argc, char *argv[])
     QLocale::setDefault(QLocale::English);
     wlocale = QLocale(QLocale::system());
 
-    ////========================
-    /// 1. создаем экземпляры парсеров
-    ///     а. парсер данных
-    ///     б. парсер gui
-    /// 2. парсим данные
-    /// 3. Создаем экземпляры MainWindow, Controller и Model
-    /// 4. передаем данные gui в MainWindow и в DeviceModel
-    ////========================
-
     MainWindow w;
     w.setFont(Const::ApplicationDefaultFontPath);
     w.show();
@@ -66,23 +55,13 @@ int main(int argc, char *argv[])
     // DataSource dataSource;
 
     GuiFactory guiFactory("device_gui.xml");
-//    MainViewFacade mvCntrl(dataSource, settings, guiFactory);
-//    mvCntrl.addView(&w);
 
     DeviceFactory deviceFactory("device_db.xml");
 
-    // Фасад для управления потоками данных от модели к представлению
-    //MainFacade mainFacade(w, guiFactory);
 
     ModbusProtocol modbus;
-    // Модель данных (подключается к источнику данных и забирает их)
-    //NetworkModel model(deviceFactory, modbus, mainFacade);
     NetworkModel model(deviceFactory, modbus);
-//    model.setDelay(100);
-    model.setTimeout(300);
 
-    // Контроллер главного окна, управляет потоком данных от GUI к моделии
-    //MainController mainCtrl(w, model);
     ModelGuiMediator mainMediator(w, guiFactory, model);
 
 #ifdef QT_DEBUG

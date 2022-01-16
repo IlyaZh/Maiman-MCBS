@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QObject>
-//#include "../device/commandsettings.h"
 #include "device.h"
 #include "constants.h"
 #include <QPixmap>

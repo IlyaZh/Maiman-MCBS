@@ -8,7 +8,6 @@ HiddenWidget::HiddenWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     m_layout = new QVBoxLayout();
-    //m_layout->setMargin(0);
     m_layout->setSpacing(0);
     m_layout->setContentsMargins(0,0,0,0);
 
@@ -44,10 +43,6 @@ void HiddenWidget::addWidget(QWidget* newWidget) {
         widget->show();
     }
 }
-
-//QVector<QWidget*> HiddenWidget::widgets() {
-//    return m_widgets;
-//}
 
 bool HiddenWidget::isShown() const {
     return m_isVisible;

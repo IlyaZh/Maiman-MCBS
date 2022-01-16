@@ -19,9 +19,6 @@ public:
     explicit BinaryWidget(const Checkbox &settings, QSharedPointer<DevCommand> cmd, QWidget *parent = nullptr);
     ~BinaryWidget();
 
-signals:
-//    void valueChanged(quint16 cmd, quint8 bit, bool state);
-
 private slots:
     void checkBoxClicked(bool checked);
 

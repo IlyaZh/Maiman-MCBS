@@ -19,7 +19,6 @@ public:
     explicit ConnectionWidget(QWidget *parent = nullptr);
     ~ConnectionWidget();
 
-//public slots:
     void setBaudList(const QStringList& baudrateList);
     void setPortList(const QStringList& portList);
     void setCurrentComPort(QStringView port);

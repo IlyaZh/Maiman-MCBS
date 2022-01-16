@@ -1,5 +1,7 @@
 #include "guifactory.h"
 #include <QDebug>
+#include "widgets/calibrationandlimitswidget.h"
+#include "widgets/calibrationdialog.h"
 
 class DevCommand;
 
@@ -41,29 +43,11 @@ CalibrationDialog* GuiFactory::createCalibrationDialog(quint16 id, const QMap<qu
     return nullptr;
 }
 
-/*
-QVector<CalibrateDialog*> GuiFactory::createDeviceCalibrationDialog(quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands){
-    if(m_deviceWidgets.contains(id)) {
-        QVector<CalibrateDialog*> calibVec;
-        auto& calibration = m_deviceWidgets[id].calibration;
-        for (auto& item:calibration){
-            for (auto command:commands){
-                if(command->code() == item.code)
-                    calibVec.append(new CalibrateDialog(&item, command));
-            }
-        }
-        return calibVec;
-    }
-    return QVector<CalibrateDialog*>();
-}
-*/
-
 // private slots
 
 void GuiFactory::parsingFinished() {
     m_parseWorker->disconnect();
     TreeItem* parserTree = m_parseWorker->data();
-    //    m_parseWorker->deleteLater();
     if(parseTree(*parserTree)) {
         qDebug() << "Gui Parse tree is ok!";
     } else {

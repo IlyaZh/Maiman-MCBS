@@ -53,7 +53,6 @@ private:
     QPointer<QActionGroup> m_baudrateGroup;
     UpdateWidget* m_updater;
     QPointer<AboutDialog> m_About;
-    // QVector<CalibrationMenu*> m_calibrationDialogs;
 protected:
     void closeEvent(QCloseEvent *event) override;
 

@@ -47,7 +47,6 @@ void DataThread::stop() {
 
 // private methods
 
-//void DataThread::process()
 void DataThread::run() {
     int waitForConnected = m_timeout;
     QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());

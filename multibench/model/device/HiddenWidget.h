@@ -17,7 +17,6 @@ public:
     explicit HiddenWidget(QWidget *parent = nullptr);
     ~HiddenWidget();
     void addWidget(QWidget* widget);
-//    QVector<QWidget*> widgets();
     bool isShown() const;
     void setShown(bool show);
     bool isPinned() const;

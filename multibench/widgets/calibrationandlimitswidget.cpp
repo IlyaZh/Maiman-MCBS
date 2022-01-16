@@ -37,7 +37,6 @@ CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(const CalibrationKoef& ca
     QDialog(parent),
     m_command(command),
     ui(new Ui::CalibrationAndLimitsWidget)
-    //m_calibration(calibration)
 {
     ui->setupUi(this);
     maxValue = calibration.max;
@@ -62,7 +61,6 @@ CalibrationAndLimitsWidget::CalibrationAndLimitsWidget(const Limit& limit,QShare
     QDialog(parent),
     m_command(command),
     ui(new Ui::CalibrationAndLimitsWidget)
-    //m_limit(limit)
 {
     ui->setupUi(this);
     ui->nameParameter->setText(limit.name);

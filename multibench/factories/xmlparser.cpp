@@ -17,7 +17,6 @@ bool XmlParser::start() {
 
             QXmlStreamReader::TokenType token = xml->readNext();
             if(token == QXmlStreamReader::StartElement) {
-                 //xml->readElementText(QXmlStreamReader::SkipChildElements);
                 if(m_tree == nullptr) {
                     m_tree = parseTag(xml);
                 } else {
@@ -74,10 +73,6 @@ TreeItem* XmlParser::parseTag(QXmlStreamReader* xml) {
             if(tagText.compare(" ") != 0) {
                 variant->setValue(tagText);
             }
-//            items->append(new TreeItem("value", QVariant(xml)));
-//            QString st = xml->readElementText(QXmlStreamReader::IncludeChildElements);
-//            if(!st.isEmpty())
-//            qDebug() << tagName.toString() << st;
         }
     }
 

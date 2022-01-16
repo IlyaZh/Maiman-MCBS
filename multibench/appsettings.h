@@ -2,16 +2,8 @@
 #define APPSETTINGS_H
 
 #include <QtCore>
-
-//#include <QObject>
-//#include <QSettings>
-//#include <QPoint>
-//#include <QSize>
-//#include <QDir>
 #include <QSet>
 #include "constants.h"
-#include "datasource.h"
-//#include <QScopedPointer>
 
 typedef struct NetworkData_s {
     PortType type;
@@ -39,11 +31,9 @@ public:
     static int getNetworkTimeout();
     static QMap<quint8,quint8> getDeviceAddresses();
     static bool getKeepAddresses();
-    //    QSize getWindowSize();
 
 private:
     static QScopedPointer<QSettings> settings;
-    //    QString m_errorString;
 
 signals:
 
@@ -60,11 +50,10 @@ public slots:
     static void removeRecentOpenFiles(QString str);
     static void setWindowPosition(QPoint);
     static void setComStopBits(int);
-    static void setNetworkData(/*NetworkData_s*/QVariant netData);
+    static void setNetworkData(QVariant netData);
     static void setNetworkTimeout(int timeoutMs);
     static void setDeviceAddresses(const QMap<quint8,quint8>& addr);
     static void setKeepAddresses(bool flag);
-    //    static void setWindowSize(QSize);
 };
 
 #endif // APPSETTINGS_H
