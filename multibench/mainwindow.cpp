@@ -213,13 +213,13 @@ void MainWindow::callAboutDialog(){
 
 void MainWindow::setNetworkTimeout(){
     bool ok;
-    int timeout = QInputDialog::getInt(this,"Network Timeout","Timeout",
-                                       AppSettings::getNetworkTimeout(),
-                                       Const::NetworkTimeoutMSecs::min,
-                                       Const::NetworkTimeoutMSecs::max,
+    int delay = QInputDialog::getInt(this,"Network Delay","Delay",
+                                       AppSettings::getNetworkDelay(),
+                                       Const::NetworkDelayMSecs::min,
+                                       Const::NetworkDelayMSecs::max,
                                        1,&ok);
     if (ok)
-        emit timeoutChanged(timeout);
+        emit delayChanged(delay);
 }
 
 void MainWindow::triggeredRescanNetwork(){

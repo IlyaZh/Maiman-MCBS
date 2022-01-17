@@ -27,7 +27,7 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
     connect(&window, &MainWindow::rescanNetwork, this, &ModelGuiMediator::rescan);
     connect(&window, &MainWindow::createCalibAndLimitsWidgets, this, &ModelGuiMediator::createCalibAndLimitsWidgets);
 
-    connect(&window, &MainWindow::timeoutChanged, &networkModel, &NetworkModel::setTimeout);
+    connect(&window, &MainWindow::delayChanged, &networkModel, &NetworkModel::setDelay);
 }
 
 void ModelGuiMediator::createWidgetFor(Device* device) {

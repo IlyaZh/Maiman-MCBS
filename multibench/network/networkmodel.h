@@ -25,7 +25,7 @@ public:
     static const quint16 TIMEOUT_MS;
     explicit NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& protocol, QObject *parent = nullptr);
     ~NetworkModel();
-    void setTimeout(int timeout);
+    void setDelay(int delay);
     void start(QScopedPointer<IDataSource>& source);
     bool isStart();
     void stop();
@@ -55,7 +55,7 @@ private:
     SoftProtocol& m_protocol;
     QMap<quint8, QSharedPointer<Device>> m_devices;
     bool m_isStart = false;
-    int m_timeoutMs {Const::NetworkTimeoutMSecs::defaultValue};
+    int m_timeoutMs {Const::NetworkTimeoutMSecs};
     QPointer<DataThread> m_worker;
     QQueue<QByteArray> m_queue;
     QQueue<QByteArray> m_priorityQueue;
