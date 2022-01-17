@@ -33,24 +33,14 @@ void ReadParameterWidget::setup(QStringView name, QSharedPointer<DevCommand> cmd
     if(m_command) {
         setValue(m_command->valueDouble(), m_command->tolerance());
         connect(m_command.get(), &DevCommand::updatedValue, this, [this](){
-            if (m_command->code() == 3){
-                setUnit(QString::number(m_command->valueDouble()));
-                setUnitsLength(getUnitslength());
-            }
-            else
-                setValue(m_command->valueDouble(), m_command->tolerance());
+            setValue(m_command->valueDouble(), m_command->tolerance());
         });
         connect(m_command.get(), &DevCommand::updatedUnit, this, [this](QStringView unit){
-            if (m_command->code() == 3)
-                m_labelValue->setText("");
-            else
-                setUnit(unit.toString());
+            setUnit(unit.toString());
         });
     }
 
     setValue(m_command->valueDouble(), m_command->tolerance());
-    if (m_command->code() == 3)
-        m_labelValue->setText("");
 
     m_layout->addWidget(m_labelParameter);
     m_layout->addSpacerItem(new QSpacerItem(0,20,QSizePolicy::Expanding));

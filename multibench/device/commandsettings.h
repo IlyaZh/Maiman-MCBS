@@ -5,6 +5,7 @@
 #include <QQueue>
 #include <QPair>
 #include "constants.h"
+#include "appsettings.h"
 
 class DevCommand;
 
@@ -69,7 +70,7 @@ private:
     QScopedPointer<QVector<double>> m_logValues;
     double m_cmdSum = 0;
     int m_cmdIt = 0;
-    Const::TemperatureUnitId m_tempId;
+    Const::TemperatureUnitId m_tempId{AppSettings::getTemperatureUnit()};
     bool firstRun{true};
 
     quint16 getRawFromValue(double value) const;

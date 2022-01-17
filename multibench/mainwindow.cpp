@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent)
         Const::TemperatureUnitId id = (action->text() == "Celsius") ?
                     Const::TemperatureUnitId::Celsius :
                     Const::TemperatureUnitId::Fahrenheit;
-
+        AppSettings::setTemperatureUnit(id);
         emit tempratureUnitsChanged(id);
 
     });
