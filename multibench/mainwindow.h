@@ -10,6 +10,7 @@ class UpdateWidget;
 // class CalibrationMenu;
 class CalibrationAndLimitsWidget;
 class DeviceWidget;
+class RescanProgressWidget;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,6 +41,7 @@ public slots:
     void setStatusMessage(const QString& msg, int timeout = 10);
     void triggeredRescanNetwork();
     void addCalibrationMenu(quint8 addr,quint16 id);
+    void rescanProgress(int current, int total);
 private slots:
     void connectTriggered();
     void callAboutDialog();
@@ -53,6 +55,7 @@ private:
     QPointer<QActionGroup> m_baudrateGroup;
     UpdateWidget* m_updater;
     QPointer<AboutDialog> m_About;
+    QPointer<RescanProgressWidget> m_progressWidget;
 protected:
     void closeEvent(QCloseEvent *event) override;
 

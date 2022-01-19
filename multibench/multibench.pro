@@ -81,6 +81,7 @@ SOURCES += \
     widgets/calibrationdialog.cpp \
     widgets/readnounitparameterwidget.cpp \
     widgets/readparameterfactory.cpp \
+    widgets/rescanprogresswidget.cpp \
     widgets/updatewidget.cpp \
     widgets/aboutdialog.cpp \
     widgets/connectionwidget.cpp \
@@ -124,6 +125,7 @@ HEADERS += \
     widgets/calibrationdialog.h \
     widgets/readnounitparameterwidget.h \
     widgets/readparameterfactory.h \
+    widgets/rescanprogresswidget.h \
     widgets/updatewidget.h \
     widgets/aboutdialog.h \
     widgets/connectionwidget.h \
@@ -155,7 +157,8 @@ FORMS += \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
     widgets/controlwidget.ui \
-    widgets/readparameterwidget.ui
+    widgets/readparameterwidget.ui \
+    widgets/rescanprogresswidget.ui
 
 debug:SUBDIRS += tests
 

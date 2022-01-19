@@ -47,6 +47,7 @@ signals:
     void signal_connected(bool);
     void signal_errorOccured(const QString& error);
     void signal_writeData(const QByteArray& msg, qint64 waitBytes, bool priority);
+    void signal_rescanProgress(int current, int total);
 
 
 
@@ -59,6 +60,8 @@ private:
     QPointer<DataThread> m_worker;
     QQueue<QByteArray> m_queue;
     QQueue<QByteArray> m_priorityQueue;
+    int m_rescanCommandsCount {0};
+    int m_rescanCommandsDone {0};
 
     void clear();
     void initDevice(quint8 addr, quint16 id);
