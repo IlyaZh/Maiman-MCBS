@@ -150,8 +150,9 @@ void MainWindow::setComPorts(const QStringList& portList) {
         action->setCheckable(true);
         m_portGroup->addAction(action);
         ui->menuPorts->addAction(action);
-        if (port == AppSettings::getComPort())
+        if (port == AppSettings::getNetworkData().host)
             action->setChecked(true);
+        qDebug()<<"HOST"<<AppSettings::getNetworkData().host;
     }
     ui->menuPorts->addSeparator();
     connect(ui->menuPorts->addAction("Refresh"), &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
@@ -171,8 +172,9 @@ void MainWindow::setBaudRates(const QStringList& baudsList) {
         action->setCheckable(true);
         m_baudrateGroup->addAction(action);
         ui->menuBaudrates->addAction(action);
-        if (baudrate.toUInt() == AppSettings::getComBaudrate())
+        if (baudrate.toInt() == AppSettings::getNetworkData().port)
             action->setChecked(true);
+        qDebug()<<"PORT"<<AppSettings::getNetworkData().port;
         //m_baudrateGroup->addAction(ui->menuBaudrates->addAction(baudrate))->setCheckable(true);
     }
 }
@@ -233,7 +235,7 @@ void MainWindow::triggeredRescanNetwork(){
     emit rescanNetwork();
 }
 
-void MainWindow::changeCalibrationMenuName(QString name, int addr){
+void MainWindow::deviceNameChanged(QString name, int addr){
     QList<QAction*> actions = ui->menuCalibration->actions();
     for(auto item:actions){
         if(item->text().contains(QString("ID:%1").arg(addr))){
@@ -243,8 +245,4 @@ void MainWindow::changeCalibrationMenuName(QString name, int addr){
                 item->setText(QString(name + " ID:%1").arg(addr));
         }
     }
-}
-
-void MainWindow::deviceNameChanged(QString name, int addr){
-    changeCalibrationMenuName(name, addr);
 }

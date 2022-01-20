@@ -29,9 +29,9 @@ int AppSettings::getComStopBits() { return settings->value("userSettings/comPort
 NetworkData_s AppSettings::getNetworkData() {
     NetworkData_s netData;
     netData.type = static_cast<PortType>(settings->value("network/type", 0).toUInt());
-    netData.host = settings->value("network/host", "").toString();
-    netData.port = settings->value("network/port", 0).toInt();
-
+    netData.host = settings->value("network/comport", "").toString();
+    netData.port = settings->value("network/baudrate", 0).toInt();
+    qDebug()<< settings->value("network");
     return netData;
 }
 
@@ -71,7 +71,8 @@ void AppSettings::setWindowPosition(QPoint pos) { settings->setValue("window/pos
 void AppSettings::setComStopBits(int value) { settings->setValue("userSettings/comPort/stopBits", value); }
 
 void AppSettings::setNetworkData(QVariant netData) {
-    settings->setValue("network", netData);
+    settings->setValue("network/comport", netData.toMap().value("comport"));
+    settings->setValue("network/baudrate", netData.toMap().value("baudrate"));
 }
 
 void AppSettings::setNetworkDelay(int delayMs) {

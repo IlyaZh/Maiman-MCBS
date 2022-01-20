@@ -70,13 +70,8 @@ void ControlWidget::userEnteredValue(){
     double valueFromLine =  ui->Value->text().toDouble();
     ui->Value->clearFocus();
 
-    if(valueFromLine > m_Max->valueDouble()){
-        valueFromLine = m_Max->valueDouble();
-        setEditLineRed();
-        QTimer::singleShot(ErrorTimeout, this, SLOT(setEditLineWhite()));
-    }
-    else if(valueFromLine < m_Min->valueDouble()){
-        valueFromLine = m_Min->valueDouble();
+    if(valueFromLine > m_Max->valueDouble() or valueFromLine < m_Min->valueDouble()){
+        valueFromLine = qBound(m_Min->valueDouble(), valueFromLine, m_Max->valueDouble());
         setEditLineRed();
         QTimer::singleShot(ErrorTimeout, this, SLOT(setEditLineWhite()));
     }
