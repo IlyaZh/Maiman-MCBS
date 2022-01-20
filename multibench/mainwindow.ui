@@ -50,10 +50,15 @@ QPushButton {
 	padding: 4px;
 }
 
-QPushButton:checked {
+QMenu:checked {
 	color: rgb(150, 150, 150);
 }
-
+QMenu:hover {
+	color: rgb(150, 150, 150);
+}
+QMenu::item:selected {
+	background-color: rgb(81, 81, 81);
+}
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -235,12 +240,12 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
      </property>
      <addaction name="actionRefresh_baud"/>
     </widget>
+    <addaction name="actionConnect"/>
     <addaction name="menuPorts"/>
     <addaction name="menuBaudrates"/>
     <addaction name="actionKeepAddresses"/>
     <addaction name="actionTimeout"/>
     <addaction name="actionRescan"/>
-    <addaction name="actionConnect"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">

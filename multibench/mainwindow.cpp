@@ -127,6 +127,8 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         widget->setParent(this);
         m_workWidgets.append(widget);
         m_workFieldLayout->addWidget(widget);
+
+        connect(widget, &DeviceWidget::nameEdited, this, &MainWindow::changeCalibrationMenuName);
     }
 }
 
@@ -229,4 +231,16 @@ void MainWindow::triggeredRescanNetwork(){
     ui->menuCalibration->clear();
     m_workWidgets.clear();
     emit rescanNetwork();
+}
+
+void MainWindow::changeCalibrationMenuName(QString name, int addr){
+    QList<QAction*> actions = ui->menuCalibration->actions();
+    for(auto item:actions){
+        if(item->text().contains(QString("ID:%1").arg(addr))){
+            if(name == "")
+                item->setText(QString("ID:%1").arg(addr));
+            else
+                item->setText(QString(name + " ID:%1").arg(addr));
+        }
+    }
 }
