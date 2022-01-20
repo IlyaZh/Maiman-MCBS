@@ -30,7 +30,8 @@ double DevCommand::convertFarToCel(double value) {
 
 // public methods
 DevCommand::DevCommand(const CommandSettings& conf) :
-    m_config(conf)
+    m_config(conf),
+    m_tempId(AppSettings::getTemperatureUnit())
 {
     m_rawValue = 0;
     m_strValue = QString::number(0, 'f', static_cast<int>(m_config.m_tolerance));

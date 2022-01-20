@@ -46,6 +46,7 @@ private slots:
     void getKeepAddresses();
     void setNetworkTimeout();
     void changeCalibrationMenuName(QString name, int addr);
+    void deviceNameChanged(QString name, int addr);
 private:
     Ui::MainWindow *ui;
     QVector<DeviceWidget*> m_workWidgets;

@@ -128,7 +128,7 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
         m_workWidgets.append(widget);
         m_workFieldLayout->addWidget(widget);
 
-        connect(widget, &DeviceWidget::nameEdited, this, &MainWindow::changeCalibrationMenuName);
+        connect(widget, &DeviceWidget::nameEdited, this, &MainWindow::deviceNameChanged);
     }
 }
 
@@ -243,4 +243,8 @@ void MainWindow::changeCalibrationMenuName(QString name, int addr){
                 item->setText(QString(name + " ID:%1").arg(addr));
         }
     }
+}
+
+void MainWindow::deviceNameChanged(QString name, int addr){
+    changeCalibrationMenuName(name, addr);
 }

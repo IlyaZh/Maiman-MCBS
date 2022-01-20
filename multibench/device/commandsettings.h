@@ -70,7 +70,7 @@ private:
     QScopedPointer<QVector<double>> m_logValues;
     double m_cmdSum = 0;
     int m_cmdIt = 0;
-    Const::TemperatureUnitId m_tempId{AppSettings::getTemperatureUnit()};
+    Const::TemperatureUnitId m_tempId{Const::TemperatureUnitId::Celsius};
     bool firstRun{true};
 
     quint16 getRawFromValue(double value) const;
