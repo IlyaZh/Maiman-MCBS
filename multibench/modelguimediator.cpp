@@ -44,9 +44,15 @@ void ModelGuiMediator::createWidgetFor(Device* device) {
 }
 
 void ModelGuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id){
-    CalibrationDialog* dialog = m_factory.createCalibrationDialog(id,m_network.getCommands(addr));
-    dialog->setModal(false);
-    dialog->show();
+    if(!m_listOfCalibrationDialog.value(addr)){
+        CalibrationDialog* dialog = m_factory.createCalibrationDialog(id,m_network.getCommands(addr));
+        dialog->setModal(false);
+        dialog->show();
+        m_listOfCalibrationDialog.insert(addr, id);
+        connect(dialog, &CalibrationDialog::calibrationDialogClosed, this, [this, addr](){
+            m_listOfCalibrationDialog.remove(addr);
+        });
+    }
 }
 
 void ModelGuiMediator::setBaudrateToWindow(QStringList baud) {

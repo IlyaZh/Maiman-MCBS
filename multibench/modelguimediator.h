@@ -23,6 +23,7 @@ private:
     MainWindow& m_window;
     GuiFactory& m_factory;
     NetworkModel& m_network;
+    QMap<quint8, quint16> m_listOfCalibrationDialog;
 
 private slots:
     void createWidgetFor(Device* device);
@@ -34,6 +35,7 @@ private slots:
     void setBaudrateToWindow(QStringList baud);
 signals:
     void rescanNetwork();
+    void deletedCalibrationDialog();
 
 };
 
