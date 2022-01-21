@@ -62,6 +62,7 @@ private:
     QQueue<QByteArray> m_priorityQueue;
     int m_rescanCommandsCount {0};
     int m_rescanCommandsDone {0};
+    bool m_flagRescan;
 
     void clear();
     void initDevice(quint8 addr, quint16 id);

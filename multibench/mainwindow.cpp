@@ -139,7 +139,7 @@ void MainWindow::addCalibrationMenu(quint8 addr,quint16 id){
     ui->menuCalibration->addAction(action);
 }
 
-void MainWindow::rescanProgress(int current, int total) {  
+void MainWindow::rescanProgress(int current, int total) {
     if(current == 0 && total > 0) {
             m_progressWidget = new RescanProgressWidget(this);
             m_progressWidget->setProgress(current, total);
@@ -151,14 +151,14 @@ void MainWindow::rescanProgress(int current, int total) {
             m_progressWidget->setProgress(current, total);
             m_workFieldLayout->removeWidget(m_progressWidget);
             m_progressWidget->deleteLater();
-
-            for(auto widget : qAsConst(m_workWidgets)) {
-                m_workFieldLayout->addWidget(widget);
-            }
+        }
+        for(auto widget : qAsConst(m_workWidgets)) {
+            m_workFieldLayout->addWidget(widget);
         }
     } else if(m_progressWidget) {
         m_progressWidget->setProgress(current, total);
     }
+
 }
 
 void MainWindow::setComPorts(const QStringList& portList) {
