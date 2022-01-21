@@ -3,6 +3,8 @@
 #include "model/device/devicewidget.h"
 #include <QDebug>
 
+enum {ErrorTimeout=1000};
+
 ControlWidget::ControlWidget(QStringView name,
                              QSharedPointer<DevCommand> Value,
                              QSharedPointer<DevCommand> Max,
@@ -23,7 +25,7 @@ ControlWidget::ControlWidget(QStringView name,
     if (m_Value and m_Max and m_Min){
         m_Validator = new QDoubleValidator(m_Min->valueDouble(),m_Max->valueDouble(),m_Value->tolerance());
 
-        ui->Value->setValidator(m_Validator);
+        //ui->Value->setValidator(m_Validator);
         setMinValue();
         setMaxValue();
         setValue();
@@ -55,7 +57,7 @@ ControlWidget::ControlWidget(QStringView name,
             this, [this](){
                 isUserEdit = true;
             });
-
+    //connect(ui->Value, &QLineEdit::textChanged, this, &ControlWidget::setEditLineRed);
     adjust();
 }
 
@@ -66,16 +68,30 @@ ControlWidget::~ControlWidget()
 
 void ControlWidget::userEnteredValue(){
     double valueFromLine =  ui->Value->text().toDouble();
+    ui->Value->clearFocus();
 
-    if(valueFromLine >= m_Min->valueDouble() && valueFromLine <= m_Max->valueDouble()) {
-        qDebug() << ui->Value->text();
-
-        if(!m_Value.isNull()) {
-            m_Value->setFromWidget(valueFromLine);
-        }
-
-        qDebug() << "SIGNAL CommandWidget" << m_Value->code() << valueFromLine << m_Value->valueStr();
+    if(valueFromLine > m_Max->valueDouble() or valueFromLine < m_Min->valueDouble()){
+        valueFromLine = qBound(m_Min->valueDouble(), valueFromLine, m_Max->valueDouble());
+        setEditLineRed();
+        QTimer::singleShot(ErrorTimeout, this, SLOT(setEditLineWhite()));
     }
+    qDebug() << ui->Value->text();
+
+    if(!m_Value.isNull()) {
+        m_Value->setFromWidget(valueFromLine);
+    }
+
+    qDebug() << "SIGNAL CommandWidget" << m_Value->code() << valueFromLine << m_Value->valueStr();
+
+//    if(valueFromLine >= m_Min->valueDouble() && valueFromLine <= m_Max->valueDouble()) {
+//        qDebug() << ui->Value->text();
+
+//        if(!m_Value.isNull()) {
+//            m_Value->setFromWidget(valueFromLine);
+//        }
+
+//        qDebug() << "SIGNAL CommandWidget" << m_Value->code() << valueFromLine << m_Value->valueStr();
+//    }
     isUserEdit = false;
 }
 
@@ -118,4 +134,19 @@ void ControlWidget::setRealValue(){
 void ControlWidget::adjust() {
     this->adjustSize();
     this->setMinimumSize(this->size());
+}
+
+void ControlWidget::setEditLineRed(){
+    ui->Value->setStyleSheet("  color: rgb(255, 255, 255);\n"
+                             "	background: rgb(230, 0, 0);\n"
+                             "	border-radius: 5px;\n");
+
+}
+
+void ControlWidget::setEditLineWhite(){
+    ui->Value->setStyleSheet("  color: rgb(0, 0, 0);\n"
+                             "	background: rgb(255, 255, 255);\n"
+                             "	border-radius: 5px;\n");
+    const QString value = m_Value->valueStr();
+    ui->Value->setText(value);
 }

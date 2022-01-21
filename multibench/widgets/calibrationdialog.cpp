@@ -45,8 +45,18 @@ CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const Q
         connect(limitWidget, &CalibrationAndLimitsWidget::editFinished, this, &CalibrationDialog::widgetsAreValid);
     }
 
-    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(saveResult()));
-    connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(deleteLater()));
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &CalibrationDialog::accept);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &CalibrationDialog::reject);
+    connect(this, &CalibrationDialog::finished, this, [this](int result){
+        switch (result) {
+            case QDialog::Accepted:{
+                saveResult();
+            }break;
+            case QDialog::Rejected:{
+                deleteLater();
+            }break;
+        }
+    });
 }
 
 CalibrationDialog::~CalibrationDialog()

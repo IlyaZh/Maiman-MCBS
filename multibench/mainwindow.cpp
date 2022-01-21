@@ -87,7 +87,7 @@ MainWindow::MainWindow(QWidget *parent)
         Const::TemperatureUnitId id = (action->text() == "Celsius") ?
                     Const::TemperatureUnitId::Celsius :
                     Const::TemperatureUnitId::Fahrenheit;
-
+        AppSettings::setTemperatureUnit(id);
         emit tempratureUnitsChanged(id);
 
     });
@@ -127,7 +127,7 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
     if(!m_workWidgets.contains(widget)) {
         widget->setParent(this);
         m_workWidgets.append(widget);
-//        m_workFieldLayout->addWidget(widget);
+        connect(widget, &DeviceWidget::nameEdited, this, &MainWindow::deviceNameChanged);
     }
 }
 
@@ -171,8 +171,9 @@ void MainWindow::setComPorts(const QStringList& portList) {
         action->setCheckable(true);
         m_portGroup->addAction(action);
         ui->menuPorts->addAction(action);
-        if (port == AppSettings::getComPort())
+        if (port == AppSettings::getNetworkData().host)
             action->setChecked(true);
+        qDebug()<<"HOST"<<AppSettings::getNetworkData().host;
     }
     ui->menuPorts->addSeparator();
     connect(ui->menuPorts->addAction("Refresh"), &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
@@ -192,8 +193,9 @@ void MainWindow::setBaudRates(const QStringList& baudsList) {
         action->setCheckable(true);
         m_baudrateGroup->addAction(action);
         ui->menuBaudrates->addAction(action);
-        if (baudrate.toUInt() == AppSettings::getComBaudrate())
+        if (baudrate.toInt() == AppSettings::getNetworkData().port)
             action->setChecked(true);
+        qDebug()<<"PORT"<<AppSettings::getNetworkData().port;
         //m_baudrateGroup->addAction(ui->menuBaudrates->addAction(baudrate))->setCheckable(true);
     }
 }
@@ -243,13 +245,13 @@ void MainWindow::callAboutDialog(){
 
 void MainWindow::setNetworkTimeout(){
     bool ok;
-    int timeout = QInputDialog::getInt(this,"Network Timeout","Timeout",
-                                       AppSettings::getNetworkTimeout(),
-                                       Const::NetworkTimeoutMSecs::min,
-                                       Const::NetworkTimeoutMSecs::max,
+    int delay = QInputDialog::getInt(this,"Network Delay","Delay",
+                                       AppSettings::getNetworkDelay(),
+                                       Const::NetworkDelayMSecs::min,
+                                       Const::NetworkDelayMSecs::max,
                                        1,&ok);
     if (ok)
-        emit timeoutChanged(timeout);
+        emit delayChanged(delay);
 }
 
 void MainWindow::triggeredRescanNetwork(){
@@ -259,4 +261,16 @@ void MainWindow::triggeredRescanNetwork(){
     ui->menuCalibration->clear();
     m_workWidgets.clear();
     emit rescanNetwork();
+}
+
+void MainWindow::deviceNameChanged(QString name, int addr){
+    QList<QAction*> actions = ui->menuCalibration->actions();
+    for(auto item:actions){
+        if(item->text().contains(QString("ID:%1").arg(addr))){
+            if(name == "")
+                item->setText(QString("ID:%1").arg(addr));
+            else
+                item->setText(QString(name + " ID:%1").arg(addr));
+        }
+    }
 }

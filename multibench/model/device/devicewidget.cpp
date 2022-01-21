@@ -11,6 +11,7 @@
 #include "widgets/readparameterfactory.h"
 #include "model/device/HiddenWidget.h"
 #include "model/device/devicecondition.h"
+#include "widgets/inlineedit.h"
 #include <algorithm>
 
 const QString DeviceWidget::linkStyleOn = "QLabel { \
@@ -66,7 +67,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_hideControlsButton->setStyleSheet("border: 2px solid rgb(26,26,26);\nborder-radius: 3px;\nbackground: rgb(51,51,51);\ncolor: rgb(255,255,255);\n"
                                         "padding: 0px;\n"
                                         "margin-left: 10px;\n"
-                                        "margin-bottom: 17px;");
+                                        "margin-bottom: 15px;");
     m_hideControlsButton->setCheckable(true);
     m_hideControlsButton->setChecked(false);
     m_hideControlsButton->setIconSize(QSize(10, 10));
@@ -209,6 +210,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         if(pButton) {
             pButton->setMinimumSize(220, 36);
             pButton->setMaximumHeight(36);
+            pButton->setMaximumWidth(220);
             pButton->setFont(QFont("Share Tech Mono", 18));
             pButton->setStyleSheet(buttonOff);
             pButton->setChecked(false);
@@ -226,7 +228,6 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
 
     m_condiotion = new DeviceCondition(m_commands,description.leds,ui->conditionLabel);
     adjust();
-
     //TODO:: label_2, для отображения строки состояния драйвера, команда 0700
 }
 
@@ -236,12 +237,15 @@ DeviceWidget::~DeviceWidget()
 }
 
 void DeviceWidget::setAddress(int addr) {
-    ui->idLabel->setText(QString("ID:%1").arg(addr));
+    InLineEdit* address = new InLineEdit(addr);
+    ui->gridLayout->addWidget(address,0,2);
+    connect(address, &InLineEdit::nameEdited, this, &DeviceWidget::nameEdited);
+    //ui->idLabel->setText(QString("ID:%1").arg(addr));
 }
 
 void DeviceWidget::setLink(bool link) {
     ui->linkLabel->setStyleSheet(link ? linkStyleOn : linkStyleOff);
-    ui->idLabel->setStyleSheet(link ? labelEnableStyle : labelDisableStyle);
+    //ui->idLabel->setStyleSheet(link ? labelEnableStyle : labelDisableStyle);
     ui->modelLabel->setStyleSheet(link ? labelEnableStyle : labelDisableStyle);
 }
 

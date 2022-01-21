@@ -2,6 +2,7 @@
 #define DEVICEWIDGET_H
 
 #include <QtWidgets>
+#include "widgets/inlineedit.h"
 
 class DevCommand;
 class ControlWidget;
@@ -95,6 +96,8 @@ public:
 
 public slots:
     void setLink(bool link);
+signals:
+    void nameEdited(QString name, int addr);
 
 private:
     Ui::DeviceWidget *ui;

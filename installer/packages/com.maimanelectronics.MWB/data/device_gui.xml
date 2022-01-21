@@ -319,7 +319,7 @@
 		</Limits>
 		<!--  калибровка -->
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">Current calibration</Calibrate>
 			<Calibrate code="008A"
@@ -435,7 +435,7 @@
 		</Limits>
 		<!--  калибровка -->
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">Current calibration</Calibrate>
 			<Calibrate code="008A"
@@ -551,7 +551,7 @@
 		</Limits>
 		<!--  калибровка -->
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">Current calibration</Calibrate>
 			<Calibrate code="008A"
@@ -667,7 +667,7 @@
 		</Limits>
 		<!--  калибровка -->
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">Current calibration</Calibrate>
 			<Calibrate code="008A"
@@ -783,7 +783,7 @@
 		</Limits>
 		<!--  калибровка -->
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">Current calibration</Calibrate>
 			<Calibrate code="008A"
@@ -899,7 +899,7 @@
 		</Limits>
 		<!--  калибровка -->
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">Current calibration</Calibrate>
 			<Calibrate code="008A"
@@ -1015,7 +1015,7 @@
 		</Limits>
 		<!--  калибровка -->
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">Current calibration</Calibrate>
 			<Calibrate code="008A"
@@ -1131,7 +1131,7 @@
 		</Limits>
 		<!--  калибровка -->
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">Current calibration</Calibrate>
 			<Calibrate code="008A"
@@ -1246,7 +1246,7 @@
 		</Limits>
 		<!--  калибровка -->
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">Current calibration</Calibrate>
 			<Calibrate code="008A"
@@ -1362,7 +1362,7 @@
 		</Limits>
 		<!--  калибровка -->
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">Current calibration</Calibrate>
 			<Calibrate code="008A"
@@ -1481,7 +1481,7 @@
      				maxValue="100">NTC temperature warning upper limit</Limit>
 		</Limits>
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">LD set current calibration</Calibrate>
 			<Calibrate code="0A15"
@@ -1604,7 +1604,7 @@
      				maxValue="100">NTC temperature warning upper limit</Limit>
 		</Limits>
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">LD set current calibration</Calibrate>
 			<Calibrate code="0A15"
@@ -1747,7 +1747,7 @@
      				maxValue="100">NTC temperature warning upper limit</Limit>
 		</Limits>
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">LD set current calibration</Calibrate>
 			<Calibrate code="0A15"
@@ -1889,7 +1889,7 @@
      				maxValue="100">NTC temperature warning upper limit</Limit>
 		</Limits>
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">LD set current calibration</Calibrate>
 			<Calibrate code="0A15"
@@ -2031,7 +2031,7 @@
      				maxValue="100">NTC temperature warning upper limit</Limit>
 		</Limits>
 		<CalibrationKoefs>
-			<Calibrate code="030E"
+			<Calibrate code="0088"
          				min="95"
          				max="105">LD set current calibration</Calibrate>
 			<Calibrate code="0A15"

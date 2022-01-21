@@ -79,6 +79,7 @@ SOURCES += \
     modelguimediator.cpp \
     widgets/calibrationandlimitswidget.cpp \
     widgets/calibrationdialog.cpp \
+    widgets/inlineedit.cpp \
     widgets/readnounitparameterwidget.cpp \
     widgets/readparameterfactory.cpp \
     widgets/rescanprogresswidget.cpp \
@@ -123,6 +124,7 @@ HEADERS += \
     network/IDataReceiver.h \
     widgets/calibrationandlimitswidget.h \
     widgets/calibrationdialog.h \
+    widgets/inlineedit.h \
     widgets/readnounitparameterwidget.h \
     widgets/readparameterfactory.h \
     widgets/rescanprogresswidget.h \
@@ -171,3 +173,5 @@ RC_ICONS = icon.ico
 #qnx: target.path = /tmp/$${TARGET}/bin
 #else: unix:!android: target.path = /opt/$${TARGET}/bin
 #!isEmpty(target.path): INSTALLS += target
+
+DISTFILES +=

@@ -32,6 +32,8 @@ private slots:
     void setMinValue();
     void setRealValue();
     void setUnits(QStringView units);
+    void setEditLineRed();
+    void setEditLineWhite();
 
 private:
     Ui::CommandWidget *ui;

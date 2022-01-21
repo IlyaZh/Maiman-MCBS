@@ -50,10 +50,15 @@ QPushButton {
 	padding: 4px;
 }
 
-QPushButton:checked {
+QMenu:checked {
 	color: rgb(150, 150, 150);
 }
-
+QMenu:hover {
+	color: rgb(150, 150, 150);
+}
+QMenu::item:selected {
+	background-color: rgb(81, 81, 81);
+}
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -136,8 +141,8 @@ QPushButton:checked {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1222</width>
-         <height>540</height>
+         <width>1219</width>
+         <height>542</height>
         </rect>
        </property>
       </widget>
@@ -151,7 +156,7 @@ QPushButton:checked {
      <x>0</x>
      <y>0</y>
      <width>1600</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
@@ -235,12 +240,12 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
      </property>
      <addaction name="actionRefresh_baud"/>
     </widget>
+    <addaction name="actionConnect"/>
     <addaction name="menuPorts"/>
     <addaction name="menuBaudrates"/>
     <addaction name="actionKeepAddresses"/>
     <addaction name="actionTimeout"/>
     <addaction name="actionRescan"/>
-    <addaction name="actionConnect"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -333,7 +338,7 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
   </action>
   <action name="actionTimeout">
    <property name="text">
-    <string>Timeout</string>
+    <string>Delay</string>
    </property>
   </action>
  </widget>

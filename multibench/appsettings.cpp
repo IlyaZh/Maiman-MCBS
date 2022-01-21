@@ -29,14 +29,14 @@ int AppSettings::getComStopBits() { return settings->value("userSettings/comPort
 NetworkData_s AppSettings::getNetworkData() {
     NetworkData_s netData;
     netData.type = static_cast<PortType>(settings->value("network/type", 0).toUInt());
-    netData.host = settings->value("network/host", "").toString();
-    netData.port = settings->value("network/port", 0).toInt();
+    netData.host = settings->value("network/comport", "").toString();
+    netData.port = settings->value("network/baudrate", 0).toInt();
 
     return netData;
 }
 
-int AppSettings::getNetworkTimeout() {
-    return settings->value("networkTimeout", Const::NetworkTimeoutMSecs::defaultValue).toInt();
+int AppSettings::getNetworkDelay() {
+    return settings->value("networkDelay", Const::NetworkDelayMSecs::defaultValue).toInt();
 }
 
 // slots
@@ -71,11 +71,14 @@ void AppSettings::setWindowPosition(QPoint pos) { settings->setValue("window/pos
 void AppSettings::setComStopBits(int value) { settings->setValue("userSettings/comPort/stopBits", value); }
 
 void AppSettings::setNetworkData(QVariant netData) {
-    settings->setValue("network", netData);
+    auto map = netData.toMap();
+    settings->setValue("network/comport", map.value("comport"));
+    settings->setValue("network/baudrate", map.value("baudrate"));
+    settings->setValue("network/type", map.value("type"));
 }
 
-void AppSettings::setNetworkTimeout(int timeoutMs) {
-    settings->setValue("networkTimeout", timeoutMs);
+void AppSettings::setNetworkDelay(int delayMs) {
+    settings->setValue("networkDelay", delayMs);
 }
 
 void AppSettings::setDeviceAddresses(const QMap<quint8,quint8>& addr){

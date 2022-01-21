@@ -35,11 +35,10 @@ void NetworkModel::getBaudrate(){
     emit signal_setBaudrateToWindow(m_deviceModelFactory.getBaudrate());
 }
 
-void NetworkModel::setTimeout(int timeout) {
-    m_timeoutMs = timeout;
+void NetworkModel::setDelay(int delay) {
     if(m_worker){
-        m_worker->setTimeout(m_timeoutMs);
-        AppSettings::setNetworkTimeout(m_timeoutMs);
+        m_worker->setDelay(delay);
+        AppSettings::setNetworkDelay(delay);
     }
 }
 

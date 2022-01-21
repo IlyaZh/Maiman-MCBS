@@ -26,13 +26,13 @@ struct Const {
         Fahrenheit
     };
 
-    struct NetworkTimeoutMSecs {
+    struct NetworkDelayMSecs {
         static const int defaultValue;
         static const int min;
         static const int max;
     };
 
-    static const int NetworkDelayMSecs;
+    static const int NetworkTimeoutMSecs;
 
     static const QString SecretCodeCombination;
     static const QString ApplicationDefaultFontPath;

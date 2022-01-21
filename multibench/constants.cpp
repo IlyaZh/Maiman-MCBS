@@ -17,11 +17,11 @@ const QString Const::AppNameTitle = "Maiman BenchSoft Multichannel";
 
 const QStringList Const::TemperatureUnitNames({"Celsius", "Fahrenheit"});
 
-const int Const::NetworkTimeoutMSecs::defaultValue = 300;
-const int Const::NetworkTimeoutMSecs::min = 10;
-const int Const::NetworkTimeoutMSecs::max = 1000;
+const int Const::NetworkDelayMSecs::defaultValue = 300;
+const int Const::NetworkDelayMSecs::min = 10;
+const int Const::NetworkDelayMSecs::max = 1000;
 
-const int Const::NetworkDelayMSecs = 50;
+const int Const::NetworkTimeoutMSecs = 1000;
 
 const QString Const::SecretCodeCombination = "3.1415926";
 

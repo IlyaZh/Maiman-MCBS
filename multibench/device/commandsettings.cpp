@@ -30,7 +30,8 @@ double DevCommand::convertFarToCel(double value) {
 
 // public methods
 DevCommand::DevCommand(const CommandSettings& conf) :
-    m_config(conf)
+    m_config(conf),
+    m_tempId(AppSettings::getTemperatureUnit())
 {
     m_rawValue = 0;
     m_strValue = QString::number(0, 'f', static_cast<int>(m_config.m_tolerance));
@@ -46,12 +47,17 @@ void DevCommand::changeTemperatureUnit(Const::TemperatureUnitId id) {
         switch(id) {
         default:
         case Const::TemperatureUnitId::Celsius:
-
+            m_value = convertFarToCel(m_value);
             break;
         case Const::TemperatureUnitId::Fahrenheit:
-            setFromDevice(m_rawValue);
+            m_value = convertCelToFar(m_value);
+            //setFromDevice(m_rawValue);
             break;
         }
+        m_iValue = static_cast<int>(m_value);
+        m_strValue = QString::number(m_value, 'f', static_cast<int>(m_config.m_tolerance));
+        emit updatedValue();
+
         emit updatedUnit(unit());
     }
 }
