@@ -96,6 +96,7 @@ void NetworkModel::rescanNetwork()
     }
     if (addresses.isEmpty()){
         m_rescanCommandsCount = SoftProtocol::MaxAddress;
+        emit signal_rescanProgress(0, m_rescanCommandsCount);
         for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr)
         {
             addresses.insert(iAddr, 0);
@@ -109,7 +110,7 @@ void NetworkModel::rescanNetwork()
             auto package = m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
             m_priorityQueue.enqueue(package);
         }
-        emit signal_rescanProgress(0, m_rescanCommandsCount);
+
     }
 }
 
@@ -185,6 +186,11 @@ void NetworkModel::timeout(const QByteArray& lastPackage) {
                 device->unlink();
             }
         }
+        if (m_isRescan){
+                emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount);
+                m_isRescan = false;
+
+        }
     }
 }
 
@@ -196,8 +202,9 @@ void NetworkModel::pollRequest() {
 
         if(!m_priorityQueue.isEmpty()) {
             package = m_priorityQueue.dequeue();
-            if(m_rescanCommandsDone <= m_rescanCommandsCount) {
-                emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount);
+
+            if(m_rescanCommandsDone < m_rescanCommandsCount) {
+                m_isRescan = true;
             }
         } else if (!m_queue.isEmpty()) {
             package = m_queue.dequeue();
@@ -241,6 +248,11 @@ void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& last
                 }
             }
         }
+    }
+    if (m_isRescan){
+            emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount);
+            m_isRescan = false;
+
     }
 }
 
