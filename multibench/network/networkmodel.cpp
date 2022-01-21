@@ -186,11 +186,10 @@ void NetworkModel::timeout(const QByteArray& lastPackage) {
                 device->unlink();
             }
         }
-        if (m_flagRescan){
-            if(m_rescanCommandsDone <= m_rescanCommandsCount) {
+        if (m_isRescan){
                 emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount);
-                m_flagRescan = false;
-            }
+                m_isRescan = false;
+
         }
     }
 }
@@ -203,10 +202,10 @@ void NetworkModel::pollRequest() {
 
         if(!m_priorityQueue.isEmpty()) {
             package = m_priorityQueue.dequeue();
-            m_flagRescan = true;
-//            if(m_rescanCommandsDone <= m_rescanCommandsCount) {
-//                emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount);
-//            }
+
+            if(m_rescanCommandsDone < m_rescanCommandsCount) {
+                m_isRescan = true;
+            }
         } else if (!m_queue.isEmpty()) {
             package = m_queue.dequeue();
         } else {
@@ -250,11 +249,10 @@ void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& last
             }
         }
     }
-    if (m_flagRescan){
-        if(m_rescanCommandsDone <= m_rescanCommandsCount) {
+    if (m_isRescan){
             emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount);
-            m_flagRescan = false;
-        }
+            m_isRescan = false;
+
     }
 }
 

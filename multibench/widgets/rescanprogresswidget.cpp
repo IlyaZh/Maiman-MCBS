@@ -16,7 +16,7 @@ RescanProgressWidget::~RescanProgressWidget()
 }
 
 void RescanProgressWidget::setProgress(int current, int total) {
-    QString message = QString("%1 devices of %2 has been scanned").arg(current).arg(total);
+    QString message = QString("%1/%2").arg(current).arg(total);
     ui->progressBar->setMaximum(total);
     ui->progressBar->setValue(current);
     ui->descriptionLabel->setText(message);
