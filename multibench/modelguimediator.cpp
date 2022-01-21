@@ -44,13 +44,13 @@ void ModelGuiMediator::createWidgetFor(Device* device) {
 }
 
 void ModelGuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id){
-    if(!m_listOfCalibrationDialog.value(addr)){
+    if(!m_calibrationDialog.value(addr)){
         CalibrationDialog* dialog = m_factory.createCalibrationDialog(id,m_network.getCommands(addr));
         dialog->setModal(false);
         dialog->show();
-        m_listOfCalibrationDialog.insert(addr, id);
-        connect(dialog, &CalibrationDialog::calibrationDialogClosed, this, [this, addr](){
-            m_listOfCalibrationDialog.remove(addr);
+        m_calibrationDialog.insert(addr, id);
+        connect(dialog, &CalibrationDialog::finished, this, [this, addr](){
+            m_calibrationDialog.remove(addr);
         });
     }
 }

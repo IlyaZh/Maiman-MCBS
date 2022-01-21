@@ -34,7 +34,6 @@ private slots:
 
 signals:
     void sendData(QString);
-    void calibrationDialogClosed();
 };
 
 #endif // CalibrateDialog_H

@@ -23,7 +23,7 @@ private:
     MainWindow& m_window;
     GuiFactory& m_factory;
     NetworkModel& m_network;
-    QMap<quint8, quint16> m_listOfCalibrationDialog;
+    QMap<quint8, quint16> m_calibrationDialog;
 
 private slots:
     void createWidgetFor(Device* device);
