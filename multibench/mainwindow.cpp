@@ -12,6 +12,7 @@
 #include "widgets/calibrationandlimitswidget.h"
 #include <QInputDialog>
 #include <utility>
+#include <widgets/rescanprogresswidget.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -126,8 +127,6 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
     if(!m_workWidgets.contains(widget)) {
         widget->setParent(this);
         m_workWidgets.append(widget);
-        m_workFieldLayout->addWidget(widget);
-
         connect(widget, &DeviceWidget::nameEdited, this, &MainWindow::deviceNameChanged);
     }
 }
@@ -138,6 +137,28 @@ void MainWindow::addCalibrationMenu(quint8 addr,quint16 id){
         emit createCalibAndLimitsWidgets(addr, id);
     });
     ui->menuCalibration->addAction(action);
+}
+
+void MainWindow::rescanProgress(int current, int total) {  
+    if(current == 0 && total > 0) {
+            m_progressWidget = new RescanProgressWidget(this);
+            m_progressWidget->setProgress(current, total);
+            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 0, 0);
+            m_workFieldLayout->addWidget(m_progressWidget, 1, 0);
+            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 2, 0);
+    } else if (current == total) {
+        if(m_progressWidget) {
+            m_progressWidget->setProgress(current, total);
+            m_workFieldLayout->removeWidget(m_progressWidget);
+            m_progressWidget->deleteLater();
+
+            for(auto widget : qAsConst(m_workWidgets)) {
+                m_workFieldLayout->addWidget(widget);
+            }
+        }
+    } else if(m_progressWidget) {
+        m_progressWidget->setProgress(current, total);
+    }
 }
 
 void MainWindow::setComPorts(const QStringList& portList) {
@@ -188,7 +209,14 @@ void MainWindow::setConnected(bool isConnected) {
     ui->menuPorts->setEnabled(!isConnected);
     ui->menuBaudrates->setEnabled(!isConnected);
     if(!isConnected) {
-        qDeleteAll(m_workWidgets);
+        for(auto widget : qAsConst(m_workWidgets)) {
+            m_workFieldLayout->removeWidget(widget);
+            widget->deleteLater();
+        }
+        if(m_progressWidget) {
+            m_workFieldLayout->removeWidget(m_progressWidget);
+            m_progressWidget->deleteLater();
+        }
         m_workWidgets.clear();
         ui->menuCalibration->clear();
     }

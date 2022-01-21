@@ -95,6 +95,7 @@ void NetworkModel::rescanNetwork()
         clearNetwork();
     }
     if (addresses.isEmpty()){
+        m_rescanCommandsCount = SoftProtocol::MaxAddress;
         for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr)
         {
             addresses.insert(iAddr, 0);
@@ -102,10 +103,13 @@ void NetworkModel::rescanNetwork()
     }
 
     if(m_worker) {
-        for(const auto item : addresses.keys()) {
+        const auto& keys = addresses.keys();
+        m_rescanCommandsCount = keys.size();
+        for(const auto item : keys) {
             auto package = m_protocol.getDataValue(item, NetworkModel::IDENTIFY_REG_ID_DEFAULT);
             m_priorityQueue.enqueue(package);
         }
+        emit signal_rescanProgress(0, m_rescanCommandsCount);
     }
 }
 
@@ -123,6 +127,8 @@ void NetworkModel::clear() {
         item->deleteLater(); // TODO: NADO LI
     }
     m_devices.clear();
+    m_rescanCommandsCount = 0;
+    m_rescanCommandsDone = 0;
 }
 
 void NetworkModel::initDevice(quint8 addr, quint16 id)
@@ -190,6 +196,9 @@ void NetworkModel::pollRequest() {
 
         if(!m_priorityQueue.isEmpty()) {
             package = m_priorityQueue.dequeue();
+            if(m_rescanCommandsDone <= m_rescanCommandsCount) {
+                emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount);
+            }
         } else if (!m_queue.isEmpty()) {
             package = m_queue.dequeue();
         } else {
