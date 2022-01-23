@@ -143,18 +143,29 @@ void MainWindow::rescanProgress(int current, int total) {
     if(current == 0 && total > 0) {
             m_progressWidget = new RescanProgressWidget(this);
             m_progressWidget->setProgress(current, total);
-            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 0, 0);
+//            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 0, 0);
             m_workFieldLayout->addWidget(m_progressWidget, 1, 0);
-            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 2, 0);
+//            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 2, 0);
     } else if (current == total) {
         if(m_progressWidget) {
             m_progressWidget->setProgress(current, total);
             m_workFieldLayout->removeWidget(m_progressWidget);
             m_progressWidget->deleteLater();
         }
+        int maxWidth = -1;
         for(auto widget : qAsConst(m_workWidgets)) {
+            if(widget->width() > maxWidth) {
+                maxWidth = widget->width();
+            }
             m_workFieldLayout->addWidget(widget);
         }
+        auto newSize = ui->scrollArea->size();
+        int diffWidth = maxWidth-newSize.width();
+        newSize.rwidth() = maxWidth;
+        ui->scrollArea->resize(newSize);
+        auto winSize = size();
+        winSize.rwidth() += diffWidth;
+        resize(winSize);
     } else if(m_progressWidget) {
         m_progressWidget->setProgress(current, total);
     }
@@ -182,12 +193,11 @@ void MainWindow::setComPorts(const QStringList& portList) {
     ui->connectionWidget->setPortList(portList);
 }
 
-void MainWindow::setBaudRates(const QStringList& baudsList) {
+void MainWindow::setBaudRates(const QStringList& baudrates) {
     ui->menuBaudrates->clear();
     if (m_baudrateGroup)
         m_baudrateGroup->deleteLater();
     m_baudrateGroup = new QActionGroup(this);
-    QStringList baudrates = baudsList;
     for(const auto& baudrate : baudrates) {
         auto action = new QAction(baudrate);
         action->setCheckable(true);
@@ -195,8 +205,6 @@ void MainWindow::setBaudRates(const QStringList& baudsList) {
         ui->menuBaudrates->addAction(action);
         if (baudrate.toInt() == AppSettings::getNetworkData().port)
             action->setChecked(true);
-        qDebug()<<"PORT"<<AppSettings::getNetworkData().port;
-        //m_baudrateGroup->addAction(ui->menuBaudrates->addAction(baudrate))->setCheckable(true);
     }
 }
 

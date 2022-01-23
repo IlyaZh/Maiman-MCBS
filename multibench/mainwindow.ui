@@ -18,13 +18,12 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1600</width>
+    <width>800</width>
     <height>600</height>
    </size>
   </property>
   <property name="font">
    <font>
-    <family>Share Tech Mono</family>
     <pointsize>9</pointsize>
    </font>
   </property>
@@ -70,7 +69,6 @@ QMenu::item:selected {
    </property>
    <property name="font">
     <font>
-     <family>Share Tech Mono</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -128,21 +126,21 @@ QMenu::item:selected {
        <enum>Qt::ScrollBarAlwaysOff</enum>
       </property>
       <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
       </property>
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       <set>Qt::AlignCenter</set>
       </property>
       <widget class="QWidget" name="scrollFieldWidget">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1219</width>
-         <height>542</height>
+         <width>1222</width>
+         <height>541</height>
         </rect>
        </property>
       </widget>
@@ -156,13 +154,11 @@ QMenu::item:selected {
      <x>0</x>
      <y>0</y>
      <width>1600</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <property name="font">
-    <font>
-     <family>Share Tech Mono</family>
-    </font>
+    <font/>
    </property>
    <property name="styleSheet">
     <string notr="true">QMenuBar {
@@ -194,9 +190,7 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="font">
-     <font>
-      <family>Share Tech Mono</family>
-     </font>
+     <font/>
     </property>
     <property name="title">
      <string>File</string>
@@ -205,18 +199,14 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="font">
-     <font>
-      <family>Share Tech Mono</family>
-     </font>
+     <font/>
     </property>
     <property name="title">
      <string>View</string>
     </property>
     <widget class="QMenu" name="menuTmperature_units">
      <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-      </font>
+      <font/>
      </property>
      <property name="title">
       <string>Temperature units</string>
@@ -266,9 +256,7 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="font">
-    <font>
-     <family>Share Tech Mono</family>
-    </font>
+    <font/>
    </property>
   </widget>
   <action name="actionExit">
@@ -276,9 +264,7 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
     <string>Exit</string>
    </property>
    <property name="font">
-    <font>
-     <family>Share Tech Mono</family>
-    </font>
+    <font/>
    </property>
   </action>
   <action name="actionCelsius">

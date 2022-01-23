@@ -112,7 +112,7 @@ private:
     bool m_hideControls {false};
     QPushButton* m_laserButton {nullptr};
     QPushButton* m_tecButton {nullptr};
-    DeviceCondition* m_condiotion;
+    DeviceCondition* m_deviceCondition;
     int m_fixedWidgets {0};
 
     void paintEvent(QPaintEvent*) override;

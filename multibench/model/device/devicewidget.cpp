@@ -228,7 +228,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     ui->widgetBox->setLayout(m_widgetLayout);
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
-    m_condiotion = new DeviceCondition(m_commands,description.leds,ui->conditionLabel);
+    m_deviceCondition = new DeviceCondition(m_commands,description.leds,ui->conditionLabel);
     adjust();
     //TODO:: label_2, для отображения строки состояния драйвера, команда 0700
 }

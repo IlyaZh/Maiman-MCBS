@@ -198,7 +198,6 @@ void NetworkModel::pollRequest() {
     if(m_worker) {
         QByteArray package;
         // poll devices state
-        qDebug() << "poll request";
 
         if(!m_priorityQueue.isEmpty()) {
             package = m_priorityQueue.dequeue();
@@ -209,10 +208,8 @@ void NetworkModel::pollRequest() {
         } else if (!m_queue.isEmpty()) {
             package = m_queue.dequeue();
         } else {
-            qDebug()<<"m-deice.size()="<<m_devices.size();
             for(const auto& dev : qAsConst(m_devices)) {
                 const DevicePollRequest request = dev->nextPollRequest();
-                qDebug() << request.code << request.addr << request.count;
                 if(request.code != 0) {
                     auto wrotePack = m_protocol.getDataValue(request.addr, request.code, request.count);
                     m_queue.enqueue(wrotePack);
