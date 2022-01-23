@@ -125,10 +125,32 @@ DeviceWidgetDesc GuiFactory::parseDevice(const TreeItem& item) {
         }
     }
 
+    std::sort(widgetDesc.controls.begin(), widgetDesc.controls.end(), [](const Control& left, const Control& right){
+        Q_UNUSED(right)
+        uint16_t lCmd, rCmd;
+        if(left.value != 0) {
+            lCmd = left.value;
+        } else if(left.real != 0) {
+            lCmd = left.real;
+        } else {
+            return false;
+        }
+
+        if(right.value != 0) {
+            rCmd = right.value;
+        } else if (right.real != 0) {
+            rCmd = right.real;
+        } else {
+            return true;
+        }
+
+        return lCmd < rCmd;
+    });
+
     // Ищем виджет Current и ставим его на первое место
     std::sort(widgetDesc.controls.begin(), widgetDesc.controls.end(), [](const Control& left, const Control& right){
         Q_UNUSED(right)
-        return (left.name.toLower() == "current");
+        return (left.fixed);
     });
     return widgetDesc;
 }
@@ -197,6 +219,8 @@ Control GuiFactory::parseParamControls(const TreeItem& item) {
             control.value = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
         } else if(arg.name() == "real") {
             control.real = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if(arg.name() == "fixed") {
+            control.fixed = true;
         }
     }
     return control;

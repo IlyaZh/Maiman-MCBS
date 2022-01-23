@@ -25,6 +25,12 @@ CONFIG(debug, debug|release) {
 MOC_DIR = ../common/build/moc
 RCC_DIR = ../common/build/rcc
 UI_DIR = ../common/build/ui
+
+OTHER_FILES += device_db.xml.in \
+                device_gui.xml.in \
+                version.h.in \
+                icon.ico
+
 unix:OBJECTS_DIR = ../common/build/o/unix
 win32:OBJECTS_DIR = ../common/build/o/win
 macx:OBJECTS_DIR = ../common/build/o/mac

@@ -100,6 +100,8 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
             // Обработка изменяемых параметров
             auto hiddenWidget = new HiddenWidget(this);
             auto widget = new ControlWidget(control.name, valueCmd, maxCmd, minCmd, realCmd, hiddenWidget);
+            if(control.fixed)
+                ++m_fixedWidgets;
             hiddenWidget->layout()->setContentsMargins(10,0,10,0);
             m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
             hiddenWidget->addWidget(widget);
@@ -147,7 +149,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     }
 
     // Инициализация кнопок pin
-    for(int i = 1; i < m_widgets.count(); ++i) {
+    for(int i = m_fixedWidgets; i < m_widgets.count(); ++i) {
         auto pinButton = new QPushButton();
         QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy1.setHorizontalStretch(0);
@@ -311,7 +313,7 @@ void DeviceWidget::tecButtonClicked() {
 void DeviceWidget::hideControlsButtonClicked(bool flag) {
     m_hideControls = flag;
 
-    for(int idx = 1; idx < m_widgets.count(); ++idx) {
+    for(int idx = m_fixedWidgets; idx < m_widgets.count(); ++idx) {
         int pinShift = idx-1;
         auto widget = m_widgets.at(idx);
         auto pinButton = m_pinButtons.value(pinShift, nullptr);

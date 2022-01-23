@@ -230,14 +230,15 @@
 		<ParamControls>
 			<Param min=\"0020\"
      				max=\"0021\"
-     				value=\"0006\">Frequency</Param>
+                                value=\"0006\">Frequency</Param>
 			<Param min=\"0022\"
      				max=\"0023\"
      				value=\"0007\">Duration</Param>
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 		</ParamControls>

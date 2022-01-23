@@ -22,6 +22,7 @@ struct Control {
     quint16 value = 0;
     quint16 real = 0;
     QString name;
+    bool fixed {false};
 };
 
 struct Limit {
@@ -112,6 +113,7 @@ private:
     QPushButton* m_laserButton {nullptr};
     QPushButton* m_tecButton {nullptr};
     DeviceCondition* m_condiotion;
+    int m_fixedWidgets {0};
 
     void paintEvent(QPaintEvent*) override;
     void adjust();
