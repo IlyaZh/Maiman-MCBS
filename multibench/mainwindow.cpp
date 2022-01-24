@@ -161,11 +161,12 @@ void MainWindow::rescanProgress(int current, int total) {
             if(widget->width() > maxWidth) {
                 maxWidth = widget->width();
             }
-            m_workFieldLayout->addWidget(widget);
 
-            if(widgetsCounter++ < WidgetsInAppearence) {
+            if(widgetsCounter < WidgetsInAppearence) {
+                ++widgetsCounter;
                 totalHeightInAppearence += widget->height();
             }
+            m_workFieldLayout->addWidget(widget);
         }
         auto newSize = ui->scrollArea->size();
         int diffWidth = maxWidth-newSize.width();
