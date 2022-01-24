@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1600</width>
-    <height>600</height>
+    <width>600</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>800</width>
-    <height>600</height>
+    <width>600</width>
+    <height>400</height>
    </size>
   </property>
   <property name="font">
@@ -120,7 +120,7 @@ QMenu::item:selected {
        <enum>QFrame::NoFrame</enum>
       </property>
       <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOn</enum>
+       <enum>Qt::ScrollBarAsNeeded</enum>
       </property>
       <property name="horizontalScrollBarPolicy">
        <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -139,8 +139,8 @@ QMenu::item:selected {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1222</width>
-         <height>541</height>
+         <width>236</width>
+         <height>339</height>
         </rect>
        </property>
       </widget>
@@ -153,8 +153,8 @@ QMenu::item:selected {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1600</width>
-     <height>19</height>
+     <width>600</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">

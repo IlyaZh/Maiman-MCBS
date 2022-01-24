@@ -63,6 +63,7 @@ private:
     int m_rescanCommandsCount {0};
     int m_rescanCommandsDone {0};
     bool m_isRescan;
+    int m_delay {Const::NetworkDelayMSecs::defaultValue};
 
     void clear();
     void initDevice(quint8 addr, quint16 id);

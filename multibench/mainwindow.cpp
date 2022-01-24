@@ -14,6 +14,8 @@
 #include <utility>
 #include <widgets/rescanprogresswidget.h>
 
+const int WidgetsInAppearence {2};
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -152,19 +154,31 @@ void MainWindow::rescanProgress(int current, int total) {
             m_workFieldLayout->removeWidget(m_progressWidget);
             m_progressWidget->deleteLater();
         }
-        int maxWidth = -1;
+        int maxWidth {-1};
+        int widgetsCounter {0};
+        int totalHeightInAppearence {0};
         for(auto widget : qAsConst(m_workWidgets)) {
             if(widget->width() > maxWidth) {
                 maxWidth = widget->width();
             }
             m_workFieldLayout->addWidget(widget);
+
+            if(widgetsCounter++ < WidgetsInAppearence) {
+                totalHeightInAppearence += widget->height();
+            }
         }
         auto newSize = ui->scrollArea->size();
         int diffWidth = maxWidth-newSize.width();
+        int diffHeight = ui->scrollArea->height()-totalHeightInAppearence;
+
         newSize.rwidth() = maxWidth;
+        if(diffHeight > 0)
+            newSize.rheight() += diffHeight;
         ui->scrollArea->resize(newSize);
+
         auto winSize = size();
         winSize.rwidth() += diffWidth;
+        winSize.rheight() += (diffHeight > 0) ? diffHeight : 0;
         resize(winSize);
     } else if(m_progressWidget) {
         m_progressWidget->setProgress(current, total);

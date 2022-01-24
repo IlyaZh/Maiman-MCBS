@@ -55,6 +55,7 @@ void DataThread::stop() {
 
 void DataThread::run() {
     int waitForConnected = m_timeout;
+    bool out {false};
     QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
     while(!m_device->isOpen()) {
         --waitForConnected;
@@ -116,14 +117,19 @@ void DataThread::run() {
         qDebug()<<__FILE__<<__LINE__<<"DataThread::run before lock";
         m_mtx.lock();
         qDebug()<<__FILE__<<__LINE__<<"DataThread::run before wait condition";
-        if(m_condition.wait(&m_mtx,5000))
-            qDebug()<<"waitCondition true";
-        else
-            qDebug()<<"waitCondition false";
-        qDebug()<<__FILE__<<__LINE__<<"DataThread::run before unlock";
+        if(out) {
+            qDebug() << "OUT IS TRUE";
+            break;
+        }
+        if(m_condition.wait(&m_mtx, 5000))
+            qDebug() << "waitCondition true";
+        else {
+            qDebug() << "waitCondition false" << m_isWork;
+            out = true;
+        }
         m_mtx.unlock();
-        qDebug()<<__FILE__<<__LINE__<<"DataThread::run before sleep"<<m_lastWrittenMsg;
-        QThread::msleep(m_delay);
+        qDebug() << __FILE__ << __LINE__ << "DataThread::run before sleep" << m_isWork <<m_lastWrittenMsg;
+//        QThread::msleep(m_delay);
     }
     m_device->close();
     qDebug()<< "Thread run quit";
