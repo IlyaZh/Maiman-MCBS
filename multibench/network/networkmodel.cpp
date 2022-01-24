@@ -222,6 +222,7 @@ void NetworkModel::pollRequest() {
         if(!package.isEmpty()) {
             qint64 waitForBytes = m_protocol.waitForBytes(package);
             m_worker->writeAndWaitBytes(package, waitForBytes);
+            qDebug()<<"NetworkModel::pollRequest"<<package.size();
         }
     }
 }
@@ -237,6 +238,7 @@ void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& last
         }
     } else {
         for(const auto& item : qAsConst(result)) {
+            qDebug()<<"NetworkModel::readyRead:"<<item.value;
             if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
                 initDevice(item.addr, item.value);
             } else {

@@ -3,6 +3,7 @@
 #include "constants.h"
 
 DataThread::~DataThread() {
+    qDebug()<<"Distructor"<<m_isWork;
     m_mtx.lock();
     m_isWork = false;
     m_condition.wakeOne();
@@ -31,17 +32,22 @@ void DataThread::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes) {
     m_next = pack;
 
     if(!isRunning()) {
-        start();
+        qDebug()<<"DataThread::writeAndWaitBytes is not running";
+        start(LowPriority);
     } else {
+        qDebug()<<"DataThread::writeAndWaitBytes is running";
         m_condition.wakeOne();
     }
 }
 
 void DataThread::stop() {
+    qDebug()<<"DataThread:stop"<<m_isWork;
     m_mtx.lock();
     m_isWork = false;
-    if(isRunning())
+    if(isRunning()){
         m_condition.wakeOne();
+        qDebug()<<"DataThread:stop is running"<<m_isWork;
+    }
     m_mtx.unlock();
 }
 
@@ -61,9 +67,10 @@ void DataThread::run() {
     emit connected();
 
     while(m_isWork) {
+        qDebug()<<"DataThread::run m_isWork"<<m_isWork;
         Package package;
         {
-            QMutexLocker locker(&m_mtx);
+            //QMutexLocker locker(&m_mtx);
             package = m_next;
 
         }
@@ -106,9 +113,16 @@ void DataThread::run() {
         }
         if(!m_isWork) break;
         emit readyToWrite();
+        qDebug()<<__FILE__<<__LINE__<<"DataThread::run before lock";
         m_mtx.lock();
-        m_condition.wait(&m_mtx);
+        qDebug()<<__FILE__<<__LINE__<<"DataThread::run before wait condition";
+        if(m_condition.wait(&m_mtx,5000))
+            qDebug()<<"waitCondition true";
+        else
+            qDebug()<<"waitCondition false";
+        qDebug()<<__FILE__<<__LINE__<<"DataThread::run before unlock";
         m_mtx.unlock();
+        qDebug()<<__FILE__<<__LINE__<<"DataThread::run before sleep"<<m_lastWrittenMsg;
         QThread::msleep(m_delay);
     }
     m_device->close();
