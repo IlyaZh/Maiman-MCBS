@@ -37,7 +37,7 @@ void NetworkModel::getBaudrate(){
 
 void NetworkModel::setDelay(int delay) {
     if(m_worker){
-        m_delay = delay;
+//        m_delay = delay;
         m_worker->setDelay(delay);
         AppSettings::setNetworkDelay(delay);
     }
@@ -222,10 +222,10 @@ void NetworkModel::pollRequest() {
         }
         if(!package.isEmpty()) {
             qint64 waitForBytes = m_protocol.waitForBytes(package);
-            QTimer::singleShot(m_delay, this, [this, package, waitForBytes](){
+//            QTimer::singleShot(m_delay, this, [this, package, waitForBytes](){
                 m_worker->writeAndWaitBytes(package, waitForBytes);
                 qDebug()<<"NetworkModel::pollRequest"<<package.size();
-            });
+//            });
 
         }
     }
