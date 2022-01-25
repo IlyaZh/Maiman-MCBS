@@ -24,6 +24,7 @@ NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& prot
     m_isStart = false;
     m_deviceModelFactory.start();
     connect(&m_deviceModelFactory,&DeviceFactory::parsingIsFinished, this, &NetworkModel::getBaudrate);
+    setDelay(AppSettings::getNetworkDelay());
 }
 
 NetworkModel::~NetworkModel() {
@@ -48,6 +49,7 @@ void NetworkModel::start(QScopedPointer<IDataSource>& source)
 {
     m_worker = new DataThread;
     m_worker->setTimeout(m_timeoutMs);
+    m_worker->setDelay(AppSettings::getNetworkDelay());
     m_worker->configure(source);
 
     rescanNetwork();
