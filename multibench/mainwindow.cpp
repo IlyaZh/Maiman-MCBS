@@ -14,6 +14,8 @@
 #include <utility>
 #include <widgets/rescanprogresswidget.h>
 
+const int WidgetsInAppearence {2};
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -60,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_workFieldLayout->setSpacing(10);
     m_workFieldLayout->setContentsMargins(0,0,0,0);
     m_workFieldLayout->setSizeConstraint(QLayout::SetMinimumSize);
+    m_workFieldLayout->setAlignment(Qt::AlignLeft);
     ui->scrollFieldWidget->setLayout(m_workFieldLayout);
     ui->scrollFieldWidget->setMaximumHeight(m_workFieldLayout->maximumSize().height());
 
@@ -152,19 +155,34 @@ void MainWindow::rescanProgress(int current, int total) {
             m_workFieldLayout->removeWidget(m_progressWidget);
             m_progressWidget->deleteLater();
         }
-        int maxWidth = -1;
+        int maxWidth {-1};
+        int widgetsCounter {0};
+        int totalHeightInAppearence {0};
         for(auto widget : qAsConst(m_workWidgets)) {
             if(widget->width() > maxWidth) {
                 maxWidth = widget->width();
+            }
+
+            if(widgetsCounter < WidgetsInAppearence) {
+                ++widgetsCounter;
+                totalHeightInAppearence += widget->height();
+                if (widgetsCounter>0)
+                    totalHeightInAppearence += m_workFieldLayout->spacing();
             }
             m_workFieldLayout->addWidget(widget);
         }
         auto newSize = ui->scrollArea->size();
         int diffWidth = maxWidth-newSize.width();
+        int diffHeight = totalHeightInAppearence - ui->scrollArea->height();
+
         newSize.rwidth() = maxWidth;
+        if(diffHeight > 0)
+            newSize.rheight() += diffHeight;
         ui->scrollArea->resize(newSize);
+
         auto winSize = size();
         winSize.rwidth() += diffWidth;
+        winSize.rheight() += (diffHeight > 0) ? diffHeight : 0;
         resize(winSize);
     } else if(m_progressWidget) {
         m_progressWidget->setProgress(current, total);
@@ -227,6 +245,7 @@ void MainWindow::setConnected(bool isConnected) {
         }
         m_workWidgets.clear();
         ui->menuCalibration->clear();
+        adjustSize();
     }
 }
 

@@ -41,7 +41,8 @@ private:
     bool m_isWork {true};
     QMutex m_mtx;
     QScopedPointer<IDataSource> m_dataSource;
-    QWaitCondition m_condition;
+//    QWaitCondition m_condition;
+    QSemaphore m_sem;
     bool m_firstRun {true};
 
     void run() override;

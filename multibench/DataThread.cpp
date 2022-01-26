@@ -3,9 +3,12 @@
 #include "constants.h"
 
 DataThread::~DataThread() {
+    qDebug()<<"Distructor"<<m_isWork;
     m_mtx.lock();
     m_isWork = false;
-    m_condition.wakeOne();
+//    m_condition.wakeOne();
+    if(m_sem.available() == 0)
+        m_sem.release();
     m_mtx.unlock();
     wait();
 }
@@ -31,17 +34,25 @@ void DataThread::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes) {
     m_next = pack;
 
     if(!isRunning()) {
-        start();
+        qDebug()<<"DataThread::writeAndWaitBytes is not running";
+        start(LowPriority);
     } else {
-        m_condition.wakeOne();
+        qDebug()<<"DataThread::writeAndWaitBytes is running";
+//        m_condition.wakeOne();
+        m_sem.release();
     }
 }
 
 void DataThread::stop() {
+    qDebug()<<"DataThread:stop"<<m_isWork;
     m_mtx.lock();
     m_isWork = false;
-    if(isRunning())
-        m_condition.wakeOne();
+    if(isRunning()){
+//        m_condition.wakeOne();
+        if(m_sem.available() == 0)
+            m_sem.release();
+        qDebug()<<"DataThread:stop is running"<<m_isWork;
+    }
     m_mtx.unlock();
 }
 
@@ -49,6 +60,7 @@ void DataThread::stop() {
 
 void DataThread::run() {
     int waitForConnected = m_timeout;
+    bool out {false};
     QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
     while(!m_device->isOpen()) {
         --waitForConnected;
@@ -61,6 +73,7 @@ void DataThread::run() {
     emit connected();
 
     while(m_isWork) {
+        qDebug()<<"DataThread::run m_isWork"<<m_isWork;
         Package package;
         {
             QMutexLocker locker(&m_mtx);
@@ -106,9 +119,22 @@ void DataThread::run() {
         }
         if(!m_isWork) break;
         emit readyToWrite();
-        m_mtx.lock();
-        m_condition.wait(&m_mtx);
-        m_mtx.unlock();
+//        qDebug()<<__FILE__<<__LINE__<<"DataThread::run before lock";
+//        m_mtx.lock();
+        qDebug()<<__FILE__<<__LINE__<<"DataThread::run before wait condition";
+        if(out) {
+            qDebug() << "OUT IS TRUE";
+            break;
+        }
+        m_sem.acquire();
+//        if(m_condition.wait(&m_mtx, 5000))
+//            qDebug() << "waitCondition true";
+//        else {
+//            qDebug() << "waitCondition false" << m_isWork;
+//            out = true;
+//        }
+//        m_mtx.unlock();
+        qDebug() << __FILE__ << __LINE__ << "DataThread::run before sleep" << m_isWork <<m_lastWrittenMsg;
         QThread::msleep(m_delay);
     }
     m_device->close();

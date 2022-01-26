@@ -52,7 +52,7 @@ QLabel {
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="sizeConstraint">
-    <enum>QLayout::SetDefaultConstraint</enum>
+    <enum>QLayout::SetFixedSize</enum>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -107,7 +107,11 @@ border-bottom-right-radius: 6px;</string>
     </widget>
    </item>
    <item row="2" column="1" rowspan="2" colspan="2">
-    <layout class="QVBoxLayout" name="buttonsLayout"/>
+    <layout class="QVBoxLayout" name="buttonsLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
+    </layout>
    </item>
    <item row="0" column="3" rowspan="4" colspan="2">
     <widget class="QWidget" name="widgetBox" native="true">

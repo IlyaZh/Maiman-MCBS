@@ -24,6 +24,7 @@ NetworkModel::NetworkModel(DeviceFactory &deviceModelFactory, SoftProtocol& prot
     m_isStart = false;
     m_deviceModelFactory.start();
     connect(&m_deviceModelFactory,&DeviceFactory::parsingIsFinished, this, &NetworkModel::getBaudrate);
+    setDelay(AppSettings::getNetworkDelay());
 }
 
 NetworkModel::~NetworkModel() {
@@ -37,6 +38,7 @@ void NetworkModel::getBaudrate(){
 
 void NetworkModel::setDelay(int delay) {
     if(m_worker){
+//        m_delay = delay;
         m_worker->setDelay(delay);
         AppSettings::setNetworkDelay(delay);
     }
@@ -47,6 +49,7 @@ void NetworkModel::start(QScopedPointer<IDataSource>& source)
 {
     m_worker = new DataThread;
     m_worker->setTimeout(m_timeoutMs);
+    m_worker->setDelay(AppSettings::getNetworkDelay());
     m_worker->configure(source);
 
     rescanNetwork();
@@ -221,7 +224,11 @@ void NetworkModel::pollRequest() {
         }
         if(!package.isEmpty()) {
             qint64 waitForBytes = m_protocol.waitForBytes(package);
-            m_worker->writeAndWaitBytes(package, waitForBytes);
+//            QTimer::singleShot(m_delay, this, [this, package, waitForBytes](){
+                m_worker->writeAndWaitBytes(package, waitForBytes);
+                qDebug()<<"NetworkModel::pollRequest"<<package.size();
+//            });
+
         }
     }
 }
@@ -237,6 +244,7 @@ void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& last
         }
     } else {
         for(const auto& item : qAsConst(result)) {
+            qDebug()<<"NetworkModel::readyRead:"<<item.value;
             if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
                 initDevice(item.addr, item.value);
             } else {

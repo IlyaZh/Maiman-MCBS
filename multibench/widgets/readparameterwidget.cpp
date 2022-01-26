@@ -43,11 +43,12 @@ void ReadParameterWidget::setup(QStringView name, QSharedPointer<DevCommand> cmd
     setValue(m_command->valueDouble(), m_command->tolerance());
 
     m_layout->addWidget(m_labelParameter);
-    m_layout->addSpacerItem(new QSpacerItem(0,20,QSizePolicy::Expanding));
+    m_layout->addSpacerItem(new QSpacerItem(10,20,QSizePolicy::Expanding));
     m_layout->addWidget(m_labelValue);
     m_layout->addWidget(m_labelUnit);
 
     this->adjustSize();
+    m_labelValue->setText("    ");//резервируем место под 5 символов, чтоб виджет был нужного размера
 }
 
 // private methods

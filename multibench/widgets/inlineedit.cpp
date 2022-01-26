@@ -34,7 +34,7 @@ InLineEdit::InLineEdit(int addr) :
                                                "background: rgb(17,17,17);\n"
                                                "color: rgb(255,255,255);\n"
                                                "padding: 0px;\n"
-                                               "margin-bottom: 6px;"));
+                                               "margin-bottom: 9px;"));
     QIcon icon1;
     icon1.addFile(QString::fromUtf8(":/resources/images/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
     m_icon->setIcon(icon1);
