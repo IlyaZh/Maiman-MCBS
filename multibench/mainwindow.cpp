@@ -62,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_workFieldLayout->setSpacing(10);
     m_workFieldLayout->setContentsMargins(0,0,0,0);
     m_workFieldLayout->setSizeConstraint(QLayout::SetMinimumSize);
+    m_workFieldLayout->setAlignment(Qt::AlignLeft);
     ui->scrollFieldWidget->setLayout(m_workFieldLayout);
     ui->scrollFieldWidget->setMaximumHeight(m_workFieldLayout->maximumSize().height());
 
@@ -244,6 +245,7 @@ void MainWindow::setConnected(bool isConnected) {
         }
         m_workWidgets.clear();
         ui->menuCalibration->clear();
+        adjustSize();
     }
 }
 

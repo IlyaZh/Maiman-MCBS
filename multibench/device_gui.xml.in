@@ -45,7 +45,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 		</ParamControls>
@@ -141,7 +142,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 		</ParamControls>
@@ -345,7 +347,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 			<Param real=\"0043\">Driver Temperature</Param>
@@ -461,7 +464,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 			<Param real=\"0043\">Driver Temperature</Param>
@@ -577,7 +581,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 			<Param real=\"0043\">Driver Temperature</Param>
@@ -693,7 +698,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 			<Param real=\"0043\">Driver Temperature</Param>
@@ -809,7 +815,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 			<Param real=\"0043\">Driver Temperature</Param>
@@ -925,7 +932,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 			<Param real=\"0043\">Driver Temperature</Param>
@@ -1041,7 +1049,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 			<Param real=\"0043\">Driver Temperature</Param>
@@ -1157,7 +1166,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 			<Param real=\"0042\">NTC Temperature</Param>
@@ -1272,7 +1282,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 			<Param real=\"0043\">Driver Temperature</Param>
@@ -1388,7 +1399,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">Current</Param>
 			<Param real=\"0003\">Serial Number</Param>
 			<Param real=\"0041\">Voltage</Param>
 			<Param real=\"0043\">Driver Temperature</Param>
@@ -1505,7 +1517,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">LD Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">LD Current</Param>
 			<Param min=\"0A12\"
      				max=\"0A11\"
      				value=\"0A00\"
@@ -1628,7 +1641,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">LD Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">LD Current</Param>
 			<Param min=\"0A12\"
      				max=\"0A11\"
      				value=\"0A00\"
@@ -1771,7 +1785,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">LD Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">LD Current</Param>
 			<Param min=\"0A12\"
      				max=\"0A11\"
      				value=\"0A00\"
@@ -1913,7 +1928,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">LD Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">LD Current</Param>
 			<Param min=\"0A12\"
      				max=\"0A11\"
      				value=\"0A00\"
@@ -2055,7 +2071,8 @@
 			<Param min=\"0024\"
      				max=\"0025\"
      				value=\"0008\"
-     				real=\"0040\">LD Current</Param>
+                                real=\"0040\"
+                                fixed=\"\">LD Current</Param>
 			<Param min=\"0A12\"
      				max=\"0A11\"
      				value=\"0A00\"

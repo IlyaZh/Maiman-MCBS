@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>300</height>
+    <width>500</width>
+    <height>200</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>600</width>
-    <height>300</height>
+    <width>500</width>
+    <height>200</height>
    </size>
   </property>
   <property name="font">
@@ -132,15 +132,15 @@ QMenu::item:selected {
        <bool>true</bool>
       </property>
       <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <widget class="QWidget" name="scrollFieldWidget">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>236</width>
-         <height>241</height>
+         <width>136</width>
+         <height>141</height>
         </rect>
        </property>
       </widget>
@@ -153,7 +153,7 @@ QMenu::item:selected {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>500</width>
      <height>21</height>
     </rect>
    </property>

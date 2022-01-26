@@ -225,7 +225,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_widgetLayout->setAlignment(Qt::AlignTop);
     m_widgetLayout->setContentsMargins(0,2,0,0);
     m_widgetLayout->setSpacing(0);
-    m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinAndMaxSize);
+    m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
     ui->widgetBox->setLayout(m_widgetLayout);
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
