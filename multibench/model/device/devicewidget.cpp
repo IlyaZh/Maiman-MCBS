@@ -210,9 +210,9 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
         }
 
         if(pButton) {
-            pButton->setMinimumSize(240, 36);
+            pButton->setMinimumSize(234, 36);
             pButton->setMaximumHeight(36);
-            pButton->setMaximumWidth(240);
+            pButton->setMaximumWidth(234);
             pButton->setFont(QFont("Share Tech Mono", 18));
             pButton->setStyleSheet(buttonOff);
             pButton->setChecked(false);

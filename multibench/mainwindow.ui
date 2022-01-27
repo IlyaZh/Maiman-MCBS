@@ -48,17 +48,22 @@ QPushButton {
 	border-radius: 4px;
 	padding: 4px;
 }
-
+/*
 QMenu:checked {
 	color: rgb(150, 150, 150);
 }
+*/
 QMenu:hover {
 	color: rgb(150, 150, 150);
 }
+
 QMenu::item:selected {
 	background-color: rgb(81, 81, 81);
 }
-</string>
+
+QMenu::item:disabled {
+	color: rgb(120, 120, 120);
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -297,6 +302,9 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
    </property>
   </action>
   <action name="actionConnect">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Connect</string>
    </property>

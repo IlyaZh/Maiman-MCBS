@@ -14,7 +14,7 @@ const QString editOnly = "QLineEdit{background-color: rgb(26, 26, 26);\
     border-radius: 6px; \
     font: 20pt Share Tech Mono;}";
 
-enum { maxLengthString = 12 , lenghtNonEditableString=4};
+enum { maxLengthString = 13 , lenghtNonEditableString=4};
 
 InLineEdit::InLineEdit(int addr) :
     m_name(""),
