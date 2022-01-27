@@ -233,10 +233,12 @@ void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& last
     qDebug() << "NetworkModel::readyRead" << m_protocol.isError() << rxPackage.toHex(' ');
     if(m_protocol.isError()) {
         qDebug() << "PROTOCOL ERROR" << m_protocol.errorString();
-        quint8 addr = static_cast<quint8>(rxPackage.at(0));
-        if(m_devices.contains(addr)) {
-            m_devices[addr]->unlink();
-        }
+        // INFO: Считаем устройство пропащим только при таймауте.
+        // TODO: Может тут сообщение выводить?
+//        quint8 addr = static_cast<quint8>(rxPackage.at(0));
+//        if(m_devices.contains(addr)) {
+//            m_devices[addr]->unlink();
+//        }
     } else {
         for(const auto& item : qAsConst(result)) {
             if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
