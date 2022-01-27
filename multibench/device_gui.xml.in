@@ -315,7 +315,9 @@
 		<Limits>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -432,7 +434,9 @@
 		<Limits>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -549,7 +553,9 @@
 		<Limits>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -666,7 +672,9 @@
 		<Limits>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -783,7 +791,9 @@
 		<Limits>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -900,7 +910,9 @@
 		<Limits>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -1017,7 +1029,9 @@
 		<Limits>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -1134,7 +1148,9 @@
 		<Limits>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -1250,7 +1266,9 @@
 		<Limits>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -1367,7 +1385,9 @@
 		<Limits>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -1482,13 +1502,17 @@
      				maxValue=\"4\">TEC current limit</Limit>
 			<Limit limitCode=\"0A12\"
      				minCode=\"0A14\"
-     				maxCode=\"0A11\">TEC temperature warning lower limit</Limit>
+                                maxCode=\"0A11\"
+                                pair=\"0A11\"
+                                pairType=\"min\">TEC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0A11\"
      				minCode=\"0A12\"
      				maxCode=\"0A13\">TEC temperature warning upper limit</Limit>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -1606,13 +1630,17 @@
      				maxValue=\"4\">TEC current limit</Limit>
 			<Limit limitCode=\"0A12\"
      				minCode=\"0A14\"
-     				maxCode=\"0A11\">TEC temperature warning lower limit</Limit>
+                                maxCode=\"0A11\"
+                                pair=\"0A11\"
+                                pairType=\"min\">TEC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0A11\"
      				minCode=\"0A12\"
      				maxCode=\"0A13\">TEC temperature warning upper limit</Limit>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -1750,13 +1778,17 @@
      				maxValue=\"4\">TEC current limit</Limit>
 			<Limit limitCode=\"0A12\"
      				minCode=\"0A14\"
-     				maxCode=\"0A11\">TEC temperature warning lower limit</Limit>
+                                maxCode=\"0A11\"
+                                pair=\"0A11\"
+                                pairType=\"min\">TEC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0A11\"
      				minCode=\"0A12\"
      				maxCode=\"0A13\">TEC temperature warning upper limit</Limit>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -1893,13 +1925,17 @@
      				maxValue=\"4\">TEC current limit</Limit>
 			<Limit limitCode=\"0A12\"
      				minCode=\"0A14\"
-     				maxCode=\"0A11\">TEC temperature warning lower limit</Limit>
+                                maxCode=\"0A11\"
+                                pair=\"0A11\"
+                                pairType=\"min\">TEC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0A11\"
      				minCode=\"0A12\"
      				maxCode=\"0A13\">TEC temperature warning upper limit</Limit>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>
@@ -2036,13 +2072,17 @@
      				maxValue=\"4\">TEC current limit</Limit>
 			<Limit limitCode=\"0A12\"
      				minCode=\"0A14\"
-     				maxCode=\"0A11\">TEC temperature warning lower limit</Limit>
+                                maxCode=\"0A11\"
+                                pair=\"0A11\"
+                                pairType=\"min\">TEC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0A11\"
      				minCode=\"0A12\"
      				maxCode=\"0A13\">TEC temperature warning upper limit</Limit>
 			<Limit limitCode=\"0026\"
      				minValue=\"-10\"
-     				maxCode=\"0027\">NTC temperature warning lower limit</Limit>
+                                maxCode=\"0027\"
+                                pair=\"0027\"
+                                pairType=\"min\">NTC temperature warning lower limit</Limit>
 			<Limit limitCode=\"0027\"
      				minCode=\"0026\"
      				maxValue=\"100\">NTC temperature warning upper limit</Limit>

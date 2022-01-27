@@ -1,7 +1,8 @@
 #include "guifactory.h"
 #include <QDebug>
-#include "widgets/calibrationandlimitswidget.h"
+#include "widgets/plusminuswidget.h"
 #include "widgets/calibrationdialog.h"
+#include <algorithm>
 
 class DevCommand;
 
@@ -185,6 +186,10 @@ Limit GuiFactory::parseDeviceLimit(const TreeItem& item) {
             limit.minCode = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
         } else if (arg.name() == "maxCode") {
             limit.maxCode = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if (arg.name() == "pair") {
+            limit.pairCode = static_cast<quint16>(arg.value().toString().toUInt(nullptr, 16));
+        } else if (arg.name() == "pairType") {
+            limit.isPairMin = (arg.value().toString().toLower() == QString("min"));
         }
     }
     return limit;

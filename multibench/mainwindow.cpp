@@ -9,7 +9,7 @@
 #include "widgets/updatewidget.h"
 #include "widgets/aboutdialog.h"
 #include "widgets/calibrationdialog.h"
-#include "widgets/calibrationandlimitswidget.h"
+#include "widgets/plusminuswidget.h"
 #include <QInputDialog>
 #include <utility>
 #include <widgets/rescanprogresswidget.h>

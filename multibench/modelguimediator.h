@@ -11,7 +11,7 @@ class GuiFactory;
 class MainWindow;
 class Device;
 class DeviceWidget;
-class CalibrationAndLimitsWidget;
+class PlusMinusWidget;
 
 class ModelGuiMediator : public QObject
 {

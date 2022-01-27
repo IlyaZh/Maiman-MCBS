@@ -8,7 +8,7 @@
 
 class DevCommand;
 class CalibrationDialog;
-class CalibrationAndLimitsWidget;
+class PlusMinusWidget;
 class TreeItem;
 
 class GuiFactory : public QObject

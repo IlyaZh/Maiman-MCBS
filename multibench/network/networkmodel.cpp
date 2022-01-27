@@ -38,7 +38,6 @@ void NetworkModel::getBaudrate(){
 
 void NetworkModel::setDelay(int delay) {
     if(m_worker){
-//        m_delay = delay;
         m_worker->setDelay(delay);
         AppSettings::setNetworkDelay(delay);
     }
@@ -128,7 +127,7 @@ void NetworkModel::clear() {
     m_queue.clear();
     for(auto& item : m_devices) {
         item->disconnect();
-        item->deleteLater(); // TODO: NADO LI
+        item->deleteLater();
     }
     m_devices.clear();
     m_rescanCommandsCount = 0;
@@ -224,11 +223,7 @@ void NetworkModel::pollRequest() {
         }
         if(!package.isEmpty()) {
             qint64 waitForBytes = m_protocol.waitForBytes(package);
-//            QTimer::singleShot(m_delay, this, [this, package, waitForBytes](){
-                m_worker->writeAndWaitBytes(package, waitForBytes);
-                qDebug()<<"NetworkModel::pollRequest"<<package.size();
-//            });
-
+            m_worker->writeAndWaitBytes(package, waitForBytes);
         }
     }
 }
@@ -238,13 +233,14 @@ void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& last
     qDebug() << "NetworkModel::readyRead" << m_protocol.isError() << rxPackage.toHex(' ');
     if(m_protocol.isError()) {
         qDebug() << "PROTOCOL ERROR" << m_protocol.errorString();
-        quint8 addr = static_cast<quint8>(rxPackage.at(0));
-        if(m_devices.contains(addr)) {
-            m_devices[addr]->unlink();
-        }
+        // INFO: Считаем устройство пропащим только при таймауте.
+        // TODO: Может тут сообщение выводить?
+//        quint8 addr = static_cast<quint8>(rxPackage.at(0));
+//        if(m_devices.contains(addr)) {
+//            m_devices[addr]->unlink();
+//        }
     } else {
         for(const auto& item : qAsConst(result)) {
-            qDebug()<<"NetworkModel::readyRead:"<<item.value;
             if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
                 initDevice(item.addr, item.value);
             } else {

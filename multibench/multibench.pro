@@ -83,9 +83,10 @@ SOURCES += \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
     modelguimediator.cpp \
-    widgets/calibrationandlimitswidget.cpp \
     widgets/calibrationdialog.cpp \
     widgets/inlineedit.cpp \
+    widgets/plusminusgroupwidget.cpp \
+    widgets/plusminuswidget.cpp \
     widgets/readnounitparameterwidget.cpp \
     widgets/readparameterfactory.cpp \
     widgets/rescanprogresswidget.cpp \
@@ -128,9 +129,10 @@ HEADERS += \
     model/device/HiddenWidget.h \
     modelguimediator.h \
     network/IDataReceiver.h \
-    widgets/calibrationandlimitswidget.h \
     widgets/calibrationdialog.h \
     widgets/inlineedit.h \
+    widgets/plusminusgroupwidget.h \
+    widgets/plusminuswidget.h \
     widgets/readnounitparameterwidget.h \
     widgets/readparameterfactory.h \
     widgets/rescanprogresswidget.h \
