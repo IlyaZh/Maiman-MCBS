@@ -1,5 +1,5 @@
-#ifndef CALIBRATIONANDLIMITSWIDGET_H
-#define CALIBRATIONANDLIMITSWIDGET_H
+#ifndef PLUSMINUSWIDGET_H
+#define PLUSMINUSWIDGET_H
 
 #include <QDialog>
 #include <QWidget>
@@ -14,16 +14,19 @@ namespace Ui {
 class CalibrationAndLimitsWidget;
 }
 
-class CalibrationAndLimitsWidget : public QDialog
+class PlusMinusWidget : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit CalibrationAndLimitsWidget(const CalibrationKoef& calibration, QSharedPointer<DevCommand> command,QWidget *parent = nullptr);
-    explicit CalibrationAndLimitsWidget(const Limit& limit,QSharedPointer<DevCommand> command,QSharedPointer<DevCommand> maxCommand,QSharedPointer<DevCommand> minCommand,QWidget *parent = nullptr);
-    ~CalibrationAndLimitsWidget();
+    explicit PlusMinusWidget(const CalibrationKoef& calibration, QSharedPointer<DevCommand> command,QWidget *parent = nullptr);
+    explicit PlusMinusWidget(const Limit& limit,QSharedPointer<DevCommand> command,QSharedPointer<DevCommand> maxCommand,QSharedPointer<DevCommand> minCommand,QWidget *parent = nullptr);
+    ~PlusMinusWidget();
     void sendValue();
-    bool getState();
+    bool state();
+    double value();
+    void setMin(double min);
+    void setMax(double max);
 private slots:
     void increment();
     void decrement();
@@ -49,4 +52,4 @@ private:
     static const QString styleSheetERROR;
 };
 
-#endif // CALIBRATIONANDLIMITSWIDGET_H
+#endif // PLUSMINUSWIDGET_H

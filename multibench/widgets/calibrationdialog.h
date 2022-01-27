@@ -5,7 +5,7 @@
 #include "device/commandsettings.h"
 #include "model/device/devicewidget.h"
 
-class CalibrationAndLimitsWidget;
+class PlusMinusWidget;
 struct CalibrationKoef;
 
 namespace Ui {
@@ -22,8 +22,8 @@ public:
     void setValues();
 private:
 
-    QVector<CalibrationAndLimitsWidget*> m_calibrationWidgets;
-    QVector<CalibrationAndLimitsWidget*> m_limitsWidgets;
+    QVector<PlusMinusWidget*> m_calibrationWidgets;
+    QVector<PlusMinusWidget*> m_limitsWidgets;
     Ui::CalibrationDialog *ui;
 
     static const QString styleButtonOn;

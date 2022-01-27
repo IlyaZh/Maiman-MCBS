@@ -27,10 +27,12 @@ struct Control {
 
 struct Limit {
     quint16 code;
-    double minValue = 0;
-    double maxValue = 0;
-    quint16 minCode = 0;
-    quint16 maxCode = 0;
+    double minValue {0};
+    double maxValue {0};
+    quint16 minCode {0};
+    quint16 maxCode {0};
+    quint16 pairCode {0};
+    bool isPairMin {true};
     QString name;
 };
 

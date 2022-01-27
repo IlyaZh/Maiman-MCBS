@@ -2,7 +2,8 @@
 #include "ui_calibrationdialog.h"
 #include "model/device/devicewidget.h"
 #include "device/commandsettings.h"
-#include "widgets/calibrationandlimitswidget.h"
+#include "widgets/plusminuswidget.h"
+#include "widgets/plusminusgroupwidget.h"
 
 const QString CalibrationDialog::styleButtonOn = "QPushButton {\
     color: rgb(255, 255, 255);\
@@ -30,19 +31,42 @@ CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const Q
     QDialog::setWindowTitle("Calibrations And Limits");
 
     for (const auto& item : deviceDesc.calibration){
-        auto calibrationWidget = new CalibrationAndLimitsWidget(item, commands.value(item.code));
+        auto calibrationWidget = new PlusMinusWidget(item, commands.value(item.code));
         calibrationWidget->setParent(this);
         ui->calibrationLayout->addWidget(calibrationWidget);
         m_calibrationWidgets.append(calibrationWidget);
-        connect(calibrationWidget, &CalibrationAndLimitsWidget::editFinished, this, &CalibrationDialog::widgetsAreValid);
+        connect(calibrationWidget, &PlusMinusWidget::editFinished, this, &CalibrationDialog::widgetsAreValid);
     }
 
+    QMap<quint16, PlusMinusWidget*> limitWidgets;
+
     for (const auto& item : deviceDesc.limits){
-        auto limitWidget = new CalibrationAndLimitsWidget(item, commands.value(item.code), commands.value(item.maxCode), commands.value(item.minCode));
+        auto limitWidget = new PlusMinusWidget(item, commands.value(item.code), commands.value(item.maxCode), commands.value(item.minCode));
         limitWidget->setParent(this);
-        ui->limitsLayout->addWidget(limitWidget);
+        limitWidgets.insert(item.code, limitWidget);
+        connect(limitWidget, &PlusMinusWidget::editFinished, this, &CalibrationDialog::widgetsAreValid);
         m_limitsWidgets.append(limitWidget);
-        connect(limitWidget, &CalibrationAndLimitsWidget::editFinished, this, &CalibrationDialog::widgetsAreValid);
+    }
+
+    for(const auto& item : deviceDesc.limits) {
+        QWidget* widget = nullptr;
+        if(item.pairCode != 0) {
+            PlusMinusWidget* min;
+            PlusMinusWidget* max;
+            if(item.isPairMin) {
+                min = limitWidgets.value(item.code);
+                max = limitWidgets.value(item.pairCode);
+            } else {
+                min = limitWidgets.value(item.pairCode);
+                max = limitWidgets.value(item.code);
+            }
+            limitWidgets.remove(item.code);
+            limitWidgets.remove(item.pairCode);
+            widget = new PlusMinusGroupWidget(min, max, this);
+        } else {
+            widget = limitWidgets.value(item.code);
+        }
+        ui->limitsLayout->addWidget(widget);
     }
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &CalibrationDialog::accept);
@@ -65,7 +89,7 @@ CalibrationDialog::~CalibrationDialog()
 }
 
 void CalibrationDialog::saveResult(){
-    for(const auto& item : qAsConst(m_calibrationWidgets )){
+    for(const auto& item : qAsConst(m_calibrationWidgets)){
         item->sendValue();
     }
     for(const auto& item : qAsConst(m_limitsWidgets)) {
@@ -78,13 +102,13 @@ void CalibrationDialog::widgetsAreValid(){
 
     bool hasWrongWidgets = std::any_of(std::begin(m_calibrationWidgets),
                                        std::end(m_calibrationWidgets),
-                                       [=](CalibrationAndLimitsWidget* item){
-                                           return !item->getState();
+                                       [=](PlusMinusWidget* item){
+                                           return !item->state();
                                        });
     bool hasWrongCalibrations = std::any_of(std::begin(m_limitsWidgets),
                                             std::end(m_limitsWidgets),
-                                            [=](CalibrationAndLimitsWidget* item){
-                                                return !item->getState();
+                                            [=](PlusMinusWidget* item){
+                                                return !item->state();
                                             });
     bool state = !(hasWrongWidgets || hasWrongCalibrations);
 

@@ -8,7 +8,7 @@
 class AboutDialog;
 class UpdateWidget;
 // class CalibrationMenu;
-class CalibrationAndLimitsWidget;
+class PlusMinusWidget;
 class DeviceWidget;
 class RescanProgressWidget;
 

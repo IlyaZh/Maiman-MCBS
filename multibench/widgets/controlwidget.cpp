@@ -75,28 +75,15 @@ void ControlWidget::userEnteredValue(){
         setEditLineRed();
         QTimer::singleShot(ErrorTimeout, this, SLOT(setEditLineWhite()));
     }
-    qDebug() << ui->Value->text();
 
     if(!m_Value.isNull()) {
         m_Value->setFromWidget(valueFromLine);
     }
 
-    qDebug() << "SIGNAL CommandWidget" << m_Value->code() << valueFromLine << m_Value->valueStr();
-
-//    if(valueFromLine >= m_Min->valueDouble() && valueFromLine <= m_Max->valueDouble()) {
-//        qDebug() << ui->Value->text();
-
-//        if(!m_Value.isNull()) {
-//            m_Value->setFromWidget(valueFromLine);
-//        }
-
-//        qDebug() << "SIGNAL CommandWidget" << m_Value->code() << valueFromLine << m_Value->valueStr();
-//    }
     isUserEdit = false;
 }
 
 void ControlWidget::setValue(){
-    if (m_Value->code() == 0x07) qDebug()<<"SET VALUE ______________________________________________________________________________"<<m_Value->valueInt()<<isUserEdit;
     const QString value = m_Value->valueStr();
     if(!isUserEdit) {
         if(m_Value) {
