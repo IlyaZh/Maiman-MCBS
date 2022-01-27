@@ -76,12 +76,14 @@ void ModelGuiMediator::changeConnectState(PortType type, QVariantMap portSetting
     if(m_network.isStart()) {
         m_network.stop();
     } else {
-        AppSettings::setNetworkData(portSettings);
+        if(!portSettings.isEmpty()){
+            AppSettings::setNetworkData(portSettings);
 
-        auto dataSource = QScopedPointer<IDataSource>(DataSourceFactory::createSource(type));
-        if(dataSource) {
-            dataSource->init(portSettings);
-            m_network.start(dataSource);
+            auto dataSource = QScopedPointer<IDataSource>(DataSourceFactory::createSource(type));
+            if(dataSource) {
+                dataSource->init(portSettings);
+                m_network.start(dataSource);
+            }
         }
     }
 }

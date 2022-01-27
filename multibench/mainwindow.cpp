@@ -111,12 +111,8 @@ void MainWindow::connectTriggered() {
     auto type = PortType::Com;
     networkMap.insert("type",  static_cast<quint8>(type));
     qDebug() << "void MainWindow::connectTriggered()";
-    if (ui->actionConnect->isChecked() and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
-        if (type == PortType::TCP){
-            networkMap.insert("host", "127.0.0.1");
-            networkMap.insert("port", "9999");
-        }
-        else if(type == PortType::Com){
+    if (!m_isConnected and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
+        if(type == PortType::Com){
             networkMap.insert("comport", m_portGroup->checkedAction()->text());
             networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->text());
         }
@@ -234,6 +230,7 @@ void MainWindow::setConnected(bool isConnected) {
     ui->connectionWidget->setConnected(isConnected);
     ui->menuPorts->setEnabled(!isConnected);
     ui->menuBaudrates->setEnabled(!isConnected);
+    m_isConnected = isConnected;
     if(!isConnected) {
         for(auto widget : qAsConst(m_workWidgets)) {
             m_workFieldLayout->removeWidget(widget);

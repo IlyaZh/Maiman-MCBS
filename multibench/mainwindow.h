@@ -57,6 +57,7 @@ private:
     UpdateWidget* m_updater;
     QPointer<AboutDialog> m_About;
     QPointer<RescanProgressWidget> m_progressWidget;
+    bool m_isConnected{false};
 protected:
     void closeEvent(QCloseEvent *event) override;
 
