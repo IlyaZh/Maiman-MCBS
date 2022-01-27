@@ -38,7 +38,8 @@ void ModelGuiMediator::createWidgetFor(Device* device) {
         widget->setAddress(static_cast<int>(device->addr()));
         connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);
         m_window.addDeviceWidget(widget);
-        m_window.addCalibrationMenu(device->addr(),device->id());
+        if(m_factory.hasCalibration(device->id()) or m_factory.hasLimits(device->id()))
+            m_window.addCalibrationMenu(device->addr(),device->id());
     } else {
         qWarning() << "Can't find device widget with id=" << device->id();
     }
@@ -53,6 +54,7 @@ void ModelGuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id){
         connect(dialog, &CalibrationDialog::finished, this, [this, addr](){
             m_calibrationDialog.remove(addr);
         });
+
     }
 }
 
