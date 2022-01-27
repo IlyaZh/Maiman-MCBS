@@ -296,23 +296,9 @@ Led GuiFactory::parseLeds(const TreeItem& item) {
 }
 
 bool GuiFactory::hasLimits(quint16 id){
-    if(m_deviceWidgets.contains(id)) {
-        if(m_deviceWidgets[id].calibration.size() != 0)
-            return true;
-        else
-            return false;
-    }
-    else
-        return false;
+    return(m_deviceWidgets.contains(id) and !m_deviceWidgets[id].calibration.isEmpty());
 }
 
 bool GuiFactory::hasCalibration(quint16 id){
-    if(m_deviceWidgets.contains(id)) {
-        if(m_deviceWidgets[id].limits.size() != 0)
-            return true;
-        else
-            return false;
-    }
-    else
-        return false;
+    return(m_deviceWidgets.contains(id) and !m_deviceWidgets[id].limits.isEmpty());
 }

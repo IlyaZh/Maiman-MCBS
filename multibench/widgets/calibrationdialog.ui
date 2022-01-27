@@ -39,6 +39,9 @@ QPushButton {
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
    <item row="0" column="1" colspan="2">
     <spacer name="horizontalSpacer">
      <property name="orientation">
@@ -172,8 +175,13 @@ font: 18pt &quot;Share Tech Mono&quot;;</string>
      <property name="minimumSize">
       <size>
        <width>347</width>
-       <height>55</height>
+       <height>40</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(51, 51, 51);
+ border: 1px solid rgb(180,180,180);
+font: 10pt &quot;Share Tech Mono&quot;;</string>
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>

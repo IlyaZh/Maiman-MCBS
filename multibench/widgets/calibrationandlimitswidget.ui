@@ -119,7 +119,7 @@ QPushButton::disabled {
      </property>
      <property name="maximumSize">
       <size>
-       <width>70</width>
+       <width>80</width>
        <height>30</height>
       </size>
      </property>
@@ -142,7 +142,7 @@ QLineEdit::disabled {
 </string>
      </property>
      <property name="text">
-      <string/>
+      <string>100.00</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

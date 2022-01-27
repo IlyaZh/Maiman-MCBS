@@ -29,7 +29,7 @@ CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const Q
 {
     ui->setupUi(this);
     QDialog::setWindowTitle("Calibrations And Limits");
-
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
     for (const auto& item : deviceDesc.calibration){
         auto calibrationWidget = new PlusMinusWidget(item, commands.value(item.code));
         calibrationWidget->setParent(this);
