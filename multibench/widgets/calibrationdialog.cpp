@@ -59,14 +59,13 @@ CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const Q
                 min = limitWidgets.value(item.pairCode);
                 max = limitWidgets.value(item.code);
             }
-            limitWidgets.remove(item.code);
-            limitWidgets.remove(item.pairCode);
             widget = new PlusMinusGroupWidget(min, max, this);
         } else {
             widget = limitWidgets.value(item.code);
         }
         ui->limitsLayout->addWidget(widget);
     }
+    limitWidgets.clear();
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &CalibrationDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &CalibrationDialog::reject);

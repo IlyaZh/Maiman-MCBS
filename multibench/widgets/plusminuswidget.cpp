@@ -153,6 +153,7 @@ bool PlusMinusWidget::state(){
 void PlusMinusWidget::keyPressEvent(QKeyEvent *event) {
     if(event->matches(QKeySequence::Cancel)) {
         event->ignore();
+        return;
     }
-    QWidget::keyPressEvent(event);
+    QDialog::keyPressEvent(event);
 }

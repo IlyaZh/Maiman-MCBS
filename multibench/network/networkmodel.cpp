@@ -230,7 +230,7 @@ void NetworkModel::pollRequest() {
 
 void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& lastPackage) {
     auto result = m_protocol.execute(rxPackage, lastPackage);
-    qDebug() << "NetworkModel::readyRead" << m_protocol.isError() << rxPackage.toHex(' ');
+//    qDebug() << "NetworkModel::readyRead" << m_protocol.isError() << rxPackage.toHex(' ');
     if(m_protocol.isError()) {
         qDebug() << "PROTOCOL ERROR" << m_protocol.errorString();
         // INFO: Считаем устройство пропащим только при таймауте.
