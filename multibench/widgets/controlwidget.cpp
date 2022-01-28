@@ -68,6 +68,7 @@ ControlWidget::~ControlWidget()
 
 void ControlWidget::userEnteredValue(){
     double valueFromLine =  ui->Value->text().toDouble();
+    ui->Value->setText(QString::number(valueFromLine, 'f', m_Value->tolerance()));
     ui->Value->clearFocus();
 
     if(valueFromLine > m_Max->valueDouble() or valueFromLine < m_Min->valueDouble()){

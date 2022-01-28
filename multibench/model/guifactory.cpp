@@ -294,3 +294,11 @@ Led GuiFactory::parseLeds(const TreeItem& item) {
     }
     return led;
 }
+
+bool GuiFactory::hasLimits(quint16 id){
+    return(m_deviceWidgets.contains(id) and !m_deviceWidgets[id].calibration.isEmpty());
+}
+
+bool GuiFactory::hasCalibration(quint16 id){
+    return(m_deviceWidgets.contains(id) and !m_deviceWidgets[id].limits.isEmpty());
+}

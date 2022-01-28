@@ -39,6 +39,9 @@ QPushButton {
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
    <item row="0" column="1" colspan="2">
     <spacer name="horizontalSpacer">
      <property name="orientation">
@@ -88,48 +91,9 @@ QPushButton {
     </widget>
    </item>
    <item row="6" column="0" colspan="3">
-    <layout class="QVBoxLayout" name="limitsLayout"/>
+    <layout class="QVBoxLayout" name="calibrationLayout"/>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel" name="limitsLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(255, 255, 255);
-font: 18pt &quot;Share Tech Mono&quot;;</string>
-     </property>
-     <property name="text">
-      <string>Limits</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0" colspan="3">
-    <layout class="QVBoxLayout" name="calibrationLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-    </layout>
-   </item>
-   <item row="0" column="0">
     <widget class="QLabel" name="calibrationLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -161,6 +125,45 @@ font: 18pt &quot;Share Tech Mono&quot;;</string>
      </property>
     </widget>
    </item>
+   <item row="2" column="0" colspan="3">
+    <layout class="QVBoxLayout" name="limitsLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+    </layout>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="limitsLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+font: 18pt &quot;Share Tech Mono&quot;;</string>
+     </property>
+     <property name="text">
+      <string>Limits</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+     </property>
+    </widget>
+   </item>
    <item row="7" column="0" colspan="3">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="sizePolicy">
@@ -172,8 +175,13 @@ font: 18pt &quot;Share Tech Mono&quot;;</string>
      <property name="minimumSize">
       <size>
        <width>347</width>
-       <height>55</height>
+       <height>40</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(51, 51, 51);
+ border: 1px solid rgb(180,180,180);
+font: 10pt &quot;Share Tech Mono&quot;;</string>
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>

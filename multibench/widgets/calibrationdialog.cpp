@@ -29,22 +29,21 @@ CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const Q
 {
     ui->setupUi(this);
     QDialog::setWindowTitle("Calibrations And Limits");
-
+    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
     for (const auto& item : deviceDesc.calibration){
         auto calibrationWidget = new PlusMinusWidget(item, commands.value(item.code));
-        calibrationWidget->setParent(this);
         ui->calibrationLayout->addWidget(calibrationWidget);
+        //calibrationWidget->setParent(this);
         m_calibrationWidgets.append(calibrationWidget);
-        connect(calibrationWidget, &PlusMinusWidget::editFinished, this, &CalibrationDialog::widgetsAreValid);
+        connect(calibrationWidget, &PlusMinusWidget::lineEditTextChanged, this, &CalibrationDialog::widgetsAreValid);
     }
 
     QMap<quint16, PlusMinusWidget*> limitWidgets;
 
     for (const auto& item : deviceDesc.limits){
-        auto limitWidget = new PlusMinusWidget(item, commands.value(item.code), commands.value(item.maxCode), commands.value(item.minCode));
-        limitWidget->setParent(this);
+        auto limitWidget = new PlusMinusWidget(item, commands.value(item.code), commands.value(item.maxCode), commands.value(item.minCode), this);
         limitWidgets.insert(item.code, limitWidget);
-        connect(limitWidget, &PlusMinusWidget::editFinished, this, &CalibrationDialog::widgetsAreValid);
+        connect(limitWidget, &PlusMinusWidget::lineEditTextChanged, this, &CalibrationDialog::widgetsAreValid);
         m_limitsWidgets.append(limitWidget);
     }
 
@@ -60,14 +59,13 @@ CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const Q
                 min = limitWidgets.value(item.pairCode);
                 max = limitWidgets.value(item.code);
             }
-            limitWidgets.remove(item.code);
-            limitWidgets.remove(item.pairCode);
             widget = new PlusMinusGroupWidget(min, max, this);
         } else {
             widget = limitWidgets.value(item.code);
         }
         ui->limitsLayout->addWidget(widget);
     }
+    limitWidgets.clear();
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &CalibrationDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &CalibrationDialog::reject);

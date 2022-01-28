@@ -74,7 +74,7 @@ void DataThread::run() {
         m_waitRxBytes = package.m_waitSize;
 
         m_device->write(m_lastWrittenMsg);
-        qDebug() << QDateTime::currentDateTime().time().toString("HH:mm:ss.zzz") << m_lastWrittenMsg.toHex(' ');
+//        qDebug() << QDateTime::currentDateTime().time().toString("HH:mm:ss.zzz") << m_lastWrittenMsg.toHex(' ');
         if(!m_device->waitForBytesWritten(m_timeout)) {
             qDebug() << "NOT WRITTEN";
             emit timeout(m_lastWrittenMsg);

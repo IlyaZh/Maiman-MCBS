@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>520</width>
-    <height>260</height>
+    <height>261</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,7 +26,7 @@
    <string>About</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: #171717;
+   <string notr="true">background: #333333;
 color: #fff;</string>
   </property>
   <property name="modal">
@@ -73,7 +73,7 @@ color: #fff;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>9</pointsize>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -95,7 +95,7 @@ color: #fff;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>9</pointsize>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -105,6 +105,8 @@ color: #fff;</string>
 	border: 1px solid #999999;
 	border-radius: 4px;
 	padding: 4px;
+	
+	font: 10pt &quot;Share Tech Mono&quot;;
 }</string>
      </property>
      <property name="locale">
@@ -159,11 +161,15 @@ color: #fff;</string>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
-       <pointsize>9</pointsize>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #fff;</string>
+      <string notr="true">color: #fff;
+font: 10pt &quot;Share Tech Mono&quot;;</string>
      </property>
      <property name="text">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Development team:&lt;/span&gt;&lt;br/&gt;Temnikov Anatoly&lt;br/&gt;Verhovtsev Anrey&lt;br/&gt;Zhitenev Ilya&lt;br/&gt;Zelinskiy Kirill&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Website:&lt;/span&gt;&lt;br/&gt;&lt;a href=&quot;https://www.maimanelectronics.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;www.maimanelectronics.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Email:&lt;/span&gt;&lt;br/&gt;&lt;a href=&quot;mailto:info@maimanelectronics.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;info@maimanelectronics.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
