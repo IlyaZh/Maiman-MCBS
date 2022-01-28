@@ -12,11 +12,13 @@ PlusMinusGroupWidget::PlusMinusGroupWidget(PlusMinusWidget* min, PlusMinusWidget
     m_minWidget->setParent(this);
     m_maxWidget->setParent(this);
     m_layout->setContentsMargins(0,0,0,0);
-    connect(m_minWidget, &PlusMinusWidget::editFinished, this, [this](){
+    connect(m_minWidget, &PlusMinusWidget::lineEditTextChanged, this, [this](){
         m_maxWidget->setMin(m_minWidget->value());
+        m_maxWidget->validateValue();
     });
 
-    connect(m_maxWidget, &PlusMinusWidget::editFinished, this, [this](){
+    connect(m_maxWidget, &PlusMinusWidget::lineEditTextChanged, this, [this](){
         m_minWidget->setMax(m_maxWidget->value());
+        m_minWidget->validateValue();
     });
 }

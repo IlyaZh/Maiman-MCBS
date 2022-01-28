@@ -52,7 +52,7 @@ PlusMinusWidget::PlusMinusWidget(const CalibrationKoef& calibration, QSharedPoin
     connect(ui->downValue,&QPushButton::clicked,this,&PlusMinusWidget::decrement);
     connect(ui->upValue,&QPushButton::clicked,this,&PlusMinusWidget::increment);
 
-    connect(ui->value,&QLineEdit::textChanged,this,&PlusMinusWidget::editedValue);
+    connect(ui->value,&QLineEdit::textChanged,this,&PlusMinusWidget::textChanged);
     connect(ui->value,&QLineEdit::inputRejected,this,&PlusMinusWidget::rejectedEdit);
     connect(ui->value,&QLineEdit::editingFinished,this,&PlusMinusWidget::inputCompleted);
 }
@@ -76,7 +76,7 @@ PlusMinusWidget::PlusMinusWidget(const Limit& limit, QSharedPointer<DevCommand> 
     connect(ui->downValue,&QPushButton::clicked,this,&PlusMinusWidget::decrement);
     connect(ui->upValue,&QPushButton::clicked,this,&PlusMinusWidget::increment);
 
-    connect(ui->value,&QLineEdit::textChanged,this,&PlusMinusWidget::editedValue);
+    connect(ui->value,&QLineEdit::textChanged,this,&PlusMinusWidget::textChanged);
     connect(ui->value,&QLineEdit::inputRejected,this,&PlusMinusWidget::rejectedEdit);
     connect(ui->value,&QLineEdit::editingFinished,this,&PlusMinusWidget::inputCompleted);
 }
@@ -121,7 +121,12 @@ void PlusMinusWidget::setMax(double max) {
     ui->maxParameter->setText(QString("Max:%1").arg(maxValue));
 }
 
-void PlusMinusWidget::editedValue(){
+void PlusMinusWidget::textChanged(){
+    validateValue();
+    emit lineEditTextChanged();
+}
+
+void PlusMinusWidget::validateValue(){
     QString v=ui->value->text();
     int pos = 0;
     if(m_validator->validate(v,pos) == QValidator::Acceptable){
@@ -132,12 +137,12 @@ void PlusMinusWidget::editedValue(){
         ui->value->setStyleSheet(styleSheetERROR);
         m_state = false;
     }
-    emit editFinished();
 }
 
 void PlusMinusWidget::inputCompleted(){
     double value = ui->value->text().toDouble();
     ui->value->setText(QString::number(value,'f',m_command->tolerance()));
+    ui->value->clearFocus();
 }
 
 void PlusMinusWidget::rejectedEdit(){

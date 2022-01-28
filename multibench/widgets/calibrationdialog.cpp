@@ -35,7 +35,7 @@ CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const Q
         ui->calibrationLayout->addWidget(calibrationWidget);
         calibrationWidget->setParent(this);
         m_calibrationWidgets.append(calibrationWidget);
-        connect(calibrationWidget, &PlusMinusWidget::editFinished, this, &CalibrationDialog::widgetsAreValid);
+        connect(calibrationWidget, &PlusMinusWidget::lineEditTextChanged, this, &CalibrationDialog::widgetsAreValid);
     }
 
     QMap<quint16, PlusMinusWidget*> limitWidgets;
@@ -43,7 +43,7 @@ CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const Q
     for (const auto& item : deviceDesc.limits){
         auto limitWidget = new PlusMinusWidget(item, commands.value(item.code), commands.value(item.maxCode), commands.value(item.minCode), this);
         limitWidgets.insert(item.code, limitWidget);
-        connect(limitWidget, &PlusMinusWidget::editFinished, this, &CalibrationDialog::widgetsAreValid);
+        connect(limitWidget, &PlusMinusWidget::lineEditTextChanged, this, &CalibrationDialog::widgetsAreValid);
         m_limitsWidgets.append(limitWidget);
     }
 

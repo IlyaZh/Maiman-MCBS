@@ -27,16 +27,16 @@ public:
     double value();
     void setMin(double min);
     void setMax(double max);
+    void validateValue();
 private slots:
     void increment();
     void decrement();
 
-    void editedValue();
     void rejectedEdit();
     void inputCompleted();
-
+    void textChanged();
 signals:
-    void editFinished();
+    void lineEditTextChanged();
 
 private:
     void keyPressEvent(QKeyEvent *event) override;
