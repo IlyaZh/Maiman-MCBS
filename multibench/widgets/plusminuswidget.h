@@ -27,7 +27,7 @@ public:
     double value();
     void setMin(double min);
     void setMax(double max);
-    void validateValue();
+
 private slots:
     void increment();
     void decrement();
@@ -40,7 +40,7 @@ signals:
 
 private:
     void keyPressEvent(QKeyEvent *event) override;
-
+    void validateValue();
     QSharedPointer<DevCommand> m_command;
     Ui::CalibrationAndLimitsWidget *ui;
     QDoubleValidator* m_validator;

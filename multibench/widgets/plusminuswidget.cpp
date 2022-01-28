@@ -113,12 +113,14 @@ void PlusMinusWidget::setMin(double min) {
     minValue = min;
     m_validator->setBottom(minValue);
     ui->minParameter->setText(QString("Min:%1").arg(minValue));
+    validateValue();
 }
 
 void PlusMinusWidget::setMax(double max) {
     maxValue = max;
     m_validator->setTop(maxValue);
     ui->maxParameter->setText(QString("Max:%1").arg(maxValue));
+    validateValue();
 }
 
 void PlusMinusWidget::textChanged(){

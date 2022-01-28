@@ -33,7 +33,7 @@ CalibrationDialog::CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const Q
     for (const auto& item : deviceDesc.calibration){
         auto calibrationWidget = new PlusMinusWidget(item, commands.value(item.code));
         ui->calibrationLayout->addWidget(calibrationWidget);
-        calibrationWidget->setParent(this);
+        //calibrationWidget->setParent(this);
         m_calibrationWidgets.append(calibrationWidget);
         connect(calibrationWidget, &PlusMinusWidget::lineEditTextChanged, this, &CalibrationDialog::widgetsAreValid);
     }
