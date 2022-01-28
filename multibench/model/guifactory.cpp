@@ -126,7 +126,7 @@ DeviceWidgetDesc GuiFactory::parseDevice(const TreeItem& item) {
         }
     }
 
-    std::sort(widgetDesc.controls.begin(), widgetDesc.controls.end(), [](const Control& left, const Control& right){
+    std::stable_sort(widgetDesc.controls.begin(), widgetDesc.controls.end(), [](const Control& left, const Control& right){
         Q_UNUSED(right)
         uint16_t lCmd, rCmd;
         if(left.value != 0) {
@@ -149,7 +149,7 @@ DeviceWidgetDesc GuiFactory::parseDevice(const TreeItem& item) {
     });
 
     // Ищем виджет Current и ставим его на первое место
-    std::sort(widgetDesc.controls.begin(), widgetDesc.controls.end(), [](const Control& left, const Control& right){
+    std::stable_sort(widgetDesc.controls.begin(), widgetDesc.controls.end(), [](const Control& left, const Control& right){
         Q_UNUSED(right)
         return (left.fixed);
     });
