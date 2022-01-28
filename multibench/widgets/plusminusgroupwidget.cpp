@@ -9,6 +9,8 @@ PlusMinusGroupWidget::PlusMinusGroupWidget(PlusMinusWidget* min, PlusMinusWidget
 {
     m_layout->addWidget(m_maxWidget);
     m_layout->addWidget(m_minWidget);
+    m_minWidget->setParent(this);
+    m_maxWidget->setParent(this);
     m_layout->setContentsMargins(0,0,0,0);
     connect(m_minWidget, &PlusMinusWidget::editFinished, this, [this](){
         m_maxWidget->setMin(m_minWidget->value());

@@ -148,3 +148,11 @@ void PlusMinusWidget::rejectedEdit(){
 bool PlusMinusWidget::state(){
     return m_state;
 }
+
+// private methods
+void PlusMinusWidget::keyPressEvent(QKeyEvent *event) {
+    if(event->matches(QKeySequence::Cancel)) {
+        event->ignore();
+    }
+    QWidget::keyPressEvent(event);
+}

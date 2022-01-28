@@ -39,6 +39,8 @@ signals:
     void editFinished();
 
 private:
+    void keyPressEvent(QKeyEvent *event) override;
+
     QSharedPointer<DevCommand> m_command;
     Ui::CalibrationAndLimitsWidget *ui;
     QDoubleValidator* m_validator;
