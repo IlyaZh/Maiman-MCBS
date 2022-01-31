@@ -11,6 +11,7 @@ class UpdateWidget;
 class PlusMinusWidget;
 class DeviceWidget;
 class RescanProgressWidget;
+class QuitDialog;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -56,6 +57,7 @@ private:
     QPointer<QActionGroup> m_baudrateGroup;
     UpdateWidget* m_updater;
     QPointer<AboutDialog> m_About;
+    QPointer<QuitDialog> m_Quit;
     QPointer<RescanProgressWidget> m_progressWidget;
     bool m_isConnected{false};
 protected:

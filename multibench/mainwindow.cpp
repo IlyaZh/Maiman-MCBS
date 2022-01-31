@@ -13,6 +13,7 @@
 #include <QInputDialog>
 #include <utility>
 #include <widgets/rescanprogresswidget.h>
+#include <widgets/quitdialog.h>
 
 const int WidgetsInAppearence {2};
 
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_baudrateGroup(new QActionGroup(this))
     , m_updater(new UpdateWidget(this))
     , m_About(new AboutDialog(this))
+    , m_Quit(new QuitDialog(this))
 {
     ui->setupUi(this);
 
@@ -261,10 +263,10 @@ void MainWindow::getKeepAddresses(){
 // protected methods
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    auto result = QMessageBox::question(this, "Do you want to quit?", "Do you really want to quit?");
+    m_Quit->show();
+    m_Quit->show();
     event->ignore();
-    if(result == QMessageBox::Yes)
-        qApp->quit();
+    connect(m_Quit, &QuitDialog::accepted, this,[](){qApp->quit();});
 }
 
 void MainWindow::callAboutDialog(){

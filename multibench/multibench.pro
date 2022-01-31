@@ -87,6 +87,7 @@ SOURCES += \
     widgets/inlineedit.cpp \
     widgets/plusminusgroupwidget.cpp \
     widgets/plusminuswidget.cpp \
+    widgets/quitdialog.cpp \
     widgets/readnounitparameterwidget.cpp \
     widgets/readparameterfactory.cpp \
     widgets/rescanprogresswidget.cpp \
@@ -133,6 +134,7 @@ HEADERS += \
     widgets/inlineedit.h \
     widgets/plusminusgroupwidget.h \
     widgets/plusminuswidget.h \
+    widgets/quitdialog.h \
     widgets/readnounitparameterwidget.h \
     widgets/readparameterfactory.h \
     widgets/rescanprogresswidget.h \
@@ -167,6 +169,7 @@ FORMS += \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
     widgets/controlwidget.ui \
+    widgets/quitdialog.ui \
     widgets/readparameterwidget.ui \
     widgets/rescanprogresswidget.ui
 
