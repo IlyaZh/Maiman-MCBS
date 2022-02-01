@@ -13,6 +13,11 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
 //    ui->comPortComboBox->setPlaceholderText("COM4");
 //    ui->baudrateComboBox->setPlaceholderText("115200");
 
+#ifndef QT_DEBUG
+    ui->TCP->hide();
+    ui->line->hide();
+#endif
+
     QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
     QRegularExpression ipRegex ("^" + ipRange
                                 + "\\." + ipRange
@@ -21,13 +26,12 @@ ConnectionWidget::ConnectionWidget(QWidget *parent) :
     QRegularExpressionValidator *ipValidator = new QRegularExpressionValidator(ipRegex, this);
     ui->networkIpLineEdit->setValidator(ipValidator);
 
-    connect(ui->networkConnectButton, &QPushButton::clicked, this, [this](){
-        connectClicked(PortType::TCP);
-    });
-    connect(ui->connectComPortButton, &QPushButton::clicked, this, [this](){
-        connectClicked(PortType::Com);
-    });
+    connect(ui->networkConnectButton, &QPushButton::clicked, this, &ConnectionWidget::connectToTCP);
+    connect(ui->connectComPortButton, &QPushButton::clicked, this, &ConnectionWidget::connectToCOM);
     connect(ui->refreshComPortButton, &QPushButton::clicked, this, &ConnectionWidget::refreshComPorts);
+
+    connect(ui->comPortComboBox, &QComboBox::currentTextChanged, this, &ConnectionWidget::comPortIsChanged);
+    connect(ui->baudrateComboBox, &QComboBox::currentTextChanged, this, &ConnectionWidget::baudRateIsChanged);
 }
 
 ConnectionWidget::~ConnectionWidget()
@@ -69,12 +73,17 @@ void ConnectionWidget::setPortList(const QStringList& portList){
         ui->comPortComboBox->setCurrentText(current);
 }
 
-void ConnectionWidget::setCurrentComPort(QStringView port){
-    ui->comPortComboBox->setCurrentText(port.toString());
+void ConnectionWidget::setCurrentComPort(QString port){
+    ui->comPortComboBox->setCurrentText(port);
+    qDebug()<<ui->comPortComboBox->currentText();
 }
 
-void ConnectionWidget::setCurrentIp(QStringView ip){
-    ui->networkIpLineEdit->setText(ip.toString());
+void ConnectionWidget::setCurrentBautRate(QString baudrate){
+    ui->baudrateComboBox->setCurrentText(baudrate);
+}
+
+void ConnectionWidget::setCurrentIp(QString ip){
+    ui->networkIpLineEdit->setText(ip);
 }
 
 void ConnectionWidget::setCurrentTcpPort(int port){
@@ -83,14 +92,14 @@ void ConnectionWidget::setCurrentTcpPort(int port){
 
 void ConnectionWidget::setProtocol(PortType type){
 
-    if (type == PortType::TCP){
-        ui->ConnectionTab->setCurrentWidget(ui->TcpTab);
-    }
-    else if(type == PortType::Com){
-        ui->ConnectionTab->setCurrentWidget(ui->ComTab);
-    }
-    else
-        return;
+//    if (type == PortType::TCP){
+//        ui->ConnectionTab->setCurrentWidget(ui->TcpTab);
+//    }
+//    else if(type == PortType::Com){
+//        ui->ConnectionTab->setCurrentWidget(ui->ComTab);
+//    }
+//    else
+//        return;
 }
 
 void ConnectionWidget::connectClicked(PortType type){
@@ -108,6 +117,14 @@ void ConnectionWidget::connectClicked(PortType type){
         return;
 
     emit changeConnectState(type, networkMap);
+}
+
+QString ConnectionWidget::getCurrentIp(){
+    return ui->networkIpLineEdit->text();
+}
+
+int ConnectionWidget::getCurrentTcpPort(){
+    return ui->networkPortLineEdit->text().toInt();
 }
 
 // private methods

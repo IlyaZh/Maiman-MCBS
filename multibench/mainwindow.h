@@ -12,6 +12,7 @@ class PlusMinusWidget;
 class DeviceWidget;
 class RescanProgressWidget;
 class QuitDialog;
+class ConnectionWidget;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -44,7 +45,7 @@ public slots:
     void addCalibrationMenu(quint8 addr,quint16 id);
     void rescanProgress(int current, int total);
 private slots:
-    void connectTriggered();
+    void connectTriggered(PortType type);
     void callAboutDialog();
     void getKeepAddresses();
     void setNetworkTimeout();
@@ -59,6 +60,7 @@ private:
     QPointer<AboutDialog> m_About;
     QPointer<QuitDialog> m_Quit;
     QPointer<RescanProgressWidget> m_progressWidget;
+    QPointer<ConnectionWidget> m_connectionWidget;
     bool m_isConnected{false};
 protected:
     void closeEvent(QCloseEvent *event) override;
