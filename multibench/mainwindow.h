@@ -45,7 +45,7 @@ public slots:
     void addCalibrationMenu(quint8 addr,quint16 id);
     void rescanProgress(int current, int total);
 private slots:
-    void connectTriggered();
+    void comTriggered();
     void tcpTriggered();
     void callAboutDialog();
     void getKeepAddresses();

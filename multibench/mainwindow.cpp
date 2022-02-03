@@ -54,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::refreshComPortsSignal);
     connect(m_connectionWidget, &ConnectionWidget::changeConnectState,
             this, &MainWindow::changeConnectState);
-    connect(m_connectionWidget, &ConnectionWidget::connectToCOM, this, &MainWindow::connectTriggered);
+    connect(m_connectionWidget, &ConnectionWidget::connectToCOM, this, &MainWindow::comTriggered);
     connect(m_connectionWidget, &ConnectionWidget::connectToTCP, this, &MainWindow::tcpTriggered);
 
     const QString AppTitle = QString("%1 v.%2").arg(Const::AppNameTitle, QCoreApplication::applicationVersion());
@@ -77,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    ui->actionConnect->setChecked(false);
     connect(ui->actionRefresh_port, &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
     connect(ui->actionConnect, &QAction::triggered,
-            this, &MainWindow::connectTriggered);
+            this, &MainWindow::comTriggered);
 
     connect(ui->actionExit, &QAction::triggered, qApp, &QApplication::closeAllWindows, Qt::QueuedConnection);
     auto temperatureGroup = new QActionGroup(this);
@@ -112,36 +112,26 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::connectTriggered() {
+void MainWindow::comTriggered() {
     QVariantMap networkMap;
-    auto type = PortType::Com;
-    networkMap.insert("type",  static_cast<quint8>(type));
+    networkMap.insert("type",  static_cast<quint8>(PortType::Com));
     qDebug() << "void MainWindow::connectTriggered()";
     if (!m_isConnected and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
-        if(type == PortType::Com){
-            networkMap.insert("comport", m_portGroup->checkedAction()->text());
-            networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->text());
-        }
-        else
-            return;
+        networkMap.insert("comport", m_portGroup->checkedAction()->text());
+        networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->text());
     }
-    emit changeConnectState(type, networkMap);
+    emit changeConnectState(PortType::Com, networkMap);
 }
 
 void MainWindow::tcpTriggered() {
     QVariantMap networkMap;
-    auto type = PortType::TCP;
-    networkMap.insert("type",  static_cast<quint8>(type));
+    networkMap.insert("type",  static_cast<quint8>(PortType::TCP));
     qDebug() << "void MainWindow::connectTriggered()";
     if (!m_isConnected){
-        if(type == PortType::TCP){
-            networkMap.insert("host", m_connectionWidget->getCurrentIp());
-            networkMap.insert("port", m_connectionWidget->getCurrentTcpPort());
-        }
-        else
-            return;
+        networkMap.insert("host", m_connectionWidget->getCurrentIp());
+        networkMap.insert("port", m_connectionWidget->getCurrentTcpPort());
     }
-    emit changeConnectState(type, networkMap);
+    emit changeConnectState(PortType::TCP, networkMap);
 }
 
 void MainWindow::addDeviceWidget(DeviceWidget* widget) {
