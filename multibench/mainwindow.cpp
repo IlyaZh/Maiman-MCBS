@@ -54,12 +54,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::refreshComPortsSignal);
     connect(m_connectionWidget, &ConnectionWidget::changeConnectState,
             this, &MainWindow::changeConnectState);
-    connect(m_connectionWidget, &ConnectionWidget::connectToCOM, this, [this](){
-        connectTriggered(PortType::Com);
-    });
-    connect(m_connectionWidget, &ConnectionWidget::connectToTCP, this, [this](){
-        connectTriggered(PortType::TCP);
-    });
+    connect(m_connectionWidget, &ConnectionWidget::connectToCOM, this, &MainWindow::connectTriggered);
+    connect(m_connectionWidget, &ConnectionWidget::connectToTCP, this, &MainWindow::tcpTriggered);
 
     const QString AppTitle = QString("%1 v.%2").arg(Const::AppNameTitle, QCoreApplication::applicationVersion());
     setWindowTitle(AppTitle);
@@ -81,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    ui->actionConnect->setChecked(false);
     connect(ui->actionRefresh_port, &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
     connect(ui->actionConnect, &QAction::triggered,
-            this, [this](){connectTriggered(PortType::Com);});
+            this, &MainWindow::connectTriggered);
 
     connect(ui->actionExit, &QAction::triggered, qApp, &QApplication::closeAllWindows, Qt::QueuedConnection);
     auto temperatureGroup = new QActionGroup(this);
@@ -116,9 +112,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::connectTriggered(PortType type) {
+void MainWindow::connectTriggered() {
     QVariantMap networkMap;
-    //auto type = PortType::Com;
+    auto type = PortType::Com;
     networkMap.insert("type",  static_cast<quint8>(type));
     qDebug() << "void MainWindow::connectTriggered()";
     if (!m_isConnected and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
@@ -126,7 +122,19 @@ void MainWindow::connectTriggered(PortType type) {
             networkMap.insert("comport", m_portGroup->checkedAction()->text());
             networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->text());
         }
-        else if(type == PortType::TCP){
+        else
+            return;
+    }
+    emit changeConnectState(type, networkMap);
+}
+
+void MainWindow::tcpTriggered() {
+    QVariantMap networkMap;
+    auto type = PortType::TCP;
+    networkMap.insert("type",  static_cast<quint8>(type));
+    qDebug() << "void MainWindow::connectTriggered()";
+    if (!m_isConnected){
+        if(type == PortType::TCP){
             networkMap.insert("host", m_connectionWidget->getCurrentIp());
             networkMap.insert("port", m_connectionWidget->getCurrentTcpPort());
         }
@@ -212,7 +220,7 @@ void MainWindow::setComPorts(const QStringList& portList) {
         action->setCheckable(true);
         m_portGroup->addAction(action);
         ui->menuPorts->addAction(action);
-        if (port == AppSettings::getNetworkData().host){
+        if (port == AppSettings::getNetworkData().port){
             action->setChecked(true);
             m_connectionWidget->setCurrentComPort(port);
         }
@@ -221,16 +229,19 @@ void MainWindow::setComPorts(const QStringList& portList) {
     connect(ui->menuPorts->addAction("Refresh"), &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
 
     connect(m_portGroup, &QActionGroup::triggered, this, [this](QAction* action){
-        m_connectionWidget->setCurrentComPort(action->text());
+        setBothComPorts(action->text());
     });
-    connect(m_connectionWidget, &ConnectionWidget::comPortIsChanged, this, [this](QString port){
-        QList<QAction*> actions = m_portGroup->actions();
-        for(auto item:actions){
-            if(item->text() == port){
-                item->setChecked(true);
-            }
+    connect(m_connectionWidget, &ConnectionWidget::comPortIsChanged, this, &MainWindow::setBothComPorts);
+}
+
+void MainWindow::setBothComPorts(QString port){
+    m_connectionWidget->setCurrentComPort(port);
+    QList<QAction*> actions = m_portGroup->actions();
+    for(auto item:actions){
+        if(item->text() == port){
+            item->setChecked(true);
         }
-    });
+    }
 }
 
 void MainWindow::setBaudRates(const QStringList& baudrates) {
@@ -245,22 +256,25 @@ void MainWindow::setBaudRates(const QStringList& baudrates) {
         action->setCheckable(true);
         m_baudrateGroup->addAction(action);
         ui->menuBaudrates->addAction(action);
-        if (baudrate.toInt() == AppSettings::getNetworkData().port){
+        if (baudrate.toInt() == AppSettings::getNetworkData().baudrate){
             action->setChecked(true);
             m_connectionWidget->setCurrentBautRate(baudrate);
         }
     }
     connect(m_baudrateGroup, &QActionGroup::triggered, this, [this](QAction* action){
-        m_connectionWidget->setCurrentBautRate(action->text());
+        setBothBaudRates(action->text());
     });
-    connect(m_connectionWidget, &ConnectionWidget::baudRateIsChanged, this, [this](QString baudrate){
-        QList<QAction*> actions = m_baudrateGroup->actions();
-        for(auto item:actions){
-            if(item->text() == baudrate){
-                item->setChecked(true);
-            }
+    connect(m_connectionWidget, &ConnectionWidget::baudRateIsChanged, this, &MainWindow::setBothBaudRates);
+}
+
+void MainWindow::setBothBaudRates(QString baudrate){
+    m_connectionWidget->setCurrentBautRate(baudrate);
+    QList<QAction*> actions = m_baudrateGroup->actions();
+    for(auto item:actions){
+        if(item->text() == baudrate){
+            item->setChecked(true);
         }
-    });
+    }
 }
 
 void MainWindow::setConnectMessage(QString msg) {

@@ -45,11 +45,15 @@ public slots:
     void addCalibrationMenu(quint8 addr,quint16 id);
     void rescanProgress(int current, int total);
 private slots:
-    void connectTriggered(PortType type);
+    void connectTriggered();
+    void tcpTriggered();
     void callAboutDialog();
     void getKeepAddresses();
     void setNetworkTimeout();
     void deviceNameChanged(QString name, int addr);
+
+    void setBothComPorts(QString port);
+    void setBothBaudRates(QString baudtare);
 private:
     Ui::MainWindow *ui;
     QVector<DeviceWidget*> m_workWidgets;

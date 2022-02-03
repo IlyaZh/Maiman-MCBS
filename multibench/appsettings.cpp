@@ -29,8 +29,8 @@ int AppSettings::getComStopBits() { return settings->value("userSettings/comPort
 NetworkData_s AppSettings::getNetworkData() {
     NetworkData_s netData;
     netData.type = static_cast<PortType>(settings->value("network/type", 0).toUInt());
-    netData.host = settings->value("network/comport", "").toString();
-    netData.port = settings->value("network/baudrate", 0).toInt();
+    netData.port = settings->value("network/comport", "").toString();
+    netData.baudrate = settings->value("network/baudrate", 0).toInt();
 
     return netData;
 }

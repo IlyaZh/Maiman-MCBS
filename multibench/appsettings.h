@@ -7,8 +7,8 @@
 
 typedef struct NetworkData_s {
     PortType type;
-    QString host;
-    int port;
+    QString port;
+    int baudrate;
 } NetworkData_s;
 
 class AppSettings : public QObject
