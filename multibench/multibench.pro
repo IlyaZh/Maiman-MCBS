@@ -5,7 +5,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 debug:CONFIG+=testcase #warn_on depend_includepath console
-debug:CONFIG += console
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -19,8 +18,10 @@ TEMPLATE = app
 
 CONFIG(debug, debug|release) {
     DESTDIR = $OUT_PWD/../../MWB_Debug
+    message("DEBUG BUILD")
 } else {
     DESTDIR = $OUT_PWD/../../MWB_Release
+    message("RELEASE BUILD")
 }
 MOC_DIR = ../common/build/moc
 RCC_DIR = ../common/build/rcc
