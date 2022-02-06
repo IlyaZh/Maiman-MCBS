@@ -1,10 +1,10 @@
 QT       += core gui network xml serialport network
-debug:QT+=testlib
+#debug:QT+=testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
-debug:CONFIG+=testcase #warn_on depend_includepath console
+#debug:CONFIG+=testcase #warn_on depend_includepath console
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -104,8 +104,8 @@ SOURCES += \
     network/datasourcefactory.cpp \
     network/serialdatasource.cpp \
     network/tcpdatasource.cpp \
-    tests/globaltest.cpp \
-    tests/test_modbus/test_modbus.cpp \
+#    tests/globaltest.cpp \
+#    tests/test_modbus/test_modbus.cpp \
     absoluteToleranceCompare.cpp \
     widgets/binarywidget.cpp \
     widgets/controlwidget.cpp \
@@ -153,8 +153,8 @@ HEADERS += \
     network/datasourcefactory.h \
     network/serialdatasource.h \
     network/tcpdatasource.h \
-    tests/globaltest.h \
-    tests/test_modbus/test_modbus.h \
+#    tests/globaltest.h \
+#    tests/test_modbus/test_modbus.h \
     widgets/binarywidget.h \
     widgets/controlwidget.h \
     widgets/readparameterwidget.h \
@@ -174,7 +174,7 @@ FORMS += \
     widgets/readparameterwidget.ui \
     widgets/rescanprogresswidget.ui
 
-debug:SUBDIRS += tests
+#debug:SUBDIRS += tests
 
 RESOURCES += \
     resources.qrc
