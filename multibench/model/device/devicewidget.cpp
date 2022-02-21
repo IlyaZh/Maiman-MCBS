@@ -225,7 +225,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_widgetLayout->setAlignment(Qt::AlignTop);
     m_widgetLayout->setContentsMargins(0,2,0,0);
     m_widgetLayout->setSpacing(0);
-    m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+    //m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
     ui->widgetBox->setLayout(m_widgetLayout);
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
@@ -265,6 +265,13 @@ void DeviceWidget::adjust() {
     ui->widgetBox->adjustSize();
     this->adjustSize();
     this->setMinimumSize(this->size());
+}
+
+void DeviceWidget::setConstraint(bool state){
+    if(state)
+        this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+    else
+        this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
 }
 
 // private slots
@@ -322,6 +329,7 @@ void DeviceWidget::hideControlsButtonClicked(bool flag) {
         auto bottomMargin = widget->layout()->contentsMargins().bottom();
         if(m_hideControls) {
             if(!widget->isPinned()) {
+                setConstraint(false);
                 widget->setShown(false);
                 widget->layout()->setContentsMargins(0,topMargin,0,bottomMargin);
                 widget->layout()->setSpacing(0);
@@ -329,6 +337,7 @@ void DeviceWidget::hideControlsButtonClicked(bool flag) {
             }
         } else {
             if(!widget->isShown()) {
+                setConstraint(true);
                 widget->setShown(true);
                 widget->layout()->setContentsMargins(10,topMargin,10,bottomMargin);
                 widget->layout()->setSpacing(10);

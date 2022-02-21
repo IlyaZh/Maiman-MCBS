@@ -170,6 +170,14 @@ void MainWindow::rescanProgress(int current, int total) {
             if(widget->width() > maxWidth) {
                 maxWidth = widget->width();
             }
+        }
+
+        for(auto widget : qAsConst(m_workWidgets)) {
+            widget->setConstraint(true);
+            widget->setMinimumSize(maxWidth, widget->height());
+
+            //widget->setConstraint(false);
+            qDebug()<<"MAX WIDHT"<<widget->width()<<maxWidth;
 
             if(widgetsCounter < WidgetsInAppearence) {
                 ++widgetsCounter;
