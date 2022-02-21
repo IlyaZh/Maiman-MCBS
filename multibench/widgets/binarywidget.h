@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QMap>
-#include <QTest>
+//#include <QTest>
 #include <QSharedPointer>
 #include "model/device/devicewidget.h"
 
