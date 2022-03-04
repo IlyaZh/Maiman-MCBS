@@ -43,7 +43,7 @@ public slots:
     void setStatusMessage(const QString& msg, int timeout = 10);
     void triggeredRescanNetwork();
     void addCalibrationMenu(quint8 addr,quint16 id);
-    void rescanProgress(int current, int total);
+    void rescanProgress(int current, int total, int success);
 private slots:
     void comTriggered();
     void tcpTriggered();

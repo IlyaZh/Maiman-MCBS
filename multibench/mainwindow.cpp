@@ -150,18 +150,37 @@ void MainWindow::addCalibrationMenu(quint8 addr,quint16 id){
     ui->menuCalibration->addAction(action);
 }
 
-void MainWindow::rescanProgress(int current, int total) {
+void MainWindow::rescanProgress(int current, int total, int success) {
+    qDebug()<<"m_workWidgets.isEmpty()"<<m_workWidgets.isEmpty()<<current<<total<<success;
     if(current == 0 && total > 0) {
             m_progressWidget = new RescanProgressWidget(this);
             m_progressWidget->setProgress(current, total);
 //            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 0, 0);
             m_workFieldLayout->addWidget(m_progressWidget, 1, 0);
 //            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 2, 0);
+//    } else if (success == 0 and total == current) {
+//        QWidget *widgetRescan = new QWidget(this);
+//        QVBoxLayout *rescanLayout = new QVBoxLayout(this);
+//        QLabel *infoLabel = new QLabel("Devices don't found", this);
+//        QPushButton *rescanButton = new QPushButton("Rescan", this);
+//        rescanLayout->addWidget(infoLabel);
+//        rescanLayout->addWidget(rescanButton);
+//        widgetRescan->setLayout(rescanLayout);
+//        m_workFieldLayout->addWidget(widgetRescan);
+//        connect(rescanButton, &QPushButton::clicked, this, &MainWindow::comTriggered);
+//        connect(rescanButton, &QPushButton::clicked, this, [this, widgetRescan](){
+//            //m_workFieldLayout->removeWidget(widgetRescan);
+//            widgetRescan->deleteLater();
+//        });
     } else if (current == total) {
-        if(m_progressWidget) {
+        if(m_progressWidget and !m_workWidgets.isEmpty()) {
             m_progressWidget->setProgress(current, total);
             m_workFieldLayout->removeWidget(m_progressWidget);
             m_progressWidget->deleteLater();
+        }
+        else if(m_progressWidget and m_workWidgets.isEmpty()){
+            m_progressWidget->setProgress(current, total);
+            m_progressWidget->setFalseConnect();
         }
         int maxWidth {-1};
         int widgetsCounter {0};
@@ -177,7 +196,6 @@ void MainWindow::rescanProgress(int current, int total) {
             widget->setMinimumSize(maxWidth, widget->height());
 
             //widget->setConstraint(false);
-            qDebug()<<"MAX WIDHT"<<widget->width()<<maxWidth;
 
             if(widgetsCounter < WidgetsInAppearence) {
                 ++widgetsCounter;
@@ -187,11 +205,17 @@ void MainWindow::rescanProgress(int current, int total) {
             }
             m_workFieldLayout->addWidget(widget);
         }
+
+        if(m_workWidgets.isEmpty()){
+            maxWidth = ui->scrollArea->size().rwidth();
+        }
+
         auto newSize = ui->scrollArea->size();
         int diffWidth = maxWidth-newSize.width();
         int diffHeight = totalHeightInAppearence - ui->scrollArea->height();
 
         newSize.rwidth() = maxWidth;
+
         if(diffHeight > 0)
             newSize.rheight() += diffHeight;
         ui->scrollArea->resize(newSize);
@@ -283,6 +307,7 @@ void MainWindow::setConnected(bool isConnected) {
     m_connectionWidget->setConnected(isConnected);
     ui->menuPorts->setEnabled(!isConnected);
     ui->menuBaudrates->setEnabled(!isConnected);
+    ui->actionRescan->setEnabled(isConnected);
     m_isConnected = isConnected;
     if (m_isConnected){
         ui->actionConnect->setText("Disconnect");
@@ -343,6 +368,8 @@ void MainWindow::triggeredRescanNetwork(){
         m_workFieldLayout->removeWidget(item);
         item->deleteLater();
     }
+//    ui->actionKeepAddresses->setChecked(false);
+//    AppSettings::setKeepAddresses(false);
     ui->menuCalibration->clear();
     m_workWidgets.clear();
     adjustSize();
