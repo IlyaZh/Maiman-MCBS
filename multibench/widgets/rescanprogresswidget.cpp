@@ -24,7 +24,7 @@ void RescanProgressWidget::setProgress(int current, int total) {
 
 }
 
-void RescanProgressWidget::setFalseConnect(){
+void RescanProgressWidget::notFound(){
     ui->descriptionLabel->setText("");
     ui->infoLabel->setText("Devices not found");
 }

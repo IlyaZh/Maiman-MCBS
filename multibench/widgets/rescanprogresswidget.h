@@ -15,7 +15,7 @@ public:
     ~RescanProgressWidget();
 
 public slots:
-    void setFalseConnect();
+    void notFound();
     void setProgress(int current, int total);
 
 private:

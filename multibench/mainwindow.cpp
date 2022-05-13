@@ -173,14 +173,16 @@ void MainWindow::rescanProgress(int current, int total, int success) {
 //            widgetRescan->deleteLater();
 //        });
     } else if (current == total) {
-        if(m_progressWidget and !m_workWidgets.isEmpty()) {
-            m_progressWidget->setProgress(current, total);
-            m_workFieldLayout->removeWidget(m_progressWidget);
-            m_progressWidget->deleteLater();
-        }
-        else if(m_progressWidget and m_workWidgets.isEmpty()){
-            m_progressWidget->setProgress(current, total);
-            m_progressWidget->setFalseConnect();
+        if(m_progressWidget){
+            if(!m_workWidgets.isEmpty()){
+                m_progressWidget->setProgress(current, total);
+                m_workFieldLayout->removeWidget(m_progressWidget);
+                m_progressWidget->deleteLater();
+            }
+            else{
+                m_progressWidget->setProgress(current, total);
+                m_progressWidget->notFound();
+            }
         }
         int maxWidth {-1};
         int widgetsCounter {0};

@@ -29,6 +29,12 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
 
     connect(&window, &MainWindow::delayChanged, &networkModel, &NetworkModel::setDelay);
     connect(&networkModel, &NetworkModel::signal_rescanProgress, &window, &MainWindow::rescanProgress);
+
+    connect(&networkModel, &NetworkModel::signal_errorOccured, this, [this](QString msg){
+        qDebug()<<"error"<<msg;
+        if(msg.contains("Can't сonnect."))
+            m_window.setConnected(false);
+    });
 }
 
 void ModelGuiMediator::createWidgetFor(Device* device) {
