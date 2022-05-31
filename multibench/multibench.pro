@@ -1,4 +1,4 @@
-QT       += core gui network xml serialport network
+QT       += core gui network xml serialport network qml quickcontrols2
 #debug:QT+=testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

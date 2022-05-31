@@ -2,6 +2,8 @@
 #include <QtSerialPort>
 #include "constants.h"
 
+enum {portTimeoutCycle = 5};
+
 DataThread::~DataThread() {
     m_mtx.lock();
     m_isWork = false;
@@ -51,7 +53,7 @@ void DataThread::stop() {
 // private methods
 
 void DataThread::run() {
-    int waitForConnected = 5; //m_timeout;
+    int waitForConnected = portTimeoutCycle;
     QScopedPointer<QIODevice> m_device(m_dataSource->createAndConnect());
     while(!m_device->isOpen()) {
         if(waitForConnected == 0) {

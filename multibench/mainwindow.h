@@ -44,6 +44,7 @@ public slots:
     void triggeredRescanNetwork();
     void addCalibrationMenu(quint8 addr,quint16 id);
     void rescanProgress(int current, int total, int success);
+    void slot_serialPortClosed(QString msg);
 private slots:
     void comTriggered();
     void tcpTriggered();

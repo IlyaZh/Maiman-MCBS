@@ -1,5 +1,6 @@
 #include "updatewidget.h"
 #include "version.h"
+#include "quitdialog.h"
 
 const QString UpdateWidget::m_Url = "https://telegraphy.ru/updates.txt";
 
@@ -13,8 +14,12 @@ UpdateWidget::UpdateWidget(QWidget *parent) : QWidget(parent),
 
 void UpdateWidget::updateCheck(bool state){
     if (state){
-        QMessageBox msgBox;
+        //QMessageBox msgBox;
         QString message = QString("Do you want to download and install new update?");
+        QuitDialog* dialog = QuitDialog::createDialog("Updates Available", message, QDialogButtonBox::Yes | QDialogButtonBox::No,12, this);
+        connect(dialog, &QuitDialog::rejected, this, &QuitDialog::close);
+        connect(dialog, &QuitDialog::accepted, this, [this](){m_updater->startUpdate(qApp);});
+        /*
         msgBox.setWindowTitle("Updates Available");
         msgBox.setText(message);
         msgBox.setContentsMargins(0,0,0,0);
@@ -47,6 +52,7 @@ void UpdateWidget::updateCheck(bool state){
         default:
             break;
         }
+    */
     }
 }
 
