@@ -390,7 +390,7 @@ void MainWindow::deviceNameChanged(QString name, int addr){
     }
 }
 
-void MainWindow::slot_serialPortClosed(QString msg){
+void MainWindow::slot_serialPortClosed(const QString& msg){
     setConnected(false);
     QuitDialog* portClosed = QuitDialog::createDialog("Error", "Failed, COM port is busy", QDialogButtonBox::Ok,12, this);
     connect(portClosed, &QuitDialog::accepted, portClosed, &QuitDialog::close);
