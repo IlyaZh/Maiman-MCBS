@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     ModelGuiMediator mainMediator(w, guiFactory, model);
 
 #ifdef QT_DEBUG
-    GlobalTest tests(argc, argv);
+    //GlobalTest tests(argc, argv);
 #endif
 
     return app.exec();

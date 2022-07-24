@@ -1,11 +1,10 @@
-QT       += core gui network xml serialport network
-debug:QT+=testlib
+QT       += core gui network xml serialport network qml quickcontrols2
+#debug:QT+=testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
-debug:CONFIG+=testcase #warn_on depend_includepath console
-debug:CONFIG += console
+#debug:CONFIG+=testcase #warn_on depend_includepath console
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -19,8 +18,10 @@ TEMPLATE = app
 
 CONFIG(debug, debug|release) {
     DESTDIR = $OUT_PWD/../../MWB_Debug
+    message("DEBUG BUILD")
 } else {
     DESTDIR = $OUT_PWD/../../MWB_Release
+    message("RELEASE BUILD")
 }
 MOC_DIR = ../common/build/moc
 RCC_DIR = ../common/build/rcc
@@ -87,6 +88,7 @@ SOURCES += \
     widgets/inlineedit.cpp \
     widgets/plusminusgroupwidget.cpp \
     widgets/plusminuswidget.cpp \
+    widgets/quitdialog.cpp \
     widgets/readnounitparameterwidget.cpp \
     widgets/readparameterfactory.cpp \
     widgets/rescanprogresswidget.cpp \
@@ -102,8 +104,8 @@ SOURCES += \
     network/datasourcefactory.cpp \
     network/serialdatasource.cpp \
     network/tcpdatasource.cpp \
-    tests/globaltest.cpp \
-    tests/test_modbus/test_modbus.cpp \
+#    tests/globaltest.cpp \
+#    tests/test_modbus/test_modbus.cpp \
     absoluteToleranceCompare.cpp \
     widgets/binarywidget.cpp \
     widgets/controlwidget.cpp \
@@ -133,6 +135,7 @@ HEADERS += \
     widgets/inlineedit.h \
     widgets/plusminusgroupwidget.h \
     widgets/plusminuswidget.h \
+    widgets/quitdialog.h \
     widgets/readnounitparameterwidget.h \
     widgets/readparameterfactory.h \
     widgets/rescanprogresswidget.h \
@@ -150,8 +153,8 @@ HEADERS += \
     network/datasourcefactory.h \
     network/serialdatasource.h \
     network/tcpdatasource.h \
-    tests/globaltest.h \
-    tests/test_modbus/test_modbus.h \
+#    tests/globaltest.h \
+#    tests/test_modbus/test_modbus.h \
     widgets/binarywidget.h \
     widgets/controlwidget.h \
     widgets/readparameterwidget.h \
@@ -167,10 +170,11 @@ FORMS += \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
     widgets/controlwidget.ui \
+    widgets/quitdialog.ui \
     widgets/readparameterwidget.ui \
     widgets/rescanprogresswidget.ui
 
-debug:SUBDIRS += tests
+#debug:SUBDIRS += tests
 
 RESOURCES += \
     resources.qrc

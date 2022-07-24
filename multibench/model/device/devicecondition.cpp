@@ -22,7 +22,7 @@ DeviceCondition::DeviceCondition(const QMap<quint16, QSharedPointer<DevCommand>>
 
 void DeviceCondition::setStateText(uint value, LedMask led){
     QString msg = led.msg;
-    if (led.code == 4)
+    if (led.code == 0x4 or led.code == 0x7A)
         msg = "";
     if ((value & led.mask) != 0){
         if (!m_Label->text().contains(msg))

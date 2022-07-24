@@ -21,20 +21,28 @@ public:
 
     void setBaudList(const QStringList& baudrateList);
     void setPortList(const QStringList& portList);
-    void setCurrentComPort(QStringView port);
+    void setCurrentComPort(QString port);
+    void setCurrentBautRate(QString baudrate);
     void setProtocol(PortType type);
-    void setCurrentIp(QStringView ip);
+    void setCurrentIp(QString ip);
     void setCurrentTcpPort(int port);
 
     void setConnectMessage(QStringView msg);
     void setConnected(bool isConnected);
 
+    QString getCurrentIp();
+    int getCurrentTcpPort();
 private slots:
     void connectClicked(PortType type);
 
 signals:
     void changeConnectState(PortType type, QVariantMap value);
     void refreshComPorts();
+    void connectToCOM();
+    void connectToTCP();
+
+    void comPortIsChanged(QString port);
+    void baudRateIsChanged(QString port);
 
 private:
     Ui::ConnectionWidget *ui;

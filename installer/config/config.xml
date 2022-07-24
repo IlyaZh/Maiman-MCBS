@@ -5,10 +5,10 @@
     <Title>1.0.0 Installer</Title>
     <Publisher>Maiman Electronics</Publisher>
 	<ProductUrl>https://maimanelectronics.com</ProductUrl>
-	<!--<InstallerWindowIcon>logo.png</InstallerWindowIcon>-->
+	<InstallerWindowIcon>logo.png</InstallerWindowIcon>
 	<InstallerApplicationIcon>icon</InstallerApplicationIcon>
 	<!--<Logo>logo.png</Logo>-->
-	<RunProgram>@TargetDir@/MaimanMultibench.exe</RunProgram>
+        <RunProgram>@TargetDir@/MaimanMultibench.exe</RunProgram>
     <StartMenuDir>Maiman Electronics</StartMenuDir>
     <TargetDir>@RootDir@Program Files\Maiman Electronics\Multi Workbench</TargetDir>
         <AllowSpaceInPath>true</AllowSpaceInPath>

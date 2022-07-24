@@ -47,7 +47,7 @@ signals:
     void signal_connected(bool);
     void signal_errorOccured(const QString& error);
     void signal_writeData(const QByteArray& msg, qint64 waitBytes, bool priority);
-    void signal_rescanProgress(int current, int total);
+    void signal_rescanProgress(int current, int total, int success);
 
 
 
@@ -63,6 +63,7 @@ private:
     int m_rescanCommandsCount {0};
     int m_rescanCommandsDone {0};
     bool m_isRescan;
+    int m_successConnect;
 //    int m_delay {Const::NetworkDelayMSecs::defaultValue};
 
     void clear();

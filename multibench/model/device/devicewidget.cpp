@@ -195,7 +195,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
                     qDebug()<<"button --------------------------"<<cmd->valueInt();
                 });
             }
-        } else if (button.name.compare("tec", Qt::CaseInsensitive) == 0) {
+        } else if (button.name.compare("TEC", Qt::CaseInsensitive) == 0) {
             m_tecButton = new QPushButton("TEC", this);
             pButton = m_tecButton;
             m_tecButton->setVisible(true);
@@ -205,6 +205,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
                 auto cmd = m_commands.value(button.code);
                 connect(cmd.get(), &DevCommand::updatedValue, this, [this, cmd](){
                     setTecButton(cmd->valueInt());
+                    qDebug()<<"button --------------------------"<<cmd->valueInt();
                 });
             }
         }
@@ -225,7 +226,7 @@ DeviceWidget::DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint
     m_widgetLayout->setAlignment(Qt::AlignTop);
     m_widgetLayout->setContentsMargins(0,2,0,0);
     m_widgetLayout->setSpacing(0);
-    m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+    //m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
     ui->widgetBox->setLayout(m_widgetLayout);
     m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
@@ -267,6 +268,13 @@ void DeviceWidget::adjust() {
     this->setMinimumSize(this->size());
 }
 
+void DeviceWidget::setConstraint(bool state){
+    if(state)
+        this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+    else
+        this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
+}
+
 // private slots
 
 void DeviceWidget::setLaserButton(quint16 value) {
@@ -279,7 +287,7 @@ void DeviceWidget::setLaserButton(quint16 value) {
 
 void DeviceWidget::setTecButton(quint16 value) {
     for(const auto& button : qAsConst(m_buttons)) {
-        if(button.name == "Tec") {
+        if(button.name == "TEC") {
             m_tecButton->setStyleSheet(((value & button.mask) != 0) ? buttonOn : buttonOff);
         }
     }
@@ -300,7 +308,7 @@ void DeviceWidget::laserButtonClicked() {
 
 void DeviceWidget::tecButtonClicked() {
     auto search = std::find_if(m_buttons.begin(), m_buttons.end(), [](const auto& button){
-        return (button.name == "Tec");
+        return (button.name == "TEC");
     });
     if(search != m_buttons.end()) {
         auto laserButton = search.value();
@@ -322,6 +330,7 @@ void DeviceWidget::hideControlsButtonClicked(bool flag) {
         auto bottomMargin = widget->layout()->contentsMargins().bottom();
         if(m_hideControls) {
             if(!widget->isPinned()) {
+                setConstraint(false);
                 widget->setShown(false);
                 widget->layout()->setContentsMargins(0,topMargin,0,bottomMargin);
                 widget->layout()->setSpacing(0);
@@ -329,6 +338,7 @@ void DeviceWidget::hideControlsButtonClicked(bool flag) {
             }
         } else {
             if(!widget->isShown()) {
+                setConstraint(true);
                 widget->setShown(true);
                 widget->layout()->setContentsMargins(10,topMargin,10,bottomMargin);
                 widget->layout()->setSpacing(10);

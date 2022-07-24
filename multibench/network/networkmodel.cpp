@@ -97,14 +97,14 @@ void NetworkModel::rescanNetwork()
         clearNetwork();
     }
     if (addresses.isEmpty()){
-        m_rescanCommandsCount = SoftProtocol::MaxAddress;
-        emit signal_rescanProgress(0, m_rescanCommandsCount);
+
         for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr)
         {
             addresses.insert(iAddr, 0);
         }
     }
-
+    m_rescanCommandsCount = addresses.keys().size();
+    emit signal_rescanProgress(0, m_rescanCommandsCount, m_successConnect);
     if(m_worker) {
         const auto& keys = addresses.keys();
         m_rescanCommandsCount = keys.size();
@@ -132,6 +132,7 @@ void NetworkModel::clear() {
     m_devices.clear();
     m_rescanCommandsCount = 0;
     m_rescanCommandsDone = 0;
+    m_successConnect = 0;
 }
 
 void NetworkModel::initDevice(quint8 addr, quint16 id)
@@ -151,7 +152,7 @@ void NetworkModel::initDevice(quint8 addr, quint16 id)
     }
 
     m_devices.insert(addr, newDevice);
-
+    m_successConnect++;
     QMap<quint8,quint8> addresses(AppSettings::getDeviceAddresses());
     addresses.insert(addr,0);
     AppSettings::setDeviceAddresses(addresses);
@@ -189,7 +190,7 @@ void NetworkModel::timeout(const QByteArray& lastPackage) {
             }
         }
         if (m_isRescan){
-                emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount);
+                emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount, m_successConnect);
                 m_isRescan = false;
 
         }
@@ -251,7 +252,7 @@ void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& last
         }
     }
     if (m_isRescan){
-            emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount);
+            emit signal_rescanProgress(++m_rescanCommandsDone, m_rescanCommandsCount, m_successConnect);
             m_isRescan = false;
 
     }

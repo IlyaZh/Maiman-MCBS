@@ -96,7 +96,7 @@ public:
     explicit DeviceWidget(const DeviceWidgetDesc& description, const QMap<quint16, QSharedPointer<DevCommand>>& commands,  QWidget *parent = nullptr);
     ~DeviceWidget();
     void setAddress(int addr);
-
+    void setConstraint(bool state);
 public slots:
     void setLink(bool link);
 signals:

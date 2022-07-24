@@ -15,6 +15,7 @@ public:
     ~RescanProgressWidget();
 
 public slots:
+    void notFound();
     void setProgress(int current, int total);
 
 private:

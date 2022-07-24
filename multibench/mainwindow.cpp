@@ -13,6 +13,7 @@
 #include <QInputDialog>
 #include <utility>
 #include <widgets/rescanprogresswidget.h>
+#include <widgets/quitdialog.h>
 
 const int WidgetsInAppearence {2};
 
@@ -23,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
     , m_baudrateGroup(new QActionGroup(this))
     , m_updater(new UpdateWidget(this))
     , m_About(new AboutDialog(this))
+    , m_Quit(new QuitDialog(this))
+    , m_connectionWidget(new ConnectionWidget(this))
 {
     ui->setupUi(this);
 
@@ -31,27 +34,28 @@ MainWindow::MainWindow(QWidget *parent)
     this->move(AppSettings::getWindowPosition());
 
     auto netData = AppSettings::getNetworkData();
-    #ifndef QT_DEBUG
-    ui->connectionWidget->hide();
-    #endif
-    ui->connectionWidget->setProtocol(PortType::TCP);
-    ui->connectionWidget->setBaudList(Const::BaudRates);
-    switch(netData.type) {
-    case PortType::Com:
-        ui->connectionWidget->setCurrentComPort(netData.host);
-        break;
-    case PortType::TCP:
-        ui->connectionWidget->setCurrentIp(netData.host);
-        ui->connectionWidget->setCurrentTcpPort(netData.port);
-        break;
-    default:
-        break;
-    }
 
-    connect(ui->connectionWidget, &ConnectionWidget::refreshComPorts,
+//    m_connectionWidget->setProtocol(PortType::TCP);
+//    m_connectionWidget->setBaudList(Const::BaudRates);
+//    switch(netData.type) {
+//    case PortType::Com:
+//        m_connectionWidget->setCurrentComPort(netData.host);
+//        m_connectionWidget->setCurrentBautRate(netData.port);
+//        break;
+//    case PortType::TCP:
+//        m_connectionWidget->setCurrentIp(netData.host);
+//        m_connectionWidget->setCurrentTcpPort(netData.port);
+//        break;
+//    default:
+//        break;
+//    }
+
+    connect(m_connectionWidget, &ConnectionWidget::refreshComPorts,
             this, &MainWindow::refreshComPortsSignal);
-    connect(ui->connectionWidget, &ConnectionWidget::changeConnectState,
+    connect(m_connectionWidget, &ConnectionWidget::changeConnectState,
             this, &MainWindow::changeConnectState);
+    connect(m_connectionWidget, &ConnectionWidget::connectToCOM, this, &MainWindow::comTriggered);
+    connect(m_connectionWidget, &ConnectionWidget::connectToTCP, this, &MainWindow::tcpTriggered);
 
     const QString AppTitle = QString("%1 v.%2").arg(Const::AppNameTitle, QCoreApplication::applicationVersion());
     setWindowTitle(AppTitle);
@@ -66,12 +70,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->scrollFieldWidget->setLayout(m_workFieldLayout);
     ui->scrollFieldWidget->setMaximumHeight(m_workFieldLayout->maximumSize().height());
 
+    m_workFieldLayout->addWidget(m_connectionWidget);
+
     // setup menu's
 //    ui->actionConnect->setCheckable(true);
 //    ui->actionConnect->setChecked(false);
     connect(ui->actionRefresh_port, &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
     connect(ui->actionConnect, &QAction::triggered,
-            this, &MainWindow::connectTriggered);
+            this, &MainWindow::comTriggered);
 
     connect(ui->actionExit, &QAction::triggered, qApp, &QApplication::closeAllWindows, Qt::QueuedConnection);
     auto temperatureGroup = new QActionGroup(this);
@@ -106,20 +112,26 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::connectTriggered() {
+void MainWindow::comTriggered() {
     QVariantMap networkMap;
-    auto type = PortType::Com;
-    networkMap.insert("type",  static_cast<quint8>(type));
+    networkMap.insert("type",  static_cast<quint8>(PortType::Com));
     qDebug() << "void MainWindow::connectTriggered()";
     if (!m_isConnected and m_portGroup->checkedAction() != nullptr and m_baudrateGroup->checkedAction() != nullptr){
-        if(type == PortType::Com){
-            networkMap.insert("comport", m_portGroup->checkedAction()->text());
-            networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->text());
-        }
-        else
-            return;
+        networkMap.insert("comport", m_portGroup->checkedAction()->text());
+        networkMap.insert("baudrate", m_baudrateGroup->checkedAction()->text());
     }
-    emit changeConnectState(type, networkMap);
+    emit changeConnectState(PortType::Com, networkMap);
+}
+
+void MainWindow::tcpTriggered() {
+    QVariantMap networkMap;
+    networkMap.insert("type",  static_cast<quint8>(PortType::TCP));
+    qDebug() << "void MainWindow::connectTriggered()";
+    if (!m_isConnected){
+        networkMap.insert("host", m_connectionWidget->getCurrentIp());
+        networkMap.insert("port", m_connectionWidget->getCurrentTcpPort());
+    }
+    emit changeConnectState(PortType::TCP, networkMap);
 }
 
 void MainWindow::addDeviceWidget(DeviceWidget* widget) {
@@ -138,18 +150,39 @@ void MainWindow::addCalibrationMenu(quint8 addr,quint16 id){
     ui->menuCalibration->addAction(action);
 }
 
-void MainWindow::rescanProgress(int current, int total) {
+void MainWindow::rescanProgress(int current, int total, int success) {
+    qDebug()<<"m_workWidgets.isEmpty()"<<m_workWidgets.isEmpty()<<current<<total<<success;
     if(current == 0 && total > 0) {
             m_progressWidget = new RescanProgressWidget(this);
             m_progressWidget->setProgress(current, total);
 //            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 0, 0);
             m_workFieldLayout->addWidget(m_progressWidget, 1, 0);
 //            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 2, 0);
+//    } else if (success == 0 and total == current) {
+//        QWidget *widgetRescan = new QWidget(this);
+//        QVBoxLayout *rescanLayout = new QVBoxLayout(this);
+//        QLabel *infoLabel = new QLabel("Devices don't found", this);
+//        QPushButton *rescanButton = new QPushButton("Rescan", this);
+//        rescanLayout->addWidget(infoLabel);
+//        rescanLayout->addWidget(rescanButton);
+//        widgetRescan->setLayout(rescanLayout);
+//        m_workFieldLayout->addWidget(widgetRescan);
+//        connect(rescanButton, &QPushButton::clicked, this, &MainWindow::comTriggered);
+//        connect(rescanButton, &QPushButton::clicked, this, [this, widgetRescan](){
+//            //m_workFieldLayout->removeWidget(widgetRescan);
+//            widgetRescan->deleteLater();
+//        });
     } else if (current == total) {
-        if(m_progressWidget) {
-            m_progressWidget->setProgress(current, total);
-            m_workFieldLayout->removeWidget(m_progressWidget);
-            m_progressWidget->deleteLater();
+        if(m_progressWidget){
+            if(!m_workWidgets.isEmpty()){
+                m_progressWidget->setProgress(current, total);
+                m_workFieldLayout->removeWidget(m_progressWidget);
+                m_progressWidget->deleteLater();
+            }
+            else{
+                m_progressWidget->setProgress(current, total);
+                m_progressWidget->notFound();
+            }
         }
         int maxWidth {-1};
         int widgetsCounter {0};
@@ -158,6 +191,13 @@ void MainWindow::rescanProgress(int current, int total) {
             if(widget->width() > maxWidth) {
                 maxWidth = widget->width();
             }
+        }
+
+        for(auto widget : qAsConst(m_workWidgets)) {
+            widget->setConstraint(true);
+            widget->setMinimumSize(maxWidth, widget->height());
+
+            //widget->setConstraint(false);
 
             if(widgetsCounter < WidgetsInAppearence) {
                 ++widgetsCounter;
@@ -167,11 +207,17 @@ void MainWindow::rescanProgress(int current, int total) {
             }
             m_workFieldLayout->addWidget(widget);
         }
+
+        if(m_workWidgets.isEmpty()){
+            maxWidth = ui->scrollArea->size().rwidth();
+        }
+
         auto newSize = ui->scrollArea->size();
         int diffWidth = maxWidth-newSize.width();
         int diffHeight = totalHeightInAppearence - ui->scrollArea->height();
 
         newSize.rwidth() = maxWidth;
+
         if(diffHeight > 0)
             newSize.rheight() += diffHeight;
         ui->scrollArea->resize(newSize);
@@ -187,6 +233,8 @@ void MainWindow::rescanProgress(int current, int total) {
 }
 
 void MainWindow::setComPorts(const QStringList& portList) {
+    m_connectionWidget->setPortList(portList);
+
     ui->menuPorts->clear();
     if (m_portGroup)
         m_portGroup->deleteLater();
@@ -196,18 +244,33 @@ void MainWindow::setComPorts(const QStringList& portList) {
         action->setCheckable(true);
         m_portGroup->addAction(action);
         ui->menuPorts->addAction(action);
-        if (port == AppSettings::getNetworkData().host)
+        if (port == AppSettings::getNetworkData().port){
             action->setChecked(true);
-        qDebug()<<"HOST"<<AppSettings::getNetworkData().host;
+            m_connectionWidget->setCurrentComPort(port);
+        }
     }
     ui->menuPorts->addSeparator();
     connect(ui->menuPorts->addAction("Refresh"), &QAction::triggered,this,&MainWindow::refreshComPortsSignal);
 
+    connect(m_portGroup, &QActionGroup::triggered, this, [this](QAction* action){
+        setBothComPorts(action->text());
+    });
+    connect(m_connectionWidget, &ConnectionWidget::comPortIsChanged, this, &MainWindow::setBothComPorts);
+}
 
-    ui->connectionWidget->setPortList(portList);
+void MainWindow::setBothComPorts(QString port){
+    m_connectionWidget->setCurrentComPort(port);
+    QList<QAction*> actions = m_portGroup->actions();
+    for(auto item:actions){
+        if(item->text() == port){
+            item->setChecked(true);
+        }
+    }
 }
 
 void MainWindow::setBaudRates(const QStringList& baudrates) {
+    m_connectionWidget->setBaudList(baudrates);
+
     ui->menuBaudrates->clear();
     if (m_baudrateGroup)
         m_baudrateGroup->deleteLater();
@@ -217,24 +280,45 @@ void MainWindow::setBaudRates(const QStringList& baudrates) {
         action->setCheckable(true);
         m_baudrateGroup->addAction(action);
         ui->menuBaudrates->addAction(action);
-        if (baudrate.toInt() == AppSettings::getNetworkData().port)
+        if (baudrate.toInt() == AppSettings::getNetworkData().baudrate){
             action->setChecked(true);
+            m_connectionWidget->setCurrentBautRate(baudrate);
+        }
+    }
+    connect(m_baudrateGroup, &QActionGroup::triggered, this, [this](QAction* action){
+        setBothBaudRates(action->text());
+    });
+    connect(m_connectionWidget, &ConnectionWidget::baudRateIsChanged, this, &MainWindow::setBothBaudRates);
+}
+
+void MainWindow::setBothBaudRates(QString baudrate){
+    m_connectionWidget->setCurrentBautRate(baudrate);
+    QList<QAction*> actions = m_baudrateGroup->actions();
+    for(auto item:actions){
+        if(item->text() == baudrate){
+            item->setChecked(true);
+        }
     }
 }
 
 void MainWindow::setConnectMessage(QString msg) {
-    ui->connectionWidget->setConnectMessage(msg);
+    m_connectionWidget->setConnectMessage(msg);
 }
 
 void MainWindow::setConnected(bool isConnected) {
-    ui->connectionWidget->setConnected(isConnected);
+    m_connectionWidget->setConnected(isConnected);
     ui->menuPorts->setEnabled(!isConnected);
     ui->menuBaudrates->setEnabled(!isConnected);
+    ui->actionRescan->setEnabled(isConnected);
     m_isConnected = isConnected;
-    if (m_isConnected)
+    if (m_isConnected){
         ui->actionConnect->setText("Disconnect");
-    else
+        m_connectionWidget->hide();
+    }
+    else{
         ui->actionConnect->setText("Connect");
+        m_connectionWidget->show();
+    }
     if(!isConnected) {
         for(auto widget : qAsConst(m_workWidgets)) {
             m_workFieldLayout->removeWidget(widget);
@@ -261,10 +345,9 @@ void MainWindow::getKeepAddresses(){
 // protected methods
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    auto result = QMessageBox::question(this, "Do you want to quit?", "Do you really want to quit?");
+    m_Quit->show();
     event->ignore();
-    if(result == QMessageBox::Yes)
-        qApp->quit();
+    connect(m_Quit, &QuitDialog::accepted, this, &QCoreApplication::quit);
 }
 
 void MainWindow::callAboutDialog(){
@@ -287,6 +370,8 @@ void MainWindow::triggeredRescanNetwork(){
         m_workFieldLayout->removeWidget(item);
         item->deleteLater();
     }
+//    ui->actionKeepAddresses->setChecked(false);
+//    AppSettings::setKeepAddresses(false);
     ui->menuCalibration->clear();
     m_workWidgets.clear();
     adjustSize();
@@ -303,4 +388,10 @@ void MainWindow::deviceNameChanged(QString name, int addr){
                 item->setText(QString(name + " ID:%1").arg(addr));
         }
     }
+}
+
+void MainWindow::slot_serialPortClosed(const QString& msg){
+    setConnected(false);
+    QuitDialog* portClosed = QuitDialog::createDialog("Error", "Failed, COM port is busy", QDialogButtonBox::Ok,12, this);
+    connect(portClosed, &QuitDialog::accepted, portClosed, &QuitDialog::close);
 }

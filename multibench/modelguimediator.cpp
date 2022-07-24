@@ -29,6 +29,8 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
 
     connect(&window, &MainWindow::delayChanged, &networkModel, &NetworkModel::setDelay);
     connect(&networkModel, &NetworkModel::signal_rescanProgress, &window, &MainWindow::rescanProgress);
+
+    connect(&networkModel, &NetworkModel::signal_errorOccured, &m_window, &MainWindow::slot_serialPortClosed);
 }
 
 void ModelGuiMediator::createWidgetFor(Device* device) {
