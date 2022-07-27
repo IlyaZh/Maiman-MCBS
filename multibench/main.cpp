@@ -54,9 +54,9 @@ int main(int argc, char *argv[])
 
     // DataSource dataSource;
 
-    GuiFactory guiFactory("device_gui.xml");
+    GuiFactory guiFactory("/device_gui.xml");
 
-    DeviceFactory deviceFactory("device_db.xml");
+    DeviceFactory deviceFactory("/device_db.xml");
 
 
     ModbusProtocol modbus;

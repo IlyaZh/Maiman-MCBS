@@ -2247,9 +2247,9 @@
                 <Calibrate code=\"008A\"
                                 min=\"3000\"
                                 max=\"5000\">External NTC B25/100 coefficient</Calibrate>
-                <Calibrate code=\"0081\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
-                <Calibrate code=\"0082\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
-                <Calibrate code=\"0083\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+                <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+                <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+                <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
         </CalibrationKoefs>
         <ParamControls>
                 <Param min=\"0020\"
@@ -2398,9 +2398,9 @@
             <Calibrate code=\"008A\"
                             min=\"3000\"
                             max=\"5000\">External NTC B25/100 coefficient</Calibrate>
-            <Calibrate code=\"0081\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
-            <Calibrate code=\"0082\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
-            <Calibrate code=\"0083\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+            <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+            <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+            <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
     </CalibrationKoefs>
     <ParamControls>
             <Param min=\"0020\"
@@ -2549,9 +2549,9 @@
             <Calibrate code=\"008A\"
                             min=\"3000\"
                             max=\"5000\">External NTC B25/100 coefficient</Calibrate>
-            <Calibrate code=\"0081\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
-            <Calibrate code=\"0082\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
-            <Calibrate code=\"0083\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+            <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+            <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+            <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
     </CalibrationKoefs>
     <ParamControls>
             <Param min=\"0020\"
@@ -2700,9 +2700,9 @@
             <Calibrate code=\"008A\"
                             min=\"3000\"
                             max=\"5000\">External NTC B25/100 coefficient</Calibrate>
-            <Calibrate code=\"0081\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
-            <Calibrate code=\"0082\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
-            <Calibrate code=\"0083\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+            <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+            <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+            <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
     </CalibrationKoefs>
     <ParamControls>
             <Param min=\"0020\"
