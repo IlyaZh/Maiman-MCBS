@@ -14,7 +14,7 @@
         <AllowSpaceInPath>true</AllowSpaceInPath>
     <RemoteRepositories>
         <Repository>
-            <Url>http://telegraphy.ru/repository/</Url>
+            <Url>http://maiman.online/MultiSoftUpdate/</Url>
         </Repository>
     </RemoteRepositories>
 </Installer>

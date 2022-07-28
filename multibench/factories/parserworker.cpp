@@ -1,10 +1,11 @@
 #include "parserworker.h"
 #include <QDebug>
 #include <QScopedPointer>
+#include <QApplication>
 
 ParserWorker::ParserWorker(const QString& fileName, ParserType type, QObject *parent) :
     QObject(parent),
-    m_fileName(fileName),
+    m_fileName(QCoreApplication::applicationDirPath() + "/" + fileName),
     m_type(type)
 {
 }
