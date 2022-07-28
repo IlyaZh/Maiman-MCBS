@@ -5,9 +5,9 @@
 
 ParserWorker::ParserWorker(const QString& fileName, ParserType type, QObject *parent) :
     QObject(parent),
+    m_fileName(QCoreApplication::applicationDirPath() + "/" + fileName),
     m_type(type)
 {
-    m_fileName = QCoreApplication::applicationDirPath() + fileName;
 }
 
 ParserWorker::~ParserWorker() {
