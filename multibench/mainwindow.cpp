@@ -154,7 +154,7 @@ void MainWindow::rescanProgress(int current, int total, int success) {
     qDebug()<<"m_workWidgets.isEmpty()"<<m_workWidgets.isEmpty()<<current<<total<<success;
     if(current == 0 && total > 0) {
             m_progressWidget = new RescanProgressWidget(this);
-            m_progressWidget->setProgress(current, total);
+            m_progressWidget->setProgress(current, total, success);
 //            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 0, 0);
             m_workFieldLayout->addWidget(m_progressWidget, 1, 0);
 //            m_workFieldLayout->addItem(new QSpacerItem(10, 20), 2, 0);
@@ -175,12 +175,12 @@ void MainWindow::rescanProgress(int current, int total, int success) {
     } else if (current == total) {
         if(m_progressWidget){
             if(!m_workWidgets.isEmpty()){
-                m_progressWidget->setProgress(current, total);
+                m_progressWidget->setProgress(current, total, success);
                 m_workFieldLayout->removeWidget(m_progressWidget);
                 m_progressWidget->deleteLater();
             }
             else{
-                m_progressWidget->setProgress(current, total);
+                m_progressWidget->setProgress(current, total, success);
                 m_progressWidget->notFound();
             }
         }
@@ -227,7 +227,7 @@ void MainWindow::rescanProgress(int current, int total, int success) {
         winSize.rheight() += (diffHeight > 0) ? diffHeight : 0;
         resize(winSize);
     } else if(m_progressWidget) {
-        m_progressWidget->setProgress(current, total);
+        m_progressWidget->setProgress(current, total, success);
     }
 
 }

@@ -16,7 +16,7 @@ public:
 
 public slots:
     void notFound();
-    void setProgress(int current, int total);
+    void setProgress(int current, int total, int success);
 
 private:
     Ui::RescanProgressWidget *ui;
