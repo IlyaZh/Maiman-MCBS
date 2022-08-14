@@ -12,5 +12,6 @@ More information and download links [here](https://github.com/IlyaZh/Maiman-MCBS
 - Rename device
 - Checking a software updates
 
+## Screenshots
 ![image](https://user-images.githubusercontent.com/1976218/184551933-ecf9f3a1-3c7c-44f3-aae2-24a0edeedbc5.png)
 ![image](https://user-images.githubusercontent.com/1976218/184551935-24b90c2c-0d32-428f-88cf-677c5c75d0ed.png)
