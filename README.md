@@ -2,7 +2,7 @@
 Software for multi bench control of Maiman Electronics laser drivers
 
 ## Release 1.0.0
-[More information here](https://github.com/IlyaZh/Maiman-MCBS/releases/tag/v1.0.0)
+More information and download links [here](https://github.com/IlyaZh/Maiman-MCBS/releases/tag/v1.0.0)
 
 ## Features
 - Configurable GUI.
