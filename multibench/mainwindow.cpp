@@ -366,16 +366,18 @@ void MainWindow::setNetworkTimeout(){
 }
 
 void MainWindow::triggeredRescanNetwork(){
-    for(const auto item : std::as_const(m_workWidgets)){
-        m_workFieldLayout->removeWidget(item);
-        item->deleteLater();
+    if (m_isConnected){
+        for(const auto item : std::as_const(m_workWidgets)){
+            m_workFieldLayout->removeWidget(item);
+            item->deleteLater();
+        }
+        //    ui->actionKeepAddresses->setChecked(false);
+        //    AppSettings::setKeepAddresses(false);
+        ui->menuCalibration->clear();
+        m_workWidgets.clear();
+        adjustSize();
+        emit rescanNetwork();
     }
-//    ui->actionKeepAddresses->setChecked(false);
-//    AppSettings::setKeepAddresses(false);
-    ui->menuCalibration->clear();
-    m_workWidgets.clear();
-    adjustSize();
-    emit rescanNetwork();
 }
 
 void MainWindow::deviceNameChanged(QString name, int addr){
