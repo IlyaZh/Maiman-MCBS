@@ -39,6 +39,10 @@ int AppSettings::getNetworkDelay() {
     return settings->value("networkDelay", Const::NetworkDelayMSecs::defaultValue).toInt();
 }
 
+int AppSettings::getNetworkTimeout() {
+    return settings->value("networkTimeout", Const::NetworkTimeoutMSecs::defaultValue).toInt();
+}
+
 // slots
 
 void AppSettings::setComBaudrate(quint32 BR) { settings->setValue("userSettings/comPort/baudRate", BR); }
@@ -79,6 +83,10 @@ void AppSettings::setNetworkData(QVariant netData) {
 
 void AppSettings::setNetworkDelay(int delayMs) {
     settings->setValue("networkDelay", delayMs);
+}
+
+void AppSettings::setNetworkTimeout(int timeoutMs) {
+    settings->setValue("networkTimeout", timeoutMs);
 }
 
 void AppSettings::setDeviceAddresses(const QMap<quint8,quint8>& addr){

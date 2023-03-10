@@ -103,6 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionAbout,&QAction::triggered,this,&MainWindow::callAboutDialog);
     connect(ui->actionKeepAddresses, &QAction::triggered,this, &MainWindow::getKeepAddresses);
     connect(ui->actionRescan,&QAction::triggered,this,&MainWindow::triggeredRescanNetwork);
+    connect(ui->actionDelay,&QAction::triggered,this,&MainWindow::setNetworkDelay);
     connect(ui->actionTimeout,&QAction::triggered,this,&MainWindow::setNetworkTimeout);
     ui->actionKeepAddresses->setChecked(AppSettings::getKeepAddresses());
 }
@@ -354,7 +355,7 @@ void MainWindow::callAboutDialog(){
     m_About->show();
 }
 
-void MainWindow::setNetworkTimeout(){
+void MainWindow::setNetworkDelay(){
     bool ok;
     int delay = QInputDialog::getInt(this,"Network Delay","Delay",
                                        AppSettings::getNetworkDelay(),
@@ -363,6 +364,17 @@ void MainWindow::setNetworkTimeout(){
                                        1,&ok);
     if (ok)
         emit delayChanged(delay);
+}
+
+void MainWindow::setNetworkTimeout(){
+    bool ok;
+    int timeout = QInputDialog::getInt(this,"Network Timeout","Timeout",
+                                     AppSettings::getNetworkTimeout(),
+                                     Const::NetworkTimeoutMSecs::min,
+                                     Const::NetworkTimeoutMSecs::max,
+                                     1,&ok);
+    if (ok)
+        emit timeoutChanged(timeout);
 }
 
 void MainWindow::triggeredRescanNetwork(){

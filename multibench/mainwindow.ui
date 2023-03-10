@@ -224,6 +224,7 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
     <addaction name="menuBaudrates"/>
     <addaction name="actionKeepAddresses"/>
     <addaction name="actionTimeout"/>
+    <addaction name="actionDelay"/>
     <addaction name="actionRescan"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -314,9 +315,14 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
     <string>Rescan</string>
    </property>
   </action>
-  <action name="actionTimeout">
+  <action name="actionDelay">
    <property name="text">
     <string>Delay</string>
+   </property>
+  </action>
+  <action name="actionTimeout">
+   <property name="text">
+    <string>Timeout</string>
    </property>
   </action>
  </widget>

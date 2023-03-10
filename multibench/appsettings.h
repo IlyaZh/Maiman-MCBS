@@ -29,6 +29,7 @@ public:
     static int getComStopBits();
     static NetworkData_s getNetworkData();
     static int getNetworkDelay();
+    static int getNetworkTimeout();
     static QMap<quint8,quint8> getDeviceAddresses();
     static bool getKeepAddresses();
 
@@ -52,6 +53,7 @@ public slots:
     static void setComStopBits(int);
     static void setNetworkData(QVariant netData);
     static void setNetworkDelay(int delayMs);
+    static void setNetworkTimeout(int timeoutMs);
     static void setDeviceAddresses(const QMap<quint8,quint8>& addr);
     static void setKeepAddresses(bool flag);
 };

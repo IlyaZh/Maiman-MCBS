@@ -28,6 +28,7 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,Netwo
     connect(&window, &MainWindow::createCalibAndLimitsWidgets, this, &ModelGuiMediator::createCalibAndLimitsWidgets);
 
     connect(&window, &MainWindow::delayChanged, &networkModel, &NetworkModel::setDelay);
+    connect(&window, &MainWindow::timeoutChanged, &networkModel, &NetworkModel::setTimeout);
     connect(&networkModel, &NetworkModel::signal_rescanProgress, &window, &MainWindow::rescanProgress);
 
     connect(&networkModel, &NetworkModel::signal_errorOccured, &m_window, &MainWindow::slot_serialPortClosed);

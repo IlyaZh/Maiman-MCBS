@@ -21,7 +21,9 @@ const int Const::NetworkDelayMSecs::defaultValue = 300;
 const int Const::NetworkDelayMSecs::min = 10;
 const int Const::NetworkDelayMSecs::max = 1000;
 
-const int Const::NetworkTimeoutMSecs = 1000;
+const int Const::NetworkTimeoutMSecs::defaultValue = 500;
+const int Const::NetworkTimeoutMSecs::min = 10;
+const int Const::NetworkTimeoutMSecs::max = 1000;
 
 const QString Const::SecretCodeCombination = "3.1415926";
 

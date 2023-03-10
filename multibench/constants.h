@@ -32,7 +32,11 @@ struct Const {
         static const int max;
     };
 
-    static const int NetworkTimeoutMSecs;
+    struct NetworkTimeoutMSecs {
+        static const int defaultValue;
+        static const int min;
+        static const int max;
+    };
 
     static const QString SecretCodeCombination;
     static const QString ApplicationDefaultFontPath;

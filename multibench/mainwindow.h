@@ -36,6 +36,7 @@ signals:
     void rescanNetwork();
     void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
     void delayChanged(int delay);
+    void timeoutChanged(int timeout);
 
 public slots:
     void setConnectMessage(QString msg);
@@ -50,6 +51,7 @@ private slots:
     void tcpTriggered();
     void callAboutDialog();
     void getKeepAddresses();
+    void setNetworkDelay();
     void setNetworkTimeout();
     void deviceNameChanged(QString name, int addr);
 
