@@ -30,6 +30,7 @@ public:
     static NetworkData_s getNetworkData();
     static int getNetworkDelay();
     static int getNetworkTimeout();
+    static int getNetworkMaxAddress();
     static QMap<quint8,quint8> getDeviceAddresses();
     static bool getKeepAddresses();
 
@@ -54,6 +55,7 @@ public slots:
     static void setNetworkData(QVariant netData);
     static void setNetworkDelay(int delayMs);
     static void setNetworkTimeout(int timeoutMs);
+    static void setNetworkMaxAddress(int address);
     static void setDeviceAddresses(const QMap<quint8,quint8>& addr);
     static void setKeepAddresses(bool flag);
 };

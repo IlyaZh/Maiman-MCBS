@@ -53,6 +53,7 @@ private slots:
     void getKeepAddresses();
     void setNetworkDelay();
     void setNetworkTimeout();
+    void setNetworkMaxAddress();
     void deviceNameChanged(QString name, int addr);
 
     void setBothComPorts(QString port);

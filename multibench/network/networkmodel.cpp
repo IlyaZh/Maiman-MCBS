@@ -105,7 +105,7 @@ void NetworkModel::rescanNetwork()
     }
     if (addresses.isEmpty()){
 
-        for(quint8 iAddr = 1; iAddr <= SoftProtocol::MaxAddress; ++iAddr)
+        for(quint8 iAddr = 1; iAddr <= AppSettings::getNetworkMaxAddress(); ++iAddr)
         {
             addresses.insert(iAddr, 0);
         }

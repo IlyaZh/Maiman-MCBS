@@ -25,6 +25,10 @@ const int Const::NetworkTimeoutMSecs::defaultValue = 500;
 const int Const::NetworkTimeoutMSecs::min = 10;
 const int Const::NetworkTimeoutMSecs::max = 1000;
 
+const int Const::NetworkMaxAddress::defaultValue = 32;
+const int Const::NetworkMaxAddress::min = 1;
+const int Const::NetworkMaxAddress::max = 64;
+
 const QString Const::SecretCodeCombination = "3.1415926";
 
 const QString Const::ApplicationDefaultFontPath = ":/resources/fonts/ShareTechMono-Regular.ttf";

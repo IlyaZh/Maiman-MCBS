@@ -38,6 +38,12 @@ struct Const {
         static const int max;
     };
 
+    struct NetworkMaxAddress {
+        static const int defaultValue;
+        static const int min;
+        static const int max;
+    };
+
     static const QString SecretCodeCombination;
     static const QString ApplicationDefaultFontPath;
     static const QFont ApplicationDefaultFont;

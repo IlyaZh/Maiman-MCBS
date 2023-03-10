@@ -105,6 +105,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionRescan,&QAction::triggered,this,&MainWindow::triggeredRescanNetwork);
     connect(ui->actionDelay,&QAction::triggered,this,&MainWindow::setNetworkDelay);
     connect(ui->actionTimeout,&QAction::triggered,this,&MainWindow::setNetworkTimeout);
+    connect(ui->actionMax_Address,&QAction::triggered,this,&MainWindow::setNetworkMaxAddress);
     ui->actionKeepAddresses->setChecked(AppSettings::getKeepAddresses());
 }
 
@@ -375,6 +376,17 @@ void MainWindow::setNetworkTimeout(){
                                      1,&ok);
     if (ok)
         emit timeoutChanged(timeout);
+}
+
+void MainWindow::setNetworkMaxAddress(){
+    bool ok;
+    int address = QInputDialog::getInt(this,"Network Max Address","Max Address",
+                                       AppSettings::getNetworkMaxAddress(),
+                                       Const::NetworkMaxAddress::min,
+                                       Const::NetworkMaxAddress::max,
+                                       1,&ok);
+    if (ok)
+        AppSettings::setNetworkMaxAddress(address);
 }
 
 void MainWindow::triggeredRescanNetwork(){
