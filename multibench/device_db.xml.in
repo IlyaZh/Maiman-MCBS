@@ -615,9 +615,9 @@
                     <Command code=\"007E\" divider=\"100\" interval=\"10\" tol=\"1\"/>
                     <Command code=\"007F\" divider=\"1\" interval=\"10\" tol=\"0\"/>
 
-                    <Command code=\"0091\"/>
-                    <Command code=\"0092\"/>
-                    <Command code=\"0093\"/>
+                    <Command code=\"0091\" tol=\"1\"/>
+                    <Command code=\"0092\" tol=\"1\"/>
+                    <Command code=\"0093\" tol=\"1\"/>
             </Commands>
         </Device>
             <Device id=\"1121\" name=\"SF8075 v5\" stopCommandDelayMs=\"300\" minCommandDelayMs=\"10\" maxCommandDelayMs=\"1000\">
@@ -660,9 +660,9 @@
                     <Command code=\"007E\" divider=\"100\" interval=\"10\" tol=\"1\"/>
                     <Command code=\"007F\" divider=\"1\" interval=\"10\" tol=\"0\"/>
 
-                    <Command code=\"0091\"/>
-                    <Command code=\"0092\"/>
-                    <Command code=\"0093\"/>
+                    <Command code=\"0091\" tol=\"1\"/>
+                    <Command code=\"0092\" tol=\"1\"/>
+                    <Command code=\"0093\" tol=\"1\"/>
             </Commands>
         </Device>
             <Device id=\"1131\" name=\"SF8150 v5\" stopCommandDelayMs=\"300\" minCommandDelayMs=\"10\" maxCommandDelayMs=\"1000\">
@@ -705,9 +705,9 @@
                     <Command code=\"007E\" divider=\"100\" interval=\"10\" tol=\"1\"/>
                     <Command code=\"007F\" divider=\"1\" interval=\"10\" tol=\"0\"/>
 
-                    <Command code=\"0091\"/>
-                    <Command code=\"0092\"/>
-                    <Command code=\"0093\"/>
+                    <Command code=\"0091\" tol=\"1\"/>
+                    <Command code=\"0092\" tol=\"1\"/>
+                    <Command code=\"0093\" tol=\"1\"/>
             </Commands>
         </Device>
             <Device id=\"1141\" name=\"SF8300 v5\" stopCommandDelayMs=\"300\" minCommandDelayMs=\"10\" maxCommandDelayMs=\"1000\">
@@ -750,9 +750,34 @@
                     <Command code=\"007E\" divider=\"100\" interval=\"10\" tol=\"1\"/>
                     <Command code=\"007F\" divider=\"1\" interval=\"10\" tol=\"0\"/>
 
-                    <Command code=\"0091\"/>
-                    <Command code=\"0092\"/>
-                    <Command code=\"0093\"/>
+                    <Command code=\"0091\" tol=\"1\"/>
+                    <Command code=\"0092\" tol=\"1\"/>
+                    <Command code=\"0093\" tol=\"1\"/>
+            </Commands>
+        </Device>
+            <Device id=\"2001\" name=\"TC1540\" stopCommandDelayMs=\"300\" minCommandDelayMs=\"10\" maxCommandDelayMs=\"1000\">
+            <!-- ID - hex число, stopCommandDelay - десятичное -->
+            <Commands>
+              <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code=\"0003\" interval=\"100\" tol=\"0\"/>
+                    <Command code=\"0005\" tol=\"0\"/>
+                    <Command code=\"0043\" isSigned=\"\" divider=\"10\" interval=\"100\" unit=\"(deg)\" isTemperature=\"1\" tol=\"1\"/>
+                    <Command code=\"0070\" divider=\"100\" unit=\"(deg)\" isTemperature=\"1\" tol=\"1\"/>
+                    <Command code=\"0071\" divider=\"100\" unit=\"(deg)\" isTemperature=\"1\" tol=\"1\"/>
+                    <Command code=\"0072\" divider=\"100\" unit=\"(deg)\" isTemperature=\"1\" tol=\"1\"/>
+                    <Command code=\"0073\" divider=\"100\" interval=\"100\" unit=\"(deg)\" isTemperature=\"1\" tol=\"1\"/>
+                    <Command code=\"0074\" divider=\"100\" interval=\"100\" unit=\"(deg)\" isTemperature=\"1\" tol=\"1\"/>
+                    <Command code=\"0075\" divider=\"100\" unit=\"(deg)\" isTemperature=\"1\" tol=\"1\"/>
+                    <Command code=\"0076\" isSigned=\"\" divider=\"10\" unit=\"A\" tol=\"1\"/>
+                    <Command code=\"0077\" divider=\"10\" unit=\"A\" tol=\"1\"/>
+                    <Command code=\"0078\" isSigned=\"\" divider=\"10\" unit=\"V\" tol=\"1\"/>
+                    <Command code=\"0079\" divider=\"10\" unit=\"V\" tol=\"1\"/>
+                    <Command code=\"007A\"/>
+                    <Command code=\"007E\" divider=\"100\" interval=\"10\" tol=\"1\"/>
+                    <Command code=\"007F\" divider=\"1\" interval=\"10\" tol=\"0\"/>
+                    <Command code=\"0091\" tol=\"1\"/>
+                    <Command code=\"0092\" tol=\"1\"/>
+                    <Command code=\"0093\" tol=\"1\"/>
             </Commands>
         </Device>
 </DB>
