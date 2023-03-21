@@ -69,6 +69,7 @@ SOURCES += \
     DataThread.cpp \
     DebugMode.cpp \
     UpdatesChecker.cpp \
+    device/connectionpolling.cpp \
     model/device/devicecondition.cpp \
     appsettings.cpp \
     constants.cpp \
@@ -115,6 +116,7 @@ HEADERS += \
     DataThread.h \
     DebugMode.h \
     UpdatesChecker.h \
+    device/connectionpolling.h \
     model/device/devicecondition.h \
     appsettings.h \
     constants.h \

@@ -6,6 +6,7 @@
 #include "devicemodel.h"
 #include "model/device/devicepollrequest.h"
 #include "model/device/devicewidget.h"
+#include "device/connectionpolling.h"
 #include <QtWidgets>
 
 struct DeviceDelays;
@@ -40,7 +41,7 @@ private:
     QVector<DevicePollRequest> m_cmdRequests;
     int m_cmdReqIt = 0;
     QVector<Device*> m_childDevices;
-
+    ConnectionPolling m_connectionPolling;
     void createCommandsRequests();
 
 private slots:

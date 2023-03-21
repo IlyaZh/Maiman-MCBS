@@ -32,9 +32,16 @@ Device::~Device() {
 void Device::dataIncome(quint16 reg, quint16 value) {
     auto cmd = m_Commands.value(reg, nullptr);
     if(cmd) {
+        if(m_connectionPolling.isDisconnected()){
+            m_connectionPolling.setConnectionState(false);
+            m_isLink = true;
+        }
+
         emit linkChanged(m_isLink);
 
         cmd->setFromDevice(value);
+
+
     }
 }
 
@@ -53,11 +60,25 @@ quint8 Device::addr() {
 
 const DevicePollRequest Device::nextPollRequest() {
     if(m_cmdReqIt >= m_cmdRequests.size()) m_cmdReqIt = 0;
-    while(m_cmdReqIt < m_cmdRequests.size()) {
-        DevicePollRequest request = m_cmdRequests.at(m_cmdReqIt);
-        m_cmdReqIt++;
-        if(request.isRequestReady()) {
-            return request;
+
+    if(m_connectionPolling.isDisconnected()){
+        if(m_connectionPolling.get()){
+            while(m_cmdReqIt < m_cmdRequests.size()) {
+                DevicePollRequest request = m_cmdRequests.at(m_cmdReqIt);
+                m_cmdReqIt++;
+                if(m_connectionPolling.isRequestReady()) {
+                    return request;
+                }
+            }
+        }
+    }
+    else{
+        while(m_cmdReqIt < m_cmdRequests.size()) {
+            DevicePollRequest request = m_cmdRequests.at(m_cmdReqIt);
+            m_cmdReqIt++;
+            if(request.isRequestReady()) {
+                return request;
+            }
         }
     }
     return DevicePollRequest(0,0,0);
@@ -80,11 +101,12 @@ void Device::changeTemperatureUnit(Const::TemperatureUnitId id) {
 }
 
 void Device::unlink() {
+    m_connectionPolling.setConnectionState(true);
     m_isLink = false;
-    m_cmdRequests.clear();
-    for(auto it = m_Commands.begin(); it != m_Commands.end(); ++it) {
-        disconnect(it.value().get(), &DevCommand::sendValueSignal, this, &Device::dataFromCommand);
-    }
+//    m_cmdRequests.clear();
+//    for(auto it = m_Commands.begin(); it != m_Commands.end(); ++it) {
+//        disconnect(it.value().get(), &DevCommand::sendValueSignal, this, &Device::dataFromCommand);
+//    }
     qDebug() << "Device unlink" << m_addr << QDateTime::currentDateTime().time().toString("mm:ss.zzz");
     emit linkChanged(m_isLink);
 }

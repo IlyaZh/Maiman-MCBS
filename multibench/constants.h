@@ -43,7 +43,7 @@ struct Const {
         static const int min;
         static const int max;
     };
-
+    static const int NetworkDisconnectedTimeout;
     static const QString SecretCodeCombination;
     static const QString ApplicationDefaultFontPath;
     static const QFont ApplicationDefaultFont;

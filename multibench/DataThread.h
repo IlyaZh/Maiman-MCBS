@@ -17,7 +17,7 @@ public slots:
     void setTimeout(qint64 MSecs);
     void setDelay(qint64 MSecs);
     void configure(QScopedPointer<IDataSource>& source);
-    void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes);
+    void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool isDisconnectedDevice);
     void stop();
 
 Q_SIGNALS:
@@ -31,6 +31,7 @@ private:
     struct Package {
         QByteArray m_data {};
         qint64 m_waitSize {0};
+        bool isDisconnected = false;
     };
 
     qint64 m_delay {Const::NetworkDelayMSecs::defaultValue};

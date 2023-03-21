@@ -26,11 +26,12 @@ void DataThread::configure(QScopedPointer<IDataSource>& source) {
     m_dataSource.swap(source);
 }
 
-void DataThread::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes) {
+void DataThread::writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool isDisconnectedDevice) {
     QMutexLocker locker(&m_mtx);
     Package pack;
     pack.m_data = msg;
     pack.m_waitSize = waitBytes;
+    pack.isDisconnected = isDisconnectedDevice;
     m_next = pack;
 
     if(!isRunning()) {
@@ -72,18 +73,21 @@ void DataThread::run() {
             package = m_next;
 
         }
+        qint64 networkTimeout = m_timeout;
         m_lastWrittenMsg = package.m_data;
         m_waitRxBytes = package.m_waitSize;
-
+        if(package.isDisconnected){
+            networkTimeout = Const::NetworkDisconnectedTimeout;
+        }
         m_device->write(m_lastWrittenMsg);
 //        qDebug() << QDateTime::currentDateTime().time().toString("HH:mm:ss.zzz") << m_lastWrittenMsg.toHex(' ');
-        if(!m_device->waitForBytesWritten(m_timeout)) {
+        if(!m_device->waitForBytesWritten(networkTimeout)) {
             qDebug() << "NOT WRITTEN";
             emit timeout(m_lastWrittenMsg);
         } else {
             QByteArray buffer;
                 QThread::msleep(10);
-                while(m_device->waitForReadyRead(m_timeout))
+                while(m_device->waitForReadyRead(networkTimeout))
                 {
                     int need = m_waitRxBytes-buffer.size();
                     if(need > 0){

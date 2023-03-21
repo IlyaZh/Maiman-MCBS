@@ -29,6 +29,8 @@ const int Const::NetworkMaxAddress::defaultValue = 32;
 const int Const::NetworkMaxAddress::min = 1;
 const int Const::NetworkMaxAddress::max = 64;
 
+const int Const::NetworkDisconnectedTimeout = 100;
+
 const QString Const::SecretCodeCombination = "3.1415926";
 
 const QString Const::ApplicationDefaultFontPath = ":/resources/fonts/ShareTechMono-Regular.ttf";

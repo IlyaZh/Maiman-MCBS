@@ -190,10 +190,12 @@ void NetworkModel::temperatureUnitsChanged(Const::TemperatureUnitId id) {
 void NetworkModel::timeout(const QByteArray& lastPackage) {
     if(m_worker) {
         if(!lastPackage.isEmpty()) {
-            auto device = m_devices.value(static_cast<quint8>(lastPackage.at(0)));
+            auto devAddr = static_cast<quint8>(lastPackage.at(0));
+            auto device = m_devices.value(devAddr);
             if(device) {
                 qDebug() << "TIMEOUT UNLINK DEV" << device->addr();
                 device->unlink();
+                m_disconnectedDevices.append(devAddr);
             }
         }
         if (m_isRescan){
@@ -231,7 +233,11 @@ void NetworkModel::pollRequest() {
         }
         if(!package.isEmpty()) {
             qint64 waitForBytes = m_protocol.waitForBytes(package);
-            m_worker->writeAndWaitBytes(package, waitForBytes);
+            bool isDisconnected = false;
+            if(m_disconnectedDevices.contains(static_cast<quint8>(package.at(0)))){
+                isDisconnected = true;
+            }
+            m_worker->writeAndWaitBytes(package, waitForBytes, isDisconnected);
         }
     }
 }
@@ -254,6 +260,8 @@ void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& last
             } else {
                 if(m_devices.contains(item.addr)) {
                     m_devices[item.addr]->dataIncome(item.reg, item.value);
+                    if(m_disconnectedDevices.contains(item.addr))
+                        m_disconnectedDevices.removeOne(item.addr);
                 }
             }
         }
