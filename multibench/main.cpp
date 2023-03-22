@@ -25,6 +25,7 @@
 
 QLocale wlocale;
 bool debugMode = false;
+void messageToFile(QtMsgType type, const QMessageLogContext &context, const QString& msg);
 
 int main(int argc, char *argv[])
 {
@@ -67,6 +68,45 @@ int main(int argc, char *argv[])
 #ifdef QT_DEBUG
     //GlobalTest tests(argc, argv);
 #endif
-
+    #ifndef QT_DEBUG
+        qInstallMessageHandler(messageToFile);
+    #endif
     return app.exec();
+}
+
+void messageToFile(QtMsgType type, const QMessageLogContext &context, const QString& msg) {
+
+    QFile file(QCoreApplication::applicationDirPath() + "/INFO.txt");
+
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)) {
+        return;
+    }
+
+//    if(file.size() > MAX_LOG_FILE_SIZE) {
+//        file.resize(0);
+//    }
+
+    QTextStream out(&file);
+
+    switch (type) {
+    case QtInfoMsg:
+        out << QDateTime::currentDateTime().toString("dd.MM.yy hh:mm:ss:zzz") << " Info: " << msg << ",     " << context.file << endl;
+        break;
+    case QtWarningMsg:
+        out << QDateTime::currentDateTime().toString("dd.MM.yy hh:mm:ss:zzz") << " Warning: " << msg << ",      " << context.file << endl;
+        break;
+    case QtCriticalMsg:
+        out << QDateTime::currentDateTime().toString("dd.MM.yy hh:mm:ss:zzz") << " Critical: " << msg << ",  " << context.file << endl;
+        break;
+    case QtFatalMsg:
+        out << QDateTime::currentDateTime().toString("dd.MM.yy hh:mm:ss:zzz") << " Fatal: " << msg << ",     " << context.file << endl;
+        break;
+    case QtDebugMsg:
+        out << QDateTime::currentDateTime().toString("dd.MM.yy hh:mm:ss:zzz") << " Debug: " << msg << ",     " << context.file << endl;
+        break;
+    default:
+        break;
+    }
+    file.close();
 }

@@ -195,7 +195,7 @@ void NetworkModel::timeout(const QByteArray& lastPackage) {
             if(device) {
                 qDebug() << "TIMEOUT UNLINK DEV" << device->addr();
                 device->unlink();
-                m_disconnectedDevices.append(devAddr);
+                m_disconnectedDevices.insert(devAddr);
             }
         }
         if (m_isRescan){
@@ -261,7 +261,7 @@ void NetworkModel::readyRead(const QByteArray& rxPackage, const QByteArray& last
                 if(m_devices.contains(item.addr)) {
                     m_devices[item.addr]->dataIncome(item.reg, item.value);
                     if(m_disconnectedDevices.contains(item.addr))
-                        m_disconnectedDevices.removeOne(item.addr);
+                        m_disconnectedDevices.remove(item.addr);
                 }
             }
         }

@@ -32,10 +32,9 @@ Device::~Device() {
 void Device::dataIncome(quint16 reg, quint16 value) {
     auto cmd = m_Commands.value(reg, nullptr);
     if(cmd) {
-        if(m_connectionPolling.isDisconnected()){
-            m_connectionPolling.setConnectionState(false);
-            m_isLink = true;
-        }
+        m_connectionPolling.reset();
+
+        m_isLink = true;
 
         emit linkChanged(m_isLink);
 
@@ -61,18 +60,7 @@ quint8 Device::addr() {
 const DevicePollRequest Device::nextPollRequest() {
     if(m_cmdReqIt >= m_cmdRequests.size()) m_cmdReqIt = 0;
 
-    if(m_connectionPolling.isDisconnected()){
-        if(m_connectionPolling.get()){
-            while(m_cmdReqIt < m_cmdRequests.size()) {
-                DevicePollRequest request = m_cmdRequests.at(m_cmdReqIt);
-                m_cmdReqIt++;
-                if(m_connectionPolling.isRequestReady()) {
-                    return request;
-                }
-            }
-        }
-    }
-    else{
+    if(m_connectionPolling.needAction()){
         while(m_cmdReqIt < m_cmdRequests.size()) {
             DevicePollRequest request = m_cmdRequests.at(m_cmdReqIt);
             m_cmdReqIt++;
@@ -101,7 +89,6 @@ void Device::changeTemperatureUnit(Const::TemperatureUnitId id) {
 }
 
 void Device::unlink() {
-    m_connectionPolling.setConnectionState(true);
     m_isLink = false;
 //    m_cmdRequests.clear();
 //    for(auto it = m_Commands.begin(); it != m_Commands.end(); ++it) {

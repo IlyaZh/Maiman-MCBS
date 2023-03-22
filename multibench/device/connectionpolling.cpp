@@ -5,44 +5,18 @@ ConnectionPolling::ConnectionPolling(QObject *parent) : QObject(parent)
 
 }
 
-void ConnectionPolling::fibonachiCount(){
-    int fibonachi=0;
-    fibonachi = m_F0 + m_F1;
-    if(fibonachi > 8) fibonachi = 8;
-    m_F0 = m_F1;
-    m_F1 = fibonachi;
-}
-
-bool ConnectionPolling::get(){
+bool ConnectionPolling::needAction(){
     m_connectionPolling++;
-    if(m_connectionPolling == m_F1){
-        fibonachiCount();
+    if(m_fibonachi.at(fibonachiIndex) == m_connectionPolling){
+        fibonachiIndex++;
+        fibonachiIndex = (fibonachiIndex >= 5 ) ? 5 : fibonachiIndex;
         m_connectionPolling = 0;
         return true;
     }
         return false;
 }
 
-void ConnectionPolling::setConnectionState(bool state){
-    if(m_isDisconnected != state){
-        m_isDisconnected = state;
-        if(!m_isDisconnected){
-            m_connectionPolling = 0;
-            m_F0 = 0;
-            m_F1 = 1;
-        }
-    }
-}
-
-bool ConnectionPolling::isDisconnected(){
-    return m_isDisconnected;
-}
-
-bool ConnectionPolling::isRequestReady() {
-    ++counter;
-    if(counter >= m_intervalMs) {
-        counter = 0;
-        return true;
-    }
-    return false;
+void ConnectionPolling::reset() {
+    fibonachiIndex = 0;
+    m_connectionPolling = 0;
 }

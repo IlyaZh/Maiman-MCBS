@@ -64,7 +64,7 @@ private:
     int m_rescanCommandsDone {0};
     bool m_isRescan;
     int m_successConnect;
-    QList<quint8> m_disconnectedDevices;
+    QSet<quint8> m_disconnectedDevices;
 //    int m_delay {Const::NetworkDelayMSecs::defaultValue};
 
     void clear();
