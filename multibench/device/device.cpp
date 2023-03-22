@@ -60,7 +60,7 @@ quint8 Device::addr() {
 const DevicePollRequest Device::nextPollRequest() {
     if(m_cmdReqIt >= m_cmdRequests.size()) m_cmdReqIt = 0;
 
-    if(m_connectionPolling.needAction()){
+    if(m_connectionPolling.isNeedAction()){
         while(m_cmdReqIt < m_cmdRequests.size()) {
             DevicePollRequest request = m_cmdRequests.at(m_cmdReqIt);
             m_cmdReqIt++;

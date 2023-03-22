@@ -9,15 +9,15 @@ class ConnectionPolling : public QObject
 public:
     explicit ConnectionPolling(QObject *parent = nullptr);
     void reset();
-    bool needAction();
+    bool isNeedAction();
 signals:
 
 public slots:
 
 private:
-    int m_connectionPolling = 0;
+    int counter = 0;
     constexpr static const std::array<int, 6> m_fibonachi = {1, 1, 2, 3, 5, 8};
-    int fibonachiIndex = 0;
+    int idx = 0;
 };
 
 #endif // CONNECTIONPOLLING_H

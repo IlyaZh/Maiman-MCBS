@@ -5,18 +5,18 @@ ConnectionPolling::ConnectionPolling(QObject *parent) : QObject(parent)
 
 }
 
-bool ConnectionPolling::needAction(){
-    m_connectionPolling++;
-    if(m_fibonachi.at(fibonachiIndex) == m_connectionPolling){
-        fibonachiIndex++;
-        fibonachiIndex = (fibonachiIndex >= 5 ) ? 5 : fibonachiIndex;
-        m_connectionPolling = 0;
+bool ConnectionPolling::isNeedAction(){
+    counter++;
+    if(m_fibonachi.at(idx) == counter){
+        if(idx < m_fibonachi.size()) { ++idx; }
+        qDebug()<<"m_fibonachi.at(idx)"<<m_fibonachi.at(idx);
+        counter = 0;
         return true;
     }
         return false;
 }
 
 void ConnectionPolling::reset() {
-    fibonachiIndex = 0;
-    m_connectionPolling = 0;
+    idx = 0;
+    counter = 0;
 }
