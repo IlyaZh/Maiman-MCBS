@@ -221,8 +221,8 @@ void NetworkModel::pollRequest() {
             package = m_queue.dequeue();
         } else {
             for(const auto& dev : qAsConst(m_devices)) {
-                const auto& contains = m_disconnectedDevices.contains(dev->addr());
-                const auto request = dev->nextPollRequest(contains);
+                const auto& is_disconnected_device = m_disconnectedDevices.contains(dev->addr());
+                const auto request = dev->nextPollRequest(is_disconnected_device);
                 if(request.has_value()) {
                     auto wrotePack = m_protocol.getDataValue(request->addr, request->code, request->count);
                     m_queue.enqueue(wrotePack);
@@ -234,10 +234,7 @@ void NetworkModel::pollRequest() {
         }
         if(!package.isEmpty()){
             qint64 waitForBytes = m_protocol.waitForBytes(package);
-            bool isDisconnected = false;
-            if(m_disconnectedDevices.contains(static_cast<quint8>(package.at(0)))){
-                isDisconnected = true;
-            }
+            bool isDisconnected = m_disconnectedDevices.contains(static_cast<quint8>(package.at(0)));
             m_worker->writeAndWaitBytes(package, waitForBytes, isDisconnected);
         }
     }
