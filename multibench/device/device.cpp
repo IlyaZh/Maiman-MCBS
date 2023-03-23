@@ -57,10 +57,10 @@ quint8 Device::addr() {
     return m_addr;
 }
 
-std::optional<DevicePollRequest> Device::nextPollRequest() {
+std::optional<DevicePollRequest> Device::nextPollRequest(bool unconditional) {
     if(m_cmdReqIt >= m_cmdRequests.size()) m_cmdReqIt = 0;
 
-    if(m_connectionPolling.isNeedAction()){
+    if(unconditional or m_connectionPolling.isNeedAction()){
         while(m_cmdReqIt < m_cmdRequests.size()) {
             DevicePollRequest request = m_cmdRequests.at(m_cmdReqIt);
             m_cmdReqIt++;
