@@ -57,7 +57,7 @@ quint8 Device::addr() {
     return m_addr;
 }
 
-const DevicePollRequest Device::nextPollRequest() {
+std::optional<DevicePollRequest> Device::nextPollRequest() {
     if(m_cmdReqIt >= m_cmdRequests.size()) m_cmdReqIt = 0;
 
     if(m_connectionPolling.isNeedAction()){
@@ -69,7 +69,7 @@ const DevicePollRequest Device::nextPollRequest() {
             }
         }
     }
-    return DevicePollRequest(0,0,0);
+    return std::nullopt;
 }
 
 bool Device::isLink() {

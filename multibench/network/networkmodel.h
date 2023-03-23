@@ -53,6 +53,7 @@ signals:
 
 
 private:
+    void addPackageForDisconnected();
     DeviceFactory& m_deviceModelFactory;
     SoftProtocol& m_protocol;
     QMap<quint8, QSharedPointer<Device>> m_devices;

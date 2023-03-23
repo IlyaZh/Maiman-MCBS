@@ -9,7 +9,6 @@ bool ConnectionPolling::isNeedAction(){
     counter++;
     if(m_fibonachi.at(idx) == counter){
         if(idx < m_fibonachi.size()) { ++idx; }
-        qDebug()<<"m_fibonachi.at(idx)"<<m_fibonachi.at(idx);
         counter = 0;
         return true;
     }

@@ -25,12 +25,12 @@ public:
     QString name();
     quint16 id();
     quint8 addr();
-    const DevicePollRequest nextPollRequest();
+    std::optional<DevicePollRequest> nextPollRequest();
     bool isLink();
     const QMap<quint16, QSharedPointer<DevCommand>>& commands();
     void changeTemperatureUnit(Const::TemperatureUnitId id);
     void unlink();
-
+    void resetConnectionPolling(){m_connectionPolling.reset();};
 private:
     bool m_isLink {true};
     int m_addr = 0;
