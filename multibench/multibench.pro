@@ -3,7 +3,7 @@ QT       += core gui network xml serialport network qml quickcontrols2
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+QMAKE_CXXFLAGS += -std=c++2a -Wunused-parameter -Werror
 #debug:CONFIG+=testcase #warn_on depend_includepath console
 
 # The following define makes your compiler emit warnings if you use
@@ -18,10 +18,8 @@ TEMPLATE = app
 
 CONFIG(debug, debug|release) {
     DESTDIR = $OUT_PWD/../../MWB_Debug
-    message("DEBUG BUILD")
 } else {
     DESTDIR = $OUT_PWD/../../MWB_Release
-    message("RELEASE BUILD")
 }
 MOC_DIR = ../common/build/moc
 RCC_DIR = ../common/build/rcc
@@ -29,7 +27,6 @@ UI_DIR = ../common/build/ui
 
 OTHER_FILES += device_db.xml.in \
                 device_gui.xml.in \
-                version.h.in \
                 icon.ico
 
 unix:OBJECTS_DIR = ../common/build/o/unix
@@ -39,10 +36,6 @@ macx:OBJECTS_DIR = ../common/build/o/mac
 CONFIG(release, debug|release) {
     QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$OUT_PWD/../MWB_Release
 }
-
-version.input = version.h.in
-version.output = $$PWD/version.h
-QMAKE_SUBSTITUTES += version
 
 conf_db.input = device_db.xml.in
 CONFIG(debug, debug|release) {
@@ -72,7 +65,6 @@ SOURCES += \
     device/connectionpolling.cpp \
     model/device/devicecondition.cpp \
     appsettings.cpp \
-    constants.cpp \
     datasource.cpp \
     device/commandsettings.cpp \
     device/device.cpp \
@@ -116,10 +108,10 @@ HEADERS += \
     DataThread.h \
     DebugMode.h \
     UpdatesChecker.h \
+    constants.h \
     device/connectionpolling.h \
     model/device/devicecondition.h \
     appsettings.h \
-    constants.h \
     datasource.h \
     device/commandsettings.h \
     device/device.h \
@@ -159,8 +151,7 @@ HEADERS += \
 #    tests/test_modbus/test_modbus.h \
     widgets/binarywidget.h \
     widgets/controlwidget.h \
-    widgets/readparameterwidget.h \
-    version.h
+    widgets/readparameterwidget.h
 
 FORMS += \
     mainwindow.ui \

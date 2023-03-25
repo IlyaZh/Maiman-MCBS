@@ -34,8 +34,8 @@ private:
         bool isShortTimeout = false;
     };
 
-    qint64 m_delay {Const::NetworkDelayMSecs::defaultValue};
-    qint64 m_timeout {Const::NetworkTimeoutMSecs::defaultValue};
+    qint64 m_delay {Const::kNetworkDelayMSecs::defaultValue};
+    qint64 m_timeout {Const::kNetworkTimeoutMSecs::defaultValue};
     qint64 m_waitRxBytes {-1};
     QByteArray m_lastWrittenMsg;
     Package m_next;

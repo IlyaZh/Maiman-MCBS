@@ -1,6 +1,7 @@
-#include "constants.h"
 #include <QtMath>
 
-bool isEqual(double first, double second){
- return fabs(first - second) <= Const::DoubleEpsilon;
+#include "constants.h"
+
+bool isEqual(double first, double second) {
+  return fabs(first - second) <= Const::kDoubleEpsilon;
 }

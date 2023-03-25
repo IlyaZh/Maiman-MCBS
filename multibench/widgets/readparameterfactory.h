@@ -3,17 +3,15 @@
 
 #include <QObject>
 
-#include "widgets/readparameterwidget.h"
 #include "widgets/readnounitparameterwidget.h"
+#include "widgets/readparameterwidget.h"
 
-
-
-class ReadParameterFactory : public QObject
-{
-        Q_OBJECT
-public:
-    ReadParameterFactory();
-    static ReadParameterWidget* createReadParameter(QStringView name, QSharedPointer<DevCommand> cmd);
+class ReadParameterFactory : public QObject {
+  Q_OBJECT
+ public:
+  ReadParameterFactory();
+  static ReadParameterWidget* createReadParameter(
+      QStringView name, QSharedPointer<DevCommand> cmd);
 };
 
-#endif // READPARAMETERFACTORY_H
+#endif  // READPARAMETERFACTORY_H

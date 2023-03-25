@@ -1,50 +1,45 @@
 #include "aboutdialog.h"
+
+#include "constants.h"
 #include "ui_aboutdialog.h"
-#include "version.h"
-const QString SECRET_CODE_COMBINATION = "3.1415926";
 
-AboutDialog::AboutDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AboutDialog)
-{
-    ui->setupUi(this);
-    setWindowIcon(QIcon(":/images/logo-minimal.png"));
-    // Сокрытие\показ кнопки "обновления ПО" и вывод информации о текущей версии программы
-    ui->updateButton->hide();
-    connect(ui->updateButton, SIGNAL(clicked(bool)), this, SLOT(updateButtonPressed()));
-    ui->softwareInfoLabel->setText(Version);
+AboutDialog::AboutDialog(QWidget *parent)
+    : QDialog(parent), ui(new Ui::AboutDialog) {
+  ui->setupUi(this);
+  setWindowIcon(QIcon(":/images/logo-minimal.png"));
+  // Сокрытие\показ кнопки "обновления ПО" и вывод информации о текущей версии
+  // программы
+  ui->updateButton->hide();
+  connect(ui->updateButton, SIGNAL(clicked(bool)), this,
+          SLOT(updateButtonPressed()));
+  ui->softwareInfoLabel->setText(QCoreApplication::applicationVersion());
 
-    // Вызов информации о версии Qt
-    connect(ui->aboutQtButton, SIGNAL(clicked(bool)), QApplication::instance(), SLOT(aboutQt()));
+  // Вызов информации о версии Qt
+  connect(ui->aboutQtButton, SIGNAL(clicked(bool)), QApplication::instance(),
+          SLOT(aboutQt()));
 }
 
-AboutDialog::~AboutDialog()
-{
-    delete ui;
-}
+AboutDialog::~AboutDialog() { delete ui; }
 
 void AboutDialog::keyReleaseEvent(QKeyEvent *event) {
-    int keyPressed = event->key();
-    // Заменяем запятую на точку
-    keyPressed = (QChar(keyPressed) == ',') ? '.' : keyPressed;
+  int keyPressed = event->key();
+  // Заменяем запятую на точку
+  keyPressed = (QChar(keyPressed) == ',') ? '.' : keyPressed;
 
-    if(SECRET_CODE_COMBINATION.at(secretCode.size()) == QChar(keyPressed)) {
-        secretCode.append(keyPressed);
-        if(secretCode.size() == SECRET_CODE_COMBINATION.size()) {
-            if (secretCode == SECRET_CODE_COMBINATION) {
-                emit showConsoleSignal(true);
-                secretCode.clear();
-            } else {
-                secretCode.clear();
-            }
-        }
-    } else {
+  if (Const::kSecretCodeCombination.at(secretCode.size()) ==
+      QChar(keyPressed)) {
+    secretCode.append(keyPressed);
+    if (secretCode.size() == Const::kSecretCodeCombination.size()) {
+      if (secretCode == Const::kSecretCodeCombination) {
+        emit showConsoleSignal(true);
         secretCode.clear();
+      } else {
+        secretCode.clear();
+      }
     }
-
-
+  } else {
+    secretCode.clear();
+  }
 }
 
-void AboutDialog::updateButtonPressed() {
-    emit startUpdate();
-}
+void AboutDialog::updateButtonPressed() { emit startUpdate(); }
