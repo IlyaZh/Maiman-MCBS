@@ -220,7 +220,7 @@ void NetworkModel::pollRequest() {
       for (const auto& dev : qAsConst(m_devices)) {
         const auto& is_disconnected_device =
             m_disconnectedDevices.contains(dev->addr());
-        const auto request = dev->nextPollRequest(is_disconnected_device);
+        const auto request = dev->nextPollRequest(!is_disconnected_device);
         if (request.has_value()) {
           auto wrotePack = m_protocol.getDataValue(request->addr, request->code,
                                                    request->count);

@@ -9,7 +9,7 @@ ConnectionPolling::ConnectionPolling(QObject *parent) : QObject(parent) {}
 
 bool ConnectionPolling::isNeedAction() {
   if (kFibonachi.at(idx) == ++counter) {
-    if (idx < kFibonachi.size()) {
+    if (idx < kFibonachi.size() - 1) {
       ++idx;
     }
     counter = 0;
