@@ -17,7 +17,7 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,
       m_window(window),
       m_factory(factory),
       m_network(networkModel) {
-  m_factory.start();
+  factory.start();
   connect(&networkModel, &NetworkModel::signal_createWidgetFor, this,
           &ModelGuiMediator::createWidgetFor);
   connect(&networkModel, &NetworkModel::signal_setBaudrateToWindow, this,
@@ -31,7 +31,7 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,
           &ModelGuiMediator::refreshComPorts);
   connect(&window, &MainWindow::tempratureUnitsChanged, &m_network,
           &NetworkModel::temperatureUnitsChanged);
-
+  refreshComPorts();
   connect(&window, &MainWindow::rescanNetwork, this, &ModelGuiMediator::rescan);
   connect(&window, &MainWindow::createCalibAndLimitsWidgets, this,
           &ModelGuiMediator::createCalibAndLimitsWidgets);
@@ -45,8 +45,8 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,
 
   connect(&networkModel, &NetworkModel::signal_errorOccured, &m_window,
           &MainWindow::slot_serialPortClosed);
-
-  refreshComPorts();
+  connect(&networkModel, &NetworkModel::signal_emptyNetwork, &m_window,
+          &MainWindow::emptyNetwork);
 }
 
 void ModelGuiMediator::createWidgetFor(Device* device) {

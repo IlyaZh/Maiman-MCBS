@@ -237,6 +237,7 @@ void NetworkModel::pollRequest() {
           m_disconnectedDevices.contains(static_cast<quint8>(package.at(0)));
       m_worker->writeAndWaitBytes(package, waitForBytes, isDisconnected);
     }
+    else if(package.isEmpty() and m_successConnect > 0) emit signal_emptyNetwork();
   }
 }
 

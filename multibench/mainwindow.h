@@ -49,6 +49,7 @@ class MainWindow : public QMainWindow {
   void addCalibrationMenu(quint8 addr, quint16 id);
   void rescanProgress(int current, int total, int success);
   void slot_serialPortClosed(const QString& msg);
+  void emptyNetwork();
  private slots:
   void comTriggered();
   void tcpTriggered();

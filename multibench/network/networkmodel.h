@@ -50,6 +50,7 @@ class NetworkModel : public QObject {
   void signal_errorOccured(const QString& error);
   void signal_writeData(const QByteArray& msg, qint64 waitBytes, bool priority);
   void signal_rescanProgress(int current, int total, int success);
+  void signal_emptyNetwork();
 
  private:
   void addPackageForDisconnected();

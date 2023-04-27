@@ -378,3 +378,9 @@ void MainWindow::slot_serialPortClosed(const QString& /*msg*/) {
       "Error", "Failed, COM port is busy", QDialogButtonBox::Ok, 12, this);
   connect(portClosed, &QuitDialog::accepted, portClosed, &QuitDialog::close);
 }
+
+void MainWindow::emptyNetwork() {
+    QuitDialog* portClosed = QuitDialog::createDialog(
+        "Error", "All devices disconnected", QDialogButtonBox::Ok, 12, this);
+    connect(portClosed, &QuitDialog::accepted, portClosed, &QuitDialog::close);
+}
