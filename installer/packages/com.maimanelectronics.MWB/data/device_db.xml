@@ -780,4 +780,32 @@
                     <Command code="0093" tol="1"/>
             </Commands>
         </Device>
+        <Device id="1430" name="SF8150-WT" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
+        <!-- ID - hex число, stopCommandDelay - десятичное -->
+        <Commands>
+                <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                <Command code="0006" divider="10" unit="Hz" tol="1"/>
+                <Command code="0020" divider="10" interval="100" unit="Hz" tol="1"/>
+                <Command code="0021" divider="10" interval="100" unit="Hz" tol="1"/>
+                <Command code="0007" divider="10" unit="ms" tol="1"/>
+                <Command code="0022" divider="10" interval="100" unit="ms" tol="1"/>
+                <Command code="0023" divider="10" unit="ms" tol="1"/>
+                <Command code="0008" divider="10" unit="mA" tol="1"/>
+                <Command code="0024" divider="10" interval="100" unit="mA" tol="1"/>
+                <Command code="0025" divider="10" unit="mA" tol="1"/>
+                <Command code="0029" divider="10" interval="100" unit="mA" tol="1"/>
+                <Command code="002A" divider="10" interval="100" unit="mA" tol="1"/>
+                <Command code="0040" divider="10" unit="mA" tol="1"/>
+                <Command code="0088" divider="100" tol="2"/>
+                <Command code="0041" divider="10" unit="V" tol="1"/>
+                <Command code="0004" tol="0"/>
+                <Command code="0003" interval="100" tol="0"/>
+                <Command code="0005" tol="0"/>
+                <Command code="0026" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                <Command code="0027" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                <Command code="0042" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                <Command code="008A" divider="1" interval="10" tol="0"/>
+                <Command code="0043" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+        </Commands>
+    </Device>
 </DB>

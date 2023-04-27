@@ -2913,4 +2913,101 @@
             </Led>
     </Leds>
     </Device>
+    <Device id="1430"
+    name="SF8150-WT"
+    stopCommandDelayMs="300"
+    minCommandDelayMs="10"
+    maxCommandDelayMs="1000">
+    <!-- ID - hex число, stopCommandDelay - десятичное -->
+    <!-- Описание устройства -->
+    <Content>
+            <Image/>
+            <Description/>
+            <Link>https://www.maimanelectronics.com/</Link>
+    </Content>
+    <Limits>
+            <Limit limitCode="0026"
+                    minValue="-10"
+                    maxCode="0027"
+                    pair="0027"
+                    pairType="min">NTC temperature warning lower limit</Limit>
+            <Limit limitCode="0027"
+                    minCode="0026"
+                    maxValue="100">NTC temperature warning upper limit</Limit>
+    </Limits>
+    <CalibrationKoefs>
+            <Calibrate code="0088"
+                            min="95"
+                            max="105">LD set current calibration</Calibrate>
+            <Calibrate code="008A"
+                            min="3000"
+                            max="5000">External NTC B25/100 coefficient</Calibrate>
+    </CalibrationKoefs>
+    <ParamControls>
+            <Param min="0020"
+                    max="0021"
+                    value="0006">Frequency</Param>
+            <Param min="0022"
+                    max="0023"
+                    value="0007">Duration</Param>
+            <Param min="0024"
+                    max="0025"
+                    value="0008"
+                    real="0040"
+                    fixed="">LD Current</Param>
+            <Param real="0003">Serial Number</Param>
+            <Param real="0041">LD Voltage</Param>
+            <Param real="0042">NTC Temperature</Param>
+            <Param real="0043">Driver Temperature</Param>
+    </ParamControls>
+    <Checkboxes>
+            <CheckBox code="0004"
+                            onCommand="0020"
+                            offCommand="0040"
+                            mask="0004">LD Digital Current Set</CheckBox>
+            <CheckBox code="0004"
+                            onCommand="0400"
+                            offCommand="0200"
+                            mask="0010">LD Digital Enable</CheckBox>
+            <CheckBox code="0004"
+                            onCommand="4000"
+                            offCommand="8000"
+                            mask="0040">Ignore External NTC Overheat</CheckBox>
+            <CheckBox code="0004"
+                            onCommand="2000"
+                            offCommand="1000"
+                            mask="0080">Ignore IntLock</CheckBox>
+    </Checkboxes>
+    <Buttons>
+            <Button
+                    mask="02"
+                    code="0004"
+                    onCommand="0008"
+                    offCommand="0010">Laser</Button>
+    </Buttons>
+    <Leds>
+            <Led label="Laser">
+                    <LedMask code="0004"
+                            mask="0002"
+                            maskColor="#00ff00"
+                            defaultColor="#171717"/>
+            </Led>
+            <Led label="IntLock">
+                    <LedMask code="0005"
+                            mask="0002"
+                            maskColor="#ffff00">Interlock</LedMask>
+                    <LedMask code="0005"
+                            mask="0020"
+                            maskColor="#ff0000">External NTC temperature exceeds limits</LedMask>
+            </Led>
+            <Led label="Error">
+                    <LedMask code="0005"
+                            mask="0010"
+                            maskColor="#ffff00">LD temperature exceeds limits</LedMask>
+                    <LedMask code="0005"
+                            mask="0008"
+                            maskColor="#ff0000">LD Over current</LedMask>
+            </Led>
+    </Leds>
+</Device>
 </GUI>
