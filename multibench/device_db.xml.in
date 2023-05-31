@@ -22,6 +22,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -46,6 +47,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -71,6 +73,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -94,6 +97,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -122,6 +126,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -150,6 +155,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"100\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"100\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -178,6 +184,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -206,6 +213,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"100\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"100\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -234,6 +242,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -262,6 +271,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -290,6 +300,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -317,6 +328,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -345,6 +357,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -373,6 +386,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -415,6 +429,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -457,6 +472,7 @@
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -498,6 +514,7 @@
 		<!-- ID - hex число, stopCommandDelay - десятичное -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -539,6 +556,7 @@
 		<!-- ID - hex число, stopCommandDelay - десятичное -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
 			<Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
 			<Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -579,6 +597,7 @@
             <!-- ID - hex число, stopCommandDelay - десятичное -->
             <Commands>
                     <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
                     <Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
                     <Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
                     <Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -624,6 +643,7 @@
             <!-- ID - hex число, stopCommandDelay - десятичное -->
             <Commands>
                     <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
                     <Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
                     <Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
                     <Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -669,6 +689,7 @@
             <!-- ID - hex число, stopCommandDelay - десятичное -->
             <Commands>
                     <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
                     <Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
                     <Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
                     <Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -714,6 +735,7 @@
             <!-- ID - hex число, stopCommandDelay - десятичное -->
             <Commands>
                     <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
                     <Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
                     <Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
                     <Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -759,6 +781,7 @@
             <!-- ID - hex число, stopCommandDelay - десятичное -->
             <Commands>
               <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
                     <Command code=\"0003\" interval=\"100\" tol=\"0\"/>
                     <Command code=\"0005\" tol=\"0\"/>
                     <Command code=\"0043\" isSigned=\"\" divider=\"10\" interval=\"100\" unit=\"(deg)\" isTemperature=\"1\" tol=\"1\"/>
@@ -784,6 +807,7 @@
         <!-- ID - hex число, stopCommandDelay - десятичное -->
         <Commands>
                 <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
                 <Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
                 <Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
                 <Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -812,6 +836,7 @@
         <!-- ID - hex число, stopCommandDelay - десятичное -->
         <Commands>
                 <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
                 <Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
                 <Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
                 <Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -840,6 +865,7 @@
         <!-- ID - hex число, stopCommandDelay - десятичное -->
         <Commands>
                 <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
                 <Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
                 <Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
                 <Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
@@ -868,6 +894,7 @@
         <!-- ID - hex число, stopCommandDelay - десятичное -->
         <Commands>
                 <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                <Command code=\"0001\" interval=\"1000\" tol=\"1\"/>
                 <Command code=\"0006\" divider=\"10\" unit=\"Hz\" tol=\"1\"/>
                 <Command code=\"0020\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>
                 <Command code=\"0021\" divider=\"10\" interval=\"100\" unit=\"Hz\" tol=\"1\"/>

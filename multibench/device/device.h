@@ -31,11 +31,13 @@ class Device : public QObject {
   void changeTemperatureUnit(Const::TemperatureUnitId id);
   void unlink();
   void resetConnectionPolling() { m_connectionPolling.reset(); };
+  void setReceivedID(int id);
 
  private:
   bool m_isLink{true};
   int m_addr = 0;
   int m_Id{};
+  int m_receivedID{};
   const QString m_Name;
   const DeviceDelays& m_Delays;
   QMap<quint16, QSharedPointer<DevCommand>> m_Commands;

@@ -254,11 +254,18 @@ void NetworkModel::readyRead(const QByteArray& rxPackage,
     //        }
   } else {
     for (const auto& item : qAsConst(result)) {
-      if (item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
+      if (item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT and !m_devices.contains(item.addr)) {
         initDevice(item.addr, item.value);
       } else {
         if (m_devices.contains(item.addr)) {
-          m_devices[item.addr]->dataIncome(item.reg, item.value);
+            if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT){
+                m_devices[item.addr]->setReceivedID(item.value);
+                if(m_devices[item.addr]->id() != item.value){
+                    m_devices[item.addr]->unlink();
+                    m_disconnectedDevices.insert(item.addr);
+                }
+            }
+            m_devices[item.addr]->dataIncome(item.reg, item.value);
           if (m_disconnectedDevices.contains(item.addr))
             m_disconnectedDevices.remove(item.addr);
         }

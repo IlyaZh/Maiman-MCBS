@@ -22,6 +22,8 @@ Device::Device(quint8 addr, const DeviceModel& config, QObject* parent)
 
   createCommandsRequests();
 
+  m_receivedID = m_Id;
+
   qInfo() << "Create device" << m_addr << m_Name << m_Id;
 }
 
@@ -34,7 +36,7 @@ Device::~Device() {
 
 void Device::dataIncome(quint16 reg, quint16 value) {
   auto cmd = m_Commands.value(reg, nullptr);
-  if (cmd) {
+  if (cmd and m_receivedID == m_Id) {
     m_connectionPolling.reset();
 
     m_isLink = true;
@@ -50,6 +52,8 @@ QString Device::name() { return m_Name; }
 quint16 Device::id() { return m_Id; }
 
 quint8 Device::addr() { return m_addr; }
+
+void Device::setReceivedID(int id) { m_receivedID = id; }
 
 std::optional<DevicePollRequest> Device::nextPollRequest(bool unconditional) {
   if (m_cmdReqIt >= m_cmdRequests.size()) m_cmdReqIt = 0;
