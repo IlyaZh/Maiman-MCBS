@@ -115,8 +115,8 @@ void PlusMinusWidget::decrement() {
 }
 
 void PlusMinusWidget::sendValue() {
-  if (!m_command.isNull())
-    m_command->setFromWidget(ui->value->text().toDouble());
+    if (!m_command.isNull() and (m_command->valueStr() != ui->value->text()))
+        m_command->setFromWidget(ui->value->text().toDouble());
 }
 
 double PlusMinusWidget::value() { return ui->value->text().toDouble(); }

@@ -47,7 +47,7 @@ CalibrationDialog::CalibrationDialog(
   for (const auto& item : deviceDesc.limits) {
     auto limitWidget = new PlusMinusWidget(item, commands.value(item.code),
                                            commands.value(item.maxCode),
-                                           commands.value(item.minCode), this);
+                                           commands.value(item.minCode), nullptr);
     limitWidgets.insert(item.code, limitWidget);
     connect(limitWidget, &PlusMinusWidget::lineEditTextChanged, this,
             &CalibrationDialog::widgetsAreValid);
