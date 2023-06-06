@@ -12,4 +12,5 @@
     <Name>com.maimanelectronics.MWB</Name>
     <ForcedInstallation>true</ForcedInstallation>
     <RequiresAdminRights>true</RequiresAdminRights>
+    <Script>installscript.qs</Script>
 </Package>

@@ -74,5 +74,6 @@ CONFIG(release, debug|release) {
 }
 
 DISTFILES += \
+    packages/com.maimanelectronics.MWB/meta/installscript.qs \
     packages/com.maimanelectronics.MWB/meta/package.xml \
     config/config.xml
