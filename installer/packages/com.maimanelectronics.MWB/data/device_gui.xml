@@ -2845,7 +2845,8 @@
             <Param min="0072"
                     max="0071"
                     value="0070"
-                    real="0075">Temperature</Param>
+                    real="0075"
+                    fixed="">Temperature</Param>
             <Param real="0003">Serial Number</Param>
             <Param real="0076">TEC Current</Param>
             <Param real="0078">TEC Voltage</Param>

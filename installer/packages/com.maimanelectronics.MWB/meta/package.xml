@@ -2,7 +2,7 @@
 <Package>
     <DisplayName>Multi Workbench</DisplayName>
     <Description>Multidevice Workbench for Maiman Electronics devices</Description>
-    <Version>1.0.0.2</Version>
+    <Version>1.0.1</Version>
 	<Licenses>
         <License name="License Agreement" file="license.txt" />
     </Licenses>
