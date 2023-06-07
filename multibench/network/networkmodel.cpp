@@ -58,7 +58,7 @@ void NetworkModel::start(QScopedPointer<IDataSource>& source) {
   m_worker->configure(source);
 
   rescanNetwork();
-  pollRequest();
+//  pollRequest();
 
   connect(m_worker, &DataThread::connected, this, [this]() {
     emit signal_connected(true);
@@ -118,6 +118,7 @@ void NetworkModel::rescanNetwork() {
       m_priorityQueue.enqueue(package);
     }
   }
+  pollRequest();
 }
 
 void NetworkModel::clearNetwork() {

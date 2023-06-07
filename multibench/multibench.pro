@@ -12,7 +12,7 @@ QMAKE_CXXFLAGS += -std=c++2a -Wunused-parameter -Werror
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
-VERSION = 1.0.0
+VERSION = 1.0.0.2
 TARGET = MaimanMultibench
 TEMPLATE = app
 

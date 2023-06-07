@@ -348,7 +348,8 @@ void MainWindow::setNetworkMaxAddress() {
 }
 
 void MainWindow::triggeredRescanNetwork() {
-  if (m_isConnected) {
+//  if (m_isConnected) {
+    m_progressWidget->deleteLater();
     for (const auto item : std::as_const(m_workWidgets)) {
       m_workFieldLayout->removeWidget(item);
       item->deleteLater();
@@ -357,7 +358,7 @@ void MainWindow::triggeredRescanNetwork() {
     m_workWidgets.clear();
     adjustSize();
     emit rescanNetwork();
-  }
+//  }
 }
 
 void MainWindow::deviceNameChanged(QString name, int addr) {
