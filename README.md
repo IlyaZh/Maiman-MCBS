@@ -1,5 +1,5 @@
 # Maiman-MCBS
-Multi-driver software for controlling laser drivers (Maiman Elecronics)
+Multi-driver software for controlling laser drivers (Maiman Electronics)
 
 ## Release 1.0.0
 More information and download links [here](https://github.com/IlyaZh/Maiman-MCBS/releases/tag/v1.0.0)
