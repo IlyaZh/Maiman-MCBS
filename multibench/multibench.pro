@@ -62,6 +62,7 @@ SOURCES += \
     DataThread.cpp \
     DebugMode.cpp \
     UpdatesChecker.cpp \
+  components/mediator.cpp \
     device/connectionpolling.cpp \
     model/device/devicecondition.cpp \
     appsettings.cpp \
@@ -109,7 +110,9 @@ HEADERS += \
     DebugMode.h \
     UpdatesChecker.h \
     constants.h \
+  components/mediator.hpp \
     device/connectionpolling.h \
+  interfaces/pubsubinterface.h \
     model/device/devicecondition.h \
     appsettings.h \
     datasource.h \
@@ -120,9 +123,10 @@ HEADERS += \
     factories/parserworker.h \
     factories/treeitem.h \
     factories/xmlparser.h \
-    interfaces/ProtocolObserverInterface.h \
     mainwindow.h \
     model/device/HiddenWidget.h \
+  model/event.hpp \
+  model/events/network.h \
     modelguimediator.h \
     network/IDataReceiver.h \
     widgets/calibrationdialog.h \
