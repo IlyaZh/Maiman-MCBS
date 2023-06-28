@@ -2802,4 +2802,115 @@
             </Led>
     </Leds>
     </Device>
+    <Device id=\"2001\"
+    name=\"TC1540\"
+    stopCommandDelayMs=\"300\"
+    minCommandDelayMs=\"10\"
+    maxCommandDelayMs=\"1000\">
+    <!-- ID - hex число, stopCommandDelay - десятичное -->
+    <!-- Описание устройства -->
+    <Content>
+            <Image/>
+            <Description/>
+            <Link>https://www.maimanelectronics.com/</Link>
+    </Content>
+    <Limits>
+            <Limit limitCode=\"0077\"
+                    minValue=\"3\"
+                    maxValue=\"15\">TEC current limit</Limit>
+            <Limit limitCode=\"0079\"
+                    minValue=\"6\"
+                    maxValue=\"40\">TEC voltage limit</Limit>
+            <Limit limitCode=\"0072\"
+                    minCode=\"0074\"
+                    maxCode=\"0071\"
+                    pair=\"0071\"
+                    pairType=\"min\">TEC temperature warning lower limit</Limit>
+            <Limit limitCode=\"0071\"
+                    minCode=\"0072\"
+                    maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+    </Limits>
+    <CalibrationKoefs>
+            <Calibrate code=\"007E\"
+                            min=\"95\"
+                            max=\"105\">TEC set temperature calibration</Calibrate>
+            <Calibrate code=\"007F\"
+                            min=\"3000\"
+                            max=\"5000\">TEC NTC B25/100 coefficient</Calibrate>
+            <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+            <Calibrate code=\"0092\" min=\"0\" max=\"10000\">TEC I coefficient</Calibrate>
+            <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+    </CalibrationKoefs>
+    <ParamControls>
+            <Param min=\"0072\"
+                    max=\"0071\"
+                    value=\"0070\"
+                    real=\"0075\">Temperature</Param>
+            <Param real=\"0003\">Serial Number</Param>
+            <Param real=\"0076\">TEC Current</Param>
+            <Param real=\"0078\">TEC Voltage</Param>
+            <Param real=\"0043\">PCB Temperature</Param>
+    </ParamControls>
+    <Checkboxes>
+            <CheckBox code=\"007A\"
+                            onCommand=\"0020\"
+                            offCommand=\"0040\"
+                            mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+            <CheckBox code=\"007A\"
+                            onCommand=\"0400\"
+                            offCommand=\"0200\"
+                            mask=\"0010\">TEC Digital Enable</CheckBox>
+            <CheckBox code=\"007A\"
+                            onCommand=\"2000\"
+                            offCommand=\"1000\"
+                            mask=\"0080\">Ignore IntLock</CheckBox>
+    </Checkboxes>
+    <Buttons>
+            <Button
+                    mask=\"02\"
+                    code=\"007A\"
+                    onCommand=\"0008\"
+                    offCommand=\"0010\">TEC</Button>
+    </Buttons>
+    <Leds>
+            <Led label=\"TEC\">
+                    <LedMask code=\"007A\"
+                            mask=\"0002\"
+                            maskColor=\"#00ff00\"
+                            defaultColor=\"#171717\"/>
+            </Led>
+            <Led label=\"IntLock\">
+                    <LedMask code=\"0005\"
+                            mask=\"0002\"
+                            maskColor=\"#ffff00\">Interlock</LedMask>
+            </Led>
+            <Led label=\"Error\">
+                    <LedMask code=\"0005\"
+                            mask=\"0010\"
+                            maskColor=\"#ffff00\">Overheat warning</LedMask>
+                    <LedMask code=\"0005\"
+                            mask=\"0004\"
+                            maskColor=\"#ff0000\">Overheat</LedMask>
+                    <LedMask code=\"0005\"
+                            mask=\"0008\"
+                            maskColor=\"#ff0000\">TEC Overcurrent</LedMask>
+                    <LedMask code=\"0005\"
+                            mask=\"0040\"
+                            maskColor=\"#ff0000\">TEC Temperature Exceeds Limits</LedMask>
+                    <LedMask code=\"0005\"
+                            mask=\"0080\"
+                            maskColor=\"#ff0000\">TEC Self-heat or Reverse Polarity</LedMask>
+                    <LedMask code=\"0005\"
+                            mask=\"0020\"
+                            maskColor=\"#ff0000\">TEC Acceleration</LedMask>
+                    <LedMask code=\"0005\"
+                            mask=\"0100\"
+                            maskColor=\"#ff0000\">Short Curcuit</LedMask>
+                    <LedMask code=\"0005\"
+                            mask=\"0200\"
+                            maskColor=\"#ff0000\">No Load</LedMask>
+
+            </Led>
+    </Leds>
+    </Device>
 </GUI>

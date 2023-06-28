@@ -382,7 +382,7 @@
 			<Command code="0008" divider="10" unit="mA" tol="1"/>
 			<Command code="0024" divider="10" interval="100" unit="mA" tol="1"/>
 			<Command code="0025" divider="10" unit="mA" tol="1"/>
-			<Command code="0306" divider="10" interval="100" unit="mA" tol="1"/>
+                        <Command code="0029" divider="10" interval="100" unit="mA" tol="1"/>
 			<Command code="0040" divider="10" unit="mA" tol="1"/>
 			<Command code="0088" divider="100" tol="2"/>
 			<Command code="0041" divider="10" unit="V" tol="1"/>
@@ -394,19 +394,19 @@
 			<Command code="0042" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
 			<Command code="008A" divider="1" interval="10" tol="0"/>
 
-			<Command code="0A00" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A11" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A12" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A13" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A14" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A01" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
 
-			<Command code="0A02" isSigned="" divider="10" unit="A" tol="1"/>
-			<Command code="0A10" divider="10" unit="A" tol="1"/>
-			<Command code="0A03" isSigned="" divider="10" unit="V" tol="1"/>
-			<Command code="0A04" tol="0"/>
-			<Command code="0A15" divider="100" interval="10" tol="1"/>
-			<Command code="0A16" divider="1" interval="10" tol="0"/>
+                        <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                        <Command code="0077" divider="10" unit="A" tol="1"/>
+                        <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                        <Command code="007A" tol="0"/>
+                        <Command code="007E" divider="100" interval="10" tol="1"/>
+                        <Command code="007F" divider="1" interval="10" tol="0"/>
 		</Commands>
 	</Device>
 	
@@ -424,7 +424,7 @@
 			<Command code="0008" divider="10" unit="mA" tol="1"/>
 			<Command code="0024" divider="10" interval="100" unit="mA" tol="1"/>
 			<Command code="0025" divider="10" unit="mA" tol="1"/>
-			<Command code="0306" divider="10" interval="100" unit="mA" tol="1"/>
+                        <Command code="0029" divider="10" interval="100" unit="mA" tol="1"/>
 			<Command code="0040" divider="10" unit="mA" tol="1"/>
 			<Command code="0088" divider="100" tol="2"/>
 			<Command code="0041" divider="10" unit="V" tol="1"/>
@@ -436,19 +436,19 @@
 			<Command code="0042" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
 			<Command code="008A" divider="1" interval="10" tol="0"/>
 
-			<Command code="0A00" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A11" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A12" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A13" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A14" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A01" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
 
-			<Command code="0A02" isSigned="" divider="10" unit="A" tol="1"/>
-			<Command code="0A10" divider="10" unit="A" tol="1"/>
-			<Command code="0A03" isSigned="" divider="10" unit="V" tol="1"/>
-			<Command code="0A04" tol="0"/>
-			<Command code="0A15" divider="100" interval="10" tol="1"/>
-			<Command code="0A16" divider="1" interval="10" tol="0"/>
+                        <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                        <Command code="0077" divider="10" unit="A" tol="1"/>
+                        <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                        <Command code="007A" tol="0"/>
+                        <Command code="007E" divider="100" interval="10" tol="1"/>
+                        <Command code="007F" divider="1" interval="10" tol="0"/>
 		</Commands>
 	</Device>
 	
@@ -466,7 +466,7 @@
 			<Command code="0008" divider="10" unit="mA" tol="1"/>
 			<Command code="0024" divider="10" interval="100" unit="mA" tol="1"/>
 			<Command code="0025" divider="10" unit="mA" tol="1"/>
-			<Command code="0306" divider="10" interval="100" unit="mA" tol="1"/>
+                        <Command code="0029" divider="10" interval="100" unit="mA" tol="1"/>
 			<Command code="0040" divider="10" unit="mA" tol="1"/>
 			<Command code="0088" divider="100" tol="2"/>
 			<Command code="0041" divider="10" unit="V" tol="1"/>
@@ -478,19 +478,19 @@
 			<Command code="0042" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
 			<Command code="008A" divider="1" interval="10" tol="0"/>
 
-			<Command code="0A00" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A11" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A12" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A13" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A14" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A01" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
 
-			<Command code="0A02" isSigned="" divider="10" unit="A" tol="1"/>
-			<Command code="0A10" divider="10" unit="A" tol="1"/>
-			<Command code="0A03" isSigned="" divider="10" unit="V" tol="1"/>
-			<Command code="0A04" tol="0"/>
-			<Command code="0A15" divider="100" interval="10" tol="1"/>
-			<Command code="0A16" divider="1" interval="10" tol="0"/>
+                        <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                        <Command code="0077" divider="10" unit="A" tol="1"/>
+                        <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                        <Command code="007A" tol="0"/>
+                        <Command code="007E" divider="100" interval="10" tol="1"/>
+                        <Command code="007F" divider="1" interval="10" tol="0"/>
 		</Commands>
 	</Device>
 	
@@ -507,7 +507,7 @@
 			<Command code="0008" divider="10" unit="mA" tol="1"/>
 			<Command code="0024" divider="10" interval="100" unit="mA" tol="1"/>
 			<Command code="0025" divider="10" unit="mA" tol="1"/>
-			<Command code="0306" divider="10" interval="100" unit="mA" tol="1"/>
+                        <Command code="0029" divider="10" interval="100" unit="mA" tol="1"/>
 			<Command code="0040" divider="10" unit="mA" tol="1"/>
 			<Command code="0088" divider="100" tol="2"/>
 			<Command code="0041" divider="10" unit="V" tol="1"/>
@@ -519,23 +519,23 @@
 			<Command code="0042" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
 			<Command code="008A" divider="1" interval="10" tol="0"/>
 
-			<Command code="0A00" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A11" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A12" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A13" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A14" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A01" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
 
-			<Command code="0A02" isSigned="" divider="10" unit="A" tol="1"/>
-			<Command code="0A10" divider="10" unit="A" tol="1"/>
-			<Command code="0A03" isSigned="" divider="10" unit="V" tol="1"/>
-			<Command code="0A04" tol="0"/>
-			<Command code="0A15" divider="100" interval="10" tol="1"/>
-			<Command code="0A16" divider="1" interval="10" tol="0"/>
+                        <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                        <Command code="0077" divider="10" unit="A" tol="1"/>
+                        <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                        <Command code="007A" tol="0"/>
+                        <Command code="007E" divider="100" interval="10" tol="1"/>
+                        <Command code="007F" divider="1" interval="10" tol="0"/>
 		</Commands>
 	</Device>
-	
-		<Device id="1140" name="SF8300" stopCommandDelayMs="50" minCommandDelayMs="10" maxCommandDelayMs="1000">
+
+                <Device id="1140" name="SF8300" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
 		<!-- ID - hex число, stopCommandDelay - десятичное -->
 		<Commands>
 			<!-- Числа все Hex, кроме делителя - он десятичный. -->
@@ -548,7 +548,7 @@
 			<Command code="0008" divider="10" unit="mA" tol="1"/>
 			<Command code="0024" divider="10" interval="100" unit="mA" tol="1"/>
 			<Command code="0025" divider="10" unit="mA" tol="1"/>
-			<Command code="0306" divider="10" interval="100" unit="mA" tol="1"/>
+                        <Command code="0029" divider="10" interval="100" unit="mA" tol="1"/>
 			<Command code="0040" divider="10" unit="mA" tol="1"/>
 			<Command code="0088" divider="100" tol="2"/>
 			<Command code="0041" divider="10" unit="V" tol="1"/>
@@ -560,19 +560,224 @@
 			<Command code="0042" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
 			<Command code="008A" divider="1" interval="10" tol="0"/>
 
-			<Command code="0A00" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A11" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A12" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A13" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A14" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
-			<Command code="0A01" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
 
-			<Command code="0A02" isSigned="" divider="10" unit="A" tol="1"/>
-			<Command code="0A10" divider="10" unit="A" tol="1"/>
-			<Command code="0A03" isSigned="" divider="10" unit="V" tol="1"/>
-			<Command code="0A04" tol="0"/>
-			<Command code="0A15" divider="100" interval="10" tol="1"/>
-			<Command code="0A16" divider="1" interval="10" tol="0"/>
+                        <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                        <Command code="0077" divider="10" unit="A" tol="1"/>
+                        <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                        <Command code="007A" tol="0"/>
+                        <Command code="007E" divider="100" interval="10" tol="1"/>
+                        <Command code="007F" divider="1" interval="10" tol="0"/>
 		</Commands>
 	</Device>
+            <Device id="1111" name="SF8025 v5" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
+            <!-- ID - hex число, stopCommandDelay - десятичное -->
+            <Commands>
+                    <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code="0006" divider="10" unit="Hz" tol="1"/>
+                    <Command code="0020" divider="10" interval="100" unit="Hz" tol="1"/>
+                    <Command code="0021" divider="10" interval="100" unit="Hz" tol="1"/>
+                    <Command code="0007" divider="10" unit="ms" tol="1"/>
+                    <Command code="0022" divider="10" interval="100" unit="ms" tol="1"/>
+                    <Command code="0023" divider="10" unit="ms" tol="1"/>
+                    <Command code="0008" divider="10" unit="mA" tol="1"/>
+                    <Command code="0024" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="0025" divider="10" unit="mA" tol="1"/>
+                    <Command code="0029" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="002A" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="0040" divider="10" unit="mA" tol="1"/>
+                    <Command code="0088" divider="100" tol="2"/>
+                    <Command code="0041" divider="10" unit="V" tol="1"/>
+                    <Command code="0004" tol="0"/>
+                    <Command code="0003" interval="100" tol="0"/>
+                    <Command code="0005" tol="0"/>
+                    <Command code="0026" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0027" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0042" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="008A" divider="1" interval="10" tol="0"/>
+
+                    <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+
+                    <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                    <Command code="0077" divider="10" unit="A" tol="1"/>
+                    <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                    <Command code="007A" tol="0"/>
+                    <Command code="007E" divider="100" interval="10" tol="1"/>
+                    <Command code="007F" divider="1" interval="10" tol="0"/>
+
+                    <Command code="0091" tol="1"/>
+                    <Command code="0092" tol="1"/>
+                    <Command code="0093" tol="1"/>
+            </Commands>
+        </Device>
+            <Device id="1121" name="SF8075 v5" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
+            <!-- ID - hex число, stopCommandDelay - десятичное -->
+            <Commands>
+                    <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code="0006" divider="10" unit="Hz" tol="1"/>
+                    <Command code="0020" divider="10" interval="100" unit="Hz" tol="1"/>
+                    <Command code="0021" divider="10" interval="100" unit="Hz" tol="1"/>
+                    <Command code="0007" divider="10" unit="ms" tol="1"/>
+                    <Command code="0022" divider="10" interval="100" unit="ms" tol="1"/>
+                    <Command code="0023" divider="10" unit="ms" tol="1"/>
+                    <Command code="0008" divider="10" unit="mA" tol="1"/>
+                    <Command code="0024" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="0025" divider="10" unit="mA" tol="1"/>
+                    <Command code="0029" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="002A" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="0040" divider="10" unit="mA" tol="1"/>
+                    <Command code="0088" divider="100" tol="2"/>
+                    <Command code="0041" divider="10" unit="V" tol="1"/>
+                    <Command code="0004" tol="0"/>
+                    <Command code="0003" interval="100" tol="0"/>
+                    <Command code="0005" tol="0"/>
+                    <Command code="0026" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0027" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0042" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="008A" divider="1" interval="10" tol="0"/>
+
+                    <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+
+                    <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                    <Command code="0077" divider="10" unit="A" tol="1"/>
+                    <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                    <Command code="007A" tol="0"/>
+                    <Command code="007E" divider="100" interval="10" tol="1"/>
+                    <Command code="007F" divider="1" interval="10" tol="0"/>
+
+                    <Command code="0091" tol="1"/>
+                    <Command code="0092" tol="1"/>
+                    <Command code="0093" tol="1"/>
+            </Commands>
+        </Device>
+            <Device id="1131" name="SF8150 v5" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
+            <!-- ID - hex число, stopCommandDelay - десятичное -->
+            <Commands>
+                    <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code="0006" divider="10" unit="Hz" tol="1"/>
+                    <Command code="0020" divider="10" interval="100" unit="Hz" tol="1"/>
+                    <Command code="0021" divider="10" interval="100" unit="Hz" tol="1"/>
+                    <Command code="0007" divider="10" unit="ms" tol="1"/>
+                    <Command code="0022" divider="10" interval="100" unit="ms" tol="1"/>
+                    <Command code="0023" divider="10" unit="ms" tol="1"/>
+                    <Command code="0008" divider="10" unit="mA" tol="1"/>
+                    <Command code="0024" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="0025" divider="10" unit="mA" tol="1"/>
+                    <Command code="0029" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="002A" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="0040" divider="10" unit="mA" tol="1"/>
+                    <Command code="0088" divider="100" tol="2"/>
+                    <Command code="0041" divider="10" unit="V" tol="1"/>
+                    <Command code="0004" tol="0"/>
+                    <Command code="0003" interval="100" tol="0"/>
+                    <Command code="0005" tol="0"/>
+                    <Command code="0026" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0027" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0042" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="008A" divider="1" interval="10" tol="0"/>
+
+                    <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+
+                    <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                    <Command code="0077" divider="10" unit="A" tol="1"/>
+                    <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                    <Command code="007A" tol="0"/>
+                    <Command code="007E" divider="100" interval="10" tol="1"/>
+                    <Command code="007F" divider="1" interval="10" tol="0"/>
+
+                    <Command code="0091" tol="1"/>
+                    <Command code="0092" tol="1"/>
+                    <Command code="0093" tol="1"/>
+            </Commands>
+        </Device>
+            <Device id="1141" name="SF8300 v5" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
+            <!-- ID - hex число, stopCommandDelay - десятичное -->
+            <Commands>
+                    <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code="0006" divider="10" unit="Hz" tol="1"/>
+                    <Command code="0020" divider="10" interval="100" unit="Hz" tol="1"/>
+                    <Command code="0021" divider="10" interval="100" unit="Hz" tol="1"/>
+                    <Command code="0007" divider="10" unit="ms" tol="1"/>
+                    <Command code="0022" divider="10" interval="100" unit="ms" tol="1"/>
+                    <Command code="0023" divider="10" unit="ms" tol="1"/>
+                    <Command code="0008" divider="10" unit="mA" tol="1"/>
+                    <Command code="0024" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="0025" divider="10" unit="mA" tol="1"/>
+                    <Command code="0029" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="002A" divider="10" interval="100" unit="mA" tol="1"/>
+                    <Command code="0040" divider="10" unit="mA" tol="1"/>
+                    <Command code="0088" divider="100" tol="2"/>
+                    <Command code="0041" divider="10" unit="V" tol="1"/>
+                    <Command code="0004" tol="0"/>
+                    <Command code="0003" interval="100" tol="0"/>
+                    <Command code="0005" tol="0"/>
+                    <Command code="0026" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0027" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0042" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="008A" divider="1" interval="10" tol="0"/>
+
+                    <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+
+                    <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                    <Command code="0077" divider="10" unit="A" tol="1"/>
+                    <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                    <Command code="007A" tol="0"/>
+                    <Command code="007E" divider="100" interval="10" tol="1"/>
+                    <Command code="007F" divider="1" interval="10" tol="0"/>
+
+                    <Command code="0091" tol="1"/>
+                    <Command code="0092" tol="1"/>
+                    <Command code="0093" tol="1"/>
+            </Commands>
+        </Device>
+            <Device id="2001" name="TC1540" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
+            <!-- ID - hex число, stopCommandDelay - десятичное -->
+            <Commands>
+              <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                    <Command code="0003" interval="100" tol="0"/>
+                    <Command code="0005" tol="0"/>
+                    <Command code="0043" isSigned="" divider="10" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="1"/>
+                    <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                    <Command code="0077" divider="10" unit="A" tol="1"/>
+                    <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                    <Command code="0079" divider="10" unit="V" tol="1"/>
+                    <Command code="007A"/>
+                    <Command code="007E" divider="100" interval="10" tol="1"/>
+                    <Command code="007F" divider="1" interval="10" tol="0"/>
+                    <Command code="0091" tol="1"/>
+                    <Command code="0092" tol="1"/>
+                    <Command code="0093" tol="1"/>
+            </Commands>
+        </Device>
 </DB>

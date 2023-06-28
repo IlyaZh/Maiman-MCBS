@@ -17,7 +17,7 @@ public slots:
     void setTimeout(qint64 MSecs);
     void setDelay(qint64 MSecs);
     void configure(QScopedPointer<IDataSource>& source);
-    void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes);
+    void writeAndWaitBytes(const QByteArray& msg, qint64 waitBytes, bool isShortTimeout);
     void stop();
 
 Q_SIGNALS:
@@ -31,10 +31,11 @@ private:
     struct Package {
         QByteArray m_data {};
         qint64 m_waitSize {0};
+        bool isShortTimeout = false;
     };
 
-    qint64 m_delay {Const::NetworkDelayMSecs::defaultValue};
-    qint64 m_timeout {Const::NetworkTimeoutMSecs};
+    qint64 m_delay {Const::kNetworkDelayMSecs::defaultValue};
+    qint64 m_timeout {Const::kNetworkTimeoutMSecs::defaultValue};
     qint64 m_waitRxBytes {-1};
     QByteArray m_lastWrittenMsg;
     Package m_next;

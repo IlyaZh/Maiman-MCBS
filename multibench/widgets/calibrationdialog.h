@@ -2,6 +2,7 @@
 #define CalibrateDialog_H
 
 #include <QDialog>
+
 #include "device/commandsettings.h"
 #include "model/device/devicewidget.h"
 
@@ -10,30 +11,32 @@ struct CalibrationKoef;
 
 namespace Ui {
 class CalibrationDialog;
-}
+}  // namespace Ui
 
-class CalibrationDialog : public QDialog
-{
-    Q_OBJECT
+class CalibrationDialog : public QDialog {
+  Q_OBJECT
 
-public:
-    explicit CalibrationDialog(const DeviceWidgetDesc& deviceDesc, const QMap<quint16, QSharedPointer<DevCommand>>& commands, QWidget *parent = nullptr);
-    ~CalibrationDialog();
-    void setValues();
-private:
+ public:
+  explicit CalibrationDialog(
+      const DeviceWidgetDesc& deviceDesc,
+      const QMap<quint16, QSharedPointer<DevCommand>>& commands,
+      QWidget* parent = nullptr);
+  ~CalibrationDialog() override;
+  void setValues();
 
-    QVector<PlusMinusWidget*> m_calibrationWidgets;
-    QVector<PlusMinusWidget*> m_limitsWidgets;
-    Ui::CalibrationDialog *ui;
+ private:
+  QVector<PlusMinusWidget*> m_calibrationWidgets;
+  QVector<PlusMinusWidget*> m_limitsWidgets;
+  Ui::CalibrationDialog* ui;
 
-    static const QString styleButtonOn;
-    static const QString styleButtonOff;
-private slots:
-    void saveResult();
-    void widgetsAreValid();
+  static const QString styleButtonOn;
+  static const QString styleButtonOff;
+ private slots:
+  void saveResult();
+  void widgetsAreValid();
 
-signals:
-    void sendData(QString);
+ signals:
+  void sendData(QString);
 };
 
-#endif // CalibrateDialog_H
+#endif  // CalibrateDialog_H
