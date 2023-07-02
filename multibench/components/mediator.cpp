@@ -1,5 +1,7 @@
 #include "mediator.hpp"
 
+namespace components {
+
 Mediator::Mediator(QObject* parent) : QObject{parent} {}
 
 void Mediator::Subscribe(const model::EventType eventType,
@@ -15,8 +17,8 @@ void Mediator::Subscribe(const model::EventType eventType,
 
 void Mediator::LinkPublisher(interfaces::Publisher* publisher) {
   connect(dynamic_cast<QObject*>(publisher),
-          SIGNAL(Signal_PublishEvent(const model::Event&)), this,
-          SLOT(Slot_PropagateEvent(const model::Event&)));
+          SIGNAL(Signal_PublishEvent(model::Event)), this,
+          SLOT(Slot_PropagateEvent(model::Event)));
 }
 
 void Mediator::UnlinkPublisher(interfaces::Publisher* publisher) {
@@ -26,9 +28,11 @@ void Mediator::UnlinkPublisher(interfaces::Publisher* publisher) {
 }
 
 void Mediator::Slot_PropagateEvent(const model::Event& event) {
-  const auto range = subscribers_.equal_range(event.type);
+  const auto range = subscribers_.equal_range(event.type_);
   for (auto it = range.first; it != range.second; it++) {
     auto& subscriber = it->second;
     subscriber->NewEvent(event);
   }
 }
+
+};  // namespace components

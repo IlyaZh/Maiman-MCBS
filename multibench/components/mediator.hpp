@@ -5,7 +5,9 @@
 #include <QObject>
 #include <model/event.hpp>
 
-class Mediator final : public QObject {
+namespace components {
+
+class Mediator : public QObject {
   Q_OBJECT
  public:
   explicit Mediator(QObject* parent = nullptr);
@@ -23,3 +25,5 @@ class Mediator final : public QObject {
   std::unordered_multimap<const model::EventType, interfaces::Subscriber*>
       subscribers_;
 };
+
+}  // namespace components

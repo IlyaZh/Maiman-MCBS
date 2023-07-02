@@ -7,11 +7,10 @@
 
 namespace model {
 
-enum class EventType { kNone, kReadDevice, kWriteDevice, kDeviceStateUpdated };
+enum class EventType { kReadDevice, kWriteDevice, kDeviceStateUpdated };
 
 inline QString ToString(const EventType& type) {
   static const std::unordered_map<EventType, QString> map{
-      {EventType::kNone, "None"},
       {EventType::kReadDevice, "ReadDevice"},
       {EventType::kWriteDevice, "WriteDevice"},
       {EventType::kDeviceStateUpdated, "DeviceStateUpdated"}};
@@ -25,6 +24,26 @@ inline QString ToString(const EventType& type) {
           .toStdString());
 }
 
+template <typename T>
+struct ParseTo {
+  T t_;
+};
+
+inline EventType Parse(const QString& type, const ParseTo<EventType>&) {
+  static const std::unordered_map<QString, EventType> map{
+      {"ReadDevice", EventType::kReadDevice},
+      {"WriteDevice", EventType::kWriteDevice},
+      {"DeviceStateUpdated", EventType::kDeviceStateUpdated}};
+
+  if (const auto it = map.find(type); it != map.cend()) {
+    return it->second;
+  }
+  throw std::runtime_error(
+      QString("Trying to use Parse with unexpected arg: %1")
+          .arg(type)
+          .toStdString());
+}
+
 namespace events {
 
 using Types = std::variant<network::ReadRequest, network::WriteRequest,
@@ -33,8 +52,12 @@ using Types = std::variant<network::ReadRequest, network::WriteRequest,
 }  // namespace events
 
 struct Event {
-  EventType type{};
-  events::Types data;
+  Event(const EventType& type, events::Types&& data)
+      : type_(type), data_(data) {}
+  Event(const EventType& type, const events::Types& data)
+      : type_(type), data_(data) {}
+  const EventType type_{};
+  const events::Types data_;
 };
 
 }  // namespace model
