@@ -4,5 +4,6 @@ CONFIG += ordered
 
 SUBDIRS += \
     multibench \
-    installer
+    installer \
+    tests
 
