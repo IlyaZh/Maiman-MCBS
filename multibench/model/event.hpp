@@ -15,9 +15,9 @@ inline QString ToString(const EventType& type) {
       {EventType::kWriteDevice, "WriteDevice"},
       {EventType::kDeviceStateUpdated, "DeviceStateUpdated"}};
 
-  if (const auto it = map.find(type); it != map.cend()) {
-    return it->second;
-  }
+  //  if (const auto it = map.find(type); it != map.cend()) {
+  //    return it->second;
+  //  }
   throw std::runtime_error(
       QString("Trying to use ToString with unexpected type: %1")
           .arg(static_cast<std::size_t>(type))
@@ -30,14 +30,14 @@ struct ParseTo {
 };
 
 inline EventType Parse(const QString& type, const ParseTo<EventType>&) {
-  static const std::unordered_map<QString, EventType> map{
-      {"ReadDevice", EventType::kReadDevice},
-      {"WriteDevice", EventType::kWriteDevice},
-      {"DeviceStateUpdated", EventType::kDeviceStateUpdated}};
+  //  static const std::unordered_map<QString, EventType> map{
+  //      {"ReadDevice", EventType::kReadDevice},
+  //      {"WriteDevice", EventType::kWriteDevice},
+  //      {"DeviceStateUpdated", EventType::kDeviceStateUpdated}};
 
-  if (const auto it = map.find(type); it != map.cend()) {
-    return it->second;
-  }
+  //  if (const auto it = map.find(type); it != map.cend()) {
+  //    return it->second;
+  //  }
   throw std::runtime_error(
       QString("Trying to use Parse with unexpected arg: %1")
           .arg(type)
