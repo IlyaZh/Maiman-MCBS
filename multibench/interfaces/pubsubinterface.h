@@ -1,6 +1,6 @@
 #pragma once
 
-#include <model/event.hpp>
+#include <model/event.h>
 
 namespace interfaces {
 
@@ -8,14 +8,13 @@ class Publisher {
  public:
   Publisher() = default;
   virtual ~Publisher();
- signals:
   virtual void Signal_PublishEvent(model::Event&& event) = 0;
 };
 
 class Subscriber {
  public:
   Subscriber() = default;
-  virtual ~Subscriber();
+  virtual ~Subscriber() = default;
 
   virtual void NewEvent(const model::Event& event) = 0;
 };

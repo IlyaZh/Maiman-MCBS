@@ -19,10 +19,23 @@ struct WriteRequest {
   const quint16 value_;
 };
 
+struct SingleWriteRequest {
+  SingleWriteRequest(quint8 address, quint16 reg, quint16 value)
+      : address_(address), reg_(reg), value_(value) {}
+  quint8 address_;
+  quint16 reg_;
+  quint16 value_;
+};
+
 struct StateUpdated {
   quint8 address;
   quint16 reg;
   QVector<quint16> values;
 };
 
+struct Answer {
+  quint8 address;
+  quint16 reg;
+  quint16 value;
+};
 }  // namespace model::events::network

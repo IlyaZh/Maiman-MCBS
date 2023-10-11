@@ -5,6 +5,7 @@
 #include <QLocale>
 #include <QTcpSocket>
 
+#include "components/mediator.h"
 #include "constants.h"
 #include "mainwindow.h"
 #include "model/devicefactory.h"
@@ -53,13 +54,15 @@ int main(int argc, char *argv[]) {
 
   ModbusProtocol modbus;
   NetworkModel model(deviceFactory, modbus);
-
+  components::Mediator mediator;
+  mediator.Subscribe(model::EventType::kDeviceStateUpdated, &model);
+  mediator.LinkPublisher(&w);
   ModelGuiMediator mainMediator(w, guiFactory, model);
 
 #ifdef QT_DEBUG
   // GlobalTest tests(argc, argv);
 #endif
-  if(debugMode){
+  if (debugMode) {
     qInstallMessageHandler(messageToFile);
   }
   return app.exec();

@@ -4,7 +4,9 @@
 #include <QMainWindow>
 #include <QtWidgets>
 
+#include "components/mediator.h"
 #include "constants.h"
+#include "interfaces/pubsubinterface.h"
 
 class AboutDialog;
 class UpdateWidget;
@@ -21,7 +23,7 @@ class MainWindow;
 }  // namespace Ui
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow, public interfaces::Subscriber {
   Q_OBJECT
 
  public:
@@ -30,6 +32,8 @@ class MainWindow : public QMainWindow {
   void addDeviceWidget(DeviceWidget* widget);
   void setComPorts(const QStringList& portList);
   void setBaudRates(const QStringList& baudsList);
+
+  void NewEvent(const model::Event& event) override;
 
  signals:
   void refreshComPortsSignal();

@@ -47,7 +47,8 @@ inline EventType Parse(const QString& type, const ParseTo<EventType>&) {
 namespace events {
 
 using Types = std::variant<network::ReadRequest, network::WriteRequest,
-                           network::StateUpdated>;
+                           network::StateUpdated, network::Answer,
+                           network::SingleWriteRequest>;
 
 }  // namespace events
 

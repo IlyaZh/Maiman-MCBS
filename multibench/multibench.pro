@@ -3,7 +3,7 @@ QT       += core gui network xml serialport network qml quickcontrols2
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-QMAKE_CXXFLAGS += -std=c++2a -Wunused-parameter -Werror
+QMAKE_CXXFLAGS += -std=c++17 -Wunused-parameter -Werror
 #debug:CONFIG+=testcase #warn_on depend_includepath console
 
 # The following define makes your compiler emit warnings if you use
@@ -109,8 +109,8 @@ HEADERS += \
     DataThread.h \
     DebugMode.h \
     UpdatesChecker.h \
+    components/mediator.h \
     constants.h \
-  components/mediator.hpp \
     device/connectionpolling.h \
   interfaces/pubsubinterface.h \
     model/device/devicecondition.h \
@@ -125,7 +125,7 @@ HEADERS += \
     factories/xmlparser.h \
     mainwindow.h \
     model/device/HiddenWidget.h \
-  model/event.hpp \
+    model/event.h \
   model/events/network.h \
     modelguimediator.h \
     network/IDataReceiver.h \

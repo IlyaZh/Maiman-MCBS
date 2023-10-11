@@ -1,9 +1,9 @@
 #pragma once
 
 #include <interfaces/pubsubinterface.h>
+#include <model/event.h>
 
 #include <QObject>
-#include <model/event.hpp>
 
 namespace components {
 
@@ -15,8 +15,8 @@ class Mediator : public QObject {
 
   void Subscribe(const model::EventType eventType,
                  interfaces::Subscriber* subscriber);
-  void LinkPublisher(interfaces::Publisher* publisher);
-  void UnlinkPublisher(interfaces::Publisher* publisher);
+  void LinkPublisher(QObject* publisher);
+  void UnlinkPublisher(QObject* publisher);
 
  private slots:
   void Slot_PropagateEvent(const model::Event& event);

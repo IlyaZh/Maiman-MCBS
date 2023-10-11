@@ -5,6 +5,7 @@
 #include <QtWidgets>
 
 #include "constants.h"
+#include "interfaces/pubsubinterface.h"
 
 class MainViewFacade;
 class DataSource;
@@ -18,7 +19,7 @@ class DevCommand;
 class DataThread;
 class IDataSource;
 
-class NetworkModel : public QObject {
+class NetworkModel : public QObject, public interfaces::Subscriber {
   Q_OBJECT
  public:
   static const quint16 IDENTIFY_REG_ID_DEFAULT;
@@ -33,8 +34,11 @@ class NetworkModel : public QObject {
   void stop();
   QMap<quint16, QSharedPointer<DevCommand>> getCommands(quint8 addr);
   void clearNetwork();
+
+  void NewEvent(const model::Event& event) override;
+
  public slots:
-  void dataOutcome(quint8 addr, quint16 reg, quint16 value);
+  void dataOutcome(const model::Event& event);
   void temperatureUnitsChanged(Const::TemperatureUnitId id);
   void rescanNetwork();
   void getBaudrate();

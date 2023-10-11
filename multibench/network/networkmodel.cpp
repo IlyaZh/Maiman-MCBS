@@ -161,8 +161,8 @@ void NetworkModel::initDevice(quint8 addr, quint16 id) {
   addresses.insert(addr, 0);
   AppSettings::setDeviceAddresses(addresses);
 
-  connect(newDevice.get(), SIGNAL(dataToModel(quint8, quint16, quint16)), this,
-          SLOT(dataOutcome(quint8, quint16, quint16)));
+  connect(newDevice.get(), SIGNAL(dataToModel(const model::Event&)), this,
+          SLOT(dataOutcome(const model::Event&)));
 
   emit signal_createWidgetFor(newDevice.get());
 }
@@ -170,9 +170,12 @@ void NetworkModel::initDevice(quint8 addr, quint16 id) {
 // public slots
 // modbus interface overrides
 
-void NetworkModel::dataOutcome(quint8 addr, quint16 reg, quint16 value) {
+void NetworkModel::dataOutcome(const model::Event& event) {
   if (m_worker) {
-    auto package = m_protocol.setDataValue(addr, reg, value);
+    auto data =
+        std::get<model::events::network::SingleWriteRequest>(event.data_);
+    auto package =
+        m_protocol.setDataValue(data.address_, data.reg_, data.value_);
     m_priorityQueue.enqueue(package);
   }
 }
@@ -236,8 +239,8 @@ void NetworkModel::pollRequest() {
       bool isDisconnected =
           m_disconnectedDevices.contains(static_cast<quint8>(package.at(0)));
       m_worker->writeAndWaitBytes(package, waitForBytes, isDisconnected);
-    }
-    else if(package.isEmpty() and m_successConnect > 0) emit signal_emptyNetwork();
+    } else if (package.isEmpty() and m_successConnect > 0)
+      emit signal_emptyNetwork();
   }
 }
 
@@ -254,18 +257,19 @@ void NetworkModel::readyRead(const QByteArray& rxPackage,
     //        }
   } else {
     for (const auto& item : qAsConst(result)) {
-      if (item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT and !m_devices.contains(item.addr)) {
+      if (item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT and
+          !m_devices.contains(item.addr)) {
         initDevice(item.addr, item.value);
       } else {
         if (m_devices.contains(item.addr)) {
-            if(item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT){
-                m_devices[item.addr]->setReceivedID(item.value);
-                if(m_devices[item.addr]->id() != item.value){
-                    m_devices[item.addr]->unlink();
-                    m_disconnectedDevices.insert(item.addr);
-                }
+          if (item.reg == NetworkModel::IDENTIFY_REG_ID_DEFAULT) {
+            m_devices[item.addr]->setReceivedID(item.value);
+            if (m_devices[item.addr]->id() != item.value) {
+              m_devices[item.addr]->unlink();
+              m_disconnectedDevices.insert(item.addr);
             }
-            m_devices[item.addr]->dataIncome(item.reg, item.value);
+          }
+          m_devices[item.addr]->dataIncome(item.reg, item.value);
           if (m_disconnectedDevices.contains(item.addr))
             m_disconnectedDevices.remove(item.addr);
         }
@@ -277,4 +281,8 @@ void NetworkModel::readyRead(const QByteArray& rxPackage,
                                m_successConnect);
     m_isRescan = false;
   }
+}
+
+void NetworkModel::NewEvent(const model::Event& event) {
+  std::get<model::events::network::StateUpdated>(event.data_).reg;
 }

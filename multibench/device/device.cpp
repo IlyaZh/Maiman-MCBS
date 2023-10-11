@@ -135,5 +135,10 @@ void Device::createCommandsRequests() {
 
 void Device::dataFromCommand(quint16 reg, quint16 value) {
   qInfo() << "DataFromCommand" << reg << value;
-  if (m_isLink) emit dataToModel(m_addr, reg, value);
+
+  model::Event event(
+      model::EventType::kWriteDevice,
+      model::events::network::SingleWriteRequest(m_addr, reg, value));
+
+  if (m_isLink) emit dataToModel(event);
 }

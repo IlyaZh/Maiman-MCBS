@@ -348,15 +348,15 @@ void MainWindow::setNetworkMaxAddress() {
 }
 
 void MainWindow::triggeredRescanNetwork() {
-    m_progressWidget->deleteLater();
-    for (const auto item : std::as_const(m_workWidgets)) {
-      m_workFieldLayout->removeWidget(item);
-      item->deleteLater();
-    }
-    ui->menuCalibration->clear();
-    m_workWidgets.clear();
-    adjustSize();
-    emit rescanNetwork();
+  m_progressWidget->deleteLater();
+  for (const auto item : std::as_const(m_workWidgets)) {
+    m_workFieldLayout->removeWidget(item);
+    item->deleteLater();
+  }
+  ui->menuCalibration->clear();
+  m_workWidgets.clear();
+  adjustSize();
+  emit rescanNetwork();
 }
 
 void MainWindow::deviceNameChanged(QString name, int addr) {
@@ -379,7 +379,11 @@ void MainWindow::slot_serialPortClosed(const QString& /*msg*/) {
 }
 
 void MainWindow::emptyNetwork() {
-    QuitDialog* portClosed = QuitDialog::createDialog(
-        "Error", "All devices disconnected", QDialogButtonBox::Ok, 12, this);
-    connect(portClosed, &QuitDialog::accepted, portClosed, &QuitDialog::close);
+  QuitDialog* portClosed = QuitDialog::createDialog(
+      "Error", "All devices disconnected", QDialogButtonBox::Ok, 12, this);
+  connect(portClosed, &QuitDialog::accepted, portClosed, &QuitDialog::close);
+}
+
+void MainWindow::NewEvent(const model::Event& event) {
+  std::get<model::events::network::StateUpdated>(event.data_).reg;
 }

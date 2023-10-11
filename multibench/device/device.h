@@ -8,6 +8,7 @@
 #include "commandsettings.h"
 #include "device/connectionpolling.h"
 #include "model/device/devicepollrequest.h"
+#include "model/event.h"
 
 struct DeviceDelays;
 struct DeviceModel;
@@ -51,7 +52,7 @@ class Device : public QObject {
   void dataFromCommand(quint16 reg, quint16 value);
 
  signals:
-  void dataToModel(quint8 addr, quint16 reg, quint16 value);
+  void dataToModel(const model::Event& event);
   void linkChanged(bool);
 };
 

@@ -1,4 +1,4 @@
-#include "mediator.hpp"
+#include "mediator.h"
 
 namespace components {
 
@@ -8,20 +8,19 @@ void Mediator::Subscribe(const model::EventType eventType,
                          interfaces::Subscriber* subscriber) {
   auto range = subscribers_.equal_range(eventType);
   if (std::any_of(range.first, range.second, [subscriber](const auto& item) {
-        return item.second == subscriber;
+        return item.second == subscriber;  // TODO
       })) {
     return;
   }
   subscribers_.insert(std::make_pair(eventType, subscriber));
 }
 
-void Mediator::LinkPublisher(interfaces::Publisher* publisher) {
-  connect(dynamic_cast<QObject*>(publisher),
-          SIGNAL(Signal_PublishEvent(model::Event)), this,
+void Mediator::LinkPublisher(QObject* publisher) {
+  connect(publisher, SIGNAL(Signal_PublishEvent(model::Event)), this,
           SLOT(Slot_PropagateEvent(model::Event)));
 }
 
-void Mediator::UnlinkPublisher(interfaces::Publisher* publisher) {
+void Mediator::UnlinkPublisher(QObject* publisher) {
   disconnect(dynamic_cast<QObject*>(publisher),
              SIGNAL(Signal_PublishEvent(const model::Event&)), this,
              SLOT(Slot_PropagateEvent(const model::Event&)));
