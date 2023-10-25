@@ -7,6 +7,7 @@
 #include <QWidget>
 
 #include "device/commandsettings.h"
+#include "gui/guiinterface.h"
 
 struct Control;
 
@@ -14,7 +15,7 @@ namespace Ui {
 class CommandWidget;
 }  // namespace Ui
 
-class ControlWidget : public QWidget {
+class ControlWidget : public QWidget, public GuiInterface {
   Q_OBJECT
 
  public:
@@ -24,6 +25,8 @@ class ControlWidget : public QWidget {
                          QSharedPointer<DevCommand> Real,
                          QWidget *parent = nullptr);
   ~ControlWidget() override;
+  void getData(QSharedPointer<CommandConverter> data) override;
+  QVector<quint16> Subscribe() override;
 
  private slots:
   void setValue();

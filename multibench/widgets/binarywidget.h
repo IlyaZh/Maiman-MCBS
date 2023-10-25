@@ -5,13 +5,15 @@
 #include <QSharedPointer>
 #include <QWidget>
 
+#include "gui/guiinterface.h"
 #include "model/device/devicewidget.h"
+class GuiInterface;
 
 namespace Ui {
 class BinaryWidget;
 }
 
-class BinaryWidget : public QWidget {
+class BinaryWidget : public QWidget, public GuiInterface {
   Q_OBJECT
 
  public:
@@ -19,7 +21,8 @@ class BinaryWidget : public QWidget {
                         QSharedPointer<DevCommand> cmd,
                         QWidget *parent = nullptr);
   ~BinaryWidget() override;
-
+  void getData(QSharedPointer<CommandConverter> data) override;
+  QVector<quint16> Subscribe() override;
  private slots:
   void checkBoxClicked(bool checked);
 

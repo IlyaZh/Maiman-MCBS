@@ -34,3 +34,11 @@ void BinaryWidget::checkBoxClicked(bool checked) {
 void BinaryWidget::setValue(quint16 value) {
   ui->statusCheckbox->setChecked((value & m_settings.mask) != 0);
 }
+
+void BinaryWidget::getData(QSharedPointer<CommandConverter> data) {
+  setValue(data.get()->valueInt());
+}
+
+QVector<quint16> BinaryWidget::Subscribe() {
+  return QVector<quint16>(m_cmd.get()->code());
+}

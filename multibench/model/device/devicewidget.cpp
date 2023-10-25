@@ -153,6 +153,9 @@ DeviceWidget::DeviceWidget(
       auto binaryWidget = new BinaryWidget(item, cmd, hiddenWidget);
       binaryWidget->setContentsMargins(0, 0, 0, 4);
       hiddenWidget->addWidget(binaryWidget);
+      for (auto code : binaryWidget->Subscribe()) {
+        m_widgetsTable.insert(code, binaryWidget);
+      }
     }
   }
   if (hiddenWidget) {
@@ -374,4 +377,8 @@ void DeviceWidget::pinButtonClicked(int idx, bool state) {
     auto widget = m_widgets.at(idx);
     widget->setPinned(state);
   }
+}
+
+void DeviceWidget::updateValue(QSharedPointer<CommandConverter> value) {
+  m_widgetsTable.find(value.data()->code()).value()->getData(value);
 }

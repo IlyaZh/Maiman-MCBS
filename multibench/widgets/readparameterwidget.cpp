@@ -46,8 +46,8 @@ void ReadParameterWidget::setup(QStringView name,
   m_layout->addWidget(m_labelUnit);
 
   this->adjustSize();
-  m_labelValue->setText("    ");  //резервируем место под 5 символов, чтоб
-                                  //виджет был нужного размера
+  m_labelValue->setText("    ");  // резервируем место под 5 символов, чтоб
+                                  // виджет был нужного размера
 }
 
 // private methods
@@ -76,4 +76,13 @@ int ReadParameterWidget::getUnitslength() {
 void ReadParameterWidget::setUnitsLength(int length) {
   int charLength = 10;
   if (m_labelUnit) m_labelUnit->setMinimumWidth(length * charLength);
+}
+
+void ReadParameterWidget::getData(QSharedPointer<CommandConverter> data) {
+  setValue(data.get()->valueDouble(), data.get()->tolerance());
+  setUnit(data.get()->unit());
+}
+
+QVector<quint16> ReadParameterWidget::Subscribe() {
+  return QVector<quint16>(m_command.get()->code());
 }

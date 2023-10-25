@@ -3,16 +3,18 @@
 
 #include <QMap>
 #include <QWidget>
-//#include <QTest>
+// #include <QTest>
 #include <QLabel>
 #include <QLayout>
 #include <QSharedPointer>
 #include <QSpacerItem>
 
+#include "gui/guiinterface.h"
+
 struct Control;
 class DevCommand;
 
-class ReadParameterWidget : public QWidget {
+class ReadParameterWidget : public QWidget, public GuiInterface {
   Q_OBJECT
 
  public:
@@ -22,6 +24,8 @@ class ReadParameterWidget : public QWidget {
   virtual void setup(QStringView name, QSharedPointer<DevCommand> cmd);
   int getUnitslength();
   void setUnitsLength(int length);
+  void getData(QSharedPointer<CommandConverter> data) override;
+  QVector<quint16> Subscribe() override;
 
  protected:
   QString m_unit;

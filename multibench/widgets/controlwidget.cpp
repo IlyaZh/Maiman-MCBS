@@ -133,3 +133,35 @@ void ControlWidget::setEditLineWhite() {
   const QString value = m_Value->valueStr();
   ui->Value->setText(value);
 }
+
+void ControlWidget::getData(QSharedPointer<CommandConverter> data) {
+  if (data.get()->code() == m_Value.get()->code()) {
+    const QString value = data.get()->valueStr();
+    if (!isUserEdit) {
+      if (m_Value) {
+        ui->Value->setText(value);
+      }
+    }
+    if (m_Real.isNull()) {
+      ui->RealValue->setText(value);
+    }
+  } else if (data.get()->code() == m_Real.get()->code()) {
+    if (m_Real) ui->RealValue->setText(data.get()->valueStr());
+  } else if (data.get()->code() == m_Max.get()->code()) {
+    ui->MaxValue->setText(data.get()->valueStr());
+    m_Validator->setTop(data.get()->valueDouble());
+  } else if (data.get()->code() == m_Min.get()->code()) {
+    ui->MinValue->setText(data.get()->valueStr());
+    m_Validator->setBottom(data.get()->valueDouble());
+  }
+  setUnits(data.get()->unit());
+}
+
+QVector<quint16> ControlWidget::Subscribe() {
+  QVector<quint16> codes;
+  codes.append(m_Value.get()->code());
+  codes.append(m_Real.get()->code());
+  codes.append(m_Max.get()->code());
+  codes.append(m_Min.get()->code());
+  return codes;
+}

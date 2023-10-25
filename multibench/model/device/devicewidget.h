@@ -3,6 +3,8 @@
 
 #include <QtWidgets>
 
+#include "gui/guiinterface.h"
+#include "gui/guimediator.h"
 #include "widgets/inlineedit.h"
 
 class DevCommand;
@@ -10,6 +12,7 @@ class ControlWidget;
 class BinaryWidget;
 class HiddenWidget;
 class DeviceCondition;
+struct CommandConverter;
 
 struct Content {
   QString fileName;
@@ -100,10 +103,12 @@ class DeviceWidget : public QWidget {
   ~DeviceWidget();
   void setAddress(int addr);
   void setConstraint(bool state);
+  void updateValue(QSharedPointer<CommandConverter> value);
  public slots:
   void setLink(bool link);
  signals:
   void nameEdited(QString name, int addr);
+  void dataIncome(QSharedPointer<CommandConverter> command);
 
  private:
   Ui::DeviceWidget* ui;
@@ -119,6 +124,7 @@ class DeviceWidget : public QWidget {
   QPushButton* m_tecButton{nullptr};
   DeviceCondition* m_deviceCondition;
   int m_fixedWidgets{0};
+  QHash<quint8, GuiInterface*> m_widgetsTable;
 
   void paintEvent(QPaintEvent*) override;
   void adjust();
