@@ -7,6 +7,7 @@
 
 #include "components/mediator.h"
 #include "constants.h"
+#include "gui/guimediator.h"
 #include "mainwindow.h"
 #include "model/devicefactory.h"
 #include "model/guifactory.h"
@@ -58,6 +59,7 @@ int main(int argc, char *argv[]) {
   mediator.Subscribe(model::EventType::kDeviceStateUpdated, &model);
   mediator.LinkPublisher(&w);
   ModelGuiMediator mainMediator(w, guiFactory, model);
+  GuiMediator gui(w, guiFactory, model);
 
 #ifdef QT_DEBUG
   // GlobalTest tests(argc, argv);

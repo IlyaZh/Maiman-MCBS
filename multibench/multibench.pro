@@ -64,6 +64,7 @@ SOURCES += \
     UpdatesChecker.cpp \
   components/mediator.cpp \
     device/connectionpolling.cpp \
+    gui/guimediator.cpp \
     model/device/devicecondition.cpp \
     appsettings.cpp \
     datasource.cpp \
@@ -112,6 +113,8 @@ HEADERS += \
     components/mediator.h \
     constants.h \
     device/connectionpolling.h \
+    gui/guiinterface.h \
+    gui/guimediator.h \
   interfaces/pubsubinterface.h \
     model/device/devicecondition.h \
     appsettings.h \
