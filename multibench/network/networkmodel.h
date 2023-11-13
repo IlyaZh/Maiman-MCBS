@@ -55,6 +55,7 @@ class NetworkModel : public QObject, public interfaces::Subscriber {
   void signal_writeData(const QByteArray& msg, qint64 waitBytes, bool priority);
   void signal_rescanProgress(int current, int total, int success);
   void signal_emptyNetwork();
+  void Signal_PublishEvent(model::Event);
 
  private:
   void addPackageForDisconnected();

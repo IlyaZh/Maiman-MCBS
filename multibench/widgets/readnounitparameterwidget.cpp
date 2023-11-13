@@ -45,3 +45,40 @@ void ReadNoUnitParameterWidget::setup(QStringView name,
 
   this->adjustSize();
 }
+
+void ReadNoUnitParameterWidget::setup(QStringView name,
+                                      QSharedPointer<CommandConverter> cmd) {
+  m_converter = cmd;
+  m_layout = new QHBoxLayout(this);
+  this->setStyleSheet(
+      "QWidget {\
+    background-color: rgb(51, 51, 51);\
+    color: rgb(153,153,153);\
+    font: 12pt Share Tech Mono;\
+}");
+  m_layout->setMargin(0);
+  m_layout->setSpacing(6);
+  m_labelParameter = new QLabel;
+  m_labelValue = new QLabel;
+  m_labelUnit = new QLabel;
+  m_labelParameter->setAlignment(Qt::AlignLeft);
+  m_labelValue->setAlignment(Qt::AlignRight);
+  m_labelUnit->setAlignment(Qt::AlignRight);
+  m_labelParameter->setText(name.toString());
+
+  m_labelUnit->setText(m_converter->unit());
+
+  if (m_converter) {
+    setValue(m_converter->valueDouble(), m_converter->tolerance());
+  }
+
+  setValue(m_converter->valueDouble(), m_converter->tolerance());
+  m_labelValue->setText("");
+
+  m_layout->addWidget(m_labelParameter);
+  m_layout->addSpacerItem(new QSpacerItem(0, 20, QSizePolicy::Expanding));
+  m_layout->addWidget(m_labelValue);
+  m_layout->addWidget(m_labelUnit);
+
+  this->adjustSize();
+}

@@ -12,6 +12,8 @@ class ReadParameterFactory : public QObject {
   ReadParameterFactory();
   static ReadParameterWidget* createReadParameter(
       QStringView name, QSharedPointer<DevCommand> cmd);
+  static ReadParameterWidget* createReadParameter(
+      QStringView name, QSharedPointer<CommandConverter> cmd);
 };
 
 #endif  // READPARAMETERFACTORY_H

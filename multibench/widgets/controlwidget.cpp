@@ -8,7 +8,7 @@ ControlWidget::ControlWidget(QStringView name, QSharedPointer<DevCommand> Value,
                              QSharedPointer<DevCommand> Max,
                              QSharedPointer<DevCommand> Min,
                              QSharedPointer<DevCommand> Real, QWidget *parent)
-    : QWidget(parent),
+    : GuiWidgetBase(parent),
       ui(new Ui::CommandWidget),
       m_Real(Real),
       m_Value(Value),
@@ -58,6 +58,41 @@ ControlWidget::ControlWidget(QStringView name, QSharedPointer<DevCommand> Value,
   adjust();
 }
 
+ControlWidget::ControlWidget(QStringView name,
+                             QSharedPointer<CommandConverter> Value,
+                             QSharedPointer<CommandConverter> Max,
+                             QSharedPointer<CommandConverter> Min,
+                             QSharedPointer<CommandConverter> Real,
+                             QWidget *parent)
+    : GuiWidgetBase(parent),
+      ui(new Ui::CommandWidget),
+      m_RealConv(Real),
+      m_ValueConv(Value),
+      m_MaxConv(Max),
+      m_MinConv(Min) {
+  ui->setupUi(this);
+
+  ui->WidgetName->setText(name.toString());
+
+  if (m_ValueConv and m_MaxConv and m_MinConv) {
+    m_Validator =
+        new QDoubleValidator(m_MinConv->valueDouble(), m_MaxConv->valueDouble(),
+                             m_ValueConv->tolerance());
+    if (m_RealConv.isNull()) {
+      ui->Real->setText("Set");
+    } else {
+      ui->Real->setText("Real");
+    }
+    setUnits(m_ValueConv->unit());
+  }
+
+  connect(ui->Value, &QLineEdit::returnPressed, this,
+          &ControlWidget::userEnteredData);
+  connect(ui->Value, &QLineEdit::cursorPositionChanged, this,
+          [this]() { isUserEdit = true; });
+  adjust();
+}
+
 ControlWidget::~ControlWidget() { delete ui; }
 
 void ControlWidget::userEnteredValue() {
@@ -75,6 +110,30 @@ void ControlWidget::userEnteredValue() {
 
   if (!m_Value.isNull()) {
     m_Value->setFromWidget(valueFromLine);
+  }
+
+  isUserEdit = false;
+}
+
+void ControlWidget::userEnteredData() {
+  double valueFromLine = ui->Value->text().toDouble();
+  ui->Value->setText(
+      QString::number(valueFromLine, 'f', m_ValueConv->tolerance()));
+  ui->Value->clearFocus();
+
+  if (valueFromLine > m_MaxConv->valueDouble() or
+      valueFromLine < m_MinConv->valueDouble()) {
+    valueFromLine = qBound(m_MinConv->valueDouble(), valueFromLine,
+                           m_MaxConv->valueDouble());
+    setEditLineRed();
+    QTimer::singleShot(ErrorTimeout, this, SLOT(setEditLineWhite()));
+  }
+
+  if (!m_ValueConv.isNull()) {
+    emit setDataFromWidget(
+        m_ValueConv->code(),
+        m_ValueConv->getRawFromValue(static_cast<double>(valueFromLine)));
+    // m_ValueConv->setFromWidget(valueFromLine);
   }
 
   isUserEdit = false;
@@ -134,34 +193,37 @@ void ControlWidget::setEditLineWhite() {
   ui->Value->setText(value);
 }
 
-void ControlWidget::getData(QSharedPointer<CommandConverter> data) {
-  if (data.get()->code() == m_Value.get()->code()) {
-    const QString value = data.get()->valueStr();
+void ControlWidget::getData(quint16 code, quint16 data) {
+  setUnits(m_ValueConv->unit());
+  if (code == m_ValueConv->code()) {
+    m_ValueConv->setValue(data);
+    const QString value = m_ValueConv->valueStr();
     if (!isUserEdit) {
-      if (m_Value) {
+      if (m_ValueConv) {
         ui->Value->setText(value);
       }
     }
-    if (m_Real.isNull()) {
+    if (m_RealConv.isNull()) {
       ui->RealValue->setText(value);
     }
-  } else if (data.get()->code() == m_Real.get()->code()) {
-    if (m_Real) ui->RealValue->setText(data.get()->valueStr());
-  } else if (data.get()->code() == m_Max.get()->code()) {
-    ui->MaxValue->setText(data.get()->valueStr());
-    m_Validator->setTop(data.get()->valueDouble());
-  } else if (data.get()->code() == m_Min.get()->code()) {
-    ui->MinValue->setText(data.get()->valueStr());
-    m_Validator->setBottom(data.get()->valueDouble());
+  } else if (code == m_MaxConv->code()) {
+    m_MaxConv->setValue(data);
+    ui->MaxValue->setText(m_MaxConv->valueStr());
+    m_Validator->setTop(m_MaxConv->valueDouble());
+  } else if (code == m_MinConv->code()) {
+    m_MinConv->setValue(data);
+    ui->MinValue->setText(m_MinConv->valueStr());
+    m_Validator->setBottom(m_MinConv->valueDouble());
+  } else if (code == m_RealConv->code()) {
+    m_RealConv->setValue(data);
+    if (m_RealConv) ui->RealValue->setText(m_RealConv->valueStr());
   }
-  setUnits(data.get()->unit());
 }
 
 QVector<quint16> ControlWidget::Subscribe() {
-  QVector<quint16> codes;
-  codes.append(m_Value.get()->code());
-  codes.append(m_Real.get()->code());
-  codes.append(m_Max.get()->code());
-  codes.append(m_Min.get()->code());
-  return codes;
+  m_codes.append(m_ValueConv->code());
+  m_codes.append(m_MaxConv->code());
+  m_codes.append(m_MinConv->code());
+  if (m_RealConv) m_codes.append(m_RealConv->code());
+  return m_codes;
 }

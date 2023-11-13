@@ -15,6 +15,8 @@ Device::Device(quint8 addr, const DeviceModel& config, QObject* parent)
   for (const auto& cmdBuilder : config.commands) {
     auto command = new DevCommand(cmdBuilder);
     m_Commands.insert(command->code(), QSharedPointer<DevCommand>(command));
+    m_Converters.insert(command->code(),
+                        QSharedPointer<CommandConverter>::create(cmdBuilder));
 
     connect(command, &DevCommand::sendValueSignal, this,
             &Device::dataFromCommand);
@@ -76,10 +78,19 @@ const QMap<quint16, QSharedPointer<DevCommand>>& Device::commands() {
   return m_Commands;
 }
 
+const QMap<quint16, QSharedPointer<CommandConverter>>& Device::converters() {
+  return m_Converters;
+}
+
 void Device::changeTemperatureUnit(Const::TemperatureUnitId id) {
   for (auto& command : m_Commands) {
     if (command->isTemperature()) {
       command->changeTemperatureUnit(id);
+    }
+  }
+  for (auto& converter : m_Converters) {
+    if (converter->isTemperature()) {
+      converter->changeTemperatureUnit(id);
     }
   }
 }

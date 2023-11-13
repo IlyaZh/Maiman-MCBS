@@ -18,7 +18,8 @@ class GuiFactory : public QObject {
   explicit GuiFactory(const QString& fileName, QObject* parent = nullptr);
   void start();
   DeviceWidget* createDeviceWidget(
-      quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
+      quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands,
+      const QMap<quint16, QSharedPointer<CommandConverter>>& converters);
   CalibrationDialog* createCalibrationDialog(
       quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
   bool hasLimits(quint16 id);

@@ -15,17 +15,20 @@ namespace Ui {
 class CommandWidget;
 }  // namespace Ui
 
-class ControlWidget : public QWidget, public GuiInterface {
-  Q_OBJECT
-
+class ControlWidget : public GuiWidgetBase {
  public:
   explicit ControlWidget(QStringView name, QSharedPointer<DevCommand> Value,
                          QSharedPointer<DevCommand> Max,
                          QSharedPointer<DevCommand> Min,
                          QSharedPointer<DevCommand> Real,
                          QWidget *parent = nullptr);
+  ControlWidget(QStringView name, QSharedPointer<CommandConverter> Value,
+                QSharedPointer<CommandConverter> Max,
+                QSharedPointer<CommandConverter> Min,
+                QSharedPointer<CommandConverter> Real,
+                QWidget *parent = nullptr);
   ~ControlWidget() override;
-  void getData(QSharedPointer<CommandConverter> data) override;
+  void getData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
 
  private slots:
@@ -45,11 +48,17 @@ class ControlWidget : public QWidget, public GuiInterface {
   QSharedPointer<DevCommand> m_Value;
   QSharedPointer<DevCommand> m_Max;
   QSharedPointer<DevCommand> m_Min;
+  QSharedPointer<CommandConverter> m_RealConv;
+  QSharedPointer<CommandConverter> m_ValueConv;
+  QSharedPointer<CommandConverter> m_MaxConv;
+  QSharedPointer<CommandConverter> m_MinConv;
   bool isUserEdit = false;
+  QVector<quint16> m_codes;
 
   void adjust();
  private slots:
   void userEnteredValue();
+  void userEnteredData();
 };
 
 #endif  // CONTROLWIDGET_H

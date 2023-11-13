@@ -50,6 +50,41 @@ void ReadParameterWidget::setup(QStringView name,
                                   // виджет был нужного размера
 }
 
+void ReadParameterWidget::setup(QStringView name,
+                                QSharedPointer<CommandConverter> cmd) {
+  m_converter = cmd;
+  m_layout = new QHBoxLayout(this);
+  this->setStyleSheet(
+      "QWidget {\
+    background-color: rgb(51, 51, 51);\
+    color: rgb(153,153,153);\
+    font: 12pt Share Tech Mono;\
+}");
+  m_layout->setMargin(0);
+  m_layout->setSpacing(6);
+  m_labelParameter->setAlignment(Qt::AlignLeft);
+  m_labelValue->setAlignment(Qt::AlignRight);
+  m_labelUnit->setAlignment(Qt::AlignRight);
+  m_labelParameter->setText(name.toString());
+
+  m_labelUnit->setText(m_converter->unit());
+
+  if (m_converter) {
+    setValue(m_converter->valueDouble(), m_converter->tolerance());
+  }
+
+  setValue(m_converter->valueDouble(), m_converter->tolerance());
+
+  m_layout->addWidget(m_labelParameter);
+  m_layout->addSpacerItem(new QSpacerItem(10, 20, QSizePolicy::Expanding));
+  m_layout->addWidget(m_labelValue);
+  m_layout->addWidget(m_labelUnit);
+
+  this->adjustSize();
+  m_labelValue->setText("    ");  // резервируем место под 5 символов, чтоб
+                                  // виджет был нужного размера
+}
+
 // private methods
 
 void ReadParameterWidget::setUnit(QStringView unit) {
@@ -78,11 +113,15 @@ void ReadParameterWidget::setUnitsLength(int length) {
   if (m_labelUnit) m_labelUnit->setMinimumWidth(length * charLength);
 }
 
-void ReadParameterWidget::getData(QSharedPointer<CommandConverter> data) {
-  setValue(data.get()->valueDouble(), data.get()->tolerance());
-  setUnit(data.get()->unit());
+void ReadParameterWidget::getData(quint16 code, quint16 data) {
+  if (m_converter->code() == code) {
+    m_converter->setValue(data);
+    setValue(m_converter->valueDouble(), m_converter->tolerance());
+    setUnit(m_converter->unit());
+  }
 }
 
 QVector<quint16> ReadParameterWidget::Subscribe() {
-  return QVector<quint16>(m_command.get()->code());
+  m_codes.append(m_converter.get()->code());
+  return m_codes;
 }

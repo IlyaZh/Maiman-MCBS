@@ -172,11 +172,14 @@ void NetworkModel::initDevice(quint8 addr, quint16 id) {
 
 void NetworkModel::dataOutcome(const model::Event& event) {
   if (m_worker) {
-    auto data =
-        std::get<model::events::network::SingleWriteRequest>(event.data_);
-    auto package =
-        m_protocol.setDataValue(data.address_, data.reg_, data.value_);
-    m_priorityQueue.enqueue(package);
+    if (std::holds_alternative<model::events::network::SingleWriteRequest>(
+            event.data_)) {
+      auto data =
+          std::get<model::events::network::SingleWriteRequest>(event.data_);
+      auto package =
+          m_protocol.setDataValue(data.address_, data.reg_, data.value_);
+      m_priorityQueue.enqueue(package);
+    }
   }
 }
 
@@ -270,6 +273,10 @@ void NetworkModel::readyRead(const QByteArray& rxPackage,
             }
           }
           m_devices[item.addr]->dataIncome(item.reg, item.value);
+          model::Event event(
+              model::EventType::kDeviceStateUpdated,
+              model::events::network::Answer(item.addr, item.reg, item.value));
+          emit Signal_PublishEvent(event);
           if (m_disconnectedDevices.contains(item.addr))
             m_disconnectedDevices.remove(item.addr);
         }
@@ -284,5 +291,10 @@ void NetworkModel::readyRead(const QByteArray& rxPackage,
 }
 
 void NetworkModel::NewEvent(const model::Event& event) {
-  std::get<model::events::network::StateUpdated>(event.data_).reg;
+  if (event.type_ == model::EventType::kWriteDevice) {
+    if (std::holds_alternative<model::events::network::SingleWriteRequest>(
+            event.data_)) {
+      dataOutcome(event);
+    }
+  }
 }

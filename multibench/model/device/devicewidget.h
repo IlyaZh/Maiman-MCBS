@@ -3,6 +3,7 @@
 
 #include <QtWidgets>
 
+#include "commandconverter.h"
 #include "gui/guiinterface.h"
 #include "gui/guimediator.h"
 #include "widgets/inlineedit.h"
@@ -99,16 +100,18 @@ class DeviceWidget : public QWidget {
   explicit DeviceWidget(
       const DeviceWidgetDesc& description,
       const QMap<quint16, QSharedPointer<DevCommand>>& commands,
+      const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
       QWidget* parent = nullptr);
   ~DeviceWidget();
   void setAddress(int addr);
   void setConstraint(bool state);
-  void updateValue(QSharedPointer<CommandConverter> value);
+  void updateValue(const model::Event& event);
  public slots:
   void setLink(bool link);
  signals:
   void nameEdited(QString name, int addr);
   void dataIncome(QSharedPointer<CommandConverter> command);
+  void acceptDataFromWidget(quint16 code, quint16 value);
 
  private:
   Ui::DeviceWidget* ui;
@@ -116,6 +119,7 @@ class DeviceWidget : public QWidget {
   QMap<quint16, QVariant> m_values;
   QVector<HiddenWidget*> m_widgets;
   QMap<quint16, QSharedPointer<DevCommand>> m_commands;
+  QMap<quint16, QSharedPointer<CommandConverter>> m_converters;
   QGridLayout* m_widgetLayout;
   QMap<quint16, BinaryWidget*> m_binaryWidgets;
   QVector<QPushButton*> m_pinButtons;
@@ -124,7 +128,7 @@ class DeviceWidget : public QWidget {
   QPushButton* m_tecButton{nullptr};
   DeviceCondition* m_deviceCondition;
   int m_fixedWidgets{0};
-  QHash<quint8, GuiInterface*> m_widgetsTable;
+  QHash<quint8, GuiWidgetBase*> m_widgetsTable;
 
   void paintEvent(QPaintEvent*) override;
   void adjust();

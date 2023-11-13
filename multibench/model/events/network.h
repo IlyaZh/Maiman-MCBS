@@ -34,8 +34,10 @@ struct StateUpdated {
 };
 
 struct Answer {
-  quint8 address;
-  quint16 reg;
-  quint16 value;
+  Answer(quint8 addr, quint16 reg, quint16 value)
+      : addr_(addr), reg_(reg), value_(value) {}
+  quint8 addr_;
+  quint16 reg_;
+  quint16 value_;
 };
 }  // namespace model::events::network

@@ -5,6 +5,7 @@
 #include <QtWidgets>
 #include <optional>
 
+#include "commandconverter.h"
 #include "commandsettings.h"
 #include "device/connectionpolling.h"
 #include "model/device/devicepollrequest.h"
@@ -29,6 +30,7 @@ class Device : public QObject {
   std::optional<DevicePollRequest> nextPollRequest(bool unconditional = false);
   bool isLink();
   const QMap<quint16, QSharedPointer<DevCommand>>& commands();
+  const QMap<quint16, QSharedPointer<CommandConverter>>& converters();
   void changeTemperatureUnit(Const::TemperatureUnitId id);
   void unlink();
   void resetConnectionPolling() { m_connectionPolling.reset(); };
@@ -42,6 +44,7 @@ class Device : public QObject {
   const QString m_Name;
   const DeviceDelays& m_Delays;
   QMap<quint16, QSharedPointer<DevCommand>> m_Commands;
+  QMap<quint16, QSharedPointer<CommandConverter>> m_Converters;
   QVector<DevicePollRequest> m_cmdRequests;
   int m_cmdReqIt = 0;
   QVector<Device*> m_childDevices;

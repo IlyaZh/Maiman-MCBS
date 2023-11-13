@@ -58,11 +58,14 @@ static const QString buttonOff =
 
 DeviceWidget::DeviceWidget(
     const DeviceWidgetDesc& description,
-    const QMap<quint16, QSharedPointer<DevCommand>>& commands, QWidget* parent)
+    const QMap<quint16, QSharedPointer<DevCommand>>& commands,
+    const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
+    QWidget* parent)
     : QWidget(parent),
       ui(new Ui::DeviceWidget),
       m_buttons(description.buttons),
       m_commands(commands),
+      m_converters(converters),
       m_widgetLayout(new QGridLayout()) {
   ui->setupUi(this);
 
@@ -101,25 +104,33 @@ DeviceWidget::DeviceWidget(
   QVector<ReadParameterWidget*> readOnlyWidgets;
   for (const auto& control : description.controls) {
     auto valueCmd = m_commands.value(control.value, nullptr);
+    auto valueConverter = m_converters.value(control.value, nullptr);
     auto maxCmd = m_commands.value(control.max, nullptr);
+    auto maxConverter = m_converters.value(control.max, nullptr);
     auto minCmd = m_commands.value(control.min, nullptr);
+    auto minConverter = m_converters.value(control.min, nullptr);
     auto realCmd = m_commands.value(control.real, nullptr);
+    auto realConverter = m_converters.value(control.real, nullptr);
 
     if (realCmd != nullptr and valueCmd == nullptr) {
       // Обработка неизменяемых параметров
-      readOnlyWidgets.append(
-          ReadParameterFactory::createReadParameter(control.name, realCmd));
+      readOnlyWidgets.append(ReadParameterFactory::createReadParameter(
+          control.name, realConverter));
     } else {
       // Обработка изменяемых параметров
       auto hiddenWidget = new HiddenWidget(this);
-      auto widget = new ControlWidget(control.name, valueCmd, maxCmd, minCmd,
-                                      realCmd, hiddenWidget);
+      auto widget =
+          new ControlWidget(control.name, valueConverter, maxConverter,
+                            minConverter, realConverter, hiddenWidget);
       if (control.fixed) ++m_fixedWidgets;
       hiddenWidget->layout()->setContentsMargins(10, 0, 10, 0);
       m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
       hiddenWidget->addWidget(widget);
       if (control.name == "current") hiddenWidget->setPinned(true);
       m_widgets.append(hiddenWidget);
+      for (auto code : widget->Subscribe()) {
+        m_widgetsTable.insert(code, widget);
+      }
     }
   }
   // Закидываем неизменяемые параметры в виджет
@@ -135,6 +146,9 @@ DeviceWidget::DeviceWidget(
       item->setContentsMargins(0, 0, 0, 4);
       item->setUnitsLength(maxUnitsLengthIt->getUnitslength());
       hiddenWidget->addWidget(item);
+      for (auto code : item->Subscribe()) {
+        m_widgetsTable.insert(code, item);
+      }
     }
     readOnlyWidgets.clear();
     m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size(), Qt::AlignTop);
@@ -149,8 +163,9 @@ DeviceWidget::DeviceWidget(
       hiddenWidget->layout()->setContentsMargins(10, 12, 10, 0);
     }
     auto cmd = m_commands.value(item.code, nullptr);
+    auto converter = m_converters.value(item.code, nullptr);
     if (cmd) {
-      auto binaryWidget = new BinaryWidget(item, cmd, hiddenWidget);
+      auto binaryWidget = new BinaryWidget(item, converter, hiddenWidget);
       binaryWidget->setContentsMargins(0, 0, 0, 4);
       hiddenWidget->addWidget(binaryWidget);
       for (auto code : binaryWidget->Subscribe()) {
@@ -251,6 +266,10 @@ DeviceWidget::DeviceWidget(
 
   m_deviceCondition =
       new DeviceCondition(m_commands, description.leds, ui->conditionLabel);
+  for (auto widget : m_widgetsTable) {
+    connect(widget, &GuiWidgetBase::setDataFromWidget, this,
+            &DeviceWidget::acceptDataFromWidget);
+  }
   adjust();
   // TODO:: label_2, для отображения строки состояния драйвера, команда 0700
 }
@@ -379,6 +398,12 @@ void DeviceWidget::pinButtonClicked(int idx, bool state) {
   }
 }
 
-void DeviceWidget::updateValue(QSharedPointer<CommandConverter> value) {
-  m_widgetsTable.find(value.data()->code()).value()->getData(value);
+void DeviceWidget::updateValue(const model::Event& event) {
+  if (std::holds_alternative<model::events::network::Answer>(event.data_)) {
+    auto code = std::get<model::events::network::Answer>(event.data_).reg_;
+    auto value = std::get<model::events::network::Answer>(event.data_).value_;
+    if (m_widgetsTable.contains(code)) {
+      m_widgetsTable.value(code)->getData(code, value);
+    }
+  }
 }

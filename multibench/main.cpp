@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   QApplication::setFont(QFont("Share Tech Mono", 9));
 
 #ifdef QT_DEBUG
-  debugMode = true;
+  debugMode = false;
   setlocale(LC_CTYPE, "ru-RU");
 #endif
 
@@ -56,10 +56,15 @@ int main(int argc, char *argv[]) {
   ModbusProtocol modbus;
   NetworkModel model(deviceFactory, modbus);
   components::Mediator mediator;
-  mediator.Subscribe(model::EventType::kDeviceStateUpdated, &model);
-  mediator.LinkPublisher(&w);
   ModelGuiMediator mainMediator(w, guiFactory, model);
   GuiMediator gui(w, guiFactory, model);
+
+  mediator.Subscribe(model::EventType::kDeviceStateUpdated, &model);
+  mediator.LinkPublisher(&w);
+  mediator.Subscribe(model::EventType::kDeviceStateUpdated, &gui);
+  mediator.LinkPublisher(&model);
+  mediator.Subscribe(model::EventType::kWriteDevice, &model);
+  mediator.LinkPublisher(&gui);
 
 #ifdef QT_DEBUG
   // GlobalTest tests(argc, argv);

@@ -62,9 +62,11 @@ SOURCES += \
     DataThread.cpp \
     DebugMode.cpp \
     UpdatesChecker.cpp \
+    commandconverter.cpp \
   components/mediator.cpp \
     device/connectionpolling.cpp \
     gui/guimediator.cpp \
+    model/converterfactory.cpp \
     model/device/devicecondition.cpp \
     appsettings.cpp \
     datasource.cpp \
@@ -110,12 +112,14 @@ HEADERS += \
     DataThread.h \
     DebugMode.h \
     UpdatesChecker.h \
+    commandconverter.h \
     components/mediator.h \
     constants.h \
     device/connectionpolling.h \
     gui/guiinterface.h \
     gui/guimediator.h \
   interfaces/pubsubinterface.h \
+    model/converterfactory.h \
     model/device/devicecondition.h \
     appsettings.h \
     datasource.h \

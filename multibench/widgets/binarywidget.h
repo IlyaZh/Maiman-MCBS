@@ -7,29 +7,34 @@
 
 #include "gui/guiinterface.h"
 #include "model/device/devicewidget.h"
-class GuiInterface;
+class GuiWidgetBase;
 
 namespace Ui {
 class BinaryWidget;
 }
 
-class BinaryWidget : public QWidget, public GuiInterface {
-  Q_OBJECT
-
+class BinaryWidget : public GuiWidgetBase {
  public:
   explicit BinaryWidget(const Checkbox &settings,
                         QSharedPointer<DevCommand> cmd,
                         QWidget *parent = nullptr);
+  explicit BinaryWidget(const Checkbox &settings,
+                        QSharedPointer<CommandConverter> converter,
+                        QWidget *parent = nullptr);
   ~BinaryWidget() override;
-  void getData(QSharedPointer<CommandConverter> data) override;
+  void getData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
  private slots:
   void checkBoxClicked(bool checked);
+  // signals:
+  //  void setDataFromWidget(quint16 code, quint16 data);
 
  private:
   Ui::BinaryWidget *ui;
   const Checkbox &m_settings;
   QSharedPointer<DevCommand> m_cmd;
+  QSharedPointer<CommandConverter> m_converter;
+  QVector<quint16> m_codes;
 
   void setValue(quint16 value);
 };

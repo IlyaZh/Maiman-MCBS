@@ -30,9 +30,10 @@ void GuiFactory::start() {
 }
 
 DeviceWidget* GuiFactory::createDeviceWidget(
-    quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands) {
+    quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands,
+    const QMap<quint16, QSharedPointer<CommandConverter>>& converters) {
   if (m_deviceWidgets.contains(id)) {
-    return new DeviceWidget(m_deviceWidgets[id], commands);
+    return new DeviceWidget(m_deviceWidgets[id], commands, converters);
   }
   return nullptr;
 }
