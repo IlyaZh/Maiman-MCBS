@@ -81,6 +81,7 @@ SOURCES += \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
     modelguimediator.cpp \
+    widgets/buttonwidget.cpp \
     widgets/calibrationdialog.cpp \
     widgets/inlineedit.cpp \
     widgets/plusminusgroupwidget.cpp \
@@ -136,6 +137,7 @@ HEADERS += \
   model/events/network.h \
     modelguimediator.h \
     network/IDataReceiver.h \
+    widgets/buttonwidget.h \
     widgets/calibrationdialog.h \
     widgets/inlineedit.h \
     widgets/plusminusgroupwidget.h \

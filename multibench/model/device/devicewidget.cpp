@@ -128,9 +128,10 @@ DeviceWidget::DeviceWidget(
       hiddenWidget->addWidget(widget);
       if (control.name == "current") hiddenWidget->setPinned(true);
       m_widgets.append(hiddenWidget);
-      for (auto code : widget->Subscribe()) {
-        m_widgetsTable.insert(code, widget);
-      }
+      m_widgetsTable.insert(widget);
+      //      for (auto code : widget->Subscribe()) {
+      //        m_widgetsTable.insert(code, widget);
+      //      }
     }
   }
   // Закидываем неизменяемые параметры в виджет
@@ -146,9 +147,10 @@ DeviceWidget::DeviceWidget(
       item->setContentsMargins(0, 0, 0, 4);
       item->setUnitsLength(maxUnitsLengthIt->getUnitslength());
       hiddenWidget->addWidget(item);
-      for (auto code : item->Subscribe()) {
-        m_widgetsTable.insert(code, item);
-      }
+      m_widgetsTable.insert(item);
+      //      for (auto code : item->Subscribe()) {
+      //        m_widgetsTable.insert(code, item);
+      //      }
     }
     readOnlyWidgets.clear();
     m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size(), Qt::AlignTop);
@@ -168,9 +170,10 @@ DeviceWidget::DeviceWidget(
       auto binaryWidget = new BinaryWidget(item, converter, hiddenWidget);
       binaryWidget->setContentsMargins(0, 0, 0, 4);
       hiddenWidget->addWidget(binaryWidget);
-      for (auto code : binaryWidget->Subscribe()) {
-        m_widgetsTable.insert(code, binaryWidget);
-      }
+      m_widgetsTable.insert(binaryWidget);
+      //      for (auto code : binaryWidget->Subscribe()) {
+      //        m_widgetsTable.insert(code, binaryWidget);
+      //      }
     }
   }
   if (hiddenWidget) {
@@ -217,41 +220,53 @@ DeviceWidget::DeviceWidget(
 
   // Инциализация кнопок Laser и TEC
   for (const auto& button : qAsConst(description.buttons)) {
-    QPointer<QPushButton> pButton;
+    QPointer<ButtonWidget> pButton;
     if (button.name.compare("laser", Qt::CaseInsensitive) == 0 &&
         m_commands.contains(button.code)) {
-      m_laserButton = new QPushButton("Laser", this);
+      auto converter = m_converters.value(button.code);
+      m_laserButton = new ButtonWidget("Laser", button, converter, this);
+      //      m_laserButton = new QPushButton("Laser", this);
       pButton = m_laserButton;
-      connect(m_laserButton, &QPushButton::clicked, this,
-              &DeviceWidget::laserButtonClicked);
+      m_widgetsTable.insert(m_laserButton);
+      //      for (auto code : m_laserButton->Subscribe()) {
+      //        m_widgetsTable.insert(code, m_laserButton);
+      //      }
+      //      connect(m_laserButton, &QPushButton::clicked, this,
+      //              &DeviceWidget::laserButtonClicked);
 
-      if (m_commands.contains(button.code)) {
-        auto cmd = m_commands.value(button.code);
-        connect(cmd.get(), &DevCommand::updatedValue, this,
-                [this, cmd]() { setLaserButton(cmd->valueInt()); });
-      }
+      //      if (m_commands.contains(button.code)) {
+      //        auto cmd = m_commands.value(button.code);
+      //        connect(cmd.get(), &DevCommand::updatedValue, this,
+      //                [this, cmd]() { setLaserButton(cmd->valueInt()); });
+      //      }
     } else if (button.name.compare("TEC", Qt::CaseInsensitive) == 0) {
-      m_tecButton = new QPushButton("TEC", this);
+      auto converter = m_converters.value(button.code);
+      m_tecButton = new ButtonWidget("TEC", button, converter, this);
+      //      m_tecButton = new QPushButton("TEC", this);
       pButton = m_tecButton;
-      m_tecButton->setVisible(true);
-      connect(m_tecButton, &QPushButton::clicked, this,
-              &DeviceWidget::tecButtonClicked);
+      m_widgetsTable.insert(m_tecButton);
+      //      for (auto code : m_tecButton->Subscribe()) {
+      //        m_widgetsTable.insert(code, m_tecButton);
+      //      }
+      //      m_tecButton->setVisible(true);
+      //      connect(m_tecButton, &QPushButton::clicked, this,
+      //              &DeviceWidget::tecButtonClicked);
 
-      if (m_commands.contains(button.code)) {
-        auto cmd = m_commands.value(button.code);
-        connect(cmd.get(), &DevCommand::updatedValue, this,
-                [this, cmd]() { setTecButton(cmd->valueInt()); });
-      }
+      //      if (m_commands.contains(button.code)) {
+      //        auto cmd = m_commands.value(button.code);
+      //        connect(cmd.get(), &DevCommand::updatedValue, this,
+      //                [this, cmd]() { setTecButton(cmd->valueInt()); });
+      //      }
     }
 
     if (pButton) {
-      pButton->setMinimumSize(234, 36);
-      pButton->setMaximumHeight(36);
-      pButton->setMaximumWidth(234);
-      pButton->setFont(QFont("Share Tech Mono", 18));
-      pButton->setStyleSheet(buttonOff);
-      pButton->setChecked(false);
-      pButton->setVisible(true);
+      //      pButton->setMinimumSize(234, 36);
+      //      pButton->setMaximumHeight(36);
+      //      pButton->setMaximumWidth(234);
+      //      pButton->setFont(QFont("Share Tech Mono", 18));
+      //      pButton->setStyleSheet(buttonOff);
+      //      pButton->setChecked(false);
+      //      pButton->setVisible(true);
       ui->buttonsLayout->setContentsMargins(0, 0, 0, 0);
       ui->buttonsLayout->addWidget(pButton);
       ui->buttonsLayout->setAlignment(pButton, Qt::AlignBottom);
@@ -316,8 +331,11 @@ void DeviceWidget::setConstraint(bool state) {
 void DeviceWidget::setLaserButton(quint16 value) {
   for (const auto& button : qAsConst(m_buttons)) {
     if (button.name == "Laser") {
-      m_laserButton->setStyleSheet(((value & button.mask) != 0) ? buttonOn
-                                                                : buttonOff);
+      m_laserButton->getData(button.code, value);
+      //        m_laserButton->setStyleSheet(((value & button.mask) != 0) ?
+      //        buttonOn
+      //                                                                  :
+      //                                                                  buttonOff);
     }
   }
 }
@@ -325,8 +343,11 @@ void DeviceWidget::setLaserButton(quint16 value) {
 void DeviceWidget::setTecButton(quint16 value) {
   for (const auto& button : qAsConst(m_buttons)) {
     if (button.name == "TEC") {
-      m_tecButton->setStyleSheet(((value & button.mask) != 0) ? buttonOn
-                                                              : buttonOff);
+      m_laserButton->getData(button.code, value);
+      //        m_tecButton->setStyleSheet(((value & button.mask) != 0) ?
+      //        buttonOn
+      //                                                                :
+      //                                                                buttonOff);
     }
   }
 }
@@ -402,8 +423,13 @@ void DeviceWidget::updateValue(const model::Event& event) {
   if (std::holds_alternative<model::events::network::Answer>(event.data_)) {
     auto code = std::get<model::events::network::Answer>(event.data_).reg_;
     auto value = std::get<model::events::network::Answer>(event.data_).value_;
-    if (m_widgetsTable.contains(code)) {
-      m_widgetsTable.value(code)->getData(code, value);
+    for (auto widget : m_widgetsTable) {
+      if (widget->Subscribe().contains(code)) {
+        widget->getData(code, value);
+      }
     }
+    //    if (m_widgetsTable.contains(code)) {
+    //      m_widgetsTable.value(code)->getData(code, value);
+    //    }
   }
 }

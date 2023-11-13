@@ -6,6 +6,7 @@
 #include "commandconverter.h"
 #include "gui/guiinterface.h"
 #include "gui/guimediator.h"
+#include "widgets/buttonwidget.h"
 #include "widgets/inlineedit.h"
 
 class DevCommand;
@@ -13,6 +14,7 @@ class ControlWidget;
 class BinaryWidget;
 class HiddenWidget;
 class DeviceCondition;
+class ButtonWidget;
 struct CommandConverter;
 
 struct Content {
@@ -124,11 +126,12 @@ class DeviceWidget : public QWidget {
   QMap<quint16, BinaryWidget*> m_binaryWidgets;
   QVector<QPushButton*> m_pinButtons;
   bool m_hideControls{false};
-  QPushButton* m_laserButton{nullptr};
-  QPushButton* m_tecButton{nullptr};
+  ButtonWidget* m_laserButton{nullptr};
+  ButtonWidget* m_tecButton{nullptr};
   DeviceCondition* m_deviceCondition;
   int m_fixedWidgets{0};
-  QHash<quint8, GuiWidgetBase*> m_widgetsTable;
+  //  QHash<quint8, GuiWidgetBase*> m_widgetsTable;
+  QSet<GuiWidgetBase*> m_widgetsTable;
 
   void paintEvent(QPaintEvent*) override;
   void adjust();
