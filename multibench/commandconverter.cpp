@@ -5,7 +5,7 @@
 #include "device/device.h"
 
 CommandConverter::CommandConverter(const CommandSettings& conf)
-    : m_config(conf) {}
+    : m_config(conf), m_tempId(AppSettings::getTemperatureUnit()) {}
 CommandConverter::~CommandConverter() {}
 
 void CommandConverter::setValue(quint16 value) {
@@ -20,6 +20,10 @@ void CommandConverter::setValue(quint16 value) {
     m_value =
         qRound(d / m_config.m_divider * qPow(10, m_config.m_tolerance) - 0.5) /
         qPow(10, m_config.m_tolerance);
+  }
+  if (m_config.m_isTemperature and
+      m_tempId == Const::TemperatureUnitId::kFahrenheit) {
+    m_value = convertCelToFar();
   }
 }
 
@@ -42,15 +46,6 @@ QString CommandConverter::unit() const {
 void CommandConverter::changeTemperatureUnit(Const::TemperatureUnitId id) {
   if (m_config.m_isTemperature) {
     m_tempId = id;
-    switch (id) {
-      default:
-      case Const::TemperatureUnitId::kCelsius:
-        m_value = convertFarToCel();
-        break;
-      case Const::TemperatureUnitId::kFahrenheit:
-        m_value = convertCelToFar();
-        break;
-    }
   }
 }
 
