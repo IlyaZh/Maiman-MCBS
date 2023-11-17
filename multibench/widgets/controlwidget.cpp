@@ -193,7 +193,7 @@ void ControlWidget::setEditLineWhite() {
   ui->Value->setText(value);
 }
 
-void ControlWidget::getData(quint16 code, quint16 data) {
+void ControlWidget::setData(quint16 code, quint16 data) {
   setUnits(m_ValueConv->unit());
   if (code == m_ValueConv->code()) {
     m_ValueConv->setValue(data);

@@ -28,7 +28,7 @@ class ControlWidget : public GuiWidgetBase {
                 QSharedPointer<CommandConverter> Real,
                 QWidget *parent = nullptr);
   ~ControlWidget() override;
-  void getData(quint16 code, quint16 data) override;
+  void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
 
  private slots:

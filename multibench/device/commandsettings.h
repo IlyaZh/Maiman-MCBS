@@ -48,6 +48,8 @@ class DevCommand : public QObject {
   double maxValue() const;
   double minValue() const;
 
+  CommandSettings commandSettings();
+
  signals:
   void updatedValue();
   void updatedUnit(QStringView unit);

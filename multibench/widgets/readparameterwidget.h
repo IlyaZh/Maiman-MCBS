@@ -23,7 +23,7 @@ class ReadParameterWidget : public GuiWidgetBase {
   virtual void setup(QStringView name, QSharedPointer<CommandConverter> cmd);
   int getUnitslength();
   void setUnitsLength(int length);
-  void getData(quint16 code, quint16 data) override;
+  void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
  signals:
   void setDataFromWidget(quint16 code, quint16 data);

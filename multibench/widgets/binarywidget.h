@@ -22,7 +22,7 @@ class BinaryWidget : public GuiWidgetBase {
                         QSharedPointer<CommandConverter> converter,
                         QWidget *parent = nullptr);
   ~BinaryWidget() override;
-  void getData(quint16 code, quint16 data) override;
+  void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
  private slots:
   void checkBoxClicked(bool checked);

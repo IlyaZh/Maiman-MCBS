@@ -59,8 +59,6 @@ int main(int argc, char *argv[]) {
   ModelGuiMediator mainMediator(w, guiFactory, model);
   GuiMediator gui(w, guiFactory, model);
 
-  mediator.Subscribe(model::EventType::kDeviceStateUpdated, &model);
-  mediator.LinkPublisher(&w);
   mediator.Subscribe(model::EventType::kDeviceStateUpdated, &gui);
   mediator.LinkPublisher(&model);
   mediator.Subscribe(model::EventType::kWriteDevice, &model);

@@ -13,7 +13,7 @@ class ButtonWidget : public GuiWidgetBase {
                         QSharedPointer<CommandConverter> converter,
                         QWidget *parent = nullptr);
   ~ButtonWidget() override;
-  void getData(quint16 code, quint16 data) override;
+  void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
 
  private:

@@ -331,7 +331,7 @@ void DeviceWidget::setConstraint(bool state) {
 void DeviceWidget::setLaserButton(quint16 value) {
   for (const auto& button : qAsConst(m_buttons)) {
     if (button.name == "Laser") {
-      m_laserButton->getData(button.code, value);
+      m_laserButton->setData(button.code, value);
       //        m_laserButton->setStyleSheet(((value & button.mask) != 0) ?
       //        buttonOn
       //                                                                  :
@@ -343,7 +343,7 @@ void DeviceWidget::setLaserButton(quint16 value) {
 void DeviceWidget::setTecButton(quint16 value) {
   for (const auto& button : qAsConst(m_buttons)) {
     if (button.name == "TEC") {
-      m_laserButton->getData(button.code, value);
+      m_laserButton->setData(button.code, value);
       //        m_tecButton->setStyleSheet(((value & button.mask) != 0) ?
       //        buttonOn
       //                                                                :
@@ -421,15 +421,11 @@ void DeviceWidget::pinButtonClicked(int idx, bool state) {
 
 void DeviceWidget::updateValue(const model::Event& event) {
   if (std::holds_alternative<model::events::network::Answer>(event.data_)) {
-    auto code = std::get<model::events::network::Answer>(event.data_).reg_;
-    auto value = std::get<model::events::network::Answer>(event.data_).value_;
+    const auto& answer = std::get<model::events::network::Answer>(event.data_);
     for (auto widget : m_widgetsTable) {
-      if (widget->Subscribe().contains(code)) {
-        widget->getData(code, value);
+      if (widget->Subscribe().contains(answer.reg_)) {
+        widget->setData(answer.reg_, answer.value_);
       }
     }
-    //    if (m_widgetsTable.contains(code)) {
-    //      m_widgetsTable.value(code)->getData(code, value);
-    //    }
   }
 }

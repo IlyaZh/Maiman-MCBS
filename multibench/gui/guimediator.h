@@ -29,7 +29,6 @@ class GuiMediator : public QObject, public interfaces::Subscriber {
   NetworkModel& m_network;
   QMap<quint8, quint16> m_calibrationDialog;
   QHash<quint8, QPointer<DeviceWidget>> m_deviceWidgetsTable;
-  //  ConverterFactory m_converters;
 
  private slots:
   void createWidgetFor(Device* device);
