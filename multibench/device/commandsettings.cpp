@@ -116,6 +116,8 @@ double DevCommand::minValue() const {
              : 0;
 }
 
+CommandSettings DevCommand::commandSettings() { return m_config; }
+
 // public slots
 void DevCommand::setFromDevice(quint16 value) {
   bool check = (value != m_rawValue);

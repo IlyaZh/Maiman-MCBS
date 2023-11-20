@@ -113,12 +113,11 @@ void ReadParameterWidget::setUnitsLength(int length) {
   if (m_labelUnit) m_labelUnit->setMinimumWidth(length * charLength);
 }
 
-void ReadParameterWidget::getData(quint16 code, quint16 data) {
-  if (m_converter->code() == code) {
-    m_converter->setValue(data);
-    setValue(m_converter->valueDouble(), m_converter->tolerance());
-    setUnit(m_converter->unit());
-  }
+void ReadParameterWidget::setData(quint16 code, quint16 data) {
+  if (code != m_converter->code()) return;
+  m_converter->setValue(data);
+  setValue(m_converter->valueDouble(), m_converter->tolerance());
+  setUnit(m_converter->unit());
 }
 
 QVector<quint16> ReadParameterWidget::Subscribe() {

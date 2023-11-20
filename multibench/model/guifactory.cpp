@@ -46,6 +46,14 @@ CalibrationDialog* GuiFactory::createCalibrationDialog(
   return nullptr;
 }
 
+CalibrationDialog* GuiFactory::createCalibrationDialog(
+    quint16 id,
+    const QMap<quint16, QSharedPointer<CommandConverter>>& converters) {
+  if (m_deviceWidgets.contains(id)) {
+    return new CalibrationDialog(m_deviceWidgets[id], converters);
+  }
+  return nullptr;
+}
 // private slots
 
 void GuiFactory::parsingFinished() {

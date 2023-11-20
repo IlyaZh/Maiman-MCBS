@@ -6,12 +6,13 @@ Mediator::Mediator(QObject* parent) : QObject{parent} {}
 
 void Mediator::Subscribe(const model::EventType eventType,
                          interfaces::Subscriber* subscriber) {
-  auto range = subscribers_.equal_range(eventType);
-  if (std::any_of(range.first, range.second, [subscriber](const auto& item) {
-        return item.second == subscriber;  // TODO
-      })) {
-    return;
-  }
+  //  auto range = subscribers_.equal_range(eventType);
+  //  if (std::any_of(range.first, range.second, [subscriber](const auto& item)
+  //  {
+  //        return item.second == subscriber;  // TODO
+  //      })) {
+  //    return;
+  //  }
   subscribers_.insert(std::make_pair(eventType, subscriber));
 }
 

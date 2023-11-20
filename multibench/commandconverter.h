@@ -13,7 +13,6 @@ class CommandConverter {
   CommandConverter(const CommandSettings& conf);
   ~CommandConverter();
   void setValue(quint16 value);
-  void changeTemperatureUnit(Const::TemperatureUnitId id);
   double convertCelToFar();
   double convertFarToCel();
   quint16 code() const;
@@ -32,5 +31,4 @@ class CommandConverter {
   const CommandSettings& m_config;
   quint16 m_rawValue = 0;
   double m_value = 0;
-  Const::TemperatureUnitId m_tempId{Const::TemperatureUnitId::kCelsius};
 };

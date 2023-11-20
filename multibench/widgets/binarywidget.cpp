@@ -59,11 +59,10 @@ void BinaryWidget::setValue(quint16 value) {
   ui->statusCheckbox->setChecked((value & m_settings.mask) != 0);
 }
 
-void BinaryWidget::getData(quint16 code, quint16 data) {
-  if (m_converter->code() == code) {
-    m_converter->setValue(data);
-    setValue(m_converter->valueInt());
-  }
+void BinaryWidget::setData(quint16 code, quint16 data) {
+  if (code != m_converter->code()) return;
+  m_converter->setValue(data);
+  setValue(m_converter->valueInt());
 }
 
 QVector<quint16> BinaryWidget::Subscribe() {

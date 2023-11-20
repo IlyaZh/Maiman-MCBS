@@ -88,11 +88,6 @@ void Device::changeTemperatureUnit(Const::TemperatureUnitId id) {
       command->changeTemperatureUnit(id);
     }
   }
-  for (auto& converter : m_Converters) {
-    if (converter->isTemperature()) {
-      converter->changeTemperatureUnit(id);
-    }
-  }
 }
 
 void Device::unlink() {

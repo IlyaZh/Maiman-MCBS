@@ -22,6 +22,9 @@ class GuiFactory : public QObject {
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters);
   CalibrationDialog* createCalibrationDialog(
       quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
+  CalibrationDialog* createCalibrationDialog(
+      quint16 id,
+      const QMap<quint16, QSharedPointer<CommandConverter>>& converters);
   bool hasLimits(quint16 id);
   bool hasCalibration(quint16 id);
  private slots:

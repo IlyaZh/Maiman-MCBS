@@ -42,17 +42,14 @@ ButtonWidget::ButtonWidget(const QString &text, const Button &button,
 
 ButtonWidget::~ButtonWidget(){};
 
-void ButtonWidget::getData(quint16 code, quint16 data) {
-  if (code == m_converter->code()) {
-    qDebug() << "button accept" << code << data;
-    m_converter->setValue(data);
-    m_button->setStyleSheet(((data & m_description.mask) != 0) ? buttonOn
-                                                               : buttonOff);
-  }
+void ButtonWidget::setData(quint16 code, quint16 data) {
+  if (code != m_converter->code()) return;
+  m_converter->setValue(data);
+  m_button->setStyleSheet(((data & m_description.mask) != 0) ? buttonOn
+                                                             : buttonOff);
 }
 
 void ButtonWidget::buttonClicked() {
-  qDebug() << "button send" << (m_converter->valueInt() & m_description.mask);
   emit setDataFromWidget(m_converter->code(),
                          (m_converter->valueInt() & m_description.mask)
                              ? m_description.offCommand

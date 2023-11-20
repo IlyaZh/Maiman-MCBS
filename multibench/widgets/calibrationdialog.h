@@ -21,8 +21,16 @@ class CalibrationDialog : public QDialog {
       const DeviceWidgetDesc& deviceDesc,
       const QMap<quint16, QSharedPointer<DevCommand>>& commands,
       QWidget* parent = nullptr);
+  explicit CalibrationDialog(
+      const DeviceWidgetDesc& deviceDesc,
+      const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
+      QWidget* parent = nullptr);
   ~CalibrationDialog() override;
   void setValues();
+  void updateValue(const model::Event& event);
+
+ signals:
+  void acceptDataFromWidget(quint16 code, quint16 value);
 
  private:
   QVector<PlusMinusWidget*> m_calibrationWidgets;

@@ -82,3 +82,11 @@ void ReadNoUnitParameterWidget::setup(QStringView name,
 
   this->adjustSize();
 }
+
+void ReadNoUnitParameterWidget::setData(quint16 code, quint16 data) {
+  if (m_converter->code() == code) {
+    m_converter->setValue(data);
+    setUnit(QString::number(m_converter->valueDouble()));
+    setUnitsLength(getUnitslength());
+  }
+}

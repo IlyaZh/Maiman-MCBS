@@ -21,11 +21,15 @@ void CommandConverter::setValue(quint16 value) {
         qRound(d / m_config.m_divider * qPow(10, m_config.m_tolerance) - 0.5) /
         qPow(10, m_config.m_tolerance);
   }
+  if (m_config.m_isTemperature and AppSettings::getTemperatureUnit() ==
+                                       Const::TemperatureUnitId::kFahrenheit) {
+    m_value = convertCelToFar();
+  }
 }
 
 QString CommandConverter::unit() const {
   if (m_config.m_isTemperature) {
-    switch (m_tempId) {
+    switch (AppSettings::getTemperatureUnit()) {
       default:
       case Const::TemperatureUnitId::kCelsius:
         return m_config.m_unit + "C";
@@ -36,21 +40,6 @@ QString CommandConverter::unit() const {
     }
   } else {
     return m_config.m_unit;
-  }
-}
-
-void CommandConverter::changeTemperatureUnit(Const::TemperatureUnitId id) {
-  if (m_config.m_isTemperature) {
-    m_tempId = id;
-    switch (id) {
-      default:
-      case Const::TemperatureUnitId::kCelsius:
-        m_value = convertFarToCel();
-        break;
-      case Const::TemperatureUnitId::kFahrenheit:
-        m_value = convertCelToFar();
-        break;
-    }
   }
 }
 
@@ -87,8 +76,8 @@ QString CommandConverter::valueStr() const {
 quint16 CommandConverter::code() const { return m_config.m_code; }
 
 quint16 CommandConverter::getRawFromValue(double value) const {
-  if (m_config.m_isTemperature &&
-      m_tempId == Const::TemperatureUnitId::kFahrenheit) {
+  if (m_config.m_isTemperature && AppSettings::getTemperatureUnit() ==
+                                      Const::TemperatureUnitId::kFahrenheit) {
     value = (value - 32.0) * 5.0 / 9.0;
   }
 

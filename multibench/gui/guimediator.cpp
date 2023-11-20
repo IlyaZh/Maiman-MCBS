@@ -47,12 +47,16 @@ void GuiMediator::createWidgetFor(Device* device) {
 void GuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id) {
   if (!m_calibrationDialog.value(addr)) {
     CalibrationDialog* dialog =
-        m_factory.createCalibrationDialog(id, m_network.getCommands(addr));
+        m_factory.createCalibrationDialog(id, m_network.getConverters(addr));
     dialog->setModal(false);
     dialog->show();
-    m_calibrationDialog.insert(addr, id);
+    m_calibrationDialog.insert(addr, QSharedPointer<CalibrationDialog>(dialog));
     connect(dialog, &CalibrationDialog::finished, this,
             [this, addr]() { m_calibrationDialog.remove(addr); });
+    connect(dialog, &CalibrationDialog::acceptDataFromWidget, this,
+            [this, addr](quint16 code, quint16 value) {
+              dataCapture(addr, code, value);
+            });
   }
 }
 
@@ -61,6 +65,9 @@ void GuiMediator::NewEvent(const model::Event& event) {
     if (std::holds_alternative<model::events::network::Answer>(event.data_)) {
       auto addr = std::get<model::events::network::Answer>(event.data_).addr_;
       m_deviceWidgetsTable.value(addr)->updateValue(event);
+      if (m_calibrationDialog.contains(addr)) {
+        m_calibrationDialog.value(addr)->updateValue(event);
+      }
     }
   }
 }

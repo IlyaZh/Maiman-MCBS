@@ -14,6 +14,7 @@ class MainWindow;
 class Device;
 class DeviceWidget;
 class PlusMinusWidget;
+class CalibrationDialog;
 
 class GuiMediator : public QObject, public interfaces::Subscriber {
   Q_OBJECT
@@ -27,9 +28,8 @@ class GuiMediator : public QObject, public interfaces::Subscriber {
   MainWindow& m_window;
   GuiFactory& m_factory;
   NetworkModel& m_network;
-  QMap<quint8, quint16> m_calibrationDialog;
+  QMap<quint8, QSharedPointer<CalibrationDialog>> m_calibrationDialog;
   QHash<quint8, QPointer<DeviceWidget>> m_deviceWidgetsTable;
-  //  ConverterFactory m_converters;
 
  private slots:
   void createWidgetFor(Device* device);
