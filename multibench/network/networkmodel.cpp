@@ -92,6 +92,11 @@ QMap<quint16, QSharedPointer<DevCommand>> NetworkModel::getCommands(
   return m_devices.value(addr)->commands();
 }
 
+QMap<quint16, QSharedPointer<CommandConverter>> NetworkModel::getConverters(
+    quint8 addr) {
+  return m_devices.value(addr)->converters();
+}
+
 void NetworkModel::rescanNetwork() {
   clear();
   QMap<quint8, quint8> addresses(

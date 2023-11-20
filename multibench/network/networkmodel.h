@@ -4,6 +4,7 @@
 #include <QSet>
 #include <QtWidgets>
 
+#include "commandconverter.h"
 #include "constants.h"
 #include "interfaces/pubsubinterface.h"
 
@@ -33,6 +34,7 @@ class NetworkModel : public QObject, public interfaces::Subscriber {
   bool isStart();
   void stop();
   QMap<quint16, QSharedPointer<DevCommand>> getCommands(quint8 addr);
+  QMap<quint16, QSharedPointer<CommandConverter>> getConverters(quint8 addr);
   void clearNetwork();
 
   void NewEvent(const model::Event& event) override;
