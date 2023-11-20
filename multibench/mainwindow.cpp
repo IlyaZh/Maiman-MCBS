@@ -81,13 +81,12 @@ MainWindow::MainWindow(QWidget* parent)
   }
 
   connect(temperatureGroup, &QActionGroup::triggered, this,
-          [this](QAction* action) {
+          [](QAction* action) {
             Const::TemperatureUnitId id =
                 (action->text() == "Celsius")
                     ? Const::TemperatureUnitId::kCelsius
                     : Const::TemperatureUnitId::kFahrenheit;
             AppSettings::setTemperatureUnit(id);
-            emit tempratureUnitsChanged(id);
           });
   connect(ui->actionAbout, &QAction::triggered, this,
           &MainWindow::callAboutDialog);

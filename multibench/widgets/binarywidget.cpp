@@ -60,10 +60,9 @@ void BinaryWidget::setValue(quint16 value) {
 }
 
 void BinaryWidget::setData(quint16 code, quint16 data) {
-  if (m_converter->code() == code) {
-    m_converter->setValue(data);
-    setValue(m_converter->valueInt());
-  }
+  if (code != m_converter->code()) return;
+  m_converter->setValue(data);
+  setValue(m_converter->valueInt());
 }
 
 QVector<quint16> BinaryWidget::Subscribe() {

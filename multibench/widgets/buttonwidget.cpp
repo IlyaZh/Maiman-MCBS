@@ -43,11 +43,10 @@ ButtonWidget::ButtonWidget(const QString &text, const Button &button,
 ButtonWidget::~ButtonWidget(){};
 
 void ButtonWidget::setData(quint16 code, quint16 data) {
-  if (code == m_converter->code()) {
-    m_converter->setValue(data);
-    m_button->setStyleSheet(((data & m_description.mask) != 0) ? buttonOn
-                                                               : buttonOff);
-  }
+  if (code != m_converter->code()) return;
+  m_converter->setValue(data);
+  m_button->setStyleSheet(((data & m_description.mask) != 0) ? buttonOn
+                                                             : buttonOff);
 }
 
 void ButtonWidget::buttonClicked() {
