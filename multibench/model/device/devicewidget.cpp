@@ -427,5 +427,15 @@ void DeviceWidget::updateValue(const model::Event& event) {
         widget->setData(answer.reg_, answer.value_);
       }
     }
+    adjust();
   }
+}
+
+void DeviceWidget::addGroupMember(QSharedPointer<GroupInterface> /*member*/) {
+  std::runtime_error("Not implemented");
+}
+
+void DeviceWidget::removeGroupMember(
+    QSharedPointer<GroupInterface> /*member*/) {
+  std::runtime_error("Not implemented");
 }

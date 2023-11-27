@@ -6,7 +6,6 @@
 
 #include "interfaces/pubsubinterface.h"
 #include "mainwindow.h"
-#include "model/converterfactory.h"
 #include "network/networkmodel.h"
 
 class GuiFactory;
