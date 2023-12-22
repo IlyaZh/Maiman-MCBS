@@ -83,6 +83,7 @@ SOURCES += \
     modelguimediator.cpp \
     widgets/buttonwidget.cpp \
     widgets/calibrationdialog.cpp \
+    widgets/groupmanager.cpp \
     widgets/groupwidget.cpp \
     widgets/inlineedit.cpp \
     widgets/plusminusgroupwidget.cpp \
@@ -141,6 +142,7 @@ HEADERS += \
     network/IDataReceiver.h \
     widgets/buttonwidget.h \
     widgets/calibrationdialog.h \
+    widgets/groupmanager.h \
     widgets/groupwidget.h \
     widgets/inlineedit.h \
     widgets/plusminusgroupwidget.h \
@@ -179,6 +181,7 @@ FORMS += \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
     widgets/controlwidget.ui \
+    widgets/groupmanager.ui \
     widgets/groupwidget.ui \
     widgets/quitdialog.ui \
     widgets/readparameterwidget.ui \
