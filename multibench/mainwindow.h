@@ -16,6 +16,7 @@ class DeviceWidget;
 class RescanProgressWidget;
 class QuitDialog;
 class ConnectionWidget;
+class GroupWidget;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,6 +31,10 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
   MainWindow(QWidget* parent = nullptr);
   ~MainWindow() override;
   void addDeviceWidget(DeviceWidget* widget);
+  void removeDeviceWidget(DeviceWidget* widget);
+  void restoreDeviceWidgets();
+  void addGroupWidget(GroupWidget* group);
+  void removeGroupWidget(GroupWidget* group);
   void setComPorts(const QStringList& portList);
   void setBaudRates(const QStringList& baudsList);
 
@@ -41,6 +46,7 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
   void tempratureUnitsChanged(Const::TemperatureUnitId id);
   void rescanNetwork();
   void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
+  void createGroupManagerWidget();
   void delayChanged(int delay);
   void timeoutChanged(int timeout);
 
@@ -70,6 +76,7 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
  private:
   Ui::MainWindow* ui;
   QVector<DeviceWidget*> m_workWidgets;
+  QVector<GroupWidget*> m_groupWidgets;
   QGridLayout* m_workFieldLayout;
   QPointer<QActionGroup> m_portGroup;
   QPointer<QActionGroup> m_baudrateGroup;

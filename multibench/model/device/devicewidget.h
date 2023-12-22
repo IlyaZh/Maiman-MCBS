@@ -106,10 +106,13 @@ class DeviceWidget : public QWidget, public GroupInterface {
       QWidget* parent = nullptr);
   ~DeviceWidget() override;
   void setAddress(int addr);
+  int getAddress() const;
   void setConstraint(bool state);
   void updateValue(const model::Event& event);
   void addGroupMember(QSharedPointer<GroupInterface> member) override;
   void removeGroupMember(QSharedPointer<GroupInterface> member) override;
+  const QMap<quint16, Button>& getButtonsDesc() const;
+
  public slots:
   void setLink(bool link);
  signals:
@@ -134,7 +137,7 @@ class DeviceWidget : public QWidget, public GroupInterface {
   int m_fixedWidgets{0};
   //  QHash<quint8, GuiWidgetBase*> m_widgetsTable;
   QSet<GuiWidgetBase*> m_widgetsTable;
-
+  int m_address = 0;
   void paintEvent(QPaintEvent*) override;
   void adjust();
 

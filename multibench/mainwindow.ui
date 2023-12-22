@@ -239,11 +239,18 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
      <string>Calibration</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuGroup_Manager">
+    <property name="title">
+     <string>Group Manager</string>
+    </property>
+    <addaction name="actionManager"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuConnect"/>
    <addaction name="menuCalibration"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuGroup_Manager"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="font">
@@ -329,6 +336,11 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
   <action name="actionMax_Address">
    <property name="text">
     <string>Max Address</string>
+   </property>
+  </action>
+  <action name="actionManager">
+   <property name="text">
+    <string>Manager</string>
    </property>
   </action>
  </widget>

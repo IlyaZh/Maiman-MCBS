@@ -7,6 +7,7 @@
 #include "interfaces/pubsubinterface.h"
 #include "mainwindow.h"
 #include "network/networkmodel.h"
+#include "widgets/groupmanager.h"
 
 class GuiFactory;
 class MainWindow;
@@ -29,11 +30,15 @@ class GuiMediator : public QObject, public interfaces::Subscriber {
   NetworkModel& m_network;
   QMap<quint8, QSharedPointer<CalibrationDialog>> m_calibrationDialog;
   QHash<quint8, QPointer<DeviceWidget>> m_deviceWidgetsTable;
+  QVector<QPointer<GroupWidget>> m_groupWidgetsTable;
 
  private slots:
   void createWidgetFor(Device* device);
   void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
+  void createGroupManagerWidget();
   void dataCapture(quint8 addr, quint16 code, quint16 value);
+  void createGroupWidgetFor(QSet<quint8> addresses);
+  void deleteGroupWidgetFor(QSet<quint8> addresses);
 
  signals:
   void deletedCalibrationDialog();

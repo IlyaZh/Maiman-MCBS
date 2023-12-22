@@ -14,6 +14,7 @@
 #include "ui_mainwindow.h"
 #include "widgets/aboutdialog.h"
 #include "widgets/connectionwidget.h"
+#include "widgets/groupwidget.h"
 #include "widgets/updatewidget.h"
 
 const int WidgetsInAppearence{2};
@@ -100,6 +101,8 @@ MainWindow::MainWindow(QWidget* parent)
           &MainWindow::setNetworkTimeout);
   connect(ui->actionMax_Address, &QAction::triggered, this,
           &MainWindow::setNetworkMaxAddress);
+  connect(ui->actionManager, &QAction::triggered, this,
+          &MainWindow::createGroupManagerWidget);
   ui->actionKeepAddresses->setChecked(AppSettings::getKeepAddresses());
 }
 
@@ -135,6 +138,68 @@ void MainWindow::addDeviceWidget(DeviceWidget* widget) {
   }
 }
 
+void MainWindow::removeDeviceWidget(DeviceWidget* widget) {
+  if (!m_workWidgets.contains(widget)) return;
+  m_workWidgets.removeOne(widget);
+}
+
+void MainWindow::addGroupWidget(GroupWidget* group) {
+  if (!m_groupWidgets.contains(group)) {
+    group->setParent(this);
+    m_groupWidgets.append(group);
+    m_workFieldLayout->addWidget(group);
+  }
+}
+
+void MainWindow::removeGroupWidget(GroupWidget* group) {
+  if (!m_groupWidgets.contains(group)) return;
+  m_groupWidgets.removeOne(group);
+  m_workFieldLayout->removeWidget(group);
+  group->deleteLater();
+}
+
+void MainWindow::restoreDeviceWidgets() {
+  int maxWidth{-1};
+  int widgetsCounter{0};
+  int totalHeightInAppearence{0};
+  for (auto* widget : qAsConst(m_workWidgets)) {
+    if (widget->width() > maxWidth) {
+      maxWidth = widget->width();
+    }
+  }
+
+  for (auto* widget : qAsConst(m_workWidgets)) {
+    widget->setConstraint(true);
+    widget->setMinimumSize(maxWidth, widget->height());
+
+    if (widgetsCounter < WidgetsInAppearence) {
+      ++widgetsCounter;
+      totalHeightInAppearence += widget->height();
+      if (widgetsCounter > 0)
+        totalHeightInAppearence += m_workFieldLayout->spacing();
+    }
+    m_workFieldLayout->addWidget(widget);
+  }
+
+  if (m_workWidgets.isEmpty()) {
+    maxWidth = ui->scrollArea->size().rwidth();
+  }
+
+  auto newSize = ui->scrollArea->size();
+  int diffWidth = maxWidth - newSize.width();
+  int diffHeight = totalHeightInAppearence - ui->scrollArea->height();
+
+  newSize.rwidth() = maxWidth;
+
+  if (diffHeight > 0) newSize.rheight() += diffHeight;
+  ui->scrollArea->resize(newSize);
+
+  auto winSize = size();
+  winSize.rwidth() += diffWidth;
+  winSize.rheight() += (diffHeight > 0) ? diffHeight : 0;
+  resize(winSize);
+}
+
 void MainWindow::addCalibrationMenu(quint8 addr, quint16 id) {
   auto* action = new QAction(QString("ID:%1").arg(addr), this);
   connect(action, &QAction::triggered, this,
@@ -158,45 +223,7 @@ void MainWindow::rescanProgress(int current, int total, int success) {
         m_progressWidget->notFound();
       }
     }
-    int maxWidth{-1};
-    int widgetsCounter{0};
-    int totalHeightInAppearence{0};
-    for (auto* widget : qAsConst(m_workWidgets)) {
-      if (widget->width() > maxWidth) {
-        maxWidth = widget->width();
-      }
-    }
-
-    for (auto* widget : qAsConst(m_workWidgets)) {
-      widget->setConstraint(true);
-      widget->setMinimumSize(maxWidth, widget->height());
-
-      if (widgetsCounter < WidgetsInAppearence) {
-        ++widgetsCounter;
-        totalHeightInAppearence += widget->height();
-        if (widgetsCounter > 0)
-          totalHeightInAppearence += m_workFieldLayout->spacing();
-      }
-      m_workFieldLayout->addWidget(widget);
-    }
-
-    if (m_workWidgets.isEmpty()) {
-      maxWidth = ui->scrollArea->size().rwidth();
-    }
-
-    auto newSize = ui->scrollArea->size();
-    int diffWidth = maxWidth - newSize.width();
-    int diffHeight = totalHeightInAppearence - ui->scrollArea->height();
-
-    newSize.rwidth() = maxWidth;
-
-    if (diffHeight > 0) newSize.rheight() += diffHeight;
-    ui->scrollArea->resize(newSize);
-
-    auto winSize = size();
-    winSize.rwidth() += diffWidth;
-    winSize.rheight() += (diffHeight > 0) ? diffHeight : 0;
-    resize(winSize);
+    restoreDeviceWidgets();
   } else if (m_progressWidget) {
     m_progressWidget->setProgress(current, total, success);
   }
@@ -292,11 +319,16 @@ void MainWindow::setConnected(bool isConnected) {
       m_workFieldLayout->removeWidget(widget);
       widget->deleteLater();
     }
+    for (auto* group : qAsConst(m_groupWidgets)) {
+      m_workFieldLayout->removeWidget(group);
+      group->deleteLater();
+    }
     if (m_progressWidget) {
       m_workFieldLayout->removeWidget(m_progressWidget);
       m_progressWidget->deleteLater();
     }
     m_workWidgets.clear();
+    m_groupWidgets.clear();
     ui->menuCalibration->clear();
     adjustSize();
   }
