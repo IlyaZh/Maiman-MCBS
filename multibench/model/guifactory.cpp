@@ -54,6 +54,13 @@ CalibrationDialog* GuiFactory::createCalibrationDialog(
   }
   return nullptr;
 }
+
+GroupWidget* GuiFactory::createGroupWidget() { return new GroupWidget(); }
+
+GroupManager* GuiFactory::createGroupManagerWidget(
+    const QSet<quint8> addresses) {
+  return new GroupManager(addresses);
+}
 // private slots
 
 void GuiFactory::parsingFinished() {

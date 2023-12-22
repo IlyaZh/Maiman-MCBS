@@ -6,6 +6,8 @@
 
 #include "device/devicewidget.h"
 #include "factories/parserworker.h"
+#include "widgets/groupmanager.h"
+#include "widgets/groupwidget.h"
 
 class DevCommand;
 class CalibrationDialog;
@@ -25,6 +27,8 @@ class GuiFactory : public QObject {
   CalibrationDialog* createCalibrationDialog(
       quint16 id,
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters);
+  GroupWidget* createGroupWidget();
+  GroupManager* createGroupManagerWidget(const QSet<quint8> addresses);
   bool hasLimits(quint16 id);
   bool hasCalibration(quint16 id);
  private slots:
