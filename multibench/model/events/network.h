@@ -5,7 +5,7 @@
 
 namespace model::events::network {
 
-enum class CommandType { cStartDevices, cStopDevices };
+enum class CommandType { kStartDevices, kStopDevices };
 
 struct ReadRequest {
   quint8 address;

@@ -58,8 +58,12 @@ CalibrationDialog* GuiFactory::createCalibrationDialog(
 GroupWidget* GuiFactory::createGroupWidget() { return new GroupWidget(); }
 
 GroupManager* GuiFactory::createGroupManagerWidget(
-    const QSet<quint8> addresses) {
+    const QSet<quint8>& addresses) {
   return new GroupManager(addresses);
+}
+
+QMap<quint16, Button>& GuiFactory::getButtonsDesc(const quint16 id) {
+  return m_deviceWidgets[id].buttons;
 }
 // private slots
 

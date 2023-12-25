@@ -442,7 +442,3 @@ void DeviceWidget::removeGroupMember(
     QSharedPointer<GroupInterface> /*member*/) {
   std::runtime_error("Not implemented");
 }
-
-const QMap<quint16, Button>& DeviceWidget::getButtonsDesc() const {
-  return m_buttons;
-}

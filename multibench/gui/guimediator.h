@@ -37,8 +37,8 @@ class GuiMediator : public QObject, public interfaces::Subscriber {
   void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
   void createGroupManagerWidget();
   void dataCapture(quint8 addr, quint16 code, quint16 value);
-  void createGroupWidgetFor(QSet<quint8> addresses);
-  void deleteGroupWidgetFor(QSet<quint8> addresses);
+  void createGroupWidgetFor(const QSet<quint8> addresses);
+  void deleteGroupWidgetFor(const QSet<quint8> addresses);
 
  signals:
   void deletedCalibrationDialog();

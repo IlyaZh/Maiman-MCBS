@@ -70,7 +70,7 @@ void GroupWidget::removeGroupMember(QPointer<DeviceWidget> member) {
 const QSet<quint8> GroupWidget::getAddresses() { return m_addresses; }
 
 void GroupWidget::startDevices() {
-  auto command = model::events::network::CommandType::cStartDevices;
+  auto command = model::events::network::CommandType::kStartDevices;
   emit groupEvent(
       GroupCommandFactory::createGroupCommand(m_addresses, command));
   ui->startButton->setStyleSheet(buttonOn);
@@ -78,7 +78,7 @@ void GroupWidget::startDevices() {
 }
 
 void GroupWidget::stopDevices() {
-  auto command = model::events::network::CommandType::cStopDevices;
+  auto command = model::events::network::CommandType::kStopDevices;
   emit groupEvent(
       GroupCommandFactory::createGroupCommand(m_addresses, command));
   ui->startButton->setStyleSheet(buttonNone);

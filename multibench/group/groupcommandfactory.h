@@ -8,5 +8,6 @@ class GroupCommandFactory {
  public:
   GroupCommandFactory();
   const static model::Event createGroupCommand(
-      QSet<quint8>& addresses, model::events::network::CommandType& command);
+      const QSet<quint8>& addresses,
+      const model::events::network::CommandType& command);
 };

@@ -111,7 +111,6 @@ class DeviceWidget : public QWidget, public GroupInterface {
   void updateValue(const model::Event& event);
   void addGroupMember(QSharedPointer<GroupInterface> member) override;
   void removeGroupMember(QSharedPointer<GroupInterface> member) override;
-  const QMap<quint16, Button>& getButtonsDesc() const;
 
  public slots:
   void setLink(bool link);

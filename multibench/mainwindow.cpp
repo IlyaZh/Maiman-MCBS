@@ -144,11 +144,10 @@ void MainWindow::removeDeviceWidget(DeviceWidget* widget) {
 }
 
 void MainWindow::addGroupWidget(GroupWidget* group) {
-  if (!m_groupWidgets.contains(group)) {
-    group->setParent(this);
-    m_groupWidgets.append(group);
-    m_workFieldLayout->addWidget(group);
-  }
+  if (m_groupWidgets.contains(group)) return;
+  group->setParent(this);
+  m_groupWidgets.append(group);
+  m_workFieldLayout->addWidget(group);
 }
 
 void MainWindow::removeGroupWidget(GroupWidget* group) {

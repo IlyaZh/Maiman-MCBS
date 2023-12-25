@@ -68,7 +68,7 @@ void GuiMediator::createGroupManagerWidget() {
     addrs.insert(addr);
   }
 
-  GroupManager* manager = m_factory.createGroupManagerWidget(addrs);
+  QPointer<GroupManager> manager(m_factory.createGroupManagerWidget(addrs));
   manager->setModal(false);
   manager->show();
   connect(manager, &GroupManager::createGroupWidget, this,
@@ -77,7 +77,7 @@ void GuiMediator::createGroupManagerWidget() {
           &GuiMediator::deleteGroupWidgetFor);
 }
 
-void GuiMediator::createGroupWidgetFor(QSet<quint8> addresses) {
+void GuiMediator::createGroupWidgetFor(const QSet<quint8> addresses) {
   QPointer<GroupWidget> group(m_factory.createGroupWidget());
   for (auto addr : addresses) {
     auto widget = m_deviceWidgetsTable.value(addr);
@@ -87,30 +87,10 @@ void GuiMediator::createGroupWidgetFor(QSet<quint8> addresses) {
   m_window.addGroupWidget(group);
   m_groupWidgetsTable.append(group);
   connect(group, &GroupWidget::groupEvent, this,
-          [this, addresses](model::Event event) {
-            auto data =
-                std::get<model::events::network::FrontRequest>(event.data_);
-            for (auto addr : addresses) {
-              for (auto button :
-                   m_deviceWidgetsTable.value(addr)->getButtonsDesc()) {
-                if (data.command_ ==
-                    model::events::network::CommandType::cStartDevices) {
-                  model::Event event(model::EventType::kWriteDevice,
-                                     model::events::network::SingleWriteRequest(
-                                         addr, button.code, button.onCommand));
-                  emit Signal_PublishEvent(event);
-                } else {
-                  model::Event event(model::EventType::kWriteDevice,
-                                     model::events::network::SingleWriteRequest(
-                                         addr, button.code, button.offCommand));
-                  emit Signal_PublishEvent(event);
-                }
-              }
-            }
-          });
+          &GuiMediator::Signal_PublishEvent);
 }
 
-void GuiMediator::deleteGroupWidgetFor(QSet<quint8> addresses) {
+void GuiMediator::deleteGroupWidgetFor(const QSet<quint8> addresses) {
   for (auto group : m_groupWidgetsTable) {
     if (group->getAddresses() == addresses) {
       m_window.removeGroupWidget(group);

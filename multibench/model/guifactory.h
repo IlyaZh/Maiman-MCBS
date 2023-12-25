@@ -28,7 +28,8 @@ class GuiFactory : public QObject {
       quint16 id,
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters);
   GroupWidget* createGroupWidget();
-  GroupManager* createGroupManagerWidget(const QSet<quint8> addresses);
+  GroupManager* createGroupManagerWidget(const QSet<quint8>& addresses);
+  QMap<quint16, Button>& getButtonsDesc(const quint16 id);
   bool hasLimits(quint16 id);
   bool hasCalibration(quint16 id);
  private slots:

@@ -13,7 +13,8 @@ class DevCommand;
 struct CommandSettings {
   explicit CommandSettings(quint16 code, const QString& unit, double divider,
                            quint8 tolerance, uint interval, bool isSigned,
-                           bool isTemperature);
+                           bool isTemperature, QString& alias,
+                           quint16 onCommand, quint16 offCommand);
   quint16 m_code;
   QString m_unit;
   double m_divider = 1;
@@ -21,6 +22,9 @@ struct CommandSettings {
   bool m_isSigned = false;
   bool m_isTemperature = false;
   uint m_interval;
+  QString m_alias;
+  quint16 m_onCommand;
+  quint16 m_offCommand;
 };
 
 class DevCommand : public QObject {
@@ -43,6 +47,10 @@ class DevCommand : public QObject {
   uint valueInt() const;
   QString valueStr() const;
   uint interval() const;
+
+  QString alias() const;
+  quint16 onCommand() const;
+  quint16 offCommand() const;
 
   double avgValue() const;
   double maxValue() const;

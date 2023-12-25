@@ -7,14 +7,18 @@
 CommandSettings::CommandSettings(quint16 code, const QString& unit,
                                  double divider, quint8 tolerance,
                                  uint interval, bool isSigned,
-                                 bool isTemperature)
+                                 bool isTemperature, QString& alias,
+                                 quint16 onCommand, quint16 offCommand)
     : m_code(code),
       m_unit(unit),
       m_divider(divider),
       m_tolerance(tolerance),
       m_isSigned(isSigned),
       m_isTemperature(isTemperature),
-      m_interval(interval) {}
+      m_interval(interval),
+      m_alias(alias),
+      m_onCommand(onCommand),
+      m_offCommand(offCommand) {}
 
 // static methods
 
@@ -117,6 +121,12 @@ double DevCommand::minValue() const {
 }
 
 CommandSettings DevCommand::commandSettings() { return m_config; }
+
+QString DevCommand::alias() const { return m_config.m_alias; }
+
+quint16 DevCommand::onCommand() const { return m_config.m_onCommand; }
+
+quint16 DevCommand::offCommand() const { return m_config.m_offCommand; }
 
 // public slots
 void DevCommand::setFromDevice(quint16 value) {
