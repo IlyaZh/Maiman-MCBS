@@ -177,13 +177,13 @@ const QMap<quint16, CommandSettings> DeviceFactory::parseCommands(
 
   for (int c = 0; c < item.childCount(); c++) {
     quint16 code = 0;
-    QString unit = "";
+    QString unit{};
     double divider = 1;
     quint8 tol = 0;
     uint interval = 1;
     bool isSigned = false;
     bool isTemperature = false;
-    QString alias = "";
+    QString alias{};
     quint16 onCommand = 0;
     quint16 offCommand = 0;
 

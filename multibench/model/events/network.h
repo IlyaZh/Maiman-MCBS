@@ -43,8 +43,8 @@ struct Answer {
   quint16 value_;
 };
 
-struct FrontRequest {
-  FrontRequest(const QSet<quint8>& addresses, CommandType command)
+struct DataRequest {
+  DataRequest(const QSet<quint8>& addresses, CommandType command)
       : addresses_(addresses), command_(command) {}
   const QSet<quint8> addresses_;
   const CommandType command_;

@@ -77,7 +77,7 @@ void GuiMediator::createGroupManagerWidget() {
           &GuiMediator::deleteGroupWidgetFor);
 }
 
-void GuiMediator::createGroupWidgetFor(const QSet<quint8> addresses) {
+void GuiMediator::createGroupWidgetFor(const QSet<quint8>& addresses) {
   QPointer<GroupWidget> group(m_factory.createGroupWidget());
   for (auto addr : addresses) {
     auto widget = m_deviceWidgetsTable.value(addr);
@@ -90,17 +90,16 @@ void GuiMediator::createGroupWidgetFor(const QSet<quint8> addresses) {
           &GuiMediator::Signal_PublishEvent);
 }
 
-void GuiMediator::deleteGroupWidgetFor(const QSet<quint8> addresses) {
+void GuiMediator::deleteGroupWidgetFor(const QSet<quint8>& addresses) {
   for (auto group : m_groupWidgetsTable) {
-    if (group->getAddresses() == addresses) {
-      m_window.removeGroupWidget(group);
-      m_groupWidgetsTable.removeOne(group);
-      for (auto addr : addresses) {
-        auto widget = m_deviceWidgetsTable.value(addr);
-        m_window.addDeviceWidget(widget);
-      }
-      m_window.restoreDeviceWidgets();
+    if (group->getAddresses() != addresses) return;
+    m_window.removeGroupWidget(group);
+    m_groupWidgetsTable.removeOne(group);
+    for (auto addr : addresses) {
+      auto widget = m_deviceWidgetsTable.value(addr);
+      m_window.addDeviceWidget(widget);
     }
+    m_window.restoreDeviceWidgets();
   }
 }
 
