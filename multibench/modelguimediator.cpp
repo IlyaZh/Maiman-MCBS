@@ -16,8 +16,7 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,
     : QObject(parent),
       m_window(window),
       m_factory(factory),
-      m_network(networkModel),
-      m_converters(new ConverterFactory) {
+      m_network(networkModel) {
   //  factory.start();
   //  connect(&networkModel, &NetworkModel::signal_createWidgetFor, this,
   //          &ModelGuiMediator::createWidgetFor);
@@ -52,10 +51,8 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,
 
 void ModelGuiMediator::createWidgetFor(Device* device) {
   // TODO: пронеси Device мимо этого класса в наследуемые
-  m_converters->createConverters(device->addr(), device->commands());
   QPointer<DeviceWidget> widget(m_factory.createDeviceWidget(
-      device->id(), device->commands(),
-      m_converters->getConverters(device->addr())));
+      device->id(), device->commands(), device->converters()));
   if (widget) {
     widget->setAddress(static_cast<int>(device->addr()));
     connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);

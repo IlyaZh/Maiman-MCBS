@@ -292,11 +292,14 @@ DeviceWidget::DeviceWidget(
 DeviceWidget::~DeviceWidget() { delete ui; }
 
 void DeviceWidget::setAddress(int addr) {
+  m_address = addr;
   InLineEdit* address = new InLineEdit(addr);
   ui->gridLayout->addWidget(address, 0, 2);
   connect(address, &InLineEdit::nameEdited, this, &DeviceWidget::nameEdited);
   // ui->idLabel->setText(QString("ID:%1").arg(addr));
 }
+
+int DeviceWidget::getAddress() const { return m_address; }
 
 void DeviceWidget::setLink(bool link) {
   ui->linkLabel->setStyleSheet(link ? linkStyleOn : linkStyleOff);
@@ -427,5 +430,15 @@ void DeviceWidget::updateValue(const model::Event& event) {
         widget->setData(answer.reg_, answer.value_);
       }
     }
+    adjust();
   }
+}
+
+void DeviceWidget::addGroupMember(QSharedPointer<GroupInterface> /*member*/) {
+  std::runtime_error("Not implemented");
+}
+
+void DeviceWidget::removeGroupMember(
+    QSharedPointer<GroupInterface> /*member*/) {
+  std::runtime_error("Not implemented");
 }

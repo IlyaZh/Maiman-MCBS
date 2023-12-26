@@ -19,6 +19,8 @@ GuiMediator::GuiMediator(MainWindow& window, GuiFactory& factory,
           &GuiMediator::createWidgetFor);
   connect(&window, &MainWindow::createCalibAndLimitsWidgets, this,
           &GuiMediator::createCalibAndLimitsWidgets);
+  connect(&window, &MainWindow::createGroupManagerWidget, this,
+          &GuiMediator::createGroupManagerWidget);
 }
 
 void GuiMediator::createWidgetFor(Device* device) {
@@ -57,6 +59,47 @@ void GuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id) {
             [this, addr](quint16 code, quint16 value) {
               dataCapture(addr, code, value);
             });
+  }
+}
+
+void GuiMediator::createGroupManagerWidget() {
+  QSet<quint8> addrs;
+  for (auto addr : m_deviceWidgetsTable.keys()) {
+    addrs.insert(addr);
+  }
+
+  QPointer<GroupManager> manager(m_factory.createGroupManagerWidget(addrs));
+  manager->setModal(false);
+  manager->show();
+  connect(manager, &GroupManager::createGroupWidget, this,
+          &GuiMediator::createGroupWidgetFor);
+  connect(manager, &GroupManager::deleteGroupWidget, this,
+          &GuiMediator::deleteGroupWidgetFor);
+}
+
+void GuiMediator::createGroupWidgetFor(const QSet<quint8>& addresses) {
+  QPointer<GroupWidget> group(m_factory.createGroupWidget());
+  for (auto addr : addresses) {
+    auto widget = m_deviceWidgetsTable.value(addr);
+    group->addGroupMember(widget);
+    m_window.removeDeviceWidget(widget);
+  }
+  m_window.addGroupWidget(group);
+  m_groupWidgetsTable.append(group);
+  connect(group, &GroupWidget::groupEvent, this,
+          &GuiMediator::Signal_PublishEvent);
+}
+
+void GuiMediator::deleteGroupWidgetFor(const QSet<quint8>& addresses) {
+  for (auto group : m_groupWidgetsTable) {
+    if (group->getAddresses() != addresses) return;
+    m_window.removeGroupWidget(group);
+    m_groupWidgetsTable.removeOne(group);
+    for (auto addr : addresses) {
+      auto widget = m_deviceWidgetsTable.value(addr);
+      m_window.addDeviceWidget(widget);
+    }
+    m_window.restoreDeviceWidgets();
   }
 }
 

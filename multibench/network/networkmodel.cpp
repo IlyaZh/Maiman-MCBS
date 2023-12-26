@@ -184,6 +184,23 @@ void NetworkModel::dataOutcome(const model::Event& event) {
       auto package =
           m_protocol.setDataValue(data.address_, data.reg_, data.value_);
       m_priorityQueue.enqueue(package);
+    } else if (std::holds_alternative<model::events::network::FrontRequest>(
+                   event.data_)) {
+      auto data = std::get<model::events::network::FrontRequest>(event.data_);
+      for (auto addr : data.addresses_) {
+        for (auto command : m_devices.value(addr)->commands()) {
+          if (command->alias() == "start") {
+            quint16 condition =
+                (data.command_ ==
+                 model::events::network::CommandType::kStartDevices)
+                    ? command->onCommand()
+                    : command->offCommand();
+            auto package =
+                m_protocol.setDataValue(addr, command->code(), condition);
+            m_priorityQueue.enqueue(package);
+          }
+        }
+      }
     }
   }
 }
@@ -299,6 +316,9 @@ void NetworkModel::NewEvent(const model::Event& event) {
   if (event.type_ == model::EventType::kWriteDevice) {
     if (std::holds_alternative<model::events::network::SingleWriteRequest>(
             event.data_)) {
+      dataOutcome(event);
+    } else if (std::holds_alternative<model::events::network::FrontRequest>(
+                   event.data_)) {
       dataOutcome(event);
     }
   }

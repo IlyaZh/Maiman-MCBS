@@ -4,6 +4,7 @@
 #include <QtWidgets>
 
 #include "commandconverter.h"
+#include "group/GroupInterface.h"
 #include "gui/guiinterface.h"
 #include "gui/guimediator.h"
 #include "widgets/buttonwidget.h"
@@ -95,19 +96,22 @@ namespace Ui {
 class DeviceWidget;
 }
 
-class DeviceWidget : public QWidget {
+class DeviceWidget : public QWidget, public GroupInterface {
   Q_OBJECT
-
  public:
   explicit DeviceWidget(
       const DeviceWidgetDesc& description,
       const QMap<quint16, QSharedPointer<DevCommand>>& commands,
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
       QWidget* parent = nullptr);
-  ~DeviceWidget();
+  ~DeviceWidget() override;
   void setAddress(int addr);
+  int getAddress() const;
   void setConstraint(bool state);
   void updateValue(const model::Event& event);
+  void addGroupMember(QSharedPointer<GroupInterface> member) override;
+  void removeGroupMember(QSharedPointer<GroupInterface> member) override;
+
  public slots:
   void setLink(bool link);
  signals:
@@ -132,7 +136,7 @@ class DeviceWidget : public QWidget {
   int m_fixedWidgets{0};
   //  QHash<quint8, GuiWidgetBase*> m_widgetsTable;
   QSet<GuiWidgetBase*> m_widgetsTable;
-
+  int m_address = 0;
   void paintEvent(QPaintEvent*) override;
   void adjust();
 

@@ -177,12 +177,15 @@ const QMap<quint16, CommandSettings> DeviceFactory::parseCommands(
 
   for (int c = 0; c < item.childCount(); c++) {
     quint16 code = 0;
-    QString unit = "";
+    QString unit{};
     double divider = 1;
     quint8 tol = 0;
     uint interval = 1;
     bool isSigned = false;
     bool isTemperature = false;
+    QString alias{};
+    quint16 onCommand = 0;
+    quint16 offCommand = 0;
 
     const TreeItem& cmd = item.child(c);
 
@@ -207,11 +210,20 @@ const QMap<quint16, CommandSettings> DeviceFactory::parseCommands(
       if (child.name() == "isSigned") isSigned = true;
 
       if (child.name() == "isTemperature") isTemperature = true;
+
+      if (child.name() == "alias") alias = child.value().toString();
+
+      if (child.name() == "onCommand")
+        onCommand = child.value().toString().toUInt(nullptr, 16);
+
+      if (child.name() == "offCommand")
+        offCommand = child.value().toString().toUInt(nullptr, 16);
     }
 
     if (code != 0) {
-      list.insert(code, CommandSettings(code, unit, divider, tol, interval,
-                                        isSigned, isTemperature));
+      list.insert(code,
+                  CommandSettings(code, unit, divider, tol, interval, isSigned,
+                                  isTemperature, alias, onCommand, offCommand));
     }
   }
 

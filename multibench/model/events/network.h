@@ -5,6 +5,8 @@
 
 namespace model::events::network {
 
+enum class CommandType { kStartDevices, kStopDevices };
+
 struct ReadRequest {
   quint8 address;
   quint16 reg;
@@ -39,5 +41,12 @@ struct Answer {
   quint8 addr_;
   quint16 reg_;
   quint16 value_;
+};
+
+struct DataRequest {
+  DataRequest(const QSet<quint8>& addresses, CommandType command)
+      : addresses_(addresses), command_(command) {}
+  const QSet<quint8> addresses_;
+  const CommandType command_;
 };
 }  // namespace model::events::network

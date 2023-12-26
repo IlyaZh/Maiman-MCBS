@@ -65,8 +65,8 @@ SOURCES += \
     commandconverter.cpp \
   components/mediator.cpp \
     device/connectionpolling.cpp \
+    group/groupcommandfactory.cpp \
     gui/guimediator.cpp \
-    model/converterfactory.cpp \
     model/device/devicecondition.cpp \
     appsettings.cpp \
     datasource.cpp \
@@ -83,6 +83,8 @@ SOURCES += \
     modelguimediator.cpp \
     widgets/buttonwidget.cpp \
     widgets/calibrationdialog.cpp \
+    widgets/groupmanager.cpp \
+    widgets/groupwidget.cpp \
     widgets/inlineedit.cpp \
     widgets/plusminusgroupwidget.cpp \
     widgets/plusminuswidget.cpp \
@@ -117,10 +119,11 @@ HEADERS += \
     components/mediator.h \
     constants.h \
     device/connectionpolling.h \
+    group/GroupInterface.h \
+    group/groupcommandfactory.h \
     gui/guiinterface.h \
     gui/guimediator.h \
   interfaces/pubsubinterface.h \
-    model/converterfactory.h \
     model/device/devicecondition.h \
     appsettings.h \
     datasource.h \
@@ -139,6 +142,8 @@ HEADERS += \
     network/IDataReceiver.h \
     widgets/buttonwidget.h \
     widgets/calibrationdialog.h \
+    widgets/groupmanager.h \
+    widgets/groupwidget.h \
     widgets/inlineedit.h \
     widgets/plusminusgroupwidget.h \
     widgets/plusminuswidget.h \
@@ -176,6 +181,8 @@ FORMS += \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
     widgets/controlwidget.ui \
+    widgets/groupmanager.ui \
+    widgets/groupwidget.ui \
     widgets/quitdialog.ui \
     widgets/readparameterwidget.ui \
     widgets/rescanprogresswidget.ui

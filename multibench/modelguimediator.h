@@ -6,7 +6,6 @@
 #include <QWidget>
 
 #include "mainwindow.h"
-#include "model/converterfactory.h"
 #include "network/networkmodel.h"
 
 class GuiFactory;
@@ -27,7 +26,6 @@ class ModelGuiMediator : public QObject {
   GuiFactory& m_factory;
   NetworkModel& m_network;
   QMap<quint8, quint16> m_calibrationDialog;
-  ConverterFactory* m_converters;
 
  private slots:
   void createWidgetFor(Device* device);
