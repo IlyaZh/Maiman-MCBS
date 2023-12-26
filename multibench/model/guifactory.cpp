@@ -62,9 +62,6 @@ GroupManager* GuiFactory::createGroupManagerWidget(
   return new GroupManager(addresses);
 }
 
-QMap<quint16, Button>& GuiFactory::getButtonsDesc(const quint16 id) {
-  return m_deviceWidgets[id].buttons;
-}
 // private slots
 
 void GuiFactory::parsingFinished() {
