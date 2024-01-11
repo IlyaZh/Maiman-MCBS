@@ -37,17 +37,36 @@ GroupWidget::GroupWidget(QWidget *parent)
       ui(new Ui::GroupWidget),
       m_widgetLayout(new QGridLayout()) {
   ui->setupUi(this);
-  m_widgetLayout = new QGridLayout(ui->scrollDevices);
+  m_widgetLayout = new QGridLayout(ui->devicesTable);
   m_widgetLayout->setMargin(0);
   m_widgetLayout->setSpacing(10);
-  m_widgetLayout->setContentsMargins(0, 0, 0, 0);
+  m_widgetLayout->setContentsMargins(20, 0, 0, 0);
   m_widgetLayout->setSizeConstraint(QLayout::SetMinimumSize);
   m_widgetLayout->setAlignment(Qt::AlignLeft);
-  ui->scrollDevices->setLayout(m_widgetLayout);
+  ui->devicesTable->setLayout(m_widgetLayout);
+
+  ui->hideButton->setCheckable(true);
+  ui->hideButton->setChecked(false);
+  ui->hideButton->setIconSize(QSize(10, 10));
+  QIcon icon1;
+  icon1.addFile(QString::fromUtf8(":/resources/images/hidecontrols-icon.png"),
+                QSize(), QIcon::Normal, QIcon::Off);
+  icon1.addFile(QString::fromUtf8(":/resources/images/showcontrols-icon.png"),
+                QSize(), QIcon::Normal, QIcon::On);
+  ui->hideButton->setIcon(icon1);
+  ui->hideButton->setObjectName(QString::fromUtf8("hideControlButton"));
+  ui->hideButton->setMinimumSize(QSize(125, 37));
+  ui->hideButton->setMaximumSize(QSize(125, 37));
+  QFont font1;
+  font1.setFamily(QString::fromUtf8("Share Tech Mono"));
+  ui->hideButton->setFont(font1);
+
   connect(ui->startButton, &QPushButton::clicked, this,
           &GroupWidget::startDevices);
   connect(ui->stopButton, &QPushButton::clicked, this,
           &GroupWidget::stopDevices);
+  connect(ui->hideButton, &QPushButton::clicked, this,
+          &GroupWidget::hideDevices);
 }
 
 GroupWidget::~GroupWidget() { delete ui; }
@@ -108,17 +127,38 @@ void GroupWidget::resizeWidget() {
     m_widgetLayout->addWidget(widget);
   }
 
-  auto newSize = ui->scrollArea->size();
+  auto newSize = ui->devicesTable->size();
   int diffWidth = maxWidth - newSize.width();
-  int diffHeight = totalHeightInAppearence - ui->scrollArea->height();
+  int diffHeight = totalHeightInAppearence - ui->devicesTable->height();
 
   newSize.rwidth() = maxWidth;
 
   if (diffHeight > 0) newSize.rheight() += diffHeight;
-  ui->scrollDevices->resize(newSize);
+  ui->devicesTable->resize(newSize);
 
   auto winSize = size();
   winSize.rwidth() += diffWidth;
   winSize.rheight() += (diffHeight > 0) ? diffHeight : 0;
   resize(winSize);
+}
+
+void GroupWidget::hideDevices(bool flag) {
+  m_hideDevices = flag;
+
+  if (m_hideDevices) {
+    ui->hideButton->setText("Show");
+    ui->devicesTable->setVisible(false);
+  } else {
+    ui->hideButton->setText("Hide");
+    ui->devicesTable->setVisible(true);
+  }
+
+  resizeWidget();
+}
+
+void GroupWidget::paintEvent(QPaintEvent *) {
+  QStyleOption opt;
+  opt.init(this);
+  QPainter p(this);
+  style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

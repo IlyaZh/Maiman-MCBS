@@ -75,8 +75,8 @@ DeviceWidget::DeviceWidget(
   // Инициализация кнопки (Hide controls)
   auto m_hideControlsButton = new QPushButton(" " + tr("Hide controls"));
   m_hideControlsButton->setStyleSheet(
-      "border: 2px solid rgb(26,26,26);\nborder-radius: 3px;\nbackground: "
-      "rgb(51,51,51);\ncolor: rgb(255,255,255);\n"
+      "border: 2px solid rgb(26,26,26);\n border-radius: 3px;\n background: "
+      "rgb(51,51,51);\n color: rgb(255,255,255);\n"
       "padding: 0px;\n"
       "margin-left: 10px;\n"
       "margin-bottom: 15px;");
