@@ -49,4 +49,11 @@ struct DataRequest {
   const QSet<quint8> addresses_;
   const CommandType command_;
 };
+
+struct DeviceLinkStatus {
+  DeviceLinkStatus(const quint8 address, const bool status)
+      : addr_(address), status_(status) {}
+  const quint8 addr_;
+  const bool status_;
+};
 }  // namespace model::events::network

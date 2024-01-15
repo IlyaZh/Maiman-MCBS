@@ -126,7 +126,7 @@ void ControlWidget::userEnteredData() {
     valueFromLine = qBound(m_MinConv->valueDouble(), valueFromLine,
                            m_MaxConv->valueDouble());
     setEditLineRed();
-    QTimer::singleShot(ErrorTimeout, this, SLOT(setEditLineWhite()));
+    QTimer::singleShot(ErrorTimeout, this, ControlWidget::setEditLineWhite);
   }
 
   if (!m_ValueConv.isNull()) {
@@ -189,7 +189,7 @@ void ControlWidget::setEditLineWhite() {
       "  color: rgb(0, 0, 0);\n"
       "	background: rgb(255, 255, 255);\n"
       "	border-radius: 5px;\n");
-  const QString value = m_Value->valueStr();
+  const QString value = m_ValueConv->valueStr();
   ui->Value->setText(value);
 }
 

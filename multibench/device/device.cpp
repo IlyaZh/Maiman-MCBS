@@ -43,7 +43,13 @@ void Device::dataIncome(quint16 reg, quint16 value) {
 
     m_isLink = true;
 
-    emit linkChanged(m_isLink);
+    model::Event event(
+        model::EventType::kDeviceStateUpdated,
+        model::events::network::DeviceLinkStatus(m_addr, m_isLink));
+
+    emit dataToModel(event);
+
+    //    emit linkChanged(m_isLink);
 
     cmd->setFromDevice(value);
   }
@@ -99,7 +105,14 @@ void Device::unlink() {
   //    }
   qInfo() << "Device is lost connection" << m_addr
           << QDateTime::currentDateTime().time().toString("mm:ss.zzz");
-  emit linkChanged(m_isLink);
+
+  model::Event event(
+      model::EventType::kDeviceStateUpdated,
+      model::events::network::DeviceLinkStatus(m_addr, m_isLink));
+
+  emit dataToModel(event);
+
+  //  emit linkChanged(m_isLink);
 }
 
 // private methods

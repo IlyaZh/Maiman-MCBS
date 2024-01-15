@@ -32,7 +32,7 @@ void GuiMediator::createWidgetFor(Device* device) {
   if (widget) {
     m_deviceWidgetsTable.insert(device->addr(), widget);
     widget->setAddress(static_cast<int>(device->addr()));
-    connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);
+    //    connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);
     connect(widget, &DeviceWidget::acceptDataFromWidget, this,
             [this, device](quint16 code, quint16 value) {
               dataCapture(device->addr(), code, value);
@@ -111,6 +111,11 @@ void GuiMediator::NewEvent(const model::Event& event) {
       if (m_calibrationDialog.contains(addr)) {
         m_calibrationDialog.value(addr)->updateValue(event);
       }
+    } else if (std::holds_alternative<model::events::network::DeviceLinkStatus>(
+                   event.data_)) {
+      auto data =
+          std::get<model::events::network::DeviceLinkStatus>(event.data_);
+      m_deviceWidgetsTable.value(data.addr_)->setLink(data.status_);
     }
   }
 }

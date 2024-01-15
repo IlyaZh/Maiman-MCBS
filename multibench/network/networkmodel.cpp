@@ -201,6 +201,9 @@ void NetworkModel::dataOutcome(const model::Event& event) {
           }
         }
       }
+    } else if (std::holds_alternative<model::events::network::DeviceLinkStatus>(
+                   event.data_)) {
+      emit Signal_PublishEvent(event);
     }
   }
 }
