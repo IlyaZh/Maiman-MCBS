@@ -67,6 +67,8 @@ GroupWidget::GroupWidget(QWidget *parent)
           &GroupWidget::stopDevices);
   connect(ui->hideButton, &QPushButton::clicked, this,
           &GroupWidget::hideDevices);
+  connect(ui->statusButton, &QPushButton::clicked, this,
+          &GroupWidget::showStatus);
 }
 
 GroupWidget::~GroupWidget() { delete ui; }
@@ -77,6 +79,10 @@ void GroupWidget::addGroupMember(QPointer<DeviceWidget> member) {
   m_groupWidgets.append(member);
   resizeWidget();
   m_addresses.insert(member->getAddress());
+  auto status = DeviceStatusGroup();
+  status.errors = QStringList();
+  status.devStarted = QMap<QString, bool>();
+  m_status.insert(member->getAddress(), status);
 }
 
 void GroupWidget::removeGroupMember(QPointer<DeviceWidget> member) {
@@ -161,4 +167,29 @@ void GroupWidget::paintEvent(QPaintEvent *) {
   opt.init(this);
   QPainter p(this);
   style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void GroupWidget::setDevicesStatus(
+    quint8 addr, std::optional<QSharedPointer<DeviceStatusGroup>> &desc) {
+  if (desc == std::nullopt) return;
+  if (desc->data()->errors.has_value()) {
+    m_status[addr].errors->append(desc->data()->errors.value());
+    m_status[addr].errors->removeDuplicates();
+  }
+  if (desc->data()->devStarted.has_value()) {
+    for (auto key : desc->data()->devStarted->keys()) {
+      if (!m_status[addr].devStarted->contains(key))
+        m_status[addr].devStarted->insert(key,
+                                          desc->data()->devStarted->value(key));
+    }
+  }
+}
+
+void GroupWidget::showStatus() {
+  for (auto status : m_status) {
+    qDebug() << "status" << status.errors.value().join("; ");
+    for (auto key : status.devStarted.value().keys()) {
+      qDebug() << key << status.devStarted.value().value(key);
+    }
+  }
 }

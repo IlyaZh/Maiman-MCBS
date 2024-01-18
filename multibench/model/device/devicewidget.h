@@ -107,6 +107,7 @@ class DeviceWidget : public QWidget, public GroupInterface {
   ~DeviceWidget() override;
   void setAddress(int addr);
   int getAddress() const;
+  int getId() const;
   void setConstraint(bool state);
   void updateValue(const model::Event& event);
   void addGroupMember(QSharedPointer<GroupInterface> member) override;
@@ -137,6 +138,7 @@ class DeviceWidget : public QWidget, public GroupInterface {
   //  QHash<quint8, GuiWidgetBase*> m_widgetsTable;
   QSet<GuiWidgetBase*> m_widgetsTable;
   int m_address = 0;
+  int m_id = 0;
   void paintEvent(QPaintEvent*) override;
   void adjust();
 

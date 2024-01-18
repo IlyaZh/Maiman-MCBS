@@ -62,6 +62,29 @@ GroupManager* GuiFactory::createGroupManagerWidget(
   return new GroupManager(addresses);
 }
 
+std::optional<QSharedPointer<DeviceStatusGroup>> GuiFactory::deviceErrorStatus(
+    quint16 id, quint16 code, quint16 value) {
+  auto group = new DeviceStatusGroup();
+  for (auto led : m_deviceWidgets[id].leds) {
+    for (auto mask : led.ledMasks) {
+      if (mask.code == code) {
+        if (led.name == "Laser" or led.name == "TEC") {
+          auto status = (value & mask.mask) ? true : false;
+          QMap<QString, bool> started;
+          started.insert(led.name, status);
+          group->devStarted = started;
+        } else if ((value & mask.mask) != 0) {
+          group->errors = QStringList(mask.msg);
+        }
+      }
+    }
+  }
+  if (group->errors.has_value() or group->devStarted.has_value())
+    return QSharedPointer<DeviceStatusGroup>(group);
+  else
+    return std::nullopt;
+}
+
 // private slots
 
 void GuiFactory::parsingFinished() {

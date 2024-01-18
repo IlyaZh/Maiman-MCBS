@@ -6,16 +6,8 @@
 #include "model/device/devicewidget.h"
 
 struct DeviceStatusGroup {
-  DeviceStatusGroup(const bool connected, const QString &id,
-                    const QString &desc, const QString &errors)
-      : m_connected(connected),
-        m_id(id),
-        m_description(desc),
-        m_errors(errors) {}
-  const bool m_connected;
-  const QString m_id;
-  const QString m_description;
-  const QString m_errors;
+  std::optional<QStringList> errors;
+  std::optional<QMap<QString, bool>> devStarted;
 };
 
 class GroupInterface;
@@ -31,12 +23,15 @@ class GroupWidget : public QWidget {
   void addGroupMember(QPointer<DeviceWidget> member);
   void removeGroupMember(QPointer<DeviceWidget> member);
   const QSet<quint8> getAddresses();
+  void setDevicesStatus(quint8 addr,
+                        std::optional<QSharedPointer<DeviceStatusGroup>> &desc);
  signals:
   void groupEvent(model::Event);
  private slots:
   void startDevices();
   void stopDevices();
   void hideDevices(bool flag);
+  void showStatus();
 
  private:
   void resizeWidget();
@@ -44,6 +39,7 @@ class GroupWidget : public QWidget {
   Ui::GroupWidget *ui;
   QGridLayout *m_widgetLayout;
   QList<QPointer<DeviceWidget>> m_groupWidgets;
+  QMap<quint8, DeviceStatusGroup> m_status;
   QSet<quint8> m_addresses;
   bool m_hideDevices = false;
 };

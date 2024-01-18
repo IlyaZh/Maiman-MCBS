@@ -70,7 +70,7 @@ DeviceWidget::DeviceWidget(
   ui->setupUi(this);
 
   ui->modelLabel->setText(QString("Model: %1").arg(description.name));
-  setAddress(description.id);
+  m_id = description.id;
 
   // Инициализация кнопки (Hide controls)
   auto m_hideControlsButton = new QPushButton(" " + tr("Hide controls"));
@@ -300,6 +300,7 @@ void DeviceWidget::setAddress(int addr) {
 }
 
 int DeviceWidget::getAddress() const { return m_address; }
+int DeviceWidget::getId() const { return m_id; }
 
 void DeviceWidget::setLink(bool link) {
   ui->linkLabel->setStyleSheet(link ? linkStyleOn : linkStyleOff);
