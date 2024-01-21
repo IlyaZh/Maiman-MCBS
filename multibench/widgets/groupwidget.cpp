@@ -55,11 +55,25 @@ GroupWidget::GroupWidget(QWidget *parent)
                 QSize(), QIcon::Normal, QIcon::On);
   ui->hideButton->setIcon(icon1);
   ui->hideButton->setObjectName(QString::fromUtf8("hideControlButton"));
-  ui->hideButton->setMinimumSize(QSize(125, 37));
-  ui->hideButton->setMaximumSize(QSize(125, 37));
+  ui->hideButton->setMinimumSize(QSize(112, 37));
+  ui->hideButton->setMaximumSize(QSize(112, 37));
   QFont font1;
   font1.setFamily(QString::fromUtf8("Share Tech Mono"));
   ui->hideButton->setFont(font1);
+
+  InLineEdit* address = new InLineEdit(0);
+  ui->nameTable->addWidget(address);
+  ui->nameTable->setAlignment(Qt::AlignmentFlag::AlignLeft);
+
+  ui->statusButton->setIconSize(QSize(10, 10));
+  QIcon icon2;
+  icon2.addFile(QString::fromUtf8(":/resources/images/hidecontrols-icon.png"),
+                QSize(), QIcon::Normal, QIcon::Off);
+  icon2.addFile(QString::fromUtf8(":/resources/images/showcontrols-icon.png"),
+                QSize(), QIcon::Normal, QIcon::On);
+  ui->statusButton->setIcon(icon2);
+  ui->statusButton->setMinimumSize(QSize(112, 37));
+  ui->statusButton->setMaximumSize(QSize(112, 37));
 
   connect(ui->startButton, &QPushButton::clicked, this,
           &GroupWidget::startDevices);
@@ -152,11 +166,15 @@ void GroupWidget::hideDevices(bool flag) {
   m_hideDevices = flag;
 
   if (m_hideDevices) {
-    ui->hideButton->setText("Show");
+    ui->hideButton->setText("Show Devices");
     ui->devicesTable->setVisible(false);
+    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
+    this->adjustSize();
   } else {
-    ui->hideButton->setText("Hide");
+    ui->hideButton->setText("Hide Devices");
     ui->devicesTable->setVisible(true);
+    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+    this->adjustSize();
   }
 
   resizeWidget();
