@@ -81,7 +81,7 @@ void GuiMediator::createGroupWidgetFor(const QSet<quint8>& addresses) {
   QPointer<GroupWidget> group(m_factory.createGroupWidget());
   auto addrs = addresses.values();
   std::sort(addrs.begin(), addrs.end());
-  for (auto addr : addrs) {
+  for (const auto addr : addrs) {
     auto widget = m_deviceWidgetsTable.value(addr);
     group->addGroupMember(widget);
     m_window.removeDeviceWidget(widget);
@@ -93,7 +93,7 @@ void GuiMediator::createGroupWidgetFor(const QSet<quint8>& addresses) {
 }
 
 void GuiMediator::deleteGroupWidgetFor(const QSet<quint8>& addresses) {
-  for (auto group : m_groupWidgetsTable) {
+  for (const auto& group : m_groupWidgetsTable) {
     if (group->getAddresses() != addresses) return;
     m_window.removeGroupWidget(group);
     m_groupWidgetsTable.removeOne(group);
@@ -113,7 +113,7 @@ void GuiMediator::NewEvent(const model::Event& event) {
       if (m_calibrationDialog.contains(addr)) {
         m_calibrationDialog.value(addr)->updateValue(event);
       }
-      for (auto group : m_groupWidgetsTable) {
+      for (const auto& group : m_groupWidgetsTable) {
         auto data = std::get<model::events::network::Answer>(event.data_);
         if (group->getAddresses().contains(data.addr_)) {
           auto status = m_factory.deviceErrorStatus(

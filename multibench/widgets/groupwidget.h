@@ -23,10 +23,10 @@ class GroupWidget : public QWidget {
   void addGroupMember(QPointer<DeviceWidget> member);
   void removeGroupMember(QPointer<DeviceWidget> member);
   const QSet<quint8> getAddresses();
-  void setDevicesStatus(quint8 addr,
-                        std::optional<QSharedPointer<DeviceStatusGroup>> &desc);
+  void setDevicesStatus(quint8 addr, QSharedPointer<DeviceStatusGroup> desc);
  signals:
   void groupEvent(model::Event);
+  void nameEdited(QString name, int addr);
  private slots:
   void startDevices();
   void stopDevices();

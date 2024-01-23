@@ -61,9 +61,10 @@ GroupWidget::GroupWidget(QWidget *parent)
   font1.setFamily(QString::fromUtf8("Share Tech Mono"));
   ui->hideButton->setFont(font1);
 
-  InLineEdit* address = new InLineEdit(0);
-  ui->nameTable->addWidget(address);
+  InLineEdit *name = new InLineEdit(0, false);
+  ui->nameTable->addWidget(name);
   ui->nameTable->setAlignment(Qt::AlignmentFlag::AlignLeft);
+  connect(name, &InLineEdit::nameEdited, this, &GroupWidget::nameEdited);
 
   ui->statusButton->setIconSize(QSize(10, 10));
   QIcon icon2;
@@ -165,15 +166,15 @@ void GroupWidget::resizeWidget() {
 void GroupWidget::hideDevices(bool flag) {
   m_hideDevices = flag;
 
-  if (m_hideDevices) {
-    ui->hideButton->setText("Show Devices");
-    ui->devicesTable->setVisible(false);
-    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
-    this->adjustSize();
-  } else {
+  if (!m_hideDevices) {
     ui->hideButton->setText("Hide Devices");
     ui->devicesTable->setVisible(true);
     this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+    this->adjustSize();
+  } else {
+    ui->hideButton->setText("Show Devices");
+    ui->devicesTable->setVisible(false);
+    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
     this->adjustSize();
   }
 
@@ -187,18 +188,18 @@ void GroupWidget::paintEvent(QPaintEvent *) {
   style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void GroupWidget::setDevicesStatus(
-    quint8 addr, std::optional<QSharedPointer<DeviceStatusGroup>> &desc) {
-  if (desc == std::nullopt) return;
-  if (desc->data()->errors.has_value()) {
-    m_status[addr].errors->append(desc->data()->errors.value());
+void GroupWidget::setDevicesStatus(quint8 addr,
+                                   QSharedPointer<DeviceStatusGroup> desc) {
+  if (desc.isNull()) return;
+  if (desc.data()->errors.has_value()) {
+    m_status[addr].errors->append(desc.data()->errors.value());
     m_status[addr].errors->removeDuplicates();
   }
-  if (desc->data()->devStarted.has_value()) {
-    for (auto key : desc->data()->devStarted->keys()) {
+  if (desc.data()->devStarted.has_value()) {
+    for (const auto &key : desc.data()->devStarted->keys()) {
       if (!m_status[addr].devStarted->contains(key))
         m_status[addr].devStarted->insert(key,
-                                          desc->data()->devStarted->value(key));
+                                          desc.data()->devStarted->value(key));
     }
   }
 }

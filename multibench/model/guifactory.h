@@ -31,8 +31,8 @@ class GuiFactory : public QObject {
   GroupManager* createGroupManagerWidget(const QSet<quint8>& addresses);
   bool hasLimits(quint16 id);
   bool hasCalibration(quint16 id);
-  std::optional<QSharedPointer<DeviceStatusGroup>> deviceErrorStatus(
-      quint16 id, quint16 code, quint16 value);
+  QSharedPointer<DeviceStatusGroup> deviceErrorStatus(quint16 id, quint16 code,
+                                                      quint16 value);
  private slots:
   void parsingFinished();
   void threadError(const QString&);
