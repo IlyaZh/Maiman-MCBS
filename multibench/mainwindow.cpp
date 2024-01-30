@@ -166,7 +166,10 @@ void MainWindow::restoreDeviceWidgets() {
       maxWidth = widget->width();
     }
   }
-
+  std::sort(m_workWidgets.begin(), m_workWidgets.end(),
+            [](DeviceWidget* a, DeviceWidget* b) {
+              return a->getAddress() < b->getAddress();
+            });
   for (auto* widget : qAsConst(m_workWidgets)) {
     widget->setConstraint(true);
     widget->setMinimumSize(maxWidth, widget->height());
