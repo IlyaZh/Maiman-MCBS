@@ -108,6 +108,7 @@ class DeviceWidget : public QWidget, public GroupInterface {
   void setAddress(int addr);
   int getAddress() const;
   int getId() const;
+  QString getName() const;
   void setConstraint(bool state);
   void updateValue(const model::Event& event);
   void addGroupMember(QSharedPointer<GroupInterface> member) override;
@@ -139,6 +140,7 @@ class DeviceWidget : public QWidget, public GroupInterface {
   QSet<GuiWidgetBase*> m_widgetsTable;
   int m_address = 0;
   int m_id = 0;
+  QString m_name{};
   void paintEvent(QPaintEvent*) override;
   void adjust();
 

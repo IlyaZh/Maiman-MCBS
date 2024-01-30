@@ -295,12 +295,18 @@ void DeviceWidget::setAddress(int addr) {
   m_address = addr;
   InLineEdit* address = new InLineEdit(addr);
   ui->gridLayout->addWidget(address, 0, 2);
-  connect(address, &InLineEdit::nameEdited, this, &DeviceWidget::nameEdited);
+  connect(address, &InLineEdit::nameEdited, this,
+          [this](QString name, int addr) {
+            m_name = name;
+            emit nameEdited(name, addr);
+          });
+  m_name = address->text();
   // ui->idLabel->setText(QString("ID:%1").arg(addr));
 }
 
 int DeviceWidget::getAddress() const { return m_address; }
 int DeviceWidget::getId() const { return m_id; }
+QString DeviceWidget::getName() const { return m_name; }
 
 void DeviceWidget::setLink(bool link) {
   ui->linkLabel->setStyleSheet(link ? linkStyleOn : linkStyleOff);

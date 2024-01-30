@@ -112,10 +112,9 @@ void InLineEdit::setText(const QString &text) {
   }
 }
 
-QString InLineEdit::text() { return m_name; }
+QString InLineEdit::text() { return QLineEdit::text(); }
 
 void InLineEdit::checkTextLenght() {
-  qDebug() << "name size" << m_name.size() << m_isDevice;
   if (m_isDevice) {
     if (!QLineEdit::text().contains("ID:")) {
       m_name = QLineEdit::text();

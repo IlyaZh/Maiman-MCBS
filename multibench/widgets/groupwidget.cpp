@@ -32,10 +32,11 @@ static const QString buttonNone =
 
 const int WidgetsInAppearence{2};
 
-GroupWidget::GroupWidget(QWidget *parent)
+GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
     : QWidget(parent),
       ui(new Ui::GroupWidget),
-      m_widgetLayout(new QGridLayout()) {
+      m_widgetLayout(new QGridLayout()),
+      m_selfAddr(groupAddr) {
   ui->setupUi(this);
   m_widgetLayout = new QGridLayout(ui->devicesTable);
   m_widgetLayout->setMargin(0);
@@ -61,10 +62,11 @@ GroupWidget::GroupWidget(QWidget *parent)
   font1.setFamily(QString::fromUtf8("Share Tech Mono"));
   ui->hideButton->setFont(font1);
 
-  InLineEdit *name = new InLineEdit(0, false);
+  InLineEdit *name = new InLineEdit(m_selfAddr, false);
   ui->nameTable->addWidget(name);
   ui->nameTable->setAlignment(Qt::AlignmentFlag::AlignLeft);
-  connect(name, &InLineEdit::nameEdited, this, &GroupWidget::nameEdited);
+  connect(name, &InLineEdit::nameEdited, this,
+          [this](QString name) { m_name = name; });
 
   ui->statusButton->setIconSize(QSize(10, 10));
   QIcon icon2;
@@ -105,6 +107,7 @@ void GroupWidget::removeGroupMember(QPointer<DeviceWidget> member) {
   m_widgetLayout->removeWidget(member);
   m_groupWidgets.removeOne(member);
   m_addresses.remove(member->getAddress());
+  m_status.remove(member->getAddress());
 }
 
 const QSet<quint8> GroupWidget::getAddresses() { return m_addresses; }
@@ -203,6 +206,15 @@ void GroupWidget::setDevicesStatus(quint8 addr,
     }
   }
 }
+
+const QString GroupWidget::getName() {
+  if (m_name.isEmpty())
+    return QString("Group %1").arg(m_selfAddr);
+  else
+    return m_name;
+}
+
+int GroupWidget::getGroupAddress() { return m_selfAddr; }
 
 void GroupWidget::showStatus() {
   for (auto status : m_status) {

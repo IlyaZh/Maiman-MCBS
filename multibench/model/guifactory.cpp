@@ -55,11 +55,13 @@ CalibrationDialog* GuiFactory::createCalibrationDialog(
   return nullptr;
 }
 
-GroupWidget* GuiFactory::createGroupWidget() { return new GroupWidget(); }
+GroupWidget* GuiFactory::createGroupWidget(int groupAddr) {
+  return new GroupWidget(groupAddr);
+}
 
 GroupManager* GuiFactory::createGroupManagerWidget(
-    const QSet<quint8>& addresses) {
-  return new GroupManager(addresses);
+    QMap<quint8, QString>& addresses, QVector<QPointer<GroupWidget>>& groups) {
+  return new GroupManager(addresses, groups);
 }
 
 QSharedPointer<DeviceStatusGroup> GuiFactory::deviceErrorStatus(quint16 id,
