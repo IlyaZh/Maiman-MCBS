@@ -60,8 +60,9 @@ GroupWidget* GuiFactory::createGroupWidget(int groupAddr) {
 }
 
 GroupManager* GuiFactory::createGroupManagerWidget(
-    QMap<quint8, QString>& addresses, QVector<QPointer<GroupWidget>>& groups) {
-  return new GroupManager(addresses, groups);
+    QMap<quint8, QPointer<DeviceWidget>>& devices,
+    QMap<int, QPointer<GroupWidget>>& groups) {
+  return new GroupManager(devices, groups);
 }
 
 QSharedPointer<DeviceStatusGroup> GuiFactory::deviceErrorStatus(quint16 id,

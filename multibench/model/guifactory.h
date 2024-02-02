@@ -29,7 +29,8 @@ class GuiFactory : public QObject {
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters);
   GroupWidget* createGroupWidget(int groupAddr);
   GroupManager* createGroupManagerWidget(
-      QMap<quint8, QString>& addresses, QVector<QPointer<GroupWidget>>& groups);
+      QMap<quint8, QPointer<DeviceWidget>>& devices,
+      QMap<int, QPointer<GroupWidget>>& groups);
   bool hasLimits(quint16 id);
   bool hasCalibration(quint16 id);
   QSharedPointer<DeviceStatusGroup> deviceErrorStatus(quint16 id, quint16 code,

@@ -133,11 +133,15 @@ void GroupWidget::resizeWidget() {
   int widgetsCounter{0};
   int totalHeightInAppearence{0};
   for (auto widget : qAsConst(m_groupWidgets)) {
+    m_widgetLayout->removeWidget(widget);
     if (widget->width() > maxWidth) {
       maxWidth = widget->width();
     }
   }
-
+  std::sort(m_groupWidgets.begin(), m_groupWidgets.end(),
+            [](DeviceWidget *a, DeviceWidget *b) {
+              return a->getAddress() < b->getAddress();
+            });
   for (auto widget : qAsConst(m_groupWidgets)) {
     widget->setConstraint(true);
     widget->setMinimumSize(maxWidth, widget->height());

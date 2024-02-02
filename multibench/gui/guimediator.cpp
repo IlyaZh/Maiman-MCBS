@@ -63,13 +63,8 @@ void GuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id) {
 }
 
 void GuiMediator::createGroupManagerWidget() {
-  QMap<quint8, QString> devices;
-  for (auto addr : m_deviceWidgetsTable.keys()) {
-    devices.insert(addr, m_deviceWidgetsTable.value(addr)->getName());
-  }
-
-  QPointer<GroupManager> manager(
-      m_factory.createGroupManagerWidget(devices, m_groupWidgetsTable));
+  QPointer<GroupManager> manager(m_factory.createGroupManagerWidget(
+      m_deviceWidgetsTable, m_groupWidgetsTable));
   manager->setModal(false);
   manager->show();
   connect(manager, &GroupManager::createGroupWidget, this,
@@ -78,6 +73,14 @@ void GuiMediator::createGroupManagerWidget() {
           &GuiMediator::deleteGroupWidgetFor);
   connect(this, &GuiMediator::finishGroupAction, manager,
           &GroupManager::finishGroupAction);
+  connect(manager, &GroupManager::removeMemberGroup, this,
+          [this](int groupAddr, quint8 devAddr) {
+            emit modifMemberGroup(true, groupAddr, devAddr);
+          });
+  connect(manager, &GroupManager::addMemberGroup, this,
+          [this](int groupAddr, quint8 devAddr) {
+            emit modifMemberGroup(false, groupAddr, devAddr);
+          });
 }
 
 void GuiMediator::createGroupWidgetFor(const QSet<quint8>& addresses,
@@ -91,25 +94,37 @@ void GuiMediator::createGroupWidgetFor(const QSet<quint8>& addresses,
     m_window.removeDeviceWidget(widget);
   }
   m_window.addGroupWidget(group);
-  m_groupWidgetsTable.append(group);
+  m_groupWidgetsTable.insert(group->getGroupAddress(), group);
   connect(group, &GroupWidget::groupEvent, this,
           &GuiMediator::Signal_PublishEvent);
   emit finishGroupAction();
 }
 
-void GuiMediator::deleteGroupWidgetFor(const QSet<quint8>& addresses) {
-  for (const auto& group : m_groupWidgetsTable) {
-    if (group->getAddresses() == addresses) {
-      m_window.removeGroupWidget(group);
-      m_groupWidgetsTable.removeOne(group);
-      group->deleteLater();
-      for (auto addr : addresses) {
-        auto widget = m_deviceWidgetsTable.value(addr);
-        m_window.addDeviceWidget(widget);
-      }
-      m_window.restoreDeviceWidgets();
-    }
+void GuiMediator::deleteGroupWidgetFor(int address) {
+  m_window.removeGroupWidget(m_groupWidgetsTable.value(address));
+  for (auto addr : m_groupWidgetsTable.value(address)->getAddresses()) {
+    auto widget = m_deviceWidgetsTable.value(addr);
+    m_window.addDeviceWidget(widget);
   }
+  m_groupWidgetsTable.remove(address);
+  m_window.restoreDeviceWidgets();
+
+  emit finishGroupAction();
+}
+
+void GuiMediator::modifMemberGroup(bool isRemove, int groupAddr,
+                                   quint8 devAddr) {
+  if (isRemove) {
+    m_groupWidgetsTable.value(groupAddr)->removeGroupMember(
+        m_deviceWidgetsTable.value(devAddr));
+    m_window.addDeviceWidget(m_deviceWidgetsTable.value(devAddr));
+    m_window.restoreDeviceWidgets();
+  } else {
+    m_groupWidgetsTable.value(groupAddr)->addGroupMember(
+        m_deviceWidgetsTable.value(devAddr));
+    m_window.removeDeviceWidget(m_deviceWidgetsTable.value(devAddr));
+  }
+
   emit finishGroupAction();
 }
 
