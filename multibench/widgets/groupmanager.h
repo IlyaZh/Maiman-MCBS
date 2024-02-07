@@ -41,11 +41,11 @@ class GroupManager : public QDialog {
   QVBoxLayout* m_devicesFieldLayout;
   QVBoxLayout* m_groupsFieldLayout;
   QMap<quint8, QCheckBox*> m_checkBoxes;
-  QMap<int, groupsCheckBoxes> m_groupsTable;
+  QMap<int, QSharedPointer<groupsCheckBoxes>> m_groupsTable;
   QMap<quint8, QPointer<DeviceWidget>>& m_devices;
   QMap<int, QPointer<GroupWidget>>& m_groups;
   QButtonGroup* m_buttonGroup;
   QFont m_font;
   void paintDevices();
-  void clearGroup(groupsCheckBoxes& group);
+  void clearGroup(QSharedPointer<groupsCheckBoxes> group);
 };

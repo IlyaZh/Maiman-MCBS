@@ -72,15 +72,15 @@ void GroupManager::createGroup() {
     emit createGroupWidget(groupAddr, number);
   } else {
     for (auto& group : m_groupsTable) {
-      if (group.groupBox_->isChecked()) {
-        for (const auto& addr : groupAddr) {
+      if (group->groupBox_->isChecked()) {
+        for (auto& addr : groupAddr) {
           auto subGroupCheckBox = new QCheckBox(this);
           subGroupCheckBox->setFont(m_font);
           subGroupCheckBox->setText(m_devices.value(addr)->getName());
-          group.subBoxes_.insert(m_devices.value(addr)->getAddress(),
-                                 subGroupCheckBox);
-          group.layout_->addWidget(subGroupCheckBox);
-          emit addMemberGroup(group.groupAddr_, addr);
+          group->subBoxes_.insert(m_devices.value(addr)->getAddress(),
+                                  subGroupCheckBox);
+          group->layout_->addWidget(subGroupCheckBox);
+          emit addMemberGroup(group->groupAddr_, addr);
         }
       }
     }
@@ -89,69 +89,83 @@ void GroupManager::createGroup() {
 
 void GroupManager::deleteGroup() {
   if (m_buttonGroup->checkedButton() != nullptr) {
-    for (auto& group : m_groupsTable.values()) {
-      if (group.groupBox_->isChecked()) {
+    for (const auto& group : m_groupsTable.values()) {
+      if (group->groupBox_->isChecked()) {
         clearGroup(group);
       }
     }
   } else {
-    for (auto& group : m_groupsTable) {
-      for (auto& check : group.subBoxes_.keys()) {
-        if (group.subBoxes_.value(check)->isChecked()) {
-          if (group.subBoxes_.size() == 1) {
-            clearGroup(group);
+    QSharedPointer<groupsCheckBoxes> deletedGroup = nullptr;
+    for (const auto& group : m_groupsTable) {
+      for (auto& check : group->subBoxes_.keys()) {
+        if (group->subBoxes_.value(check)->isChecked()) {
+          if (group->subBoxes_.size() == 1) {
+            deletedGroup = group;
           } else {
-            group.layout_->removeWidget(group.subBoxes_.value(check));
-            emit removeMemberGroup(group.groupAddr_, check);
+            group->layout_->removeWidget(group->subBoxes_.value(check));
+            group->subBoxes_.value(check)->deleteLater();
+            emit removeMemberGroup(group->groupAddr_, check);
             m_checkBoxes.value(check)->show();
-            group.subBoxes_.remove(check);
           }
         }
       }
     }
+    if (deletedGroup != nullptr) clearGroup(deletedGroup);
   }
 }
 
-void GroupManager::clearGroup(groupsCheckBoxes& group) {
-  m_buttonGroup->removeButton(group.groupBox_);
-  m_groupsFieldLayout->removeWidget(group.groupBox_);
-  group.groupBox_->deleteLater();
-  for (auto& check : group.subBoxes_) {
-    check->deleteLater();
-  }
-  group.layout_->deleteLater();
-  emit deleteGroupWidget(m_groups.value(group.groupAddr_)->getGroupAddress());
+void GroupManager::clearGroup(QSharedPointer<groupsCheckBoxes> group) {
+  emit deleteGroupWidget(m_groups.value(group->groupAddr_)->getGroupAddress());
 }
 
 void GroupManager::finishGroupAction() {
-  for (auto& deletedGroup : m_groupsTable.keys()) {
+  auto groupKeys = m_groupsTable.keys();
+  for (auto& deletedGroup : groupKeys) {
     if (!m_groups.contains(deletedGroup)) {
+      m_buttonGroup->removeButton(m_groupsTable.value(deletedGroup)->groupBox_);
+      m_groupsFieldLayout->removeWidget(
+          m_groupsTable.value(deletedGroup)->groupBox_);
+      m_groupsTable.value(deletedGroup)->groupBox_->deleteLater();
+      for (auto& check : m_groupsTable.value(deletedGroup)->subBoxes_) {
+        check->deleteLater();
+      }
+      m_groupsFieldLayout->removeItem(
+          m_groupsTable.value(deletedGroup)->layout_);
+      m_groupsTable.value(deletedGroup)->layout_->deleteLater();
       m_groupsTable.remove(deletedGroup);
+    } else {
+      auto subGroupsKeys = m_groupsTable.value(deletedGroup)->subBoxes_.keys();
+      for (auto& addr : subGroupsKeys) {
+        if (!m_groups.value(deletedGroup)->getAddresses().contains(addr)) {
+          m_groupsTable[deletedGroup]->subBoxes_.remove(addr);
+        }
+      }
     }
   }
 
   for (auto& group : m_groups) {
     if (!m_groupsTable.contains(group->getGroupAddress())) {
       auto groupCheckBox = new QCheckBox(this);
-      groupsCheckBoxes groupBoxes;
-      groupBoxes.groupBox_ = groupCheckBox;
-      groupBoxes.groupAddr_ = group->getGroupAddress();
+      QSharedPointer<groupsCheckBoxes> groupBoxes =
+          QSharedPointer<groupsCheckBoxes>(new groupsCheckBoxes());
+      groupBoxes->groupBox_ = groupCheckBox;
+      groupBoxes->groupAddr_ = group->getGroupAddress();
       groupCheckBox->setFont(m_font);
       groupCheckBox->setText(group->getName());
       m_buttonGroup->addButton(groupCheckBox);
       m_groupsFieldLayout->addWidget(groupCheckBox);
       auto groupAddrs = group->getAddresses().values();
-      groupBoxes.layout_ = new QVBoxLayout();
-      groupBoxes.layout_->setContentsMargins(30, 0, 0, 0);
+      groupBoxes->layout_ = new QVBoxLayout();
+      groupBoxes->layout_->setContentsMargins(30, 0, 0, 0);
       std::sort(groupAddrs.begin(), groupAddrs.end());
       for (auto subGroupAddr : groupAddrs) {
         auto subGroupCheckBox = new QCheckBox(this);
         subGroupCheckBox->setFont(m_font);
         subGroupCheckBox->setText(m_devices.value(subGroupAddr)->getName());
-        groupBoxes.subBoxes_.insert(subGroupAddr, subGroupCheckBox);
-        groupBoxes.layout_->addWidget(subGroupCheckBox);
+        groupBoxes->subBoxes_.insert(subGroupAddr, subGroupCheckBox);
+        groupBoxes->layout_->addWidget(subGroupCheckBox);
       }
-      m_groupsFieldLayout->addLayout(groupBoxes.layout_);
+      m_groupsFieldLayout->addLayout(groupBoxes->layout_);
       m_groupsTable.insert(group->getGroupAddress(), groupBoxes);
     }
   }
@@ -163,7 +177,7 @@ void GroupManager::paintDevices() {
     check->show();
   }
   for (auto& group : m_groupsTable) {
-    for (auto& subGroupKey : group.subBoxes_.keys()) {
+    for (auto& subGroupKey : group->subBoxes_.keys()) {
       if (m_checkBoxes.contains(subGroupKey)) {
         m_checkBoxes.value(subGroupKey)->hide();
       }
