@@ -44,5 +44,5 @@ class GuiMediator : public QObject, public interfaces::Subscriber {
  signals:
   void deletedCalibrationDialog();
   void Signal_PublishEvent(model::Event);
-  void finishGroupAction();
+  void repaintGroupsAndDevices();
 };

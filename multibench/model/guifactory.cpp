@@ -60,8 +60,8 @@ GroupWidget* GuiFactory::createGroupWidget(int groupAddr) {
 }
 
 GroupManager* GuiFactory::createGroupManagerWidget(
-    QMap<quint8, QPointer<DeviceWidget>>& devices,
-    QMap<int, QPointer<GroupWidget>>& groups) {
+    const QMap<quint8, QPointer<DeviceWidget>>& devices,
+    const QMap<int, QPointer<GroupWidget>>& groups) {
   return new GroupManager(devices, groups);
 }
 

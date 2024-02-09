@@ -2,8 +2,8 @@
 
 #include "ui_groupmanager.h"
 
-GroupManager::GroupManager(QMap<quint8, QPointer<DeviceWidget>>& devices,
-                           QMap<int, QPointer<GroupWidget>>& groups,
+GroupManager::GroupManager(const QMap<quint8, QPointer<DeviceWidget>>& devices,
+                           const QMap<int, QPointer<GroupWidget>>& groups,
                            QWidget* parent)
     : QDialog(parent),
       ui(new Ui::GroupManager),
@@ -41,9 +41,9 @@ GroupManager::GroupManager(QMap<quint8, QPointer<DeviceWidget>>& devices,
 
   if (!m_groups.isEmpty()) {
     finishGroupAction();
-  } else
+  } else {
     paintDevices();
-
+  }
   connect(ui->CreateGroup, &QPushButton::clicked, this,
           &GroupManager::createGroup);
   connect(ui->DeleteGroup, &QPushButton::clicked, this,
@@ -95,12 +95,12 @@ void GroupManager::deleteGroup() {
       }
     }
   } else {
-    QSharedPointer<groupsCheckBoxes> deletedGroup = nullptr;
+    QVector<QSharedPointer<groupsCheckBoxes>> deletedGroup;
     for (const auto& group : m_groupsTable) {
       for (auto& check : group->subBoxes_.keys()) {
         if (group->subBoxes_.value(check)->isChecked()) {
           if (group->subBoxes_.size() == 1) {
-            deletedGroup = group;
+            deletedGroup.append(group);
           } else {
             group->layout_->removeWidget(group->subBoxes_.value(check));
             group->subBoxes_.value(check)->deleteLater();
@@ -110,7 +110,11 @@ void GroupManager::deleteGroup() {
         }
       }
     }
-    if (deletedGroup != nullptr) clearGroup(deletedGroup);
+    if (deletedGroup.size() != 0) {
+      for (auto& group : deletedGroup) {
+        clearGroup(group);
+      }
+    }
   }
 }
 
@@ -146,8 +150,7 @@ void GroupManager::finishGroupAction() {
   for (auto& group : m_groups) {
     if (!m_groupsTable.contains(group->getGroupAddress())) {
       auto groupCheckBox = new QCheckBox(this);
-      QSharedPointer<groupsCheckBoxes> groupBoxes =
-          QSharedPointer<groupsCheckBoxes>(new groupsCheckBoxes());
+      auto groupBoxes = QSharedPointer<groupsCheckBoxes>::create();
       groupBoxes->groupBox_ = groupCheckBox;
       groupBoxes->groupAddr_ = group->getGroupAddress();
       groupCheckBox->setFont(m_font);

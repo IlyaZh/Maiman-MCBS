@@ -20,8 +20,8 @@ class GroupManager : public QDialog {
   Q_OBJECT
 
  public:
-  explicit GroupManager(QMap<quint8, QPointer<DeviceWidget>>& devices,
-                        QMap<int, QPointer<GroupWidget>>& groups,
+  explicit GroupManager(const QMap<quint8, QPointer<DeviceWidget>>& devices,
+                        const QMap<int, QPointer<GroupWidget>>& groups,
                         QWidget* parent = nullptr);
   ~GroupManager();
  public slots:
@@ -42,8 +42,8 @@ class GroupManager : public QDialog {
   QVBoxLayout* m_groupsFieldLayout;
   QMap<quint8, QCheckBox*> m_checkBoxes;
   QMap<int, QSharedPointer<groupsCheckBoxes>> m_groupsTable;
-  QMap<quint8, QPointer<DeviceWidget>>& m_devices;
-  QMap<int, QPointer<GroupWidget>>& m_groups;
+  const QMap<quint8, QPointer<DeviceWidget>>& m_devices;
+  const QMap<int, QPointer<GroupWidget>>& m_groups;
   QButtonGroup* m_buttonGroup;
   QFont m_font;
   void paintDevices();

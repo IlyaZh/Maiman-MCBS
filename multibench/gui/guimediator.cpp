@@ -71,7 +71,7 @@ void GuiMediator::createGroupManagerWidget() {
           &GuiMediator::createGroupWidgetFor);
   connect(manager, &GroupManager::deleteGroupWidget, this,
           &GuiMediator::deleteGroupWidgetFor);
-  connect(this, &GuiMediator::finishGroupAction, manager,
+  connect(this, &GuiMediator::repaintGroupsAndDevices, manager,
           &GroupManager::finishGroupAction);
   connect(manager, &GroupManager::removeMemberGroup, this,
           [this](int groupAddr, quint8 devAddr) {
@@ -97,7 +97,7 @@ void GuiMediator::createGroupWidgetFor(const QSet<quint8>& addresses,
   m_groupWidgetsTable.insert(group->getGroupAddress(), group);
   connect(group, &GroupWidget::groupEvent, this,
           &GuiMediator::Signal_PublishEvent);
-  emit finishGroupAction();
+  emit repaintGroupsAndDevices();
 }
 
 void GuiMediator::deleteGroupWidgetFor(int address) {
@@ -109,7 +109,7 @@ void GuiMediator::deleteGroupWidgetFor(int address) {
   m_groupWidgetsTable.remove(address);
   m_window.restoreDeviceWidgets();
 
-  emit finishGroupAction();
+  emit repaintGroupsAndDevices();
 }
 
 void GuiMediator::modifMemberGroup(bool isRemove, int groupAddr,
@@ -125,7 +125,7 @@ void GuiMediator::modifMemberGroup(bool isRemove, int groupAddr,
     m_window.removeDeviceWidget(m_deviceWidgetsTable.value(devAddr));
   }
 
-  emit finishGroupAction();
+  emit repaintGroupsAndDevices();
 }
 
 void GuiMediator::NewEvent(const model::Event& event) {
