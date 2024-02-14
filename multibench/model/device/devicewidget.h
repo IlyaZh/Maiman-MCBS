@@ -16,7 +16,7 @@ class BinaryWidget;
 class HiddenWidget;
 class DeviceCondition;
 class ButtonWidget;
-struct CommandConverter;
+class CommandConverter;
 
 struct Content {
   QString fileName;
@@ -108,6 +108,7 @@ class DeviceWidget : public QWidget, public GroupInterface {
   void setAddress(int addr);
   int getAddress() const;
   int getId() const;
+  QString getModel()const;
   QString getName() const;
   void setConstraint(bool state);
   void updateValue(const model::Event& event);

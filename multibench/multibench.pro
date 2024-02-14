@@ -84,7 +84,9 @@ SOURCES += \
     widgets/buttonwidget.cpp \
     widgets/calibrationdialog.cpp \
     widgets/groupmanager.cpp \
+    widgets/groupstatusdialog.cpp \
     widgets/groupwidget.cpp \
+    widgets/groupwidgetstatus.cpp \
     widgets/inlineedit.cpp \
     widgets/plusminusgroupwidget.cpp \
     widgets/plusminuswidget.cpp \
@@ -143,7 +145,9 @@ HEADERS += \
     widgets/buttonwidget.h \
     widgets/calibrationdialog.h \
     widgets/groupmanager.h \
+    widgets/groupstatusdialog.h \
     widgets/groupwidget.h \
+    widgets/groupwidgetstatus.h \
     widgets/inlineedit.h \
     widgets/plusminusgroupwidget.h \
     widgets/plusminuswidget.h \
@@ -182,7 +186,9 @@ FORMS += \
     widgets/binarywidget.ui \
     widgets/controlwidget.ui \
     widgets/groupmanager.ui \
+    widgets/groupstatusdialog.ui \
     widgets/groupwidget.ui \
+    widgets/groupwidgetstatus.ui \
     widgets/quitdialog.ui \
     widgets/readparameterwidget.ui \
     widgets/rescanprogresswidget.ui

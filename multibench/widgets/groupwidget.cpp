@@ -209,6 +209,7 @@ void GroupWidget::setDevicesStatus(quint8 addr,
                                           desc.data()->devStarted->value(key));
     }
   }
+  emit statusChanged(m_status);
 }
 
 const QString GroupWidget::getName() {
@@ -219,12 +220,35 @@ const QString GroupWidget::getName() {
 }
 
 int GroupWidget::getGroupAddress() { return m_selfAddr; }
+void GroupWidget::linkStatusChanged(int addr, bool status) {
+  if (!status) {
+    ui->linkLabel->setStyleSheet(
+        "QLabel { \
+                                       background: rgb(175,0,0); \
+                                       border: 1px solid rgb(26,26,26); \
+                                       border-radius: 3px; \
+                               }");
+  } else {
+    ui->linkLabel->setStyleSheet(
+        "QLabel { \
+                                 background: rgb(0,102,51); \
+                                 border: 1px solid rgb(26,26,26); \
+                                 border-radius: 3px; \
+                         }");
+  }
+  emit linkChanged(addr, status);
+}
 
 void GroupWidget::showStatus() {
-  for (auto status : m_status) {
-    qDebug() << "status" << status.errors.value().join("; ");
-    for (auto key : status.devStarted.value().keys()) {
-      qDebug() << key << status.devStarted.value().value(key);
-    }
+  GroupStatusDialog *dialog = new GroupStatusDialog(this);
+  for (const auto &device : m_groupWidgets) {
+    dialog->addDevice(device->getAddress(), device->getName(),
+                      device->getModel());
   }
+  dialog->setModal(false);
+  dialog->show();
+  connect(this, &GroupWidget::statusChanged, dialog,
+          &GroupStatusDialog::setStatus);
+  connect(this, &GroupWidget::linkChanged, dialog,
+          &GroupStatusDialog::deviceLinkChanged);
 }

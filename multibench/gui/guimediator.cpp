@@ -21,6 +21,7 @@ GuiMediator::GuiMediator(MainWindow& window, GuiFactory& factory,
           &GuiMediator::createCalibAndLimitsWidgets);
   connect(&window, &MainWindow::createGroupManagerWidget, this,
           &GuiMediator::createGroupManagerWidget);
+  connect(&window, &MainWindow::clearWidgets, this, &GuiMediator::clear);
 }
 
 void GuiMediator::createWidgetFor(Device* device) {
@@ -150,6 +151,11 @@ void GuiMediator::NewEvent(const model::Event& event) {
       auto data =
           std::get<model::events::network::DeviceLinkStatus>(event.data_);
       m_deviceWidgetsTable.value(data.addr_)->setLink(data.status_);
+      for (const auto& group : m_groupWidgetsTable) {
+        if (group->getAddresses().contains(data.addr_)) {
+          group->linkStatusChanged(data.addr_, data.status_);
+        }
+      }
     }
   }
 }
