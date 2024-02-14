@@ -23,6 +23,8 @@ class GuiMediator : public QObject, public interfaces::Subscriber {
                        NetworkModel& networkModel, QObject* parent = nullptr);
 
   void NewEvent(const model::Event& event) override;
+ public slots:
+  void clear();
 
  private:
   MainWindow& m_window;

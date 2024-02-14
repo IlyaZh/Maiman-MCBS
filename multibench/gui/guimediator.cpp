@@ -166,3 +166,9 @@ void GuiMediator::dataCapture(quint8 addr, quint16 code, quint16 value) {
       model::events::network::SingleWriteRequest(addr, code, value));
   emit Signal_PublishEvent(event);
 }
+
+void GuiMediator::clear() {
+  m_deviceWidgetsTable.clear();
+  m_groupWidgetsTable.clear();
+  m_calibrationDialog.clear();
+}

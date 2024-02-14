@@ -333,6 +333,7 @@ void MainWindow::setConnected(bool isConnected) {
     m_groupWidgets.clear();
     ui->menuCalibration->clear();
     adjustSize();
+    emit clearWidgets();
   }
 }
 
