@@ -204,9 +204,8 @@ void GroupWidget::setDevicesStatus(quint8 addr,
   }
   if (desc.data()->devStarted.has_value()) {
     for (const auto &key : desc.data()->devStarted->keys()) {
-      if (!m_status[addr].devStarted->contains(key))
-        m_status[addr].devStarted->insert(key,
-                                          desc.data()->devStarted->value(key));
+      m_status[addr].devStarted->insert(key,
+                                        desc.data()->devStarted->value(key));
     }
   }
   emit statusChanged(m_status);
