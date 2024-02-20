@@ -49,6 +49,7 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
   void createGroupManagerWidget();
   void delayChanged(int delay);
   void timeoutChanged(int timeout);
+  void clearWidgets();
 
  public slots:
   void setConnectMessage(QString msg);

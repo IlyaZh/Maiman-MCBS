@@ -6,7 +6,7 @@
 class InLineEdit : public QLineEdit {
   Q_OBJECT
  public:
-  explicit InLineEdit(int addr);
+  explicit InLineEdit(int addr, bool isDevice = true);
   void mouseDoubleClickEvent(QMouseEvent* event) override;
   void setText(const QString& text);
   QString text();
@@ -22,6 +22,7 @@ class InLineEdit : public QLineEdit {
   int m_address;
   QPushButton* m_icon;
   QHBoxLayout* m_layout;
+  bool m_isDevice = true;
 };
 
 #endif  // INLINEEDIT_H

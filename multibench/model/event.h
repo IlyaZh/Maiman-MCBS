@@ -48,7 +48,8 @@ namespace events {
 
 using Types = std::variant<network::ReadRequest, network::WriteRequest,
                            network::StateUpdated, network::Answer,
-                           network::SingleWriteRequest, network::FrontRequest>;
+                           network::SingleWriteRequest, network::DataRequest,
+                           network::DeviceLinkStatus>;
 
 }  // namespace events
 

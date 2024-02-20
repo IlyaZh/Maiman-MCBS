@@ -55,16 +55,40 @@ CalibrationDialog* GuiFactory::createCalibrationDialog(
   return nullptr;
 }
 
-GroupWidget* GuiFactory::createGroupWidget() { return new GroupWidget(); }
+GroupWidget* GuiFactory::createGroupWidget(int groupAddr) {
+  return new GroupWidget(groupAddr);
+}
 
 GroupManager* GuiFactory::createGroupManagerWidget(
-    const QSet<quint8>& addresses) {
-  return new GroupManager(addresses);
+    const QMap<quint8, QPointer<DeviceWidget>>& devices,
+    const QMap<int, QPointer<GroupWidget>>& groups) {
+  return new GroupManager(devices, groups);
 }
 
-QMap<quint16, Button>& GuiFactory::getButtonsDesc(const quint16 id) {
-  return m_deviceWidgets[id].buttons;
+QSharedPointer<DeviceStatusGroup> GuiFactory::deviceErrorStatus(quint16 id,
+                                                                quint16 code,
+                                                                quint16 value) {
+  auto group = new DeviceStatusGroup();
+  for (const auto& led : m_deviceWidgets[id].leds) {
+    for (const auto& mask : led.ledMasks) {
+      if (mask.code == code) {
+        if (led.name == "Laser" or led.name == "TEC") {
+          auto status = (value & mask.mask) ? true : false;
+          QMap<QString, bool> started;
+          started.insert(led.name, status);
+          group->devStarted = started;
+        } else if ((value & mask.mask) != 0) {
+          group->errors = QStringList(mask.msg);
+        }
+      }
+    }
+  }
+  if (group->errors.has_value() or group->devStarted.has_value())
+    return QSharedPointer<DeviceStatusGroup>(group);
+  else
+    return QSharedPointer<DeviceStatusGroup>();
 }
+
 // private slots
 
 void GuiFactory::parsingFinished() {

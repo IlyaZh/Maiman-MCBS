@@ -70,13 +70,13 @@ DeviceWidget::DeviceWidget(
   ui->setupUi(this);
 
   ui->modelLabel->setText(QString("Model: %1").arg(description.name));
-  setAddress(description.id);
+  m_id = description.id;
 
   // Инициализация кнопки (Hide controls)
   auto m_hideControlsButton = new QPushButton(" " + tr("Hide controls"));
   m_hideControlsButton->setStyleSheet(
-      "border: 2px solid rgb(26,26,26);\nborder-radius: 3px;\nbackground: "
-      "rgb(51,51,51);\ncolor: rgb(255,255,255);\n"
+      "border: 2px solid rgb(26,26,26);\n border-radius: 3px;\n background: "
+      "rgb(51,51,51);\n color: rgb(255,255,255);\n"
       "padding: 0px;\n"
       "margin-left: 10px;\n"
       "margin-bottom: 15px;");
@@ -295,11 +295,19 @@ void DeviceWidget::setAddress(int addr) {
   m_address = addr;
   InLineEdit* address = new InLineEdit(addr);
   ui->gridLayout->addWidget(address, 0, 2);
-  connect(address, &InLineEdit::nameEdited, this, &DeviceWidget::nameEdited);
+  connect(address, &InLineEdit::nameEdited, this,
+          [this](QString name, int addr) {
+            m_name = name;
+            emit nameEdited(name, addr);
+          });
+  m_name = address->text();
   // ui->idLabel->setText(QString("ID:%1").arg(addr));
 }
 
 int DeviceWidget::getAddress() const { return m_address; }
+int DeviceWidget::getId() const { return m_id; }
+QString DeviceWidget::getName() const { return m_name; }
+QString DeviceWidget::getModel() const{return ui->modelLabel->text();}
 
 void DeviceWidget::setLink(bool link) {
   ui->linkLabel->setStyleSheet(link ? linkStyleOn : linkStyleOff);

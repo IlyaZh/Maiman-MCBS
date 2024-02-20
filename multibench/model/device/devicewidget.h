@@ -16,7 +16,7 @@ class BinaryWidget;
 class HiddenWidget;
 class DeviceCondition;
 class ButtonWidget;
-struct CommandConverter;
+class CommandConverter;
 
 struct Content {
   QString fileName;
@@ -107,6 +107,9 @@ class DeviceWidget : public QWidget, public GroupInterface {
   ~DeviceWidget() override;
   void setAddress(int addr);
   int getAddress() const;
+  int getId() const;
+  QString getModel()const;
+  QString getName() const;
   void setConstraint(bool state);
   void updateValue(const model::Event& event);
   void addGroupMember(QSharedPointer<GroupInterface> member) override;
@@ -137,6 +140,8 @@ class DeviceWidget : public QWidget, public GroupInterface {
   //  QHash<quint8, GuiWidgetBase*> m_widgetsTable;
   QSet<GuiWidgetBase*> m_widgetsTable;
   int m_address = 0;
+  int m_id = 0;
+  QString m_name{};
   void paintEvent(QPaintEvent*) override;
   void adjust();
 

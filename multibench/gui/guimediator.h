@@ -23,24 +23,28 @@ class GuiMediator : public QObject, public interfaces::Subscriber {
                        NetworkModel& networkModel, QObject* parent = nullptr);
 
   void NewEvent(const model::Event& event) override;
+ public slots:
+  void clear();
 
  private:
   MainWindow& m_window;
   GuiFactory& m_factory;
   NetworkModel& m_network;
   QMap<quint8, QSharedPointer<CalibrationDialog>> m_calibrationDialog;
-  QHash<quint8, QPointer<DeviceWidget>> m_deviceWidgetsTable;
-  QVector<QPointer<GroupWidget>> m_groupWidgetsTable;
+  QMap<quint8, QPointer<DeviceWidget>> m_deviceWidgetsTable;
+  QMap<int, QPointer<GroupWidget>> m_groupWidgetsTable;
 
  private slots:
   void createWidgetFor(Device* device);
   void createCalibAndLimitsWidgets(quint8 addr, quint16 id);
   void createGroupManagerWidget();
   void dataCapture(quint8 addr, quint16 code, quint16 value);
-  void createGroupWidgetFor(const QSet<quint8>& addresses);
-  void deleteGroupWidgetFor(const QSet<quint8>& addresses);
+  void createGroupWidgetFor(const QSet<quint8>& addresses, int number);
+  void deleteGroupWidgetFor(int address);
+  void modifMemberGroup(bool isRemove, int groupAddr, quint8 devAddr);
 
  signals:
   void deletedCalibrationDialog();
   void Signal_PublishEvent(model::Event);
+  void repaintGroupsAndDevices();
 };

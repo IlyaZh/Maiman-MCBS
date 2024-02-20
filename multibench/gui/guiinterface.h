@@ -4,7 +4,6 @@
 #include <QWidget>
 
 #include "commandconverter.h"
-#include "gui/guimediator.h"
 
 class GuiWidgetBase : public QWidget {
   Q_OBJECT

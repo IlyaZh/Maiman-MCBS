@@ -795,7 +795,7 @@
                     <Command code=\"0077\" divider=\"10\" unit=\"A\" tol=\"1\"/>
                     <Command code=\"0078\" isSigned=\"\" divider=\"10\" unit=\"V\" tol=\"1\"/>
                     <Command code=\"0079\" divider=\"10\" unit=\"V\" tol=\"1\"/>
-                    <Command code=\"007A\"/>
+                    <Command code=\"007A\" tol=\"0\" alias=\"start\" onCommand=\"0008\" offCommand=\"0010\"/>
                     <Command code=\"007E\" divider=\"100\" interval=\"10\" tol=\"2\"/>
                     <Command code=\"007F\" divider=\"1\" interval=\"10\" tol=\"0\"/>
                     <Command code=\"0091\" tol=\"1\"/>

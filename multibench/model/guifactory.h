@@ -27,11 +27,14 @@ class GuiFactory : public QObject {
   CalibrationDialog* createCalibrationDialog(
       quint16 id,
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters);
-  GroupWidget* createGroupWidget();
-  GroupManager* createGroupManagerWidget(const QSet<quint8>& addresses);
-  QMap<quint16, Button>& getButtonsDesc(const quint16 id);
+  GroupWidget* createGroupWidget(int groupAddr);
+  GroupManager* createGroupManagerWidget(
+      const QMap<quint8, QPointer<DeviceWidget>>& devices,
+      const QMap<int, QPointer<GroupWidget>>& groups);
   bool hasLimits(quint16 id);
   bool hasCalibration(quint16 id);
+  QSharedPointer<DeviceStatusGroup> deviceErrorStatus(quint16 id, quint16 code,
+                                                      quint16 value);
  private slots:
   void parsingFinished();
   void threadError(const QString&);
