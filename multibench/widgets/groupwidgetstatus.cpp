@@ -17,6 +17,8 @@ const QString GroupWidgetStatus::startedStyleOff =
         border-radius: 3px; \
 }";
 
+static const QFont standartFont = QFont("Share Tech Mono", 14);
+
 GroupWidgetStatus::GroupWidgetStatus(QWidget *parent)
     : QWidget(parent), ui(new Ui::GroupWidgetStatus) {
   ui->setupUi(this);
@@ -33,18 +35,16 @@ void GroupWidgetStatus::addData(DeviceStatusGroup &status) {
     for (auto dev : map) {
       if (!m_devs.contains(dev)) {
         auto devLabel = new QLabel(dev);
-        QFont font;
-        font.setPointSize(14);
-        font.setFamily(QString::fromUtf8("Share Tech Mono"));
-        devLabel->setFont(font);
+        devLabel->setFont(standartFont);
         devLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        devLabel->setMaximumWidth(100);
         ui->labelsLayout->addWidget(devLabel);
         m_devs.insert(dev, devLabel);
       }
       if (status.devStarted->value(dev)) {
-        m_devs.value(dev)->setText(dev + QString(" ON"));
+        m_devs.value(dev)->setText(dev + QString(": ON"));
       } else {
-        m_devs.value(dev)->setText(dev + QString(" OFF"));
+        m_devs.value(dev)->setText(dev + QString(": OFF"));
       }
     }
   }

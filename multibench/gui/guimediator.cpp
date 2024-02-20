@@ -151,7 +151,7 @@ void GuiMediator::NewEvent(const model::Event& event) {
       auto data =
           std::get<model::events::network::DeviceLinkStatus>(event.data_);
       m_deviceWidgetsTable.value(data.addr_)->setLink(data.status_);
-      for (const auto& group : m_groupWidgetsTable) {
+      for (auto& group : m_groupWidgetsTable) {
         if (group->getAddresses().contains(data.addr_)) {
           group->linkStatusChanged(data.addr_, data.status_);
         }

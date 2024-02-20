@@ -12,8 +12,7 @@ GroupStatusDialog::~GroupStatusDialog() { delete ui; }
 
 void GroupStatusDialog::addDevice(quint8 addr, const QString &name,
                                   const QString &model) {
-  auto device =
-      QSharedPointer<GroupWidgetStatus>::create(new GroupWidgetStatus());
+  auto device = QSharedPointer<GroupWidgetStatus>::create();
   device->setModel(model);
   device->setName(name);
   ui->devicesLayout->addWidget(device.data());
