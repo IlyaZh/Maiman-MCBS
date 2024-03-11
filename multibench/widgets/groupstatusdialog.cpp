@@ -6,6 +6,13 @@
 GroupStatusDialog::GroupStatusDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::GroupStatusDialog) {
   ui->setupUi(this);
+  m_devicesLayout = new QVBoxLayout(ui->scrollAreaWidget);
+  m_devicesLayout->setMargin(0);
+  m_devicesLayout->setSpacing(10);
+  m_devicesLayout->setContentsMargins(0, 0, 0, 0);
+  m_devicesLayout->setSizeConstraint(QLayout::SetMinimumSize);
+  m_devicesLayout->setAlignment(Qt::AlignLeft);
+  ui->scrollAreaWidget->setLayout(m_devicesLayout);
 }
 
 GroupStatusDialog::~GroupStatusDialog() { delete ui; }
@@ -15,7 +22,7 @@ void GroupStatusDialog::addDevice(quint8 addr, const QString &name,
   auto device = QSharedPointer<GroupWidgetStatus>::create();
   device->setModel(model);
   device->setName(name);
-  ui->devicesLayout->addWidget(device.data());
+  m_devicesLayout->addWidget(device.data());
   m_devices.insert(addr, device);
 }
 
