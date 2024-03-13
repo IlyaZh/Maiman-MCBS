@@ -25,6 +25,7 @@ class GroupStatusDialog : public QDialog {
   Ui::GroupStatusDialog* ui;
   QMap<quint8, QSharedPointer<GroupWidgetStatus>> m_devices;
   QVBoxLayout* m_devicesLayout;
+  void resizeWidget();
 };
 
 #endif  // GROUPSTATUSDIALOG_H
