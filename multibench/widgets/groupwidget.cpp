@@ -95,19 +95,23 @@ void GroupWidget::addGroupMember(QPointer<DeviceWidget> member) {
   //  m_widgetLayout->addWidget(member);
   m_groupWidgets.append(member);
   resizeWidget();
+  emit closeGroupStatusDialog();
   m_addresses.insert(member->getAddress());
   auto status = DeviceStatusGroup();
   status.errors = QStringList();
   status.devStarted = QMap<QString, bool>();
   m_status.insert(member->getAddress(), status);
+  m_linked.insert(member->getAddress(), true);
 }
 
 void GroupWidget::removeGroupMember(QPointer<DeviceWidget> member) {
   //  if (member == this) return;
+  emit closeGroupStatusDialog();
   m_widgetLayout->removeWidget(member);
   m_groupWidgets.removeOne(member);
   m_addresses.remove(member->getAddress());
   m_status.remove(member->getAddress());
+  m_linked.remove(member->getAddress());
 }
 
 const QSet<quint8> GroupWidget::getAddresses() { return m_addresses; }
@@ -199,6 +203,7 @@ void GroupWidget::setDevicesStatus(quint8 addr,
                                    QSharedPointer<DeviceStatusGroup> desc) {
   if (desc.isNull()) return;
   if (desc.data()->errors.has_value()) {
+    m_status[addr].errors->clear();
     m_status[addr].errors->append(desc.data()->errors.value());
     m_status[addr].errors->removeDuplicates();
   }
@@ -220,7 +225,12 @@ const QString GroupWidget::getName() {
 
 int GroupWidget::getGroupAddress() { return m_selfAddr; }
 void GroupWidget::linkStatusChanged(int addr, bool status) {
-  if (!status) {
+  m_linked[static_cast<quint8>(addr)] = status;
+  bool groupLink = true;
+  for (auto linked : m_linked) {
+    groupLink = groupLink & linked;
+  }
+  if (!groupLink) {
     ui->linkLabel->setStyleSheet(
         "QLabel { \
                                        background: rgb(175,0,0); \
@@ -250,4 +260,6 @@ void GroupWidget::showStatus() {
           &GroupStatusDialog::setStatus);
   connect(this, &GroupWidget::linkChanged, dialog,
           &GroupStatusDialog::deviceLinkChanged);
+  connect(this, &GroupWidget::closeGroupStatusDialog, dialog,
+          &GroupStatusDialog::deleteLater);
 }

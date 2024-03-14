@@ -38,6 +38,7 @@ void GroupWidgetStatus::addData(DeviceStatusGroup &status) {
         devLabel->setFont(standartFont);
         devLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
         devLabel->setMaximumWidth(100);
+        devLabel->setMinimumWidth(100);
         ui->labelsLayout->addWidget(devLabel);
         m_devs.insert(dev, devLabel);
       }
