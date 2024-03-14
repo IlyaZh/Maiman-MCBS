@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>743</width>
-    <height>118</height>
+    <width>763</width>
+    <height>345</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -33,6 +39,12 @@ QPushButton {
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="font">
       <font>
        <family>Share Tech Mono</family>
@@ -57,7 +69,37 @@ QPushButton {
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="devicesLayout"/>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>745</width>
+        <height>290</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: rgb(51,51,51);
+</string>
+      </property>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>
