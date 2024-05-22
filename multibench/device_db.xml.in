@@ -313,7 +313,7 @@
                         <Command code=\"0040\" divider=\"10\" unit=\"A\" tol=\"1\"/>
                         <Command code=\"0088\" divider=\"100\" tol=\"2\"/>
                         <Command code=\"0041\" divider=\"10\" unit=\"V\" tol=\"1\"/>
-                        <Command code=\"0004\" tol=\"0\"/>
+                        <Command code=\"0004\" tol=\"0\" alias=\"start\" onCommand=\"0008\" offCommand=\"0010\"/>
                         <Command code=\"0003\" interval=\"100\" tol=\"0\"/>
                         <Command code=\"0005\" tol=\"0\"/>
                         <Command code=\"0026\" isSigned=\"\" divider=\"10\" unit=\"(deg)\" isTemperature=\"1\" tol=\"1\"/>

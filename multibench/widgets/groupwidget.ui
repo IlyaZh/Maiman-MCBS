@@ -201,7 +201,7 @@ background: rgb(180,180,180);
       <string notr="true">border: 2px solid rgb(26,26,26); 
 border-radius: 6px; 
 color: rgb(0,0,0); 
-background: rgb(180,180,180); </string>
+background: rgb(189,0,0); </string>
      </property>
      <property name="text">
       <string>Stop</string>

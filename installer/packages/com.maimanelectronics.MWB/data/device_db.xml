@@ -295,6 +295,34 @@
 		</Commands>
 	</Device>
 
+                <Device id="612" name="SF6060 v1.1.M5" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
+                <!-- ID - hex число, stopCommandDelay - десятичное -->
+                <!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
+                <Commands>
+                        <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                        <Command code="0001" interval="1000" tol="1"/>
+                        <Command code="0006" divider="10" unit="Hz" tol="1"/>
+                        <Command code="0020" divider="10" interval="100" unit="Hz" tol="1"/>
+                        <Command code="0021" divider="10" interval="100" unit="Hz" tol="1"/>
+                        <Command code="0007" divider="10" unit="ms" tol="1"/>
+                        <Command code="0022" divider="10" interval="100" unit="ms" tol="1"/>
+                        <Command code="0023" divider="10" unit="ms" tol="1"/>
+                        <Command code="0008" divider="100" unit="A" tol="1"/>
+                        <Command code="0024" divider="100" interval="100" unit="A" tol="1"/>
+                        <Command code="0025" divider="100" interval="100" unit="A" tol="1"/>
+                        <Command code="0040" divider="10" unit="A" tol="1"/>
+                        <Command code="0088" divider="100" tol="2"/>
+                        <Command code="0041" divider="10" unit="V" tol="1"/>
+                        <Command code="0004" tol="0" alias="start" onCommand="0008" offCommand="0010"/>
+                        <Command code="0003" interval="100" tol="0"/>
+                        <Command code="0005" tol="0"/>
+                        <Command code="0026" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0027" isSigned="" divider="10" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="0042" isSigned="" divider="10" interval="10" unit="(deg)" isTemperature="1" tol="1"/>
+                        <Command code="008A" divider="1" interval="10" tol="0"/>
+                        <Command code="0043" isSigned="" divider="10" interval="10" unit="(deg)" isTemperature="1" tol="1"/>
+                </Commands>
+        </Device>
 	<Device id="401" name="SF6090 v1.1" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
 		<!-- ID - hex число, stopCommandDelay - десятичное -->
 		<!-- команды доступные для устройства. Они циклично опрашиваются. Опрашиваются != используются :)) -->
@@ -803,6 +831,32 @@
                     <Command code="0093" tol="1"/>
             </Commands>
         </Device>
+        <Device id="2002" name="TC1540" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
+        <!-- ID - hex число, stopCommandDelay - десятичное -->
+        <Commands>
+          <!-- Числа все Hex, кроме делителя - он десятичный. -->
+                <Command code="0001" interval="1000" tol="1"/>
+                <Command code="0003" interval="100" tol="0"/>
+                <Command code="0005" tol="0"/>
+                <Command code="0043" isSigned="" divider="10" interval="100" unit="(deg)" isTemperature="1" tol="1"/>
+                <Command code="0070" divider="100" unit="(deg)" isTemperature="1" tol="2"/>
+                <Command code="0071" divider="100" unit="(deg)" isTemperature="1" tol="2"/>
+                <Command code="0072" divider="100" unit="(deg)" isTemperature="1" tol="2"/>
+                <Command code="0073" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="2"/>
+                <Command code="0074" divider="100" interval="100" unit="(deg)" isTemperature="1" tol="2"/>
+                <Command code="0075" divider="100" unit="(deg)" isTemperature="1" tol="2"/>
+                <Command code="0076" isSigned="" divider="10" unit="A" tol="1"/>
+                <Command code="0077" divider="10" unit="A" tol="1"/>
+                <Command code="0078" isSigned="" divider="10" unit="V" tol="1"/>
+                <Command code="0079" divider="10" unit="V" tol="1"/>
+                <Command code="007A" tol="0" alias="start" onCommand="0008" offCommand="0010"/>
+                <Command code="007E" divider="100" interval="10" tol="2"/>
+                <Command code="007F" divider="1" interval="10" tol="0"/>
+                <Command code="0091" tol="1"/>
+                <Command code="0092" tol="1"/>
+                <Command code="0093" tol="1"/>
+        </Commands>
+    </Device>
         <Device id="1410" name="SF8025-WT" stopCommandDelayMs="300" minCommandDelayMs="10" maxCommandDelayMs="1000">
         <!-- ID - hex число, stopCommandDelay - десятичное -->
         <Commands>
