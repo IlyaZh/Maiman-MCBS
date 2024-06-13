@@ -39,7 +39,7 @@ static const struct kNetworkTimeoutMSecs {
 static const struct kNetworkMaxAddress {
   static const int defaultValue{32};
   static const int min{1};
-  static const int max{63};
+  static const int max{255};
 } kNetworkMaxAddress;
 
 static const int kNetworkDisconnectedTimeout{100};
