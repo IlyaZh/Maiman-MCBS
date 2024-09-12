@@ -21,8 +21,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-    background-color: rgb(51, 51, 51);
-    color: rgb(153,153,153);
+    background-color:#282828;
+    /*color: rgb(153,153,153);*/
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -42,6 +42,22 @@
     <number>0</number>
    </property>
    <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -53,19 +69,6 @@
       <string notr="true"/>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

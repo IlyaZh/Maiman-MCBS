@@ -7,7 +7,7 @@ HiddenWidget::HiddenWidget(QWidget* parent)
   ui->setupUi(this);
   m_layout = new QVBoxLayout();
   m_layout->setSpacing(0);
-  m_layout->setContentsMargins(0, 0, 0, 0);
+  m_layout->setContentsMargins(5, 0, 5, 0);
 
   ui->widget->setLayout(m_layout);
 }

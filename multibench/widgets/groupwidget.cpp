@@ -7,7 +7,7 @@ static const QString buttonOn =
     "QPushButton \
                                    { \
                                        border: 2px solid rgb(26,26,26); \
-                                       border-radius: 6px; \
+                                       border-radius: 20px; \
                                        color: rgb(0,0,0); \
                                        background: rgb(0,102,51); \
                                    }";
@@ -16,7 +16,7 @@ static const QString buttonOff =
     "QPushButton \
                                    { \
                                        border: 2px solid rgb(26,26,26); \
-                                       border-radius: 6px; \
+                                       border-radius: 20px; \
                                        color: rgb(0,0,0); \
                                        background: rgb(189,0,0); \
                                    }";
@@ -25,7 +25,7 @@ static const QString buttonNone =
     "QPushButton \
                                    { \
                                        border: 2px solid rgb(26,26,26); \
-                                       border-radius: 6px; \
+                                       border-radius: 20px; \
                                        color: rgb(0,0,0); \
                                        background: rgb(180,180,180); \
                                    }";

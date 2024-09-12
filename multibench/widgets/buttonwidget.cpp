@@ -4,19 +4,23 @@
 static const QString buttonOn =
     "QPushButton \
                                    { \
-                                       border: 2px solid rgb(26,26,26); \
-                                       border-radius: 6px; \
+                                       border: 0px solid rgb(26,26,26); \
+                                       border-radius: 17px; \
                                        color: rgb(0,0,0); \
-                                       background: rgb(0,102,51); \
+                                       text-align:center;\
+                                       padding-top: 7px;\
+                                       background: rgb(57,202,118); \
                                    }";
 
 static const QString buttonOff =
     "QPushButton \
                                    { \
-                                       border: 2px solid rgb(26,26,26); \
-                                       border-radius: 6px; \
+                                       border: 0px solid rgb(26,26,26); \
+                                       border-radius: 17px; \
                                        color: rgb(0,0,0); \
-                                       background: rgb(189,0,0); \
+                                       text-align:center;\
+                                       padding-top: 7px;\
+                                       background: rgb(255,64,58); \
                                    }";
 
 ButtonWidget::ButtonWidget(const QString &text, const Button &button,
@@ -33,7 +37,9 @@ ButtonWidget::ButtonWidget(const QString &text, const Button &button,
   m_button->setMinimumSize(234, 36);
   m_button->setMaximumHeight(36);
   m_button->setMaximumWidth(234);
-  m_button->setFont(QFont("Share Tech Mono", 18));
+  QFont font14("Poppins", 14);
+  font14.setLetterSpacing(QFont::PercentageSpacing, 105);
+  m_button->setFont(font14);
   m_button->setStyleSheet(buttonOff);
   m_button->setChecked(false);
   m_button->setVisible(true);

@@ -38,8 +38,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-    background-color: rgb(51, 51, 51);
-    color: rgb(153,153,153);
+    background-color: #282828;
+    /*color: rgb(153,153,153);*/
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -83,8 +83,8 @@
      </property>
      <property name="font">
       <font>
-       <family>Share Tech Mono</family>
-       <pointsize>12</pointsize>
+       <family>Poppins</family>
+       <pointsize>11</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -93,28 +93,49 @@
      <property name="styleSheet">
       <string notr="true">QCheckBox{
 	border-color: rgb(0, 0, 0);
-	font: 12pt &quot;Share Tech Mono&quot;;
+	font: 11pt &quot;Poppins&quot;;
 	color: rgb(153, 153, 153);
 	
 
 }
-/*QCheckBox::indicator{
-	
-	background-color: rgb(255, 255, 255);
-
-	border: 1px solid black
-
+QCheckBox::indicator {
+    width: 12px;
+    height: 12px;
 }
-QCheckBox::indicator:unchecked{
-	
-	
-}*/</string>
+
+QCheckBox::indicator::unchecked {
+    border-radius: 6px; /* Половина от диаметра */
+    border: 1px solid #F3F3F3; /* Серый цвет */
+    background-color: none;
+}
+
+QCheckBox::indicator::unchecked:hover {
+    border: 1px solid #F3F3F3; /* Более светлый серый цвет */
+}
+
+QCheckBox::indicator::unchecked:pressed {
+    border: 1px solid #F3F3F3; /* Темно-серый цвет */
+}
+
+QCheckBox::indicator::checked {
+    border-radius: 6px; /* Половина от диаметра */
+    border: 1px solid #F3F3F3; /* Серый цвет */
+    background-color: #ffc803; /* Желтый цвет */
+}
+
+QCheckBox::indicator::checked:hover {
+    border: 1px solid #F3F3F3; /* Более светлый серый цвет */
+}
+
+QCheckBox::indicator::checked:pressed {
+    border: 1px solid #F3F3F3; /* Темно-серый цвет */
+}</string>
      </property>
      <property name="text">
       <string>Status</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>

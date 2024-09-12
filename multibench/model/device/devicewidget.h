@@ -108,7 +108,7 @@ class DeviceWidget : public QWidget, public GroupInterface {
   void setAddress(int addr);
   int getAddress() const;
   int getId() const;
-  QString getModel()const;
+  QString getModel() const;
   QString getName() const;
   void setConstraint(bool state);
   void updateValue(const model::Event& event);
@@ -136,6 +136,7 @@ class DeviceWidget : public QWidget, public GroupInterface {
   ButtonWidget* m_laserButton{nullptr};
   ButtonWidget* m_tecButton{nullptr};
   DeviceCondition* m_deviceCondition;
+  InLineEdit* m_deviceAddress;
   int m_fixedWidgets{0};
   //  QHash<quint8, GuiWidgetBase*> m_widgetsTable;
   QSet<GuiWidgetBase*> m_widgetsTable;

@@ -90,6 +90,27 @@ ControlWidget::ControlWidget(QStringView name,
           &ControlWidget::userEnteredData);
   connect(ui->Value, &QLineEdit::cursorPositionChanged, this,
           [this]() { isUserEdit = true; });
+  QFont font18("Poppins", 18);
+  font18.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font18.setPixelSize(23);
+  QFont font12("Poppins", 12);
+  font12.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font12.setPixelSize(16);
+  QFont font10("Poppins", 10);
+  font10.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font10.setPixelSize(14);
+  //  ui->WidgetName->setContentsMargins(0, 0, 0, 12);
+  ui->WidgetName->setFont(font18);
+  ui->Real->setFont(font12);
+  ui->RealValue->setFont(font12);
+  ui->RealUnits->setFont(font12);
+  ui->Max->setFont(font10);
+  ui->MaxValue->setFont(font10);
+  ui->MaxUnits->setFont(font10);
+  ui->Min->setFont(font10);
+  ui->MinValue->setFont(font10);
+  ui->MinUnits->setFont(font10);
+  ui->Value->setFont(font10);
   adjust();
 }
 
@@ -179,16 +200,19 @@ void ControlWidget::adjust() {
 
 void ControlWidget::setEditLineRed() {
   ui->Value->setStyleSheet(
-      "  color: rgb(255, 255, 255);\n"
-      "	background: rgb(230, 0, 0);\n"
-      "	border-radius: 5px;\n");
+      "  color: rgb(255, 255, 255, 0.9);\n"
+      "	background: #FF403A;\n"
+      " border: 1px solid #6B6B6B;\n"
+      "	border-radius: 12px;\n");
 }
 
 void ControlWidget::setEditLineWhite() {
   ui->Value->setStyleSheet(
-      "  color: rgb(0, 0, 0);\n"
-      "	background: rgb(255, 255, 255);\n"
-      "	border-radius: 5px;\n");
+      "  color: rgb(255, 255, 255, 0.9);\n"
+      "	background: #6B6B6B;\n"
+      " border-radius: 12px;\n"
+      " border: 1px solid #6B6B6B;\n");
+
   const QString value = m_ValueConv->valueStr();
   ui->Value->setText(value);
 }

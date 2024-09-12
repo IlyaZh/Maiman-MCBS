@@ -16,25 +16,27 @@
 
 const QString DeviceWidget::linkStyleOn =
     "QLabel { \
-        background: rgb(0,102,51); \
-        border: 1px solid rgb(26,26,26); \
-        border-radius: 3px; \
+    background: #39CA76;\
+    border: 0px solid #1A1A1A;\
+    border-radius: 3px;\
 }";
 
 const QString DeviceWidget::linkStyleOff =
     "QLabel { \
-        background: rgb(175,0,0); \
-        border: 1px solid rgb(26,26,26); \
-        border-radius: 3px; \
+    background: #FF403A;\
+    border: 1px solid #1A1A1A;\
+    border-radius: 3px;\
 }";
 
 const QString DeviceWidget::labelEnableStyle =
     "QLabel { \
-        color: rgb(255,255,255); \
+    color: #FFFFFF;\
+    background-color: #282828;\
 }";
 
 const QString DeviceWidget::labelDisableStyle =
     "QLabel { \
+    background-color: #282828;\
     color: rgb(153,153,153); \
 }";
 
@@ -66,23 +68,29 @@ DeviceWidget::DeviceWidget(
       m_buttons(description.buttons),
       m_commands(commands),
       m_converters(converters),
-      m_widgetLayout(new QGridLayout()) {
+      m_widgetLayout(new QGridLayout()),
+      m_deviceAddress(new InLineEdit(0)) {
   ui->setupUi(this);
-
+  QFont font14("Poppins Medium", 14);
+  font14.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font14.setPixelSize(14);
   ui->modelLabel->setText(QString("Model: %1").arg(description.name));
+  ui->modelLabel->setFont(font14);
   m_id = description.id;
 
   // Инициализация кнопки (Hide controls)
   auto m_hideControlsButton = new QPushButton(" " + tr("Hide controls"));
   m_hideControlsButton->setStyleSheet(
-      "border: 2px solid rgb(26,26,26);\n border-radius: 3px;\n background: "
-      "rgb(51,51,51);\n color: rgb(255,255,255);\n"
+      "border: 2px solid #1A1A1A;\n border-radius: 5px;\n background: "
+      "#1D1D1D;\n color: #FFFFFF;\n"
       "padding: 0px;\n"
+      "text-align:center;\n"
+      "margin-top: 5px;\n"
       "margin-left: 10px;\n"
-      "margin-bottom: 15px;");
+      "margin-bottom: 10px;");
   m_hideControlsButton->setCheckable(true);
   m_hideControlsButton->setChecked(false);
-  m_hideControlsButton->setIconSize(QSize(10, 10));
+  m_hideControlsButton->setIconSize(QSize(9, 9));
   QIcon icon1;
   icon1.addFile(QString::fromUtf8(":/resources/images/hidecontrols-icon.png"),
                 QSize(), QIcon::Normal, QIcon::Off);
@@ -90,10 +98,12 @@ DeviceWidget::DeviceWidget(
                 QSize(), QIcon::Normal, QIcon::On);
   m_hideControlsButton->setIcon(icon1);
   m_hideControlsButton->setObjectName(QString::fromUtf8("hideControlButton"));
-  m_hideControlsButton->setMinimumSize(QSize(125, 37));
-  m_hideControlsButton->setMaximumSize(QSize(125, 37));
+  m_hideControlsButton->setMinimumSize(QSize(106, 35));
+  m_hideControlsButton->setMaximumSize(QSize(106, 35));
   QFont font1;
-  font1.setFamily(QString::fromUtf8("Share Tech Mono"));
+  font1.setFamily(QString::fromUtf8("Poppins"));
+  font1.setPixelSize(10);
+  font1.setLetterSpacing(QFont::PercentageSpacing, 105);
   m_hideControlsButton->setFont(font1);
 
   connect(m_hideControlsButton, &QPushButton::clicked, this,
@@ -123,7 +133,7 @@ DeviceWidget::DeviceWidget(
           new ControlWidget(control.name, valueConverter, maxConverter,
                             minConverter, realConverter, hiddenWidget);
       if (control.fixed) ++m_fixedWidgets;
-      hiddenWidget->layout()->setContentsMargins(10, 0, 10, 0);
+      hiddenWidget->layout()->setContentsMargins(10, 0, 0, 0);
       m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
       hiddenWidget->addWidget(widget);
       if (control.name == "current") hiddenWidget->setPinned(true);
@@ -137,14 +147,14 @@ DeviceWidget::DeviceWidget(
   // Закидываем неизменяемые параметры в виджет
   if (readOnlyWidgets.count() > 0) {
     auto hiddenWidget = new HiddenWidget(this);
-    hiddenWidget->layout()->setContentsMargins(10, 12, 10, 0);
+    hiddenWidget->layout()->setContentsMargins(10, 14, 10, 0);
     auto maxUnitsLengthIt = *std::max_element(
         std::begin(readOnlyWidgets), std::end(readOnlyWidgets),
         [=](ReadParameterWidget* widgetA, ReadParameterWidget* widgetB) {
           return widgetA->getUnitslength() < widgetB->getUnitslength();
         });
     for (auto item : qAsConst(readOnlyWidgets)) {
-      item->setContentsMargins(0, 0, 0, 4);
+      item->setContentsMargins(0, 0, 0, 0);
       item->setUnitsLength(maxUnitsLengthIt->getUnitslength());
       hiddenWidget->addWidget(item);
       m_widgetsTable.insert(item);
@@ -192,24 +202,31 @@ DeviceWidget::DeviceWidget(
     pinButton->setSizePolicy(sizePolicy1);
     pinButton->setMinimumSize(QSize(16, 16));
     pinButton->setMaximumSize(QSize(16, 16));
-    pinButton->setMaximumWidth(36);
+    pinButton->setMaximumWidth(16);
+    pinButton->setMaximumHeight(20);
     pinButton->setStyleSheet(
-        QString::fromUtf8("border: 2px solid rgb(26,26,26);\n"
+        QString::fromUtf8("border: 1px solid #1D1D1D;\n"
                           "border-radius: 3px;\n"
-                          "background: rgb(17,17,17);\n"
+                          "background: #1D1D1D;\n"
                           "color: rgb(255,255,255);\n"
                           "padding: 0px;\n"
                           "margin-right: 10px;\n"
+                          "margin-bottom: 5px;\n"
                           "margin-left: 10px;"));
     QIcon icon;
+    //    QPixmap pixmap(":/resources/images/NewPinSymbol-disactivated.png");
+    //    pixmap =
+    //        pixmap.scaled(16, 16, Qt::IgnoreAspectRatio,
+    //        Qt::FastTransformation);
+    //    icon.addPixmap(pixmap, QIcon::Normal, QIcon::Off);
     icon.addFile(
-        QString::fromUtf8(":/resources/images/pinSymbol-disactivated.png"),
-        QSize(), QIcon::Normal, QIcon::Off);
+        QString::fromUtf8(":/resources/images/NewPinSymbol-disactivated.png"),
+        QSize(16, 16), QIcon::Normal, QIcon::Off);
     icon.addFile(
-        QString::fromUtf8(":/resources/images/pinSymbol-activated.png"),
-        QSize(), QIcon::Normal, QIcon::On);
+        QString::fromUtf8(":/resources/images/NewPinSymbol-activated.png"),
+        QSize(16, 16), QIcon::Normal, QIcon::On);
     pinButton->setIcon(icon);
-    pinButton->setIconSize(QSize(10, 10));
+    pinButton->setIconSize(QSize(16, 16));
     pinButton->setChecked(false);
     pinButton->setCheckable(true);
     m_pinButtons.append(pinButton);
@@ -272,8 +289,8 @@ DeviceWidget::DeviceWidget(
       ui->buttonsLayout->setAlignment(pButton, Qt::AlignBottom);
     }
   }
-  m_widgetLayout->setAlignment(Qt::AlignTop);
-  m_widgetLayout->setContentsMargins(0, 2, 0, 0);
+  //  m_widgetLayout->setAlignment(Qt::AlignTop);
+  m_widgetLayout->setContentsMargins(0, 0, 0, 0);
   m_widgetLayout->setSpacing(0);
   // m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
   ui->widgetBox->setLayout(m_widgetLayout);
@@ -281,6 +298,13 @@ DeviceWidget::DeviceWidget(
 
   m_deviceCondition =
       new DeviceCondition(m_commands, description.leds, ui->conditionLabel);
+  ui->gridLayout->addWidget(m_deviceAddress, 0, 2);
+  connect(m_deviceAddress, &InLineEdit::nameEdited, this,
+          [this](QString name, int addr) {
+            m_name = name;
+            emit nameEdited(name, addr);
+          });
+  m_name = m_deviceAddress->text();
   for (auto widget : m_widgetsTable) {
     connect(widget, &GuiWidgetBase::setDataFromWidget, this,
             &DeviceWidget::acceptDataFromWidget);
@@ -293,26 +317,29 @@ DeviceWidget::~DeviceWidget() { delete ui; }
 
 void DeviceWidget::setAddress(int addr) {
   m_address = addr;
-  InLineEdit* address = new InLineEdit(addr);
-  ui->gridLayout->addWidget(address, 0, 2);
-  connect(address, &InLineEdit::nameEdited, this,
-          [this](QString name, int addr) {
-            m_name = name;
-            emit nameEdited(name, addr);
-          });
-  m_name = address->text();
+  m_deviceAddress->setAddress(addr);
+  //  InLineEdit* address = new InLineEdit(addr);
+  //  ui->gridLayout->addWidget(address, 0, 2);
+  //  connect(address, &InLineEdit::nameEdited, this,
+  //          [this](QString name, int addr) {
+  //            m_name = name;
+  //            emit nameEdited(name, addr);
+  //          });
+  //  m_name = address->text();
   // ui->idLabel->setText(QString("ID:%1").arg(addr));
 }
 
 int DeviceWidget::getAddress() const { return m_address; }
 int DeviceWidget::getId() const { return m_id; }
 QString DeviceWidget::getName() const { return m_name; }
-QString DeviceWidget::getModel() const{return ui->modelLabel->text();}
+QString DeviceWidget::getModel() const { return ui->modelLabel->text(); }
 
 void DeviceWidget::setLink(bool link) {
   ui->linkLabel->setStyleSheet(link ? linkStyleOn : linkStyleOff);
   // ui->idLabel->setStyleSheet(link ? labelEnableStyle : labelDisableStyle);
-  ui->modelLabel->setStyleSheet(link ? labelEnableStyle : labelDisableStyle);
+  //  ui->modelLabel->setStyleSheet(link ? labelEnableStyle :
+  //  labelDisableStyle);
+  m_deviceAddress->setLink(link);
 }
 
 // private methods

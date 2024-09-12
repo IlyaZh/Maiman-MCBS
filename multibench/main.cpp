@@ -27,7 +27,12 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
 
   QFontDatabase::addApplicationFont(Const::kApplicationDefaultFontPath);
+  QFontDatabase::addApplicationFont(":/resources/fonts/Poppins-Regular.ttf");
+  QFontDatabase::addApplicationFont(":/resources/fonts/Poppins-Medium.ttf");
+  QFontDatabase::addApplicationFont(":/resources/fonts/Poppins-SemiBold.ttf");
+
   QApplication::setFont(QFont("Share Tech Mono", 9));
+  //  QApplication::setFont(QFont("Poppins", 9));
 
 #ifdef QT_DEBUG
   debugMode = false;

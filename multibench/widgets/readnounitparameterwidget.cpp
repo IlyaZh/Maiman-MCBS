@@ -11,10 +11,10 @@ void ReadNoUnitParameterWidget::setup(QStringView name,
   m_layout = new QHBoxLayout(this);
   this->setStyleSheet(
       "QWidget {\
-    background-color: rgb(51, 51, 51);\
+    background-color: #282828;\
     color: rgb(153,153,153);\
-    font: 12pt Share Tech Mono;\
 }");
+  setFont(QFont("Poppins", 12));
   m_layout->setMargin(0);
   m_layout->setSpacing(6);
   m_labelParameter = new QLabel;
@@ -24,7 +24,9 @@ void ReadNoUnitParameterWidget::setup(QStringView name,
   m_labelValue->setAlignment(Qt::AlignRight);
   m_labelUnit->setAlignment(Qt::AlignRight);
   m_labelParameter->setText(name.toString());
-
+  m_labelParameter->setFont(QFont("Poppins", 12));
+  m_labelValue->setFont(QFont("Poppins", 12));
+  m_labelUnit->setFont(QFont("Poppins", 12));
   m_labelUnit->setText(m_command->unit());
 
   if (m_command) {
@@ -52,10 +54,10 @@ void ReadNoUnitParameterWidget::setup(QStringView name,
   m_layout = new QHBoxLayout(this);
   this->setStyleSheet(
       "QWidget {\
-    background-color: rgb(51, 51, 51);\
+    background-color: #282828;\
     color: rgb(153,153,153);\
-    font: 12pt Share Tech Mono;\
 }");
+  setFont(QFont("Poppins", 12));
   m_layout->setMargin(0);
   m_layout->setSpacing(6);
   m_labelParameter = new QLabel;
@@ -65,7 +67,11 @@ void ReadNoUnitParameterWidget::setup(QStringView name,
   m_labelValue->setAlignment(Qt::AlignRight);
   m_labelUnit->setAlignment(Qt::AlignRight);
   m_labelParameter->setText(name.toString());
-
+  QFont font11("Poppins", 11);
+  font11.setLetterSpacing(QFont::PercentageSpacing, 105);
+  m_labelParameter->setFont(font11);
+  m_labelValue->setFont(font11);
+  m_labelUnit->setFont(font11);
   m_labelUnit->setText(m_converter->unit());
 
   if (m_converter) {
