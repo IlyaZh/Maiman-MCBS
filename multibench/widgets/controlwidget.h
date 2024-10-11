@@ -8,6 +8,7 @@
 
 #include "device/commandsettings.h"
 #include "gui/guiinterface.h"
+#include "widgets/inlinecontrol.h"
 
 struct Control;
 
@@ -54,6 +55,7 @@ class ControlWidget : public GuiWidgetBase {
   QSharedPointer<CommandConverter> m_MinConv;
   bool isUserEdit = false;
   QVector<quint16> m_codes;
+  InLineControl *m_controlLine = nullptr;
 
   void adjust();
  private slots:

@@ -31,6 +31,14 @@ BinaryWidget::BinaryWidget(const Checkbox &settings,
       m_converter(converter) {
   ui->setupUi(this);
   ui->statusCheckbox->setText(m_settings.name);
+  //  ui->statusCheckbox->setIconSize(QSize(12, 12));
+  //  QIcon icon1;
+  //  icon1.addFile(QString::fromUtf8(":/resources/images/checkBoxOff.png"),
+  //                QSize(), QIcon::Normal, QIcon::Off);
+  //  icon1.addFile(QString::fromUtf8(":/resources/images/checkBoxOn.png"),
+  //  QSize(),
+  //                QIcon::Normal, QIcon::On);
+  //  ui->statusCheckbox->setIcon(icon1);
   QFont font11("Poppins", 11);
   font11.setLetterSpacing(QFont::PercentageSpacing, 105);
   ui->statusCheckbox->setFont(font11);

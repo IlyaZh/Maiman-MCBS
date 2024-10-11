@@ -15,5 +15,8 @@
         <file>resources/images/NewPinSymbol-activated.png</file>
         <file>resources/images/NewPinSymbol-disactivated.png</file>
         <file>resources/images/NewPencil.png</file>
+        <file>resources/images/checkBoxOff.png</file>
+        <file>resources/images/checkBoxOn.png</file>
+        <file>resources/images/Set.png</file>
     </qresource>
 </RCC>

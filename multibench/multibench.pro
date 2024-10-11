@@ -87,6 +87,7 @@ SOURCES += \
     widgets/groupstatusdialog.cpp \
     widgets/groupwidget.cpp \
     widgets/groupwidgetstatus.cpp \
+    widgets/inlinecontrol.cpp \
     widgets/inlineedit.cpp \
     widgets/plusminusgroupwidget.cpp \
     widgets/plusminuswidget.cpp \
@@ -148,6 +149,7 @@ HEADERS += \
     widgets/groupstatusdialog.h \
     widgets/groupwidget.h \
     widgets/groupwidgetstatus.h \
+    widgets/inlinecontrol.h \
     widgets/inlineedit.h \
     widgets/plusminusgroupwidget.h \
     widgets/plusminuswidget.h \

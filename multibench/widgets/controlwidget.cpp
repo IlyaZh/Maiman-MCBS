@@ -69,9 +69,10 @@ ControlWidget::ControlWidget(QStringView name,
       m_RealConv(Real),
       m_ValueConv(Value),
       m_MaxConv(Max),
-      m_MinConv(Min) {
+      m_MinConv(Min),
+      m_controlLine(new InLineControl()) {
   ui->setupUi(this);
-
+  ui->gridLayout->replaceWidget(ui->Value, m_controlLine)->widget()->hide();
   ui->WidgetName->setText(name.toString());
 
   if (m_ValueConv and m_MaxConv and m_MinConv) {
@@ -86,9 +87,9 @@ ControlWidget::ControlWidget(QStringView name,
     setUnits(m_ValueConv->unit());
   }
 
-  connect(ui->Value, &QLineEdit::returnPressed, this,
+  connect(m_controlLine, &QLineEdit::returnPressed, this,
           &ControlWidget::userEnteredData);
-  connect(ui->Value, &QLineEdit::cursorPositionChanged, this,
+  connect(m_controlLine, &QLineEdit::cursorPositionChanged, this,
           [this]() { isUserEdit = true; });
   QFont font18("Poppins", 18);
   font18.setLetterSpacing(QFont::PercentageSpacing, 105);
@@ -137,17 +138,19 @@ void ControlWidget::userEnteredValue() {
 }
 
 void ControlWidget::userEnteredData() {
-  double valueFromLine = ui->Value->text().toDouble();
-  ui->Value->setText(
+  m_controlLine->setInactiveStyle();
+  double valueFromLine = m_controlLine->text().toDouble();
+  m_controlLine->setText(
       QString::number(valueFromLine, 'f', m_ValueConv->tolerance()));
-  ui->Value->clearFocus();
+  m_controlLine->clearFocus();
 
   if (valueFromLine > m_MaxConv->valueDouble() or
       valueFromLine < m_MinConv->valueDouble()) {
     valueFromLine = qBound(m_MinConv->valueDouble(), valueFromLine,
                            m_MaxConv->valueDouble());
     setEditLineRed();
-    QTimer::singleShot(ErrorTimeout, this, ControlWidget::setEditLineWhite);
+
+    QTimer::singleShot(ErrorTimeout, this, &ControlWidget::setEditLineWhite);
   }
 
   if (!m_ValueConv.isNull()) {
@@ -198,23 +201,13 @@ void ControlWidget::adjust() {
   this->setMinimumSize(this->size());
 }
 
-void ControlWidget::setEditLineRed() {
-  ui->Value->setStyleSheet(
-      "  color: rgb(255, 255, 255, 0.9);\n"
-      "	background: #FF403A;\n"
-      " border: 1px solid #6B6B6B;\n"
-      "	border-radius: 12px;\n");
-}
+void ControlWidget::setEditLineRed() { m_controlLine->setErrorStyle(); }
 
 void ControlWidget::setEditLineWhite() {
-  ui->Value->setStyleSheet(
-      "  color: rgb(255, 255, 255, 0.9);\n"
-      "	background: #6B6B6B;\n"
-      " border-radius: 12px;\n"
-      " border: 1px solid #6B6B6B;\n");
+  m_controlLine->setInactiveStyle();
 
   const QString value = m_ValueConv->valueStr();
-  ui->Value->setText(value);
+  m_controlLine->setText(value);
 }
 
 void ControlWidget::setData(quint16 code, quint16 data) {
@@ -224,7 +217,7 @@ void ControlWidget::setData(quint16 code, quint16 data) {
     const QString value = m_ValueConv->valueStr();
     if (!isUserEdit) {
       if (m_ValueConv) {
-        ui->Value->setText(value);
+        m_controlLine->setText(value);
       }
     }
     if (m_RealConv.isNull()) {

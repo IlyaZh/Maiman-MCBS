@@ -147,7 +147,7 @@ DeviceWidget::DeviceWidget(
   // Закидываем неизменяемые параметры в виджет
   if (readOnlyWidgets.count() > 0) {
     auto hiddenWidget = new HiddenWidget(this);
-    hiddenWidget->layout()->setContentsMargins(10, 14, 10, 0);
+    hiddenWidget->layout()->setContentsMargins(10, 16, 10, 0);
     auto maxUnitsLengthIt = *std::max_element(
         std::begin(readOnlyWidgets), std::end(readOnlyWidgets),
         [=](ReadParameterWidget* widgetA, ReadParameterWidget* widgetB) {
@@ -172,13 +172,13 @@ DeviceWidget::DeviceWidget(
   for (const auto& item : qAsConst(description.checkboxes)) {
     if (!hiddenWidget) {
       hiddenWidget = new HiddenWidget(this);
-      hiddenWidget->layout()->setContentsMargins(10, 12, 10, 0);
+      hiddenWidget->layout()->setContentsMargins(10, 16, 10, 0);
     }
     auto cmd = m_commands.value(item.code, nullptr);
     auto converter = m_converters.value(item.code, nullptr);
     if (cmd) {
       auto binaryWidget = new BinaryWidget(item, converter, hiddenWidget);
-      binaryWidget->setContentsMargins(0, 0, 0, 4);
+      binaryWidget->setContentsMargins(10, 2, 10, 0);
       hiddenWidget->addWidget(binaryWidget);
       m_widgetsTable.insert(binaryWidget);
       //      for (auto code : binaryWidget->Subscribe()) {
