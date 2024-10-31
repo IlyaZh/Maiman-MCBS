@@ -4,17 +4,20 @@
 #include <QDialog>
 #include <QKeyEvent>
 
+#include "gui/guiinterface.h"
+
 namespace Ui {
 class AboutDialog;
 }  // namespace Ui
 
-class AboutDialog : public QDialog {
+class AboutDialog : public QDialog, public GuiWidgetInterface {
   Q_OBJECT
 
  public:
   explicit AboutDialog(QWidget *parent = 0);
   ~AboutDialog() override;
   void keyReleaseEvent(QKeyEvent *event) override;
+  void updateStyle() override;
 
  private slots:
   void updateButtonPressed();

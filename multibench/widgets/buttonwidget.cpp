@@ -66,3 +66,8 @@ QVector<quint16> ButtonWidget::Subscribe() {
   m_codes.append(m_converter->code());
   return m_codes;
 }
+
+void ButtonWidget::updateStyle() {
+  //  this->setStyleSheet(StaticStyles::buttonWidget());
+  this->update();
+}

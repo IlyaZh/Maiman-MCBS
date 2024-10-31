@@ -79,3 +79,8 @@ QVector<quint16> BinaryWidget::Subscribe() {
   m_codes.append(m_converter->code());
   return m_codes;
 }
+
+void BinaryWidget::updateStyle() {
+  this->setStyleSheet(StaticStyles::binaryWidget());
+  this->update();
+}

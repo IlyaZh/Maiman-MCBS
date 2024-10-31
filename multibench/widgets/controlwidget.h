@@ -16,7 +16,7 @@ namespace Ui {
 class CommandWidget;
 }  // namespace Ui
 
-class ControlWidget : public GuiWidgetBase {
+class ControlWidget : public GuiWidgetBase, public GuiWidgetInterface {
  public:
   explicit ControlWidget(QStringView name, QSharedPointer<DevCommand> Value,
                          QSharedPointer<DevCommand> Max,
@@ -31,6 +31,7 @@ class ControlWidget : public GuiWidgetBase {
   ~ControlWidget() override;
   void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
+  void updateStyle() override;
 
  private slots:
   void setValue();

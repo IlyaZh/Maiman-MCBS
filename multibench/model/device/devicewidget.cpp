@@ -466,6 +466,22 @@ void DeviceWidget::updateValue(const model::Event& event) {
       }
     }
     adjust();
+  } else if (std::holds_alternative<model::events::network::ChangeSystemStyle>(
+                 event.data_)) {
+    updateStyle();
+  }
+}
+
+void DeviceWidget::updateStyle() {
+  this->setStyleSheet(StaticStyles::deviceWidget());
+  this->update();
+  QList<QWidget*> widgets = this->findChildren<QWidget*>();
+  for (QWidget* widget : widgets) {
+    GuiWidgetInterface* interfaceWidget =
+        dynamic_cast<GuiWidgetInterface*>(widget);
+    if (interfaceWidget) {
+      interfaceWidget->updateStyle();
+    }
   }
 }
 

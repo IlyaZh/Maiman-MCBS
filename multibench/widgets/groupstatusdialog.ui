@@ -23,7 +23,7 @@
    <string notr="true">QDialog{
 	background: rgb(51,51,51);
 }
-QLabe {
+QLabel {
 	color: #fff;
 }
 

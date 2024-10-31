@@ -267,3 +267,8 @@ void PlusMinusWidget::setData(quint16 code, quint16 data) {
     setMin(m_converterMin->valueDouble());
   }
 }
+
+void PlusMinusWidget::updateStyle() {
+  this->setStyleSheet(StaticStyles::calibrationWidget());
+  this->update();
+}

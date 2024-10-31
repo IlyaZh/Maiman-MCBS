@@ -183,3 +183,11 @@ void AppSettings::setKeepAddresses(bool flag) {
 bool AppSettings::getKeepAddresses() {
   return settings->value("userSettings/keepAddresses", false).toBool();
 }
+
+void AppSettings::setDarkAppStyle(bool style) {
+  settings->setValue("userSettings/AppStyle", style);
+}
+
+bool AppSettings::getDarkAppStyle() {
+  return settings->value("userSettings/AppStyle", true).toBool();
+}

@@ -157,6 +157,16 @@ void GuiMediator::NewEvent(const model::Event& event) {
         }
       }
     }
+  } else if (event.type_ == model::EventType::kSystemCommand) {
+    if (std::holds_alternative<model::events::network::ChangeSystemStyle>(
+            event.data_)) {
+      for (const auto& device : m_deviceWidgetsTable) {
+        device->updateValue(event);
+      }
+      for (const auto& group : m_groupWidgetsTable) {
+        group->updateValue(event);
+      }
+    }
   }
 }
 

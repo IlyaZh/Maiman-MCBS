@@ -6,12 +6,13 @@
 #include <QWidget>
 
 #include "constants.h"
+#include "gui/guiinterface.h"
 
 namespace Ui {
 class ConnectionWidget;
 }  // namespace Ui
 
-class ConnectionWidget : public QWidget {
+class ConnectionWidget : public QWidget, public GuiWidgetInterface {
   Q_OBJECT
 
  public:
@@ -31,6 +32,8 @@ class ConnectionWidget : public QWidget {
 
   QString getCurrentIp();
   int getCurrentTcpPort();
+
+  void updateStyle() override;
  private slots:
   void connectClicked(Const::PortType type);
 

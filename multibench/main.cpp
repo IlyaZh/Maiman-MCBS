@@ -68,6 +68,8 @@ int main(int argc, char *argv[]) {
   mediator.LinkPublisher(&model);
   mediator.Subscribe(model::EventType::kWriteDevice, &model);
   mediator.LinkPublisher(&gui);
+  mediator.Subscribe(model::EventType::kSystemCommand, &gui);
+  mediator.LinkPublisher(&w);
 
 #ifdef QT_DEBUG
   // GlobalTest tests(argc, argv);

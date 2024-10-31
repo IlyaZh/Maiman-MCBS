@@ -11,6 +11,7 @@
 #include "appsettings.h"
 #include "constants.h"
 #include "model/device/devicewidget.h"
+#include "staticstyles.h"
 #include "ui_mainwindow.h"
 #include "widgets/aboutdialog.h"
 #include "widgets/connectionwidget.h"
@@ -104,6 +105,9 @@ MainWindow::MainWindow(QWidget* parent)
   connect(ui->actionManager, &QAction::triggered, this,
           &MainWindow::createGroupManagerWidget);
   ui->actionKeepAddresses->setChecked(AppSettings::getKeepAddresses());
+  connect(ui->switchStyle, &QCheckBox::clicked, this, &MainWindow::changeStyle);
+
+  changeStyle(AppSettings::getDarkAppStyle());
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -420,4 +424,20 @@ void MainWindow::emptyNetwork() {
 
 void MainWindow::NewEvent(const model::Event& event) {
   std::get<model::events::network::StateUpdated>(event.data_).reg;
+}
+
+void MainWindow::changeStyle(bool checked) {
+  auto style = (checked) ? model::events::network::StyleType::sDarkStyle
+                         : model::events::network::StyleType::sLightStyle;
+  if (checked) {
+    AppSettings::setDarkAppStyle(true);
+  } else {
+    AppSettings::setDarkAppStyle(false);
+  }
+  this->setStyleSheet(StaticStyles::mainWindowStyle());
+
+  model::Event event(model::EventType::kSystemCommand,
+                     model::events::network::ChangeSystemStyle(style));
+  emit Signal_PublishEvent(event);
+  this->update();
 }

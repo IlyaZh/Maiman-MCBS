@@ -11,7 +11,9 @@ GroupManager::GroupManager(const QMap<quint8, QPointer<DeviceWidget>>& devices,
       m_groups(groups),
       m_buttonGroup(new QButtonGroup(this)) {
   ui->setupUi(this);
-  m_font.setFamily(QString::fromUtf8("Share Tech Mono"));
+  m_font.setFamily(QString::fromUtf8("Poppins"));
+  m_font.setPointSize(11);
+  m_font.setLetterSpacing(QFont::PercentageSpacing, 105);
   m_buttonGroup->setExclusive(false);
   m_devicesFieldLayout = new QVBoxLayout(ui->scrollAreaDevice);
   m_devicesFieldLayout->setSpacing(10);
@@ -197,4 +199,9 @@ void GroupManager::groupButtonClicked(QAbstractButton* button) {
     button->setChecked(true);
   else
     button->setChecked(false);
+}
+
+void GroupManager::updateStyle() {
+  this->setStyleSheet(StaticStyles::groupManager());
+  this->update();
 }

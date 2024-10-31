@@ -5,6 +5,8 @@
 #include <QMap>
 #include <QWidget>
 
+#include "gui/guiinterface.h"
+
 struct DeviceStatusGroup {
   std::optional<QStringList> errors;
   std::optional<QMap<QString, bool>> devStarted;
@@ -13,7 +15,7 @@ struct DeviceStatusGroup {
 namespace Ui {
 class GroupWidgetStatus;
 }
-class GroupWidgetStatus : public QWidget {
+class GroupWidgetStatus : public QWidget, public GuiWidgetInterface {
   Q_OBJECT
 
  public:
@@ -23,6 +25,7 @@ class GroupWidgetStatus : public QWidget {
   void setModel(const QString &name);
   void setName(const QString &id);
   void setLink(bool status);
+  void updateStyle() override;
 
  private:
   Ui::GroupWidgetStatus *ui;

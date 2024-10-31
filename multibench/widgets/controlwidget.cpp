@@ -112,6 +112,13 @@ ControlWidget::ControlWidget(QStringView name,
   ui->MinValue->setFont(font10);
   ui->MinUnits->setFont(font10);
   ui->Value->setFont(font10);
+
+  this->setObjectName("ControlWidget");
+  ui->Max->setObjectName("Max");
+  ui->Min->setObjectName("Min");
+  ui->Real->setObjectName("Real");
+  ui->WidgetName->setObjectName("WidgetName");
+
   adjust();
 }
 
@@ -243,4 +250,10 @@ QVector<quint16> ControlWidget::Subscribe() {
   m_codes.append(m_MinConv->code());
   if (m_RealConv) m_codes.append(m_RealConv->code());
   return m_codes;
+}
+
+void ControlWidget::updateStyle() {
+  qDebug() << "check";
+  this->setStyleSheet(StaticStyles::controlWidget());
+  this->update();
 }

@@ -98,3 +98,5 @@ QString InLineControl::text() { return QLineEdit::text(); }
 void InLineControl::setActiveStyle() { setStyleSheet(editValue); }
 void InLineControl::setInactiveStyle() { setStyleSheet(readOnly); }
 void InLineControl::setErrorStyle() { setStyleSheet(errorValue); }
+
+void InLineControl::updateStyle() { this->update(); }

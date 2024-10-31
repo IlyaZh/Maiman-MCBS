@@ -43,6 +43,9 @@
     border-radius: 13px;
     background:  #282828;
 }
+QWidget#widgetBox{
+background-color: #282828;
+}
 /*
 QLabel {
     color: rgb(153,153,153);
@@ -244,7 +247,7 @@ border-bottom-right-radius: 13px;</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: #282828;</string>
+      <string notr="true">/*background-color: #282828;*/</string>
      </property>
     </widget>
    </item>

@@ -58,3 +58,8 @@ void GroupStatusDialog::resizeWidget() {
   winSize.rheight() = (diffHeight > 0) ? diffHeight : 0;
   resize(winSize);
 }
+
+void GroupStatusDialog::updateStyle() {
+  this->setStyleSheet(StaticStyles::groupStatusDialog());
+  this->update();
+}

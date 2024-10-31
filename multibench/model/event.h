@@ -7,13 +7,19 @@
 
 namespace model {
 
-enum class EventType { kReadDevice, kWriteDevice, kDeviceStateUpdated };
+enum class EventType {
+  kReadDevice,
+  kWriteDevice,
+  kDeviceStateUpdated,
+  kSystemCommand
+};
 
 inline QString ToString(const EventType& type) {
   static const std::unordered_map<EventType, QString> map{
       {EventType::kReadDevice, "ReadDevice"},
       {EventType::kWriteDevice, "WriteDevice"},
-      {EventType::kDeviceStateUpdated, "DeviceStateUpdated"}};
+      {EventType::kDeviceStateUpdated, "DeviceStateUpdated"},
+      {EventType::kSystemCommand, "SystemCommand"}};
 
   //  if (const auto it = map.find(type); it != map.cend()) {
   //    return it->second;
@@ -46,10 +52,11 @@ inline EventType Parse(const QString& type, const ParseTo<EventType>&) {
 
 namespace events {
 
-using Types = std::variant<network::ReadRequest, network::WriteRequest,
-                           network::StateUpdated, network::Answer,
-                           network::SingleWriteRequest, network::DataRequest,
-                           network::DeviceLinkStatus>;
+using Types =
+    std::variant<network::ReadRequest, network::WriteRequest,
+                 network::StateUpdated, network::Answer,
+                 network::SingleWriteRequest, network::DataRequest,
+                 network::DeviceLinkStatus, network::ChangeSystemStyle>;
 
 }  // namespace events
 

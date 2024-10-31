@@ -129,3 +129,8 @@ QVector<quint16> ReadParameterWidget::Subscribe() {
   m_codes.append(m_converter.get()->code());
   return m_codes;
 }
+
+void ReadParameterWidget::updateStyle() {
+  this->setStyleSheet(StaticStyles::readParameterWidget());
+  this->update();
+}

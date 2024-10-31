@@ -6,6 +6,7 @@
 namespace model::events::network {
 
 enum class CommandType { kStartDevices, kStopDevices };
+enum class StyleType { sDarkStyle, sLightStyle };
 
 struct ReadRequest {
   quint8 address;
@@ -55,5 +56,10 @@ struct DeviceLinkStatus {
       : addr_(address), status_(status) {}
   const quint8 addr_;
   const bool status_;
+};
+
+struct ChangeSystemStyle {
+  ChangeSystemStyle(StyleType style) : style_(style) {}
+  const StyleType style_;
 };
 }  // namespace model::events::network

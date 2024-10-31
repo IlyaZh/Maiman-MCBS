@@ -7,7 +7,7 @@
 
 struct Button;
 
-class ButtonWidget : public GuiWidgetBase {
+class ButtonWidget : public GuiWidgetBase, public GuiWidgetInterface {
  public:
   explicit ButtonWidget(const QString &text, const Button &button,
                         QSharedPointer<CommandConverter> converter,
@@ -15,6 +15,7 @@ class ButtonWidget : public GuiWidgetBase {
   ~ButtonWidget() override;
   void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
+  void updateStyle() override;
 
  private:
   QHBoxLayout *m_layout{nullptr};

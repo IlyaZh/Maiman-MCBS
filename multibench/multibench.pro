@@ -81,6 +81,7 @@ SOURCES += \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
     modelguimediator.cpp \
+    staticstyles.cpp \
     widgets/buttonwidget.cpp \
     widgets/calibrationdialog.cpp \
     widgets/groupmanager.cpp \
@@ -143,6 +144,7 @@ HEADERS += \
   model/events/network.h \
     modelguimediator.h \
     network/IDataReceiver.h \
+    staticstyles.h \
     widgets/buttonwidget.h \
     widgets/calibrationdialog.h \
     widgets/groupmanager.h \

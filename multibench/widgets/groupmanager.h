@@ -3,6 +3,8 @@
 #include <QDialog>
 #include <QtWidgets>
 
+#include "constants.h"
+#include "gui/guiinterface.h"
 #include "widgets/groupwidget.h"
 
 struct groupsCheckBoxes {
@@ -16,7 +18,7 @@ namespace Ui {
 class GroupManager;
 }
 
-class GroupManager : public QDialog {
+class GroupManager : public QDialog, public GuiWidgetInterface {
   Q_OBJECT
 
  public:
@@ -24,6 +26,7 @@ class GroupManager : public QDialog {
                         const QMap<int, QPointer<GroupWidget>>& groups,
                         QWidget* parent = nullptr);
   ~GroupManager();
+  void updateStyle() override;
  public slots:
   void finishGroupAction();
  private slots:

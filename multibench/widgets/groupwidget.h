@@ -3,6 +3,7 @@
 #include <QtWidgets>
 
 #include "group/GroupInterface.h"
+#include "gui/guiinterface.h"
 #include "model/device/devicewidget.h"
 #include "widgets/groupstatusdialog.h"
 
@@ -11,7 +12,7 @@ namespace Ui {
 class GroupWidget;
 }
 
-class GroupWidget : public QWidget {
+class GroupWidget : public QWidget, public GuiWidgetInterface {
   Q_OBJECT
  public:
   explicit GroupWidget(int groupAddr, QWidget *parent = nullptr);
@@ -23,6 +24,8 @@ class GroupWidget : public QWidget {
   const QString getName();
   int getGroupAddress();
   void linkStatusChanged(int addr, bool status);
+  void updateValue(const model::Event &event);
+  void updateStyle() override;
  signals:
   void groupEvent(model::Event);
   void nameEdited(QString name, int addr);

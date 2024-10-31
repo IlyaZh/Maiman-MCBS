@@ -263,3 +263,22 @@ void GroupWidget::showStatus() {
   connect(this, &GroupWidget::closeGroupStatusDialog, dialog,
           &GroupStatusDialog::deleteLater);
 }
+
+void GroupWidget::updateValue(const model::Event &event) {
+  if (event.type_ == model::EventType::kSystemCommand) {
+    if (std::holds_alternative<model::events::network::ChangeSystemStyle>(
+            event.data_)) {
+      for (auto widget : m_groupWidgets) {
+        widget->updateValue(event);
+      }
+    }
+  }
+}
+
+void GroupWidget::updateStyle() {
+  this->setStyleSheet(StaticStyles::groupWidget());
+  this->update();
+  for (auto widget : m_groupWidgets) {
+    widget->updateStyle();
+  }
+}

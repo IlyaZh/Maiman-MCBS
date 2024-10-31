@@ -3,11 +3,13 @@
 
 #include <QDialog>
 #include <QDialogButtonBox>
+
+#include "gui/guiinterface.h"
 namespace Ui {
 class QuitDialog;
 }
 
-class QuitDialog : public QDialog {
+class QuitDialog : public QDialog, public GuiWidgetInterface {
   Q_OBJECT
 
  public:
@@ -18,6 +20,7 @@ class QuitDialog : public QDialog {
       QDialogButtonBox::StandardButtons buttons = (QDialogButtonBox::Ok |
                                                    QDialogButtonBox::Cancel),
       int fontSize = 10, QWidget *parent = nullptr);
+  void updateStyle() override;
 
  private:
   Ui::QuitDialog *ui;

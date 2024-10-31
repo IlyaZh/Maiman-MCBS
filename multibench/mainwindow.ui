@@ -78,20 +78,116 @@ QMenu::item:disabled {
     </font>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="1" column="1">
+    <item row="0" column="0">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Expanding</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="2">
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
-        <width>20</width>
+        <width>0</width>
         <height>40</height>
        </size>
       </property>
      </spacer>
     </item>
-    <item row="0" column="0" rowspan="2">
+    <item row="0" column="1">
+     <widget class="QCheckBox" name="switchStyle">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QCheckBox{
+        background-color: #ffc803;
+        border-radius: 12px;
+        border: 0px solid #000000;
+        width: 50px;
+        height: 24px;
+}    
+QCheckBox::indicator {
+        width: 20px;
+        height: 20px;
+    }
+
+    QCheckBox::indicator::unchecked {
+        background-color: #ffc803;
+        border-radius: 12px;
+        border: 1px solid #000000;
+    }
+/*
+    QCheckBox::indicator::unchecked::hover {
+        background-color: #ffc803;
+    }
+*/
+    QCheckBox::indicator::checked {
+        background-color: #353535;
+        border-radius: 12px;
+        border: 1px solid #666666;
+    }
+/*
+    QCheckBox::indicator::checked::hover {
+        background-color: #000000;
+    }
+*/
+    QCheckBox::indicator::unchecked {
+        /*position: absolute;*/
+        left: 2px;
+        content: &quot;&quot;;
+        width: 19px;
+        height: 18px;
+        background-color: #000000;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+
+    QCheckBox::indicator::checked {
+        position: absolute;
+        left: 22px;
+        content: &quot;&quot;;
+        width: 19px;
+        height: 18px;
+        background-color: #ffc803;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" rowspan="2" colspan="2">
      <widget class="QScrollArea" name="scrollArea">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
@@ -128,8 +224,8 @@ QMenu::item:disabled {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>456</width>
-         <height>141</height>
+         <width>476</width>
+         <height>111</height>
         </rect>
        </property>
       </widget>

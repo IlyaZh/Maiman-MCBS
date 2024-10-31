@@ -7,13 +7,15 @@
 
 #include "gui/guiinterface.h"
 #include "model/device/devicewidget.h"
+
 class GuiWidgetBase;
+class GuiWidgetInterface;
 
 namespace Ui {
 class BinaryWidget;
 }
 
-class BinaryWidget : public GuiWidgetBase {
+class BinaryWidget : public GuiWidgetBase, public GuiWidgetInterface {
  public:
   explicit BinaryWidget(const Checkbox &settings,
                         QSharedPointer<DevCommand> cmd,
@@ -24,6 +26,7 @@ class BinaryWidget : public GuiWidgetBase {
   ~BinaryWidget() override;
   void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
+  void updateStyle() override;
  private slots:
   void checkBoxClicked(bool checked);
   // signals:

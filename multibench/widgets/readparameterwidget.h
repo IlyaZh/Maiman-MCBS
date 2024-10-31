@@ -14,7 +14,7 @@
 struct Control;
 class DevCommand;
 
-class ReadParameterWidget : public GuiWidgetBase {
+class ReadParameterWidget : public GuiWidgetBase, public GuiWidgetInterface {
  public:
   ReadParameterWidget();
   virtual ~ReadParameterWidget() = default;
@@ -25,6 +25,7 @@ class ReadParameterWidget : public GuiWidgetBase {
   void setUnitsLength(int length);
   void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
+  void updateStyle() override;
  signals:
   void setDataFromWidget(quint16 code, quint16 data);
 

@@ -2,7 +2,9 @@
 
 #include <QtWidgets>
 
-class InLineControl : public QLineEdit {
+#include "gui/guiinterface.h"
+
+class InLineControl : public QLineEdit, public GuiWidgetInterface {
   Q_OBJECT
  public:
   explicit InLineControl();
@@ -12,6 +14,7 @@ class InLineControl : public QLineEdit {
   void setInactiveStyle();
   void setErrorStyle();
   QString text();
+  void updateStyle() override;
  signals:
   void nameEdited(QString name, int addr);
 

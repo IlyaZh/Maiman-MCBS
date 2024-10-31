@@ -33,6 +33,7 @@ class AppSettings : public QObject {
   static int getNetworkMaxAddress();
   static QMap<quint8, quint8> getDeviceAddresses();
   static bool getKeepAddresses();
+  static bool getDarkAppStyle();
 
  private:
   static QScopedPointer<QSettings> settings;
@@ -58,6 +59,7 @@ class AppSettings : public QObject {
   static void setNetworkMaxAddress(int address);
   static void setDeviceAddresses(const QMap<quint8, quint8>& addr);
   static void setKeepAddresses(bool flag);
+  static void setDarkAppStyle(bool style);
 };
 
 #endif  // APPSETTINGS_H

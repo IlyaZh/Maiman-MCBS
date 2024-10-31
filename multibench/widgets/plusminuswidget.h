@@ -9,6 +9,7 @@
 
 #include "commandconverter.h"
 #include "device/commandsettings.h"
+#include "gui/guiinterface.h"
 
 struct CalibrationKoef;
 struct Limit;
@@ -16,7 +17,7 @@ namespace Ui {
 class CalibrationAndLimitsWidget;
 }
 
-class PlusMinusWidget : public QDialog {
+class PlusMinusWidget : public QDialog, public GuiWidgetInterface {
   Q_OBJECT
 
  public:
@@ -44,6 +45,7 @@ class PlusMinusWidget : public QDialog {
   void setMax(double max);
   void setData(quint16 code, quint16 data);
   QVector<quint16> Subscribe();
+  void updateStyle() override;
 
  private slots:
   void increment();

@@ -13,7 +13,7 @@ namespace Ui {
 class CalibrationDialog;
 }  // namespace Ui
 
-class CalibrationDialog : public QDialog {
+class CalibrationDialog : public QDialog, public GuiWidgetInterface {
   Q_OBJECT
 
  public:
@@ -28,6 +28,7 @@ class CalibrationDialog : public QDialog {
   ~CalibrationDialog() override;
   void setValues();
   void updateValue(const model::Event& event);
+  void updateStyle() override;
 
  signals:
   void acceptDataFromWidget(quint16 code, quint16 value);

@@ -30,3 +30,8 @@ QuitDialog* QuitDialog::createDialog(const QString& title, QString message,
 
   return dialog;
 }
+
+void QuitDialog::updateStyle() {
+  this->setStyleSheet(StaticStyles::quitDialog());
+  this->update();
+}

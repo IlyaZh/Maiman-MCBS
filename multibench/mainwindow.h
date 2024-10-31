@@ -50,6 +50,7 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
   void delayChanged(int delay);
   void timeoutChanged(int timeout);
   void clearWidgets();
+  void Signal_PublishEvent(model::Event);
 
  public slots:
   void setConnectMessage(QString msg);
@@ -73,6 +74,8 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
 
   void setBothComPorts(QString port);
   void setBothBaudRates(QString baudtare);
+
+  void changeStyle(bool checked);
 
  private:
   Ui::MainWindow* ui;

@@ -96,7 +96,9 @@ namespace Ui {
 class DeviceWidget;
 }
 
-class DeviceWidget : public QWidget, public GroupInterface {
+class DeviceWidget : public QWidget,
+                     public GroupInterface,
+                     public GuiWidgetInterface {
   Q_OBJECT
  public:
   explicit DeviceWidget(
@@ -114,6 +116,7 @@ class DeviceWidget : public QWidget, public GroupInterface {
   void updateValue(const model::Event& event);
   void addGroupMember(QSharedPointer<GroupInterface> member) override;
   void removeGroupMember(QSharedPointer<GroupInterface> member) override;
+  void updateStyle() override;
 
  public slots:
   void setLink(bool link);

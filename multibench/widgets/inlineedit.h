@@ -3,7 +3,9 @@
 
 #include <QtWidgets>
 
-class InLineEdit : public QLineEdit {
+#include "gui/guiinterface.h"
+
+class InLineEdit : public QLineEdit, public GuiWidgetInterface {
   Q_OBJECT
  public:
   explicit InLineEdit(int addr, bool isDevice = true);
@@ -12,6 +14,7 @@ class InLineEdit : public QLineEdit {
   void setLink(bool link);
   void setAddress(int addr);
   QString text();
+  void updateStyle() override;
  signals:
   void nameEdited(QString name, int addr);
 

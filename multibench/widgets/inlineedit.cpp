@@ -176,3 +176,8 @@ void InLineEdit::setAddress(int addr) {
   m_address = addr;
   setText(m_name);
 }
+
+void InLineEdit::updateStyle() {
+  this->setStyleSheet(StaticStyles::inLineEdit());
+  this->update();
+}
