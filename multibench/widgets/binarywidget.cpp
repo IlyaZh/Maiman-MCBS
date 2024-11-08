@@ -82,8 +82,9 @@ QVector<quint16> BinaryWidget::Subscribe() {
 }
 
 void BinaryWidget::updateStyle() {
-  this->setStyleSheet(StyleStorage::BinaryWidget::widget());
-  ui->statusCheckbox->setStyleSheet(StyleStorage::BinaryWidget::checkBox());
+  this->setStyleSheet(StyleStorage::Device::BinaryWidget::widget());
+  ui->statusCheckbox->setStyleSheet(
+      StyleStorage::Device::BinaryWidget::checkBox());
   ui->statusCheckbox->update();
   this->update();
 }

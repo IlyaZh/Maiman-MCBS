@@ -992,7 +992,6 @@ const QString button() {
   }
 }
 }  // namespace InlineEdit
-}  // namespace Device
 namespace BinaryWidget {
 const QString widget() {
   if (AppSettings::getDarkAppStyle()) {
@@ -1089,4 +1088,24 @@ const QString checkBox() {
   }
 }
 }  // namespace BinaryWidget
+namespace ReadParameter {
+const QString widget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QWidget{
+      background-color: #282828;
+      color: #999999;
+}
+)";
+  } else {
+    return R"(
+QWidget{
+      background-color: #FFFFFF;
+      color: #6B6B6B;
+}
+)";
+  }
+}
+}  // namespace ReadParameter
+}  // namespace Device
 }  // namespace StyleStorage

@@ -131,6 +131,6 @@ QVector<quint16> ReadParameterWidget::Subscribe() {
 }
 
 void ReadParameterWidget::updateStyle() {
-  this->setStyleSheet(StaticStyles::readParameterWidget());
+  this->setStyleSheet(StyleStorage::Device::ReadParameter::widget());
   this->update();
 }

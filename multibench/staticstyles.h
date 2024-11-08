@@ -43,12 +43,16 @@ const QString widgetEditConnected();
 const QString widgetEditDisconnected();
 const QString button();
 }  // namespace InlineEdit
-}  // namespace Device
-namespace About {
-const QString widget();
-}
 namespace BinaryWidget {
 const QString widget();
 const QString checkBox();
 }  // namespace BinaryWidget
+namespace ReadParameter {
+const QString widget();
+}  // namespace ReadParameter
+}  // namespace Device
+namespace About {
+const QString widget();
+}
+
 }  // namespace StyleStorage
