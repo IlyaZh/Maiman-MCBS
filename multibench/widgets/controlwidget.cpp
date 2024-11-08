@@ -92,13 +92,13 @@ ControlWidget::ControlWidget(QStringView name,
   connect(m_controlLine, &QLineEdit::cursorPositionChanged, this,
           [this]() { isUserEdit = true; });
   QFont font18("Poppins", 18);
-  font18.setLetterSpacing(QFont::PercentageSpacing, 105);
+  //  font18.setLetterSpacing(QFont::PercentageSpacing, 105);
   font18.setPixelSize(23);
   QFont font12("Poppins", 12);
-  font12.setLetterSpacing(QFont::PercentageSpacing, 105);
+  //  font12.setLetterSpacing(QFont::PercentageSpacing, 105);
   font12.setPixelSize(16);
   QFont font10("Poppins", 10);
-  font10.setLetterSpacing(QFont::PercentageSpacing, 105);
+  //  font10.setLetterSpacing(QFont::PercentageSpacing, 105);
   font10.setPixelSize(14);
   //  ui->WidgetName->setContentsMargins(0, 0, 0, 12);
   ui->WidgetName->setFont(font18);

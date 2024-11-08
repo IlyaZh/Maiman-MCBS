@@ -1,6 +1,7 @@
 #include "inlineedit.h"
 
 #include <QMouseEvent>
+using namespace StyleStorage::Device::InlineEdit;
 
 const QString readOnly =
     "QLineEdit{background-color: #282828;\
@@ -65,13 +66,18 @@ InLineEdit::InLineEdit(int addr, bool isDevice)
                         "color: #8E8E8E;\n"
                         "padding: 0px;\n"
                         "margin-bottom: 0px;"));
-  QIcon icon1;
-  QPixmap pixmap(":/resources/images/NewPencil.png");
-  pixmap = pixmap.scaled(14, 14, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+  m_darkButton.addFile(QString::fromUtf8(":/resources/images/DarkPencil.png"),
+                       QSize(14, 14), QIcon::Normal, QIcon::Off);
+  m_lightButton.addFile(QString::fromUtf8(":/resources/images/LightPencil.png"),
+                        QSize(14, 14), QIcon::Normal, QIcon::Off);
+  //  QIcon icon1;
+  //  QPixmap pixmap(":/resources/images/NewPencil.png");
+  //  pixmap = pixmap.scaled(14, 14, Qt::KeepAspectRatio,
+  //  Qt::SmoothTransformation);
   //  icon1.addFile(QString::fromUtf8(":/resources/images/NewPencil.png"),
   //                QSize(12, 12), QIcon::Normal, QIcon::Off);
-  icon1.addPixmap(pixmap, QIcon::Normal, QIcon::Off);
-  m_icon->setIcon(icon1);
+  //  icon1.addPixmap(pixmap, QIcon::Normal, QIcon::Off);
+  //  m_icon->setIcon(icon1);
   m_icon->setIconSize(QSize(14, 14));
   m_icon->setMinimumSize(16, 16);
   m_icon->setMaximumSize(16, 16);
@@ -83,7 +89,7 @@ InLineEdit::InLineEdit(int addr, bool isDevice)
   setFont(font16);
   setText(m_name);
   setReadOnly(true);
-  setStyleSheet(devConnected);
+  setStyleSheet(widgetConnected());
   setAlignment(Qt::AlignLeft);
   setContentsMargins(0, 2, 0, 0);
   if (m_isDevice)
@@ -98,16 +104,19 @@ InLineEdit::InLineEdit(int addr, bool isDevice)
   connect(m_icon, &QPushButton::clicked, this, [this]() {
     m_icon->hide();
     setReadOnly(false);
-    setStyleSheet(m_isConnected ? editOnlyConnected : editOnlyDisconnected);
+    setStyleSheet(m_isConnected ? widgetEditConnected()
+                                : widgetEditDisconnected());
     QLineEdit::setText(m_name);
     setFocus(Qt::FocusReason::MouseFocusReason);
   });
+  updateStyle();
 }
 
 void InLineEdit::mouseDoubleClickEvent(QMouseEvent *event) {
   if (event->button() == Qt::LeftButton) {
     setReadOnly(false);
-    setStyleSheet(m_isConnected ? editOnlyConnected : editOnlyDisconnected);
+    setStyleSheet(m_isConnected ? widgetEditConnected()
+                                : widgetEditDisconnected());
     m_icon->hide();
     QLineEdit::setText(m_name);
   }
@@ -115,7 +124,7 @@ void InLineEdit::mouseDoubleClickEvent(QMouseEvent *event) {
 
 void InLineEdit::finishedChanges() {
   setReadOnly(true);
-  setStyleSheet(m_isConnected ? devConnected : devDisconnected);
+  setStyleSheet(m_isConnected ? widgetConnected() : widgetDisconnected());
   if (!QLineEdit::text().contains("ID:")) {
     m_name = QLineEdit::text();
     emit nameEdited(m_name, m_address);
@@ -168,7 +177,7 @@ void InLineEdit::checkTextLenght() {
 void InLineEdit::setLink(bool link) {
   if (link != m_isConnected) {
     m_isConnected = link;
-    setStyleSheet(m_isConnected ? devConnected : devDisconnected);
+    setStyleSheet(m_isConnected ? widgetConnected() : widgetDisconnected());
   }
 }
 
@@ -178,6 +187,11 @@ void InLineEdit::setAddress(int addr) {
 }
 
 void InLineEdit::updateStyle() {
-  this->setStyleSheet(StaticStyles::inLineEdit());
+  m_icon->setIcon((AppSettings::getDarkAppStyle()) ? m_darkButton
+                                                   : m_lightButton);
+  m_icon->setIconSize(QSize(14, 14));
+  m_icon->setStyleSheet(button());
+  m_icon->update();
+  setStyleSheet(m_isConnected ? widgetConnected() : widgetDisconnected());
   this->update();
 }

@@ -79,33 +79,7 @@ DeviceWidget::DeviceWidget(
   m_id = description.id;
 
   // Инициализация кнопки (Hide controls)
-  auto m_hideControlsButton = new QPushButton(" " + tr("Hide controls"));
-  m_hideControlsButton->setStyleSheet(
-      "border: 2px solid #1A1A1A;\n border-radius: 5px;\n background: "
-      "#1D1D1D;\n color: #FFFFFF;\n"
-      "padding: 0px;\n"
-      "text-align:center;\n"
-      "margin-top: 5px;\n"
-      "margin-left: 10px;\n"
-      "margin-bottom: 10px;");
-  m_hideControlsButton->setCheckable(true);
-  m_hideControlsButton->setChecked(false);
-  m_hideControlsButton->setIconSize(QSize(9, 9));
-  QIcon icon1;
-  icon1.addFile(QString::fromUtf8(":/resources/images/hidecontrols-icon.png"),
-                QSize(), QIcon::Normal, QIcon::Off);
-  icon1.addFile(QString::fromUtf8(":/resources/images/showcontrols-icon.png"),
-                QSize(), QIcon::Normal, QIcon::On);
-  m_hideControlsButton->setIcon(icon1);
-  m_hideControlsButton->setObjectName(QString::fromUtf8("hideControlButton"));
-  m_hideControlsButton->setMinimumSize(QSize(106, 35));
-  m_hideControlsButton->setMaximumSize(QSize(106, 35));
-  QFont font1;
-  font1.setFamily(QString::fromUtf8("Poppins"));
-  font1.setPixelSize(10);
-  font1.setLetterSpacing(QFont::PercentageSpacing, 105);
-  m_hideControlsButton->setFont(font1);
-
+  auto m_hideControlsButton = new DeviceHideButton(this);
   connect(m_hideControlsButton, &QPushButton::clicked, this,
           &DeviceWidget::hideControlsButtonClicked);
   m_widgetLayout->addWidget(m_hideControlsButton, 0, 0, Qt::AlignLeft);
@@ -122,7 +96,7 @@ DeviceWidget::DeviceWidget(
     auto realCmd = m_commands.value(control.real, nullptr);
     auto realConverter = m_converters.value(control.real, nullptr);
 
-    if (realCmd != nullptr and valueCmd == nullptr) {
+    if (realConverter != nullptr and valueConverter == nullptr) {
       // Обработка неизменяемых параметров
       readOnlyWidgets.append(ReadParameterFactory::createReadParameter(
           control.name, realConverter));
@@ -194,41 +168,7 @@ DeviceWidget::DeviceWidget(
 
   // Инициализация кнопок pin
   for (int i = m_fixedWidgets; i < m_widgets.count(); ++i) {
-    auto pinButton = new QPushButton();
-    QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    sizePolicy1.setHorizontalStretch(0);
-    sizePolicy1.setVerticalStretch(0);
-    sizePolicy1.setHeightForWidth(pinButton->sizePolicy().hasHeightForWidth());
-    pinButton->setSizePolicy(sizePolicy1);
-    pinButton->setMinimumSize(QSize(16, 16));
-    pinButton->setMaximumSize(QSize(16, 16));
-    pinButton->setMaximumWidth(16);
-    pinButton->setMaximumHeight(20);
-    pinButton->setStyleSheet(
-        QString::fromUtf8("border: 1px solid #1D1D1D;\n"
-                          "border-radius: 3px;\n"
-                          "background: #1D1D1D;\n"
-                          "color: rgb(255,255,255);\n"
-                          "padding: 0px;\n"
-                          "margin-right: 10px;\n"
-                          "margin-bottom: 5px;\n"
-                          "margin-left: 10px;"));
-    QIcon icon;
-    //    QPixmap pixmap(":/resources/images/NewPinSymbol-disactivated.png");
-    //    pixmap =
-    //        pixmap.scaled(16, 16, Qt::IgnoreAspectRatio,
-    //        Qt::FastTransformation);
-    //    icon.addPixmap(pixmap, QIcon::Normal, QIcon::Off);
-    icon.addFile(
-        QString::fromUtf8(":/resources/images/NewPinSymbol-disactivated.png"),
-        QSize(16, 16), QIcon::Normal, QIcon::Off);
-    icon.addFile(
-        QString::fromUtf8(":/resources/images/NewPinSymbol-activated.png"),
-        QSize(16, 16), QIcon::Normal, QIcon::On);
-    pinButton->setIcon(icon);
-    pinButton->setIconSize(QSize(16, 16));
-    pinButton->setChecked(false);
-    pinButton->setCheckable(true);
+    auto pinButton = new DevicePinButton(this);
     m_pinButtons.append(pinButton);
     m_widgetLayout->addWidget(pinButton, 0, i, Qt::AlignRight);
     connect(pinButton, &QPushButton::clicked, this,
@@ -242,48 +182,16 @@ DeviceWidget::DeviceWidget(
         m_commands.contains(button.code)) {
       auto converter = m_converters.value(button.code);
       m_laserButton = new ButtonWidget("Laser", button, converter, this);
-      //      m_laserButton = new QPushButton("Laser", this);
       pButton = m_laserButton;
       m_widgetsTable.insert(m_laserButton);
-      //      for (auto code : m_laserButton->Subscribe()) {
-      //        m_widgetsTable.insert(code, m_laserButton);
-      //      }
-      //      connect(m_laserButton, &QPushButton::clicked, this,
-      //              &DeviceWidget::laserButtonClicked);
-
-      //      if (m_commands.contains(button.code)) {
-      //        auto cmd = m_commands.value(button.code);
-      //        connect(cmd.get(), &DevCommand::updatedValue, this,
-      //                [this, cmd]() { setLaserButton(cmd->valueInt()); });
-      //      }
     } else if (button.name.compare("TEC", Qt::CaseInsensitive) == 0) {
       auto converter = m_converters.value(button.code);
       m_tecButton = new ButtonWidget("TEC", button, converter, this);
-      //      m_tecButton = new QPushButton("TEC", this);
       pButton = m_tecButton;
       m_widgetsTable.insert(m_tecButton);
-      //      for (auto code : m_tecButton->Subscribe()) {
-      //        m_widgetsTable.insert(code, m_tecButton);
-      //      }
-      //      m_tecButton->setVisible(true);
-      //      connect(m_tecButton, &QPushButton::clicked, this,
-      //              &DeviceWidget::tecButtonClicked);
-
-      //      if (m_commands.contains(button.code)) {
-      //        auto cmd = m_commands.value(button.code);
-      //        connect(cmd.get(), &DevCommand::updatedValue, this,
-      //                [this, cmd]() { setTecButton(cmd->valueInt()); });
-      //      }
     }
 
     if (pButton) {
-      //      pButton->setMinimumSize(234, 36);
-      //      pButton->setMaximumHeight(36);
-      //      pButton->setMaximumWidth(234);
-      //      pButton->setFont(QFont("Share Tech Mono", 18));
-      //      pButton->setStyleSheet(buttonOff);
-      //      pButton->setChecked(false);
-      //      pButton->setVisible(true);
       ui->buttonsLayout->setContentsMargins(0, 0, 0, 0);
       ui->buttonsLayout->addWidget(pButton);
       ui->buttonsLayout->setAlignment(pButton, Qt::AlignBottom);
@@ -296,8 +204,9 @@ DeviceWidget::DeviceWidget(
   ui->widgetBox->setLayout(m_widgetLayout);
   m_hideControlsButton->setVisible(!m_widgets.isEmpty());
 
-  m_deviceCondition =
-      new DeviceCondition(m_commands, description.leds, ui->conditionLabel);
+  m_deviceCondition = new DeviceCondition(m_converters, description.leds,
+                                          ui->conditionLabel, this);
+  m_widgetsTable.insert(m_deviceCondition);
   ui->gridLayout->addWidget(m_deviceAddress, 0, 2);
   connect(m_deviceAddress, &InLineEdit::nameEdited, this,
           [this](QString name, int addr) {
@@ -318,15 +227,6 @@ DeviceWidget::~DeviceWidget() { delete ui; }
 void DeviceWidget::setAddress(int addr) {
   m_address = addr;
   m_deviceAddress->setAddress(addr);
-  //  InLineEdit* address = new InLineEdit(addr);
-  //  ui->gridLayout->addWidget(address, 0, 2);
-  //  connect(address, &InLineEdit::nameEdited, this,
-  //          [this](QString name, int addr) {
-  //            m_name = name;
-  //            emit nameEdited(name, addr);
-  //          });
-  //  m_name = address->text();
-  // ui->idLabel->setText(QString("ID:%1").arg(addr));
 }
 
 int DeviceWidget::getAddress() const { return m_address; }
@@ -336,9 +236,6 @@ QString DeviceWidget::getModel() const { return ui->modelLabel->text(); }
 
 void DeviceWidget::setLink(bool link) {
   ui->linkLabel->setStyleSheet(link ? linkStyleOn : linkStyleOff);
-  // ui->idLabel->setStyleSheet(link ? labelEnableStyle : labelDisableStyle);
-  //  ui->modelLabel->setStyleSheet(link ? labelEnableStyle :
-  //  labelDisableStyle);
   m_deviceAddress->setLink(link);
 }
 
@@ -370,10 +267,6 @@ void DeviceWidget::setLaserButton(quint16 value) {
   for (const auto& button : qAsConst(m_buttons)) {
     if (button.name == "Laser") {
       m_laserButton->setData(button.code, value);
-      //        m_laserButton->setStyleSheet(((value & button.mask) != 0) ?
-      //        buttonOn
-      //                                                                  :
-      //                                                                  buttonOff);
     }
   }
 }
@@ -382,10 +275,6 @@ void DeviceWidget::setTecButton(quint16 value) {
   for (const auto& button : qAsConst(m_buttons)) {
     if (button.name == "TEC") {
       m_laserButton->setData(button.code, value);
-      //        m_tecButton->setStyleSheet(((value & button.mask) != 0) ?
-      //        buttonOn
-      //                                                                :
-      //                                                                buttonOff);
     }
   }
 }
@@ -473,7 +362,8 @@ void DeviceWidget::updateValue(const model::Event& event) {
 }
 
 void DeviceWidget::updateStyle() {
-  this->setStyleSheet(StaticStyles::deviceWidget());
+  ui->modelLabel->setStyleSheet(StyleStorage::Device::model());
+  this->setStyleSheet(StyleStorage::Device::widget());
   this->update();
   QList<QWidget*> widgets = this->findChildren<QWidget*>();
   for (QWidget* widget : widgets) {

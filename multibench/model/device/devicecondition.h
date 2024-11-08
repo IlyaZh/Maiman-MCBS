@@ -5,26 +5,30 @@
 #include <QObject>
 #include <QWidget>
 
+#include "gui/guiinterface.h"
 #include "model/device/devicewidget.h"
 
-class DevCommand;
+class CommandConverter;
 
-class DeviceCondition : public QObject {
-  Q_OBJECT
+class DeviceCondition : public GuiWidgetBase, public GuiWidgetInterface {
  public:
   explicit DeviceCondition(
-      const QMap<quint16, QSharedPointer<DevCommand>>& commands,
-      const QVector<Led>& Leds, QLabel* label, QObject* parent = nullptr);
-
+      const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
+      const QVector<Led>& Leds, QLabel* label, QWidget* parent = nullptr);
+  ~DeviceCondition() override;
+  void setData(quint16 code, quint16 data) override;
+  QVector<quint16> Subscribe() override;
+  void updateStyle() override;
  signals:
 
  private slots:
   void setStateText(uint value, LedMask led);
 
  private:
-  const QMap<quint16, QSharedPointer<DevCommand>>& m_commands;
+  const QMap<quint16, QSharedPointer<CommandConverter>>& m_converters;
   QVector<Led> m_Leds;
-  QScopedPointer<QLabel> m_Label;
+  QPointer<QLabel> m_Label;
+  QVector<quint16> m_codes;
   QStringList m_states;
 };
 

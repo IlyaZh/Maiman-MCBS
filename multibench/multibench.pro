@@ -125,6 +125,7 @@ HEADERS += \
     device/connectionpolling.h \
     group/GroupInterface.h \
     group/groupcommandfactory.h \
+    gui/DeviceSmallWidgets.h \
     gui/guiinterface.h \
     gui/guimediator.h \
   interfaces/pubsubinterface.h \

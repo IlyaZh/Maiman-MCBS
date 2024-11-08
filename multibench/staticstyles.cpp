@@ -211,6 +211,10 @@ QString StaticStyles::deviceWidget() {
 QWidget#widgetBox{
 background-color: #282828;
 }
+QLabel#modelLabel{
+color:#FFFFFF;
+background-color: #282828;
+}
 )";
   } else {
     return R"(
@@ -221,6 +225,10 @@ background-color: #282828;
 }
 QWidget#widgetBox{
 background-color: #FAFAFA;
+}
+QLabel#modelLabel{
+color:#000000;
+background-color: #F3F3F3;
 }
 )";
   }
@@ -802,3 +810,234 @@ color: rgb(153, 153, 153);
 )";
   }
 }
+
+namespace StyleStorage {
+namespace Device {
+const QString widget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QWidget#DeviceWidget {
+      border: 2px solid #1A1A1A;
+      border-radius: 13px;
+      background:  #282828;
+      }
+      QWidget#widgetBox{
+      background-color: #282828;
+}
+)";
+  } else {
+    return R"(
+      QWidget#DeviceWidget {
+      border: 2px solid #1A1A1A;
+      border-radius: 13px;
+      background:  #FAFAFA;
+      }
+      QWidget#widgetBox{
+      background-color: #FAFAFA;
+      }
+)";
+  }
+}
+const QString hideButton() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      border: 2px solid #1A1A1A;
+      border-radius: 5px;
+      background: #1D1D1D;
+      color: #FFFFFF;
+      padding: 0px;
+      text-align:center;
+      margin-top: 5px;
+      margin-left: 10px;
+      margin-bottom: 10px;
+)";
+  } else {
+    return R"(
+      border: 2px solid #E6E6E6;
+      border-radius: 5px;
+      background: #E6E6E6;
+      color: #000000;
+      padding: 0px;
+      text-align:center;
+      margin-top: 5px;
+      margin-left: 10px;
+      margin-bottom: 10px;
+)";
+  }
+}
+const QString pinButton() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      border: 1px solid #1D1D1D;
+      border-radius: 3px;
+      background: #1D1D1D;
+      color: rgb(255,255,255);
+      padding: 0px;
+      margin-right: 10px;
+      margin-bottom: 5px;
+      margin-left: 10px;
+    )";
+  } else {
+    return R"(
+      border: 1px solid #E7E7E7;
+      border-radius: 3px;
+      background: #E7E7E7;
+      color: rgb(255,255,255);
+      padding: 0px;
+      margin-right: 10px;
+      margin-bottom: 5px;
+      margin-left: 10px;
+    )";
+  }
+}
+
+const QString condition() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      color: #FFC803;
+      background: #282828;
+      padding: 0 10px;
+      border: 2px solid #1A1A1A;
+      border-top-width: 0px;
+      border-bottom-left-radius: 13px;
+      border-bottom-right-radius: 13px;
+)";
+  } else {
+    return R"(
+      color: #FFC803;
+      background: #FFFFFF;
+      padding: 0 10px;
+      border: 2px solid #F3F3F3;
+      border-top-width: 0px;
+      border-bottom-left-radius: 13px;
+      border-bottom-right-radius: 13px;
+)";
+  }
+}
+const QString model() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QLabel#modelLabel{
+      color:#FFFFFF;
+      background-color: #282828;
+      }
+)";
+  } else {
+    return R"(
+      QLabel{
+      color:#000000;
+      background-color: #F3F3F3;
+      }
+)";
+  }
+}
+namespace InlineEdit {
+const QString widgetConnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QLineEdit{background-color: #282828;
+      color: #39CA76;
+      border-color: #6B6B6B;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  } else {
+    return R"(
+      QLineEdit{background-color: #FFFFFF;
+      color: #3BBB5B;
+      border-color: #FFFFFF;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  }
+}
+const QString widgetDisconnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QLineEdit{background-color: #282828;
+      color: #FF403A;
+      border-color: #6B6B6B;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  } else {
+    return R"(
+      QLineEdit{background-color: #FFFFFF;
+      color: #FF2E27;
+      border-color: #FFFFFF;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  }
+}
+
+const QString widgetEditConnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QLineEdit{background-color: #222222;
+      color: #39CA76;
+      border-color: #6B6B6B;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  } else {
+    return R"(
+      QLineEdit{background-color: #F3F3F3;
+      color: #3BBB5B;
+      border-color: #F3F3F3;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  }
+}
+const QString widgetEditDisconnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QLineEdit{background-color: #222222;
+      color: #FF403A;
+      border-color: #6B6B6B;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  } else {
+    return R"(
+      QLineEdit{background-color: #F3F3F3;
+      color: #FF2E27;
+      border-color: #F3F3F3;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  }
+}
+const QString button() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      border: 0px solid #1A1A1A;
+      border-radius: 3px;
+      background: #1A1A1A;
+      color: #8E8E8E;
+      padding: 0px;
+      margin-bottom: 0px;
+)";
+  } else {
+    return R"(
+      border: 0px solid #E7E7E7;
+      border-radius: 3px;
+      background: #E7E7E7;
+      color: #8E8E8E;
+      padding: 0px;
+      margin-bottom: 0px;
+)";
+  }
+}
+}  // namespace InlineEdit
+}  // namespace Device
+}  // namespace StyleStorage

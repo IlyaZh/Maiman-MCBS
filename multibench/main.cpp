@@ -31,7 +31,9 @@ int main(int argc, char *argv[]) {
   QFontDatabase::addApplicationFont(":/resources/fonts/Poppins-Medium.ttf");
   QFontDatabase::addApplicationFont(":/resources/fonts/Poppins-SemiBold.ttf");
 
-  QApplication::setFont(QFont("Share Tech Mono", 9));
+  QFont defaultFont = QFont("Poppins", 9);
+  defaultFont.setLetterSpacing(QFont::PercentageSpacing, 105);
+  QApplication::setFont(defaultFont);
   //  QApplication::setFont(QFont("Poppins", 9));
 
 #ifdef QT_DEBUG

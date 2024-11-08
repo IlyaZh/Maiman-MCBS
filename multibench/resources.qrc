@@ -4,19 +4,24 @@
         <file>resources/fonts/ShareTechMono-Regular.ttf</file>
         <file>resources/images/logo.jpg</file>
         <file>resources/images/maiman-logo-minimal.png</file>
-        <file>resources/images/hidecontrols-icon.png</file>
         <file>resources/images/pinSymbol-activated.png</file>
         <file>resources/images/pinSymbol-disactivated.png</file>
-        <file>resources/images/showcontrols-icon.png</file>
         <file>resources/images/pencil.png</file>
         <file>resources/fonts/Poppins-Medium.ttf</file>
         <file>resources/fonts/Poppins-Regular.ttf</file>
         <file>resources/fonts/Poppins-SemiBold.ttf</file>
-        <file>resources/images/NewPinSymbol-activated.png</file>
-        <file>resources/images/NewPinSymbol-disactivated.png</file>
-        <file>resources/images/NewPencil.png</file>
         <file>resources/images/checkBoxOff.png</file>
         <file>resources/images/checkBoxOn.png</file>
         <file>resources/images/Set.png</file>
+        <file>resources/images/DarkPinSymbol-activated.png</file>
+        <file>resources/images/DarkPinSymbol-disactivated.png</file>
+        <file>resources/images/LightPinSymbol-activated.png</file>
+        <file>resources/images/LightPinSymbol-disactivated.png</file>
+        <file>resources/images/DarkIconControlMask-Hide.png</file>
+        <file>resources/images/DarkIconControlMask-Show.png</file>
+        <file>resources/images/LightIconControlMask-Hide.png</file>
+        <file>resources/images/LightIconControlMask-Show.png</file>
+        <file>resources/images/DarkPencil.png</file>
+        <file>resources/images/LightPencil.png</file>
     </qresource>
 </RCC>

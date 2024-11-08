@@ -5,6 +5,7 @@
 
 #include "commandconverter.h"
 #include "group/GroupInterface.h"
+#include "gui/DeviceSmallWidgets.h"
 #include "gui/guiinterface.h"
 #include "gui/guimediator.h"
 #include "widgets/buttonwidget.h"
@@ -162,5 +163,4 @@ class DeviceWidget : public QWidget,
   void hideControlsButtonClicked(bool flag);
   void pinButtonClicked(int idx, bool state);
 };
-
 #endif  // DEVICEWIDGET_H

@@ -30,3 +30,21 @@ class StaticStyles : public QObject {
  private:
   StaticStyles() = delete;
 };
+
+namespace StyleStorage {
+namespace Device {
+const QString widget();
+const QString hideButton();
+const QString pinButton();
+const QString condition();
+const QString model();
+namespace InlineEdit {
+const QString widgetConnected();
+const QString widgetDisconnected();
+const QString widgetEditConnected();
+const QString widgetEditDisconnected();
+const QString button();
+}  // namespace InlineEdit
+}  // namespace Device
+
+}  // namespace StyleStorage

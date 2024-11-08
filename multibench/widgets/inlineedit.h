@@ -26,6 +26,8 @@ class InLineEdit : public QLineEdit, public GuiWidgetInterface {
   QString m_name;
   int m_address;
   QPushButton* m_icon;
+  QIcon m_darkButton;
+  QIcon m_lightButton;
   QHBoxLayout* m_layout;
   bool m_isDevice = true;
   bool m_isConnected = true;
