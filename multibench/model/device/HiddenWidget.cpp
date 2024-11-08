@@ -10,6 +10,7 @@ HiddenWidget::HiddenWidget(QWidget* parent)
   m_layout->setContentsMargins(5, 0, 5, 0);
 
   ui->widget->setLayout(m_layout);
+  updateStyle();
 }
 
 HiddenWidget::~HiddenWidget() { delete ui; }
@@ -49,3 +50,8 @@ void HiddenWidget::setShown(bool show) {
 bool HiddenWidget::isPinned() const { return m_isPinned; }
 
 void HiddenWidget::setPinned(bool pin) { m_isPinned = pin; }
+
+void HiddenWidget::updateStyle() {
+  this->setStyleSheet(StyleStorage::Device::hiddenWidget());
+  this->update();
+}

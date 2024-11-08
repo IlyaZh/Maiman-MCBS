@@ -5,11 +5,13 @@
 #include <QVector>
 #include <QWidget>
 
+#include "gui/guiinterface.h"
+
 namespace Ui {
 class HiddenWidget;
 }  // namespace Ui
 
-class HiddenWidget : public QWidget {
+class HiddenWidget : public QWidget, public GuiWidgetInterface {
   Q_OBJECT
 
  public:
@@ -20,6 +22,7 @@ class HiddenWidget : public QWidget {
   void setShown(bool show);
   bool isPinned() const;
   void setPinned(bool pin);
+  void updateStyle() override;
 
  private:
   Ui::HiddenWidget* ui;

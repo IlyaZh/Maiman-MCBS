@@ -1,33 +1,5 @@
 #include "staticstyles.h"
 
-QString StaticStyles::buttonStyle() {
-  return R"(
-        QPushButton {
-            background-color: #3498db;
-            color: white;
-            border-radius: 5px;
-            padding: 8px 15px;
-        }
-        QPushButton:hover {
-            background-color: #2980b9;
-        }
-        QPushButton:pressed {
-            background-color: #1f6391;
-        }
-    )";
-}
-
-// Стиль для метки
-QString StaticStyles::labelStyle() {
-  return R"(
-        QLabel {
-            color: #2c3e50;
-            font-size: 14px;
-            font-weight: bold;
-        }
-    )";
-}
-
 QString StaticStyles::mainWindowStyle() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
@@ -108,8 +80,8 @@ QString StaticStyles::binaryWidget() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
 QCheckBox{
-        border-color: rgb(0, 0, 0);
-        color: rgb(153, 153, 153);
+    border-color: rgb(0, 0, 0);
+    color: rgb(153, 153, 153);
     spacing: 8;
 }
 QCheckBox::indicator {
@@ -145,8 +117,8 @@ QCheckBox::indicator:indeterminate:pressed {
   } else {
     return R"(
 QCheckBox{
-        border-color: rgb(0, 0, 0);
-        color: rgb(153, 153, 153);
+    border-color: rgb(0, 0, 0);
+    color: rgb(153, 153, 153);
     spacing: 8;
 }
 QCheckBox::indicator {
@@ -197,40 +169,6 @@ QString StaticStyles::buttonWidget() {
     border-radius: 13px;
     background:  #FAFAFA;
 })";
-  }
-}
-
-QString StaticStyles::deviceWidget() {
-  if (AppSettings::getDarkAppStyle()) {
-    return R"(
-    QWidget#DeviceWidget {
-    border: 2px solid #1A1A1A;
-    border-radius: 13px;
-    background:  #282828;
-}
-QWidget#widgetBox{
-background-color: #282828;
-}
-QLabel#modelLabel{
-color:#FFFFFF;
-background-color: #282828;
-}
-)";
-  } else {
-    return R"(
-    QWidget#DeviceWidget {
-    border: 2px solid #1A1A1A;
-    border-radius: 13px;
-    background:  #FAFAFA;
-}
-QWidget#widgetBox{
-background-color: #FAFAFA;
-}
-QLabel#modelLabel{
-color:#000000;
-background-color: #F3F3F3;
-}
-)";
   }
 }
 
@@ -828,13 +766,28 @@ const QString widget() {
   } else {
     return R"(
       QWidget#DeviceWidget {
-      border: 2px solid #1A1A1A;
+      border: 2px solid #F3F3F3;
       border-radius: 13px;
-      background:  #FAFAFA;
+      background:  #FFFFFF;
       }
       QWidget#widgetBox{
-      background-color: #FAFAFA;
+      background-color: #FFFFFF;
       }
+)";
+  }
+}
+const QString hiddenWidget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QWidget {
+      background-color: #282828;
+}
+)";
+  } else {
+    return R"(
+      QWidget {
+      background-color: #FFFFFF;
+}
 )";
   }
 }
@@ -926,7 +879,7 @@ const QString model() {
     return R"(
       QLabel{
       color:#000000;
-      background-color: #F3F3F3;
+      background-color: #FFFFFF;
       }
 )";
   }
@@ -1040,4 +993,100 @@ const QString button() {
 }
 }  // namespace InlineEdit
 }  // namespace Device
+namespace BinaryWidget {
+const QString widget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QWidget {
+      background-color: #282828;
+      color: #999999;
+}
+)";
+  } else {
+    return R"(
+      QWidget {
+      background-color: #FFFFFF;
+      color: #6B6B6B;
+}
+)";
+  }
+}
+const QString checkBox() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QCheckBox{
+          border-color: #000000;
+          color: #999999;
+          spacing: 8;
+      }
+      QCheckBox::indicator {
+          width: 12px;
+          height: 12px;
+          padding-bottom: 4;
+      }
+      QCheckBox::indicator:unchecked {
+          image: url(:/resources/images/DarkCheckBoxOff.png);
+      }
+      QCheckBox::indicator:unchecked:hover {
+          image: url(:/resources/images/DarkCheckBoxOff.png);
+      }
+      QCheckBox::indicator:unchecked:pressed {
+          image: url(:/resources/images/DarkCheckBoxOff.png);
+      }
+      QCheckBox::indicator:checked {
+          image: url(:/resources/images/DarkCheckBoxOn.png);
+      }
+      QCheckBox::indicator:checked:hover {
+          image: url(:/resources/images/DarkCheckBoxOn.png);
+      }
+      QCheckBox::indicator:checked:pressed {
+          image: url(:/resources/images/DarkCheckBoxOn.png);
+      }
+      QCheckBox::indicator:indeterminate:hover {
+          image: url(:/resources/images/DarkCheckBoxOff.png);
+      }
+      QCheckBox::indicator:indeterminate:pressed {
+          image: url(:/resources/images/DarkCheckBoxOff.png);
+      }
+)";
+  } else {
+    return R"(
+      QCheckBox{
+          border-color: rgb(0, 0, 0);
+          color: rgb(153, 153, 153);
+          spacing: 8;
+      }
+      QCheckBox::indicator {
+          width: 12px;
+          height: 12px;
+          padding-bottom: 4;
+      }
+      QCheckBox::indicator:unchecked {
+          image: url(:/resources/images/LightCheckBoxOff.png);
+      }
+      QCheckBox::indicator:unchecked:hover {
+          image: url(:/resources/images/LightCheckBoxOff.png);
+      }
+      QCheckBox::indicator:unchecked:pressed {
+          image: url(:/resources/images/LightCheckBoxOff.png);
+      }
+      QCheckBox::indicator:checked {
+          image: url(:/resources/images/LightCheckBoxOn.png);
+      }
+      QCheckBox::indicator:checked:hover {
+          image: url(:/resources/images/LightCheckBoxOn.png);
+      }
+      QCheckBox::indicator:checked:pressed {
+          image: url(:/resources/images/LightCheckBoxOn.png);
+      }
+      QCheckBox::indicator:indeterminate:hover {
+          image: url(:/resources/images/LightCheckBoxOff.png);
+      }
+      QCheckBox::indicator:indeterminate:pressed {
+          image: url(:/resources/images/LightCheckBoxOff.png);
+      }
+)";
+  }
+}
+}  // namespace BinaryWidget
 }  // namespace StyleStorage

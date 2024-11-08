@@ -10,8 +10,6 @@
         <file>resources/fonts/Poppins-Medium.ttf</file>
         <file>resources/fonts/Poppins-Regular.ttf</file>
         <file>resources/fonts/Poppins-SemiBold.ttf</file>
-        <file>resources/images/checkBoxOff.png</file>
-        <file>resources/images/checkBoxOn.png</file>
         <file>resources/images/Set.png</file>
         <file>resources/images/DarkPinSymbol-activated.png</file>
         <file>resources/images/DarkPinSymbol-disactivated.png</file>
@@ -23,5 +21,9 @@
         <file>resources/images/LightIconControlMask-Show.png</file>
         <file>resources/images/DarkPencil.png</file>
         <file>resources/images/LightPencil.png</file>
+        <file>resources/images/DarkCheckBoxOff.png</file>
+        <file>resources/images/DarkCheckBoxOn.png</file>
+        <file>resources/images/LightCheckBoxOff.png</file>
+        <file>resources/images/LightCheckBoxOn.png</file>
     </qresource>
 </RCC>

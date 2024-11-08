@@ -50,6 +50,7 @@ BinaryWidget::BinaryWidget(const Checkbox &settings,
 
   connect(ui->statusCheckbox, &QCheckBox::clicked, this,
           &BinaryWidget::checkBoxClicked);
+  updateStyle();
 }
 
 BinaryWidget::~BinaryWidget() { delete ui; }
@@ -81,6 +82,8 @@ QVector<quint16> BinaryWidget::Subscribe() {
 }
 
 void BinaryWidget::updateStyle() {
-  this->setStyleSheet(StaticStyles::binaryWidget());
+  this->setStyleSheet(StyleStorage::BinaryWidget::widget());
+  ui->statusCheckbox->setStyleSheet(StyleStorage::BinaryWidget::checkBox());
+  ui->statusCheckbox->update();
   this->update();
 }

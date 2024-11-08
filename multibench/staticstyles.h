@@ -7,10 +7,7 @@
 class StaticStyles : public QObject {
   Q_OBJECT
  public:
-  static QString buttonStyle();
-  static QString labelStyle();
   static QString mainWindowStyle();
-  static QString deviceWidget();
   static QString aboutDialog();
   static QString binaryWidget();
   static QString buttonWidget();
@@ -34,6 +31,7 @@ class StaticStyles : public QObject {
 namespace StyleStorage {
 namespace Device {
 const QString widget();
+const QString hiddenWidget();
 const QString hideButton();
 const QString pinButton();
 const QString condition();
@@ -46,5 +44,11 @@ const QString widgetEditDisconnected();
 const QString button();
 }  // namespace InlineEdit
 }  // namespace Device
-
+namespace About {
+const QString widget();
+}
+namespace BinaryWidget {
+const QString widget();
+const QString checkBox();
+}  // namespace BinaryWidget
 }  // namespace StyleStorage
