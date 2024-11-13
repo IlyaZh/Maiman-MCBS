@@ -7,6 +7,9 @@
 #include "components/mediator.h"
 #include "constants.h"
 #include "interfaces/pubsubinterface.h"
+#include "staticstyles.h"
+
+using namespace StyleStorage::MainWindow;
 
 class AboutDialog;
 class UpdateWidget;

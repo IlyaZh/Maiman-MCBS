@@ -750,6 +750,207 @@ color: rgb(153, 153, 153);
 }
 
 namespace StyleStorage {
+namespace MainWindow {
+const QString AppWidget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QMainWindow *{
+        background: #1D1D1D;
+        color: #FFFFFF;
+}
+QMenu:hover {
+        color: #969696;
+}
+
+QMenu::item:selected {
+        background-color: #515151;
+}
+
+QMenu::item:disabled {
+        color: #787878;
+}
+)";
+  } else {
+    return R"(
+QMainWindow *{
+        background: #FAFAFA;
+        color: #000000;
+}
+QMenu:hover {
+        color: #969696;
+}
+
+QMenu::item:selected {
+        background-color: #E7E7E7;
+}
+
+QMenu::item:disabled {
+        color: #FAFAFA;
+}
+)";
+  }
+}
+const QString menuBarWidget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QMenuBar {
+        background: rgb(51,51,51);
+        color: #fff;
+}
+
+QMenuBar::item {
+        color: #fff;
+        background: rgb(51,51,51);
+}
+
+QMenuBar::item:disabled {
+        color: #999;
+}
+
+QMenuBar::item:selected { /* when selected using mouse or keyboard */
+      background: rgb(111,111,111);
+ }
+
+QMenuBar::item:hover { /* when selected using mouse or keyboard */
+      background: rgb(111,111,111);
+     color: #eee;
+ }
+
+ QMenuBar::item:pressed {
+      background: rgb(31,31,31);
+ }
+)";
+  } else {
+    return R"(
+QMenuBar {
+        background: #FAFAFA;
+        color: #000000;
+}
+
+QMenuBar::item {
+        color: #000000;
+        background: #FAFAFA;
+}
+
+QMenuBar::item:disabled {
+        color: #969696;
+}
+
+QMenuBar::item:selected { /* when selected using mouse or keyboard */
+      background: #E7E7E7;
+ }
+
+QMenuBar::item:hover { /* when selected using mouse or keyboard */
+      background: #E7E7E7;
+     color: #000000;
+ }
+
+ QMenuBar::item:pressed {
+      background: #F3F3F3;
+ }
+)";
+  }
+}
+const QString changeStyleButton() {
+  if (!AppSettings::getDarkAppStyle()) {
+    return R"(
+    QCheckBox{
+        background-color: #FFFFFF;
+        border-radius: 11px;
+        border: 1px solid #A7A7A7;
+        width: 50px;
+        height: 24px;
+}
+    QCheckBox::indicator {
+        width: 20px;
+        height: 20px;
+    }
+
+    QCheckBox::indicator::unchecked {
+        background-color: #ffc803;
+        border-radius: 10px;
+        border: 1px solid #ffc803;
+    }
+
+    QCheckBox::indicator::checked {
+        background-color: #000000;
+        border-radius: 10px;
+        border: 1px solid #000000;
+    }
+
+    QCheckBox::indicator::unchecked {
+        /*position: absolute;*/
+        left: 2px;
+        content: "";
+        width: 19px;
+        height: 18px;
+        background-color: #ffc803;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+
+    QCheckBox::indicator::checked {
+        /*position: absolute;*/
+        left: 26px;
+        content: "";
+        width: 19px;
+        height: 18px;
+        background-color: #000000;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+)";
+  } else {
+    return R"(
+QCheckBox{
+        background-color: #ffc803;
+        border-radius: 11px;
+        border: 1px solid #ffc803;
+        width: 50px;
+        height: 24px;
+}
+QCheckBox::indicator {
+        width: 20px;
+        height: 20px;
+    }
+
+    QCheckBox::indicator::unchecked {
+        background-color: #ffc803;
+        border-radius: 10px;
+        border: 1px solid #ffc803;
+    }
+
+    QCheckBox::indicator::checked {
+        background-color: #000000;
+        border-radius: 10px;
+        border: 1px solid #000000;
+    }
+
+    QCheckBox::indicator::unchecked {
+        /*position: absolute;*/
+        left: 2px;
+        content: "";
+        width: 19px;
+        height: 18px;
+        background-color: #ffc803;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+
+    QCheckBox::indicator::checked {
+        /*position: absolute;*/
+        left: 26px;
+        content: "";
+        width: 19px;
+        height: 18px;
+        background-color: #000000;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+)";
+  }
+}
+}  // namespace MainWindow
 namespace Device {
 const QString widget() {
   if (AppSettings::getDarkAppStyle()) {

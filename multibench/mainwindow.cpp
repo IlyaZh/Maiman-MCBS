@@ -106,7 +106,7 @@ MainWindow::MainWindow(QWidget* parent)
           &MainWindow::createGroupManagerWidget);
   ui->actionKeepAddresses->setChecked(AppSettings::getKeepAddresses());
   connect(ui->switchStyle, &QCheckBox::clicked, this, &MainWindow::changeStyle);
-
+  ui->switchStyle->setChecked(AppSettings::getDarkAppStyle());
   changeStyle(AppSettings::getDarkAppStyle());
 }
 
@@ -434,10 +434,14 @@ void MainWindow::changeStyle(bool checked) {
   } else {
     AppSettings::setDarkAppStyle(false);
   }
-  this->setStyleSheet(StaticStyles::mainWindowStyle());
-
   model::Event event(model::EventType::kSystemCommand,
                      model::events::network::ChangeSystemStyle(style));
+
   emit Signal_PublishEvent(event);
+  this->setStyleSheet(AppWidget());
+  ui->menubar->setStyleSheet(menuBarWidget());
+  ui->menubar->update();
+  ui->switchStyle->setStyleSheet(changeStyleButton());
+  ui->switchStyle->update();
   this->update();
 }

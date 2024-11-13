@@ -139,21 +139,13 @@ QCheckBox::indicator {
         border-radius: 12px;
         border: 1px solid #000000;
     }
-/*
-    QCheckBox::indicator::unchecked::hover {
-        background-color: #ffc803;
-    }
-*/
+
     QCheckBox::indicator::checked {
         background-color: #353535;
         border-radius: 12px;
         border: 1px solid #666666;
     }
-/*
-    QCheckBox::indicator::checked::hover {
-        background-color: #000000;
-    }
-*/
+
     QCheckBox::indicator::unchecked {
         /*position: absolute;*/
         left: 2px;
@@ -166,8 +158,8 @@ QCheckBox::indicator {
     }
 
     QCheckBox::indicator::checked {
-        position: absolute;
-        left: 22px;
+        /*position: absolute;*/
+        left: 26px;
         content: &quot;&quot;;
         width: 19px;
         height: 18px;

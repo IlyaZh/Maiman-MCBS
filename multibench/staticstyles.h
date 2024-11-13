@@ -29,6 +29,11 @@ class StaticStyles : public QObject {
 };
 
 namespace StyleStorage {
+namespace MainWindow {
+const QString AppWidget();
+const QString menuBarWidget();
+const QString changeStyleButton();
+}  // namespace MainWindow
 namespace Device {
 const QString widget();
 const QString hiddenWidget();
