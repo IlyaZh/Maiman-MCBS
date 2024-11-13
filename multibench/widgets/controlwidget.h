@@ -10,6 +10,8 @@
 #include "gui/guiinterface.h"
 #include "widgets/inlinecontrol.h"
 
+using namespace StyleStorage::Device::ControlWidget;
+
 struct Control;
 
 namespace Ui {

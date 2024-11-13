@@ -3,6 +3,7 @@
 #include <QtWidgets>
 
 #include "gui/guiinterface.h"
+using namespace StyleStorage::Device::ControlWidget::InlineControl;
 
 class InLineControl : public QLineEdit, public GuiWidgetInterface {
   Q_OBJECT
@@ -24,5 +25,7 @@ class InLineControl : public QLineEdit, public GuiWidgetInterface {
  private:
   QString m_value = "0";
   QPushButton* m_icon;
+  QIcon m_darkButton;
+  QIcon m_lightButton;
   QHBoxLayout* m_layout;
 };

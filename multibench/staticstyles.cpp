@@ -884,6 +884,46 @@ const QString model() {
 )";
   }
 }
+
+const QString linkConnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    QLabel {
+    background: #39CA76;
+    border: 0px solid #1A1A1A;
+    border-radius: 3px;
+}
+)";
+  } else {
+    return R"(
+    QLabel {
+    background: #3BBB5B;
+    border: 1px solid rgba(59,187,91, 40%);
+    border-radius: 3px;
+}
+)";
+  }
+}
+
+const QString linkDisconnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    QLabel {
+    background: #FF403A;
+    border: 1px solid #1A1A1A;
+    border-radius: 3px;
+}
+)";
+  } else {
+    return R"(
+    QLabel {
+    background: #FF2E27;
+    border: 0px solid #1A1A1A;
+    border-radius: 3px;
+}
+)";
+  }
+}
 namespace InlineEdit {
 const QString widgetConnected() {
   if (AppSettings::getDarkAppStyle()) {
@@ -982,7 +1022,7 @@ const QString button() {
 )";
   } else {
     return R"(
-      border: 0px solid #E7E7E7;
+      border: 1px solid #E7E7E7;
       border-radius: 3px;
       background: #E7E7E7;
       color: #8E8E8E;
@@ -1052,7 +1092,7 @@ const QString checkBox() {
     return R"(
       QCheckBox{
           border-color: rgb(0, 0, 0);
-          color: rgb(153, 153, 153);
+          color: #6B6B6B;
           spacing: 8;
       }
       QCheckBox::indicator {
@@ -1107,5 +1147,146 @@ QWidget{
   }
 }
 }  // namespace ReadParameter
+namespace ControlWidget {
+const QString widget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      background-color: #282828;
+)";
+  } else {
+    return R"(
+      background-color: #FFFFFF;
+)";
+  }
+}
+namespace InlineControl {
+const QString read() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    QLineEdit{background-color: #222222;
+    border-radius: 12px;
+    border: 1px solid #6B6B6B;
+    color: rgba(255, 255, 255, 90%);
+    text-align: center;
+}
+)";
+  } else {
+    return R"(
+    QLineEdit{background-color: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid #A7A7A7;
+    color: #000000;
+    text-align: center;
+}
+)";
+  }
+}
+const QString edit() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    QLineEdit{background-color: #6B6B6B;
+    border-radius: 12px;
+    border: 1px solid #6B6B6B;
+    color: rgba(255, 255, 255, 90%);
+    text-align: center;
+}
+)";
+  } else {
+    return R"(
+    QLineEdit{background-color: #F0F0F0;
+    border-radius: 12px;
+    border: 1px solid #A7A7A7;
+    color: #000000;
+    text-align: center;
+}
+)";
+  }
+}
+const QString error() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    QLineEdit{background-color: #FF403A;
+    border-radius: 12px;
+    border: 1px solid #6B6B6B;
+    color: #000000;
+    text-align: center;
+}
+)";
+  } else {
+    return R"(
+    QLineEdit{background-color: #FA3D3A;
+    border-radius: 12px;
+    border: 1px solid #A7A7A7;
+    color: #000000;
+    text-align: center;
+}
+)";
+  }
+}
+
+const QString button() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      border: 0px solid rgba(26,26,26,10%);
+      border-radius: 11px;
+      background: rgba(26,26,26,10%);
+      color: #8E8E8E;
+      padding: 0px;
+      margin-bottom: 0px;
+)";
+  } else {
+    return R"(
+      border: 0px solid rgba(26,26,26,10%);
+      border-radius: 11px;
+      background: rgba(240,240,240,10%);
+      color: #000000;
+      padding: 0px;
+      margin-bottom: 0px;
+)";
+  }
+}
+}  // namespace InlineControl
+const QString nameWidget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      color: #FFFFFF;
+      background-color: #282828;
+      padding: 0px;
+      margin: 0px;
+      alignment-baseline="middle";
+)";
+  } else {
+    return R"(
+      color: #000000;
+      background-color: #FFFFFF;
+      padding: 0px;
+      margin: 0px;
+      alignment-baseline="middle";
+)";
+  }
+}
+const QString realLabels() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      color:#6C6C6C;
+)";
+  } else {
+    return R"(
+      color:#000000;
+)";
+  }
+}
+const QString maxAndMinLabels() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      color:#6C6C6C;
+)";
+  } else {
+    return R"(
+      color:#B7B7B7;
+)";
+  }
+}
+}  // namespace ControlWidget
 }  // namespace Device
 }  // namespace StyleStorage

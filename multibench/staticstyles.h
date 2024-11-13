@@ -36,6 +36,8 @@ const QString hideButton();
 const QString pinButton();
 const QString condition();
 const QString model();
+const QString linkConnected();
+const QString linkDisconnected();
 namespace InlineEdit {
 const QString widgetConnected();
 const QString widgetDisconnected();
@@ -50,6 +52,18 @@ const QString checkBox();
 namespace ReadParameter {
 const QString widget();
 }  // namespace ReadParameter
+namespace ControlWidget {
+const QString widget();
+namespace InlineControl {
+const QString read();
+const QString edit();
+const QString error();
+const QString button();
+}  // namespace InlineControl
+const QString nameWidget();
+const QString realLabels();
+const QString maxAndMinLabels();
+}  // namespace ControlWidget
 }  // namespace Device
 namespace About {
 const QString widget();

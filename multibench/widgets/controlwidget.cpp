@@ -253,7 +253,18 @@ QVector<quint16> ControlWidget::Subscribe() {
 }
 
 void ControlWidget::updateStyle() {
-  qDebug() << "check";
-  this->setStyleSheet(StaticStyles::controlWidget());
+  this->setStyleSheet(widget());
+  ui->WidgetName->setStyleSheet(nameWidget());
+  ui->Real->setStyleSheet(realLabels());
+  ui->RealValue->setStyleSheet(realLabels());
+  ui->RealUnits->setStyleSheet(realLabels());
+  ui->Min->setStyleSheet(maxAndMinLabels());
+  ui->MinValue->setStyleSheet(maxAndMinLabels());
+  ui->MinUnits->setStyleSheet(maxAndMinLabels());
+  ui->Max->setStyleSheet(maxAndMinLabels());
+  ui->MaxValue->setStyleSheet(maxAndMinLabels());
+  ui->MaxUnits->setStyleSheet(maxAndMinLabels());
+  m_controlLine->updateStyle();
+  //  this->setStyleSheet(StaticStyles::controlWidget());
   this->update();
 }

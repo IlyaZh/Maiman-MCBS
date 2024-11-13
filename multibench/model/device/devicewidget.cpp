@@ -235,7 +235,8 @@ QString DeviceWidget::getName() const { return m_name; }
 QString DeviceWidget::getModel() const { return ui->modelLabel->text(); }
 
 void DeviceWidget::setLink(bool link) {
-  ui->linkLabel->setStyleSheet(link ? linkStyleOn : linkStyleOff);
+  ui->linkLabel->setStyleSheet(link ? StyleStorage::Device::linkConnected()
+                                    : StyleStorage::Device::linkDisconnected());
   m_deviceAddress->setLink(link);
 }
 
