@@ -64,6 +64,10 @@ const QString nameWidget();
 const QString realLabels();
 const QString maxAndMinLabels();
 }  // namespace ControlWidget
+namespace ButtonWidget {
+const QString buttonStarted();
+const QString buttonStopped();
+}  // namespace ButtonWidget
 }  // namespace Device
 namespace About {
 const QString widget();

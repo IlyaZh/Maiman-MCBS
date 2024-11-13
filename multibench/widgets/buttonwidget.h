@@ -5,6 +5,8 @@
 #include "gui/guiinterface.h"
 #include "model/device/devicewidget.h"
 
+using namespace StyleStorage::Device::ButtonWidget;
+
 struct Button;
 
 class ButtonWidget : public GuiWidgetBase, public GuiWidgetInterface {

@@ -1268,7 +1268,7 @@ const QString nameWidget() {
 const QString realLabels() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-      color:#6C6C6C;
+      color:#FFFFFF;
 )";
   } else {
     return R"(
@@ -1288,5 +1288,49 @@ const QString maxAndMinLabels() {
   }
 }
 }  // namespace ControlWidget
+namespace ButtonWidget {
+const QString buttonStarted() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      border: 0px solid #1A1A1A;
+      border-radius: 17px;
+      color: #000000;
+      text-align:center;
+      padding-top: 7px;
+      background: #39CA76;
+)";
+  } else {
+    return R"(
+      border: 2px solid #3BBB5B;
+      border-radius: 17px;
+      color: #000000;
+      text-align:center;
+      padding-top: 7px;
+      background: #B6E9C3;
+)";
+  }
+}
+const QString buttonStopped() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      border: 0px solid #1A1A1A;
+      border-radius: 17px;
+      color: #000000;
+      text-align:center;
+      padding-top: 7px;
+      background: #FF403A;
+)";
+  } else {
+    return R"(
+      border: 2px solid #FA3D3A;
+      border-radius: 17px;
+      color: #000000;
+      text-align:center;
+      padding-top: 7px;
+      background: #FFB6B5;
+)";
+  }
+}
+}  // namespace ButtonWidget
 }  // namespace Device
 }  // namespace StyleStorage

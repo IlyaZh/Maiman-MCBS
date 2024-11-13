@@ -265,6 +265,5 @@ void ControlWidget::updateStyle() {
   ui->MaxValue->setStyleSheet(maxAndMinLabels());
   ui->MaxUnits->setStyleSheet(maxAndMinLabels());
   m_controlLine->updateStyle();
-  //  this->setStyleSheet(StaticStyles::controlWidget());
   this->update();
 }

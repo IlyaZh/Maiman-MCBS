@@ -40,7 +40,7 @@ ButtonWidget::ButtonWidget(const QString &text, const Button &button,
   QFont font14("Poppins", 14);
   font14.setLetterSpacing(QFont::PercentageSpacing, 105);
   m_button->setFont(font14);
-  m_button->setStyleSheet(buttonOff);
+  m_button->setStyleSheet(buttonStopped());
   m_button->setChecked(false);
   m_button->setVisible(true);
   m_layout->addWidget(m_button);
@@ -51,8 +51,8 @@ ButtonWidget::~ButtonWidget(){};
 void ButtonWidget::setData(quint16 code, quint16 data) {
   if (code != m_converter->code()) return;
   m_converter->setValue(data);
-  m_button->setStyleSheet(((data & m_description.mask) != 0) ? buttonOn
-                                                             : buttonOff);
+  m_button->setStyleSheet(((data & m_description.mask) != 0) ? buttonStarted()
+                                                             : buttonStopped());
 }
 
 void ButtonWidget::buttonClicked() {
@@ -68,6 +68,8 @@ QVector<quint16> ButtonWidget::Subscribe() {
 }
 
 void ButtonWidget::updateStyle() {
-  //  this->setStyleSheet(StaticStyles::buttonWidget());
+  m_button->setStyleSheet(((m_converter->valueInt() & m_description.mask) != 0)
+                              ? buttonStarted()
+                              : buttonStopped());
   this->update();
 }
