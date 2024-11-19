@@ -44,7 +44,4 @@ void AboutDialog::keyReleaseEvent(QKeyEvent *event) {
 
 void AboutDialog::updateButtonPressed() { emit startUpdate(); }
 
-void AboutDialog::updateStyle() {
-  this->setStyleSheet(StaticStyles::aboutDialog());
-  this->update();
-}
+void AboutDialog::updateStyle() { this->update(); }

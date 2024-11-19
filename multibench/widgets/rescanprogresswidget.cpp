@@ -24,7 +24,4 @@ void RescanProgressWidget::notFound() {
   ui->infoLabel->setText("Devices not found");
 }
 
-void RescanProgressWidget::updateStyle() {
-  this->setStyleSheet(StaticStyles::rescanProgressWidget());
-  this->update();
-}
+void RescanProgressWidget::updateStyle() { this->update(); }

@@ -146,7 +146,6 @@ class DeviceWidget : public QWidget,
   QSet<GuiWidgetBase*> m_widgetsTable;
   int m_address = 0;
   int m_id = 0;
-  QString m_name{};
   void paintEvent(QPaintEvent*) override;
   void adjust();
 

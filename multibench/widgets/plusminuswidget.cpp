@@ -268,7 +268,4 @@ void PlusMinusWidget::setData(quint16 code, quint16 data) {
   }
 }
 
-void PlusMinusWidget::updateStyle() {
-  this->setStyleSheet(StaticStyles::calibrationWidget());
-  this->update();
-}
+void PlusMinusWidget::updateStyle() { this->update(); }

@@ -201,7 +201,4 @@ void CalibrationDialog::updateValue(const model::Event& event) {
   }
 }
 
-void CalibrationDialog::updateStyle() {
-  this->setStyleSheet(StaticStyles::calibrationDialog());
-  this->update();
-}
+void CalibrationDialog::updateStyle() { this->update(); }

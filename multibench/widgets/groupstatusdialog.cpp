@@ -59,7 +59,4 @@ void GroupStatusDialog::resizeWidget() {
   resize(winSize);
 }
 
-void GroupStatusDialog::updateStyle() {
-  this->setStyleSheet(StaticStyles::groupStatusDialog());
-  this->update();
-}
+void GroupStatusDialog::updateStyle() { this->update(); }

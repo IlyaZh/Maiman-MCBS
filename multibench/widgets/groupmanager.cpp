@@ -201,7 +201,4 @@ void GroupManager::groupButtonClicked(QAbstractButton* button) {
     button->setChecked(false);
 }
 
-void GroupManager::updateStyle() {
-  this->setStyleSheet(StaticStyles::groupManager());
-  this->update();
-}
+void GroupManager::updateStyle() { this->update(); }

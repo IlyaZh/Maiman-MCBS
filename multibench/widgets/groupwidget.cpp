@@ -3,6 +3,8 @@
 #include "group/groupcommandfactory.h"
 #include "ui_groupwidget.h"
 
+using namespace StyleStorage::Group;
+
 static const QString buttonOn =
     "QPushButton \
                                    { \
@@ -45,47 +47,28 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   m_widgetLayout->setSizeConstraint(QLayout::SetMinimumSize);
   m_widgetLayout->setAlignment(Qt::AlignLeft);
   ui->devicesTable->setLayout(m_widgetLayout);
-
-  ui->hideButton->setCheckable(true);
-  ui->hideButton->setChecked(false);
-  ui->hideButton->setIconSize(QSize(10, 10));
-  QIcon icon1;
-  icon1.addFile(QString::fromUtf8(":/resources/images/hidecontrols-icon.png"),
-                QSize(), QIcon::Normal, QIcon::Off);
-  icon1.addFile(QString::fromUtf8(":/resources/images/showcontrols-icon.png"),
-                QSize(), QIcon::Normal, QIcon::On);
-  ui->hideButton->setIcon(icon1);
-  ui->hideButton->setObjectName(QString::fromUtf8("hideControlButton"));
-  ui->hideButton->setMinimumSize(QSize(112, 37));
-  ui->hideButton->setMaximumSize(QSize(112, 37));
-  QFont font1;
-  font1.setFamily(QString::fromUtf8("Share Tech Mono"));
-  ui->hideButton->setFont(font1);
+  m_hideButton = new GroupHideButton(this);
+  m_statusButton = new GroupHideButton(this);
+  m_hideButton->setText(" " + tr("Hide Devices"));
+  m_statusButton->setText(" " + tr("Status Devices"));
+  ui->statusButtontable->insertWidget(0, m_hideButton);
+  ui->statusButtontable->insertWidget(1, m_statusButton);
+  ui->statusButtontable->setAlignment(Qt::AlignLeft);
 
   InLineEdit *name = new InLineEdit(m_selfAddr, false);
-  ui->nameTable->addWidget(name);
+  ui->nameTable->insertWidget(1, name, Qt::AlignmentFlag::AlignLeft);
   ui->nameTable->setAlignment(Qt::AlignmentFlag::AlignLeft);
+
   connect(name, &InLineEdit::nameEdited, this,
           [this](QString name) { m_name = name; });
-
-  ui->statusButton->setIconSize(QSize(10, 10));
-  QIcon icon2;
-  icon2.addFile(QString::fromUtf8(":/resources/images/hidecontrols-icon.png"),
-                QSize(), QIcon::Normal, QIcon::Off);
-  icon2.addFile(QString::fromUtf8(":/resources/images/showcontrols-icon.png"),
-                QSize(), QIcon::Normal, QIcon::On);
-  ui->statusButton->setIcon(icon2);
-  ui->statusButton->setMinimumSize(QSize(112, 37));
-  ui->statusButton->setMaximumSize(QSize(112, 37));
-
   connect(ui->startButton, &QPushButton::clicked, this,
           &GroupWidget::startDevices);
   connect(ui->stopButton, &QPushButton::clicked, this,
           &GroupWidget::stopDevices);
-  connect(ui->hideButton, &QPushButton::clicked, this,
-          &GroupWidget::hideDevices);
-  connect(ui->statusButton, &QPushButton::clicked, this,
+  connect(m_hideButton, &QPushButton::clicked, this, &GroupWidget::hideDevices);
+  connect(m_statusButton, &QPushButton::clicked, this,
           &GroupWidget::showStatus);
+  updateStyle();
 }
 
 GroupWidget::~GroupWidget() { delete ui; }
@@ -96,12 +79,12 @@ void GroupWidget::addGroupMember(QPointer<DeviceWidget> member) {
   m_groupWidgets.append(member);
   resizeWidget();
   emit closeGroupStatusDialog();
-  m_addresses.insert(member->getAddress());
+  m_addresses.insert(static_cast<quint8>(member->getAddress()));
   auto status = DeviceStatusGroup();
   status.errors = QStringList();
   status.devStarted = QMap<QString, bool>();
-  m_status.insert(member->getAddress(), status);
-  m_linked.insert(member->getAddress(), true);
+  m_status.insert(static_cast<quint8>(member->getAddress()), status);
+  m_linked.insert(static_cast<quint8>(member->getAddress()), true);
 }
 
 void GroupWidget::removeGroupMember(QPointer<DeviceWidget> member) {
@@ -109,27 +92,29 @@ void GroupWidget::removeGroupMember(QPointer<DeviceWidget> member) {
   emit closeGroupStatusDialog();
   m_widgetLayout->removeWidget(member);
   m_groupWidgets.removeOne(member);
-  m_addresses.remove(member->getAddress());
-  m_status.remove(member->getAddress());
-  m_linked.remove(member->getAddress());
+  m_addresses.remove(static_cast<quint8>(member->getAddress()));
+  m_status.remove(static_cast<quint8>(member->getAddress()));
+  m_linked.remove(static_cast<quint8>(member->getAddress()));
 }
 
 const QSet<quint8> GroupWidget::getAddresses() { return m_addresses; }
 
 void GroupWidget::startDevices() {
   auto command = model::events::network::CommandType::kStartDevices;
+  m_allStarted = true;
   emit groupEvent(
       GroupCommandFactory::createGroupCommand(m_addresses, command));
-  ui->startButton->setStyleSheet(buttonOn);
-  ui->stopButton->setStyleSheet(buttonNone);
+  ui->startButton->setStyleSheet(Widget::buttonLaunched());
+  ui->stopButton->setStyleSheet(Widget::buttonInMiddle());
 }
 
 void GroupWidget::stopDevices() {
   auto command = model::events::network::CommandType::kStopDevices;
+  m_allStarted = false;
   emit groupEvent(
       GroupCommandFactory::createGroupCommand(m_addresses, command));
-  ui->startButton->setStyleSheet(buttonNone);
-  ui->stopButton->setStyleSheet(buttonOff);
+  ui->startButton->setStyleSheet(Widget::buttonInMiddle());
+  ui->stopButton->setStyleSheet(Widget::buttonStopped());
 }
 
 void GroupWidget::resizeWidget() {
@@ -178,12 +163,12 @@ void GroupWidget::hideDevices(bool flag) {
   m_hideDevices = flag;
 
   if (!m_hideDevices) {
-    ui->hideButton->setText("Hide Devices");
+    m_hideButton->setText(" " + tr("Hide Devices"));
     ui->devicesTable->setVisible(true);
     this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
     this->adjustSize();
   } else {
-    ui->hideButton->setText("Show Devices");
+    m_hideButton->setText(" " + tr("Show Devices"));
     ui->devicesTable->setVisible(false);
     this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
     this->adjustSize();
@@ -231,19 +216,9 @@ void GroupWidget::linkStatusChanged(int addr, bool status) {
     groupLink = groupLink & linked;
   }
   if (!groupLink) {
-    ui->linkLabel->setStyleSheet(
-        "QLabel { \
-                                       background: rgb(175,0,0); \
-                                       border: 1px solid rgb(26,26,26); \
-                                       border-radius: 3px; \
-                               }");
+    ui->linkLabel->setStyleSheet(StyleStorage::Device::linkDisconnected());
   } else {
-    ui->linkLabel->setStyleSheet(
-        "QLabel { \
-                                 background: rgb(0,102,51); \
-                                 border: 1px solid rgb(26,26,26); \
-                                 border-radius: 3px; \
-                         }");
+    ui->linkLabel->setStyleSheet(StyleStorage::Device::linkConnected());
   }
   emit linkChanged(addr, status);
 }
@@ -251,8 +226,8 @@ void GroupWidget::linkStatusChanged(int addr, bool status) {
 void GroupWidget::showStatus() {
   GroupStatusDialog *dialog = new GroupStatusDialog(this);
   for (const auto &device : m_groupWidgets) {
-    dialog->addDevice(device->getAddress(), device->getName(),
-                      device->getModel());
+    dialog->addDevice(static_cast<quint8>(device->getAddress()),
+                      device->getName(), device->getModel());
   }
   dialog->setModal(false);
   dialog->show();
@@ -268,17 +243,27 @@ void GroupWidget::updateValue(const model::Event &event) {
   if (event.type_ == model::EventType::kSystemCommand) {
     if (std::holds_alternative<model::events::network::ChangeSystemStyle>(
             event.data_)) {
-      for (auto widget : m_groupWidgets) {
-        widget->updateValue(event);
-      }
+      updateStyle();
     }
   }
 }
 
 void GroupWidget::updateStyle() {
-  this->setStyleSheet(StaticStyles::groupWidget());
+  this->setStyleSheet(Widget::groupWidget());
   this->update();
-  for (auto widget : m_groupWidgets) {
-    widget->updateStyle();
+  QList<QWidget *> widgets = this->findChildren<QWidget *>();
+  for (QWidget *widget : widgets) {
+    GuiWidgetInterface *interfaceWidget =
+        dynamic_cast<GuiWidgetInterface *>(widget);
+    if (interfaceWidget) {
+      interfaceWidget->updateStyle();
+    }
+  }
+  if (m_allStarted) {
+    ui->startButton->setStyleSheet(Widget::buttonLaunched());
+    ui->stopButton->setStyleSheet(Widget::buttonInMiddle());
+  } else {
+    ui->startButton->setStyleSheet(Widget::buttonInMiddle());
+    ui->stopButton->setStyleSheet(Widget::buttonStopped());
   }
 }

@@ -3,8 +3,8 @@
 #include <QObject>
 
 struct DevicePollRequest {
-  explicit DevicePollRequest(quint8 addr, quint16 code, quint8 count,
-                             uint interval = 1)
+  explicit DevicePollRequest(quint8 addr = 0, quint16 code = 0,
+                             quint8 count = 0, uint interval = 1)
       : code(code),
         addr(addr),
         count(count),

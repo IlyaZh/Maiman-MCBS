@@ -4,30 +4,6 @@
 
 #include "appsettings.h"
 
-class StaticStyles : public QObject {
-  Q_OBJECT
- public:
-  static QString mainWindowStyle();
-  static QString aboutDialog();
-  static QString binaryWidget();
-  static QString buttonWidget();
-  static QString calibrationWidget();
-  static QString calibrationDialog();
-  static QString connectionWidget();
-  static QString controlWidget();
-  static QString groupManager();
-  static QString groupStatusDialog();
-  static QString groupWidget();
-  static QString groupStatusWidget();
-  static QString inLineEdit();
-  static QString quitDialog();
-  static QString readParameterWidget();
-  static QString rescanProgressWidget();
-
- private:
-  StaticStyles() = delete;
-};
-
 namespace StyleStorage {
 namespace MainWindow {
 const QString AppWidget();
@@ -77,5 +53,15 @@ const QString buttonStopped();
 namespace About {
 const QString widget();
 }
-
+namespace Group {
+namespace Widget {
+const QString groupWidget();
+const QString buttonLaunched();
+const QString buttonStopped();
+const QString buttonInMiddle();
+const QString hideButton();
+}  // namespace Widget
+namespace Manager {}
+namespace Status {}
+}  // namespace Group
 }  // namespace StyleStorage

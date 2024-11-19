@@ -80,6 +80,7 @@ DeviceWidget::DeviceWidget(
 
   // Инициализация кнопки (Hide controls)
   auto m_hideControlsButton = new DeviceHideButton(this);
+  m_hideControlsButton->setText(" " + tr("Hide controls"));
   connect(m_hideControlsButton, &QPushButton::clicked, this,
           &DeviceWidget::hideControlsButtonClicked);
   m_widgetLayout->addWidget(m_hideControlsButton, 0, 0, Qt::AlignLeft);
@@ -209,11 +210,7 @@ DeviceWidget::DeviceWidget(
   m_widgetsTable.insert(m_deviceCondition);
   ui->gridLayout->addWidget(m_deviceAddress, 0, 2);
   connect(m_deviceAddress, &InLineEdit::nameEdited, this,
-          [this](QString name, int addr) {
-            m_name = name;
-            emit nameEdited(name, addr);
-          });
-  m_name = m_deviceAddress->text();
+          &DeviceWidget::nameEdited);
   for (auto widget : m_widgetsTable) {
     connect(widget, &GuiWidgetBase::setDataFromWidget, this,
             &DeviceWidget::acceptDataFromWidget);
@@ -231,7 +228,7 @@ void DeviceWidget::setAddress(int addr) {
 
 int DeviceWidget::getAddress() const { return m_address; }
 int DeviceWidget::getId() const { return m_id; }
-QString DeviceWidget::getName() const { return m_name; }
+QString DeviceWidget::getName() const { return m_deviceAddress->text(); }
 QString DeviceWidget::getModel() const { return ui->modelLabel->text(); }
 
 void DeviceWidget::setLink(bool link) {

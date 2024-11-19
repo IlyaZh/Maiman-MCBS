@@ -132,7 +132,4 @@ void ConnectionWidget::paintEvent(QPaintEvent*) {
   style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void ConnectionWidget::updateStyle() {
-  this->setStyleSheet(StaticStyles::connectionWidget());
-  this->update();
-}
+void ConnectionWidget::updateStyle() { this->update(); }

@@ -77,7 +77,4 @@ void GroupWidgetStatus::setLink(bool status) {
   }
 }
 
-void GroupWidgetStatus::updateStyle() {
-  this->setStyleSheet(StaticStyles::groupStatusWidget());
-  this->update();
-}
+void GroupWidgetStatus::updateStyle() { this->update(); }
