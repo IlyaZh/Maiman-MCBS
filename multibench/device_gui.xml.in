@@ -3537,4 +3537,2092 @@
             </Led>
     </Leds>
 </Device>
+<Device id=\"2003\"
+name=\"TC1540 v1.6\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0077\"
+                minValue=\"3\"
+                maxValue=\"15\">TEC current limit</Limit>
+        <Limit limitCode=\"0079\"
+                minValue=\"6\"
+                maxValue=\"40\">TEC voltage limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">TEC NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"10000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\"
+                fixed=\"\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0043\">PCB Temperature</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">Overheat warning</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0004\"
+                        maskColor=\"#ff0000\">Overheat</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">TEC Overcurrent</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Temperature Exceeds Limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat or Reverse Polarity</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">TEC Acceleration</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0100\"
+                        maskColor=\"#ff0000\">Short Curcuit</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0200\"
+                        maskColor=\"#ff0000\">No Load</LedMask>
+
+        </Led>
+</Leds>
+</Device>
+<Device id=\"2004\"
+name=\"TC1540M4 v1.6\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0077\"
+                minValue=\"3\"
+                maxValue=\"15\">TEC current limit</Limit>
+        <Limit limitCode=\"0079\"
+                minValue=\"6\"
+                maxValue=\"40\">TEC voltage limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">TEC NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"10000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\"
+                fixed=\"\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0043\">PCB Temperature</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0100\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">Overheat warning</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0004\"
+                        maskColor=\"#ff0000\">Overheat</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">TEC Overcurrent</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Temperature Exceeds Limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat or Reverse Polarity</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">TEC Acceleration</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0100\"
+                        maskColor=\"#ff0000\">Short Curcuit</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0200\"
+                        maskColor=\"#ff0000\">No Load</LedMask>
+
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1113\"
+name=\"SF8025 v5.4 Type 1\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1123\"
+name=\"SF8075 v5.4 Type 1\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1133\"
+name=\"SF8150 v5.4 Type 1\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1143\"
+name=\"SF8300 v5.4 Type 1\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1213\"
+name=\"SF8025 v6.4 Type 2\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1223\"
+name=\"SF8075 v6.4 Type 2\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1233\"
+name=\"SF8150 v6.4 Type 2\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1243\"
+name=\"SF8300 v6.4 Type 2\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1511\"
+name=\"SF8025-NM v2.2\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1521\"
+name=\"SF8075-NM v2.2\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1531\"
+name=\"SF8150-NM v2.2\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
+<Device id=\"1541\"
+name=\"SF8300-NM v2.2\"
+stopCommandDelayMs=\"300\"
+minCommandDelayMs=\"10\"
+maxCommandDelayMs=\"1000\">
+<!-- ID - hex число, stopCommandDelay - десятичное -->
+<!-- Описание устройства -->
+<Content>
+        <Image/>
+        <Description/>
+        <Link>https://www.maimanelectronics.com/</Link>
+</Content>
+<Limits>
+        <Limit limitCode=\"0025\"
+                minCode=\"0024\"
+                maxCode=\"0029\">LD current set up limit</Limit>
+        <Limit limitCode=\"0077\"
+                minValue=\"0\"
+                maxValue=\"4\">TEC current limit</Limit>
+        <Limit limitCode=\"0072\"
+                minCode=\"0074\"
+                maxCode=\"0071\"
+                pair=\"0071\"
+                pairType=\"min\">TEC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0071\"
+                minCode=\"0072\"
+                maxCode=\"0073\">TEC temperature warning upper limit</Limit>
+        <Limit limitCode=\"0026\"
+                minValue=\"-10\"
+                maxCode=\"0027\"
+                pair=\"0027\"
+                pairType=\"min\">NTC temperature warning lower limit</Limit>
+        <Limit limitCode=\"0027\"
+                minCode=\"0026\"
+                maxValue=\"100\">NTC temperature warning upper limit</Limit>
+</Limits>
+<CalibrationKoefs>
+        <Calibrate code=\"0088\"
+                        min=\"95\"
+                        max=\"105\">LD set current calibration</Calibrate>
+        <Calibrate code=\"007E\"
+                        min=\"95\"
+                        max=\"105\">TEC set temperature calibration</Calibrate>
+        <Calibrate code=\"007F\"
+                        min=\"3000\"
+                        max=\"5000\">LD NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"008A\"
+                        min=\"3000\"
+                        max=\"5000\">External NTC B25/100 coefficient</Calibrate>
+        <Calibrate code=\"0091\" min=\"5\" max=\"1000\">TEC P coefficient</Calibrate>
+        <Calibrate code=\"0092\" min=\"0\" max=\"50000\">TEC I coefficient</Calibrate>
+        <Calibrate code=\"0093\" min=\"0\" max=\"10000\">TEC D coefficient</Calibrate>
+</CalibrationKoefs>
+<ParamControls>
+        <Param min=\"0020\"
+                max=\"0021\"
+                value=\"0006\">Frequency</Param>
+        <Param min=\"0022\"
+                max=\"0023\"
+                value=\"0007\">Duration</Param>
+        <Param min=\"0024\"
+                max=\"0025\"
+                value=\"0008\"
+                real=\"0040\"
+                fixed=\"\">LD Current</Param>
+        <Param min=\"0072\"
+                max=\"0071\"
+                value=\"0070\"
+                real=\"0075\">Temperature</Param>
+        <Param real=\"0003\">Serial Number</Param>
+        <Param real=\"0041\">LD Voltage</Param>
+        <Param real=\"0076\">TEC Current</Param>
+        <Param real=\"0078\">TEC Voltage</Param>
+        <Param real=\"0042\">External NTC Temperature</Param>
+        <Param real=\"002A\">LD Overcurrent Threshold</Param>
+</ParamControls>
+<Checkboxes>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">LD Digital Current Set</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">LD Digital Enable</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0020\"
+                        offCommand=\"0040\"
+                        mask=\"0004\">TEC Digital Temperature Set</CheckBox>
+        <CheckBox code=\"007A\"
+                        onCommand=\"0400\"
+                        offCommand=\"0200\"
+                        mask=\"0010\">TEC Digital Enable</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"4000\"
+                        offCommand=\"8000\"
+                        mask=\"0040\">Ignore External NTC Overheat</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"2000\"
+                        offCommand=\"1000\"
+                        mask=\"0080\">Ignore IntLock</CheckBox>
+        <CheckBox code=\"0004\"
+                        onCommand=\"0060\"
+                        offCommand=\"0080\"
+                        mask=\"0020\">Standalone Mode</CheckBox>
+</Checkboxes>
+<Buttons>
+        <Button
+                mask=\"02\"
+                code=\"0004\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">Laser</Button>
+        <Button
+                mask=\"02\"
+                code=\"007A\"
+                onCommand=\"0008\"
+                offCommand=\"0010\">TEC</Button>
+</Buttons>
+<Leds>
+        <Led label=\"Laser\">
+                <LedMask code=\"0004\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"TEC\">
+                <LedMask code=\"007A\"
+                        mask=\"0002\"
+                        maskColor=\"#00ff00\"
+                        defaultColor=\"#171717\"/>
+        </Led>
+        <Led label=\"IntLock\">
+                <LedMask code=\"0005\"
+                        mask=\"0002\"
+                        maskColor=\"#ffff00\">Interlock</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0020\"
+                        maskColor=\"#ff0000\">External NTC temperature exceeds limits</LedMask>
+        </Led>
+        <Led label=\"Error\">
+                <LedMask code=\"0005\"
+                        mask=\"0010\"
+                        maskColor=\"#ffff00\">LD temperature exceeds limits</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0008\"
+                        maskColor=\"#ff0000\">LD Over current</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0040\"
+                        maskColor=\"#ff0000\">TEC Error</LedMask>
+                <LedMask code=\"0005\"
+                        mask=\"0080\"
+                        maskColor=\"#ff0000\">TEC Self-heat</LedMask>
+        </Led>
+</Leds>
+</Device>
 </GUI>

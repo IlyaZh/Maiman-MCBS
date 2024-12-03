@@ -57,7 +57,7 @@ CONFIG(release, debug|release) {
     offlineInstaller.input = INPUT
     offlineInstaller.output = $$INSTALLER_OFFLINE
 #    offlineInstaller.commands = $$(QTDIR)\..\..\Tools\QtInstallerFramework\4.2\bin\binarycreator --offline-only -c $$PWD/config/config.xml -p $$PWD/packages ${QMAKE_FILE_OUT}
-    offlineInstaller.commands = C:\Qt5\Tools\QtInstallerFramework\4.2\bin\binarycreator --offline-only -c $$PWD/config/config.xml -p $$PWD/packages ${QMAKE_FILE_OUT}
+    offlineInstaller.commands = C:\Qt\QtIFW-4.6.0\bin\binarycreator --offline-only -c $$PWD/config/config.xml -p $$PWD/packages ${QMAKE_FILE_OUT}
     offlineInstaller.CONFIG += target_predeps no_link combine
     QMAKE_EXTRA_COMPILERS += offlineInstaller
 
@@ -65,8 +65,8 @@ CONFIG(release, debug|release) {
 #    onlineInstaller.depends = core translations styles platforms imageformats iconengines bearer# copydata
     onlineInstaller.input = INPUT
     onlineInstaller.output = $$INSTALLER_ONLINE
-    onlineInstaller.commands  = C:/Qt5/Tools/QtInstallerFramework/4.2/bin/binarycreator --online-only -c $$PWD/config/config.xml -p $$PWD/packages ${QMAKE_FILE_OUT}
-    onlineInstaller.commands += && C:/Qt5/Tools/QtInstallerFramework/4.2/bin/repogen -p $$PWD/packages -i com.maimanelectronics.MWB --update $$OUT_PWD/../repository
+    onlineInstaller.commands  = C:\Qt\QtIFW-4.6.0\bin\binarycreator --online-only -c $$PWD/config/config.xml -p $$PWD/packages ${QMAKE_FILE_OUT}
+    onlineInstaller.commands += && C:\Qt\QtIFW-4.6.0\bin\repogen -p $$PWD/packages -i com.maimanelectronics.MWB --update $$OUT_PWD/../repository
 #    onlineInstaller.commands  = $$(QTDIR)/../../Tools/QtInstallerFramework/4.2/bin/binarycreator --online-only -c $$PWD/config/config.xml -p $$PWD/packages ${QMAKE_FILE_OUT}
 #    onlineInstaller.commands += && $$(QTDIR)/../../Tools/QtInstallerFramework/4.2/bin/repogen -p $$PWD/packages -i com.maimanelectronics.MWB --update $$OUT_PWD/../repository
     onlineInstaller.CONFIG += target_predeps no_link combine
@@ -77,3 +77,6 @@ DISTFILES += \
     packages/com.maimanelectronics.MWB/meta/installscript.qs \
     packages/com.maimanelectronics.MWB/meta/package.xml \
     config/config.xml
+
+FORMS += \
+    packages/com.maimanelectronics.MWB/meta/form.ui

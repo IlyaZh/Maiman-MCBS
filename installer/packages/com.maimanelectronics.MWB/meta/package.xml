@@ -13,4 +13,7 @@
     <ForcedInstallation>true</ForcedInstallation>
     <RequiresAdminRights>true</RequiresAdminRights>
     <Script>installscript.qs</Script>
+    <UserInterfaces>
+        <UserInterface>form.ui</UserInterface>
+    </UserInterfaces>
 </Package>
