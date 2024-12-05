@@ -31,23 +31,12 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {	
-	background:#1D1D1D;
-	color: rgb(255, 255, 255);
-}
-
+   <string notr="true">
 QMainWindow *{	
 	background: #1D1D1D;
 	color: rgb(255, 255, 255);
 }
 
-QPushButton {
-	color: rgb(255, 255, 255);
-	background-color: #1D1D1D;
-	border: 1px solid #999999;
-	border-radius: 4px;
-	padding: 4px;
-}
 /*
 QMenu:checked {
 	color: rgb(150, 150, 150);
@@ -78,108 +67,7 @@ QMenu::item:disabled {
     </font>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Expanding</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="2" column="2">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>0</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="0" column="1">
-     <widget class="QCheckBox" name="switchStyle">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>50</width>
-        <height>24</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QCheckBox{
-        background-color: #ffc803;
-        border-radius: 12px;
-        border: 0px solid #000000;
-        width: 50px;
-        height: 24px;
-}    
-QCheckBox::indicator {
-        width: 20px;
-        height: 20px;
-    }
-
-    QCheckBox::indicator::unchecked {
-        background-color: #ffc803;
-        border-radius: 12px;
-        border: 1px solid #000000;
-    }
-
-    QCheckBox::indicator::checked {
-        background-color: #353535;
-        border-radius: 12px;
-        border: 1px solid #666666;
-    }
-
-    QCheckBox::indicator::unchecked {
-        /*position: absolute;*/
-        left: 2px;
-        content: &quot;&quot;;
-        width: 19px;
-        height: 18px;
-        background-color: #000000;
-        border-radius: 10px;
-        transition: all 0.3s;
-    }
-
-    QCheckBox::indicator::checked {
-        /*position: absolute;*/
-        left: 26px;
-        content: &quot;&quot;;
-        width: 19px;
-        height: 18px;
-        background-color: #ffc803;
-        border-radius: 10px;
-        transition: all 0.3s;
-    }</string>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>20</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" rowspan="2" colspan="2">
+    <item row="1" column="0" rowspan="2" colspan="3">
      <widget class="QScrollArea" name="scrollArea">
       <property name="sizePolicy">
        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
@@ -217,10 +105,99 @@ QCheckBox::indicator {
          <x>0</x>
          <y>0</y>
          <width>476</width>
-         <height>111</height>
+         <height>110</height>
         </rect>
        </property>
       </widget>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Expanding</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="3">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>0</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="1">
+     <widget class="QSlider" name="horizontalSlider">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">        QSlider{
+        background-color: #ffc803;
+        border-radius: 12px;
+        border: 1px solid #ffc803;
+        width: 48px;
+        height: 22px;
+        }
+
+        QSlider::groove:horizontal {
+        border: 1px solid #ffc803;
+        height: 18px;
+        border-radius: 9px;
+        background: #ffc803;
+        margin-left: 2px;
+        margin-right: 2px;
+        }
+
+        QSlider::handle:horizontal {
+        background:  #000000;
+        border: 0px solid #000000;
+        width: 20px;
+        height: 19px;
+        border-radius: 9px;
+        }</string>
+      </property>
+      <property name="maximum">
+       <number>1</number>
+      </property>
+      <property name="pageStep">
+       <number>1</number>
+      </property>
+      <property name="sliderPosition">
+       <number>0</number>
+      </property>
+      <property name="tracking">
+       <bool>true</bool>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="invertedAppearance">
+       <bool>false</bool>
+      </property>
+      <property name="invertedControls">
+       <bool>false</bool>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::NoTicks</enum>
+      </property>
      </widget>
     </item>
    </layout>
@@ -231,7 +208,7 @@ QCheckBox::indicator {
      <x>0</x>
      <y>0</y>
      <width>500</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="font">

@@ -30,7 +30,6 @@ InLineControl::InLineControl()
   m_icon = new QPushButton();
   m_layout->setContentsMargins(0, 0, 3, 0);
   m_layout->setSpacing(0);
-  //  m_icon->setIconSize(QSize(12, 12));
   m_icon->setStyleSheet(button());
   m_darkButton.addFile(
       QString::fromUtf8(":/resources/images/DarkSetButton.png"), QSize(38, 19),
@@ -61,11 +60,8 @@ InLineControl::InLineControl()
   setStyleSheet(read());
   connect(this, &InLineControl::editingFinished, this,
           &InLineControl::finishedChanges);
-  //  connect(m_icon, &QPushButton::clicked, this, [this]() {
-  //    finishedChanges();
-  //    // setFocus(Qt::FocusReason::MouseFocusReason);
-  //  });
   connect(m_icon, &QPushButton::clicked, this, &InLineControl::finishedChanges);
+  InLineControl::updateStyle();
 }
 
 void InLineControl::mouseDoubleClickEvent(QMouseEvent *event) {
@@ -82,8 +78,6 @@ void InLineControl::finishedChanges() {
   setReadOnly(true);
   setText(m_value);
   m_icon->hide();
-  //  setInactiveStyle();
-  clearFocus();
 }
 
 void InLineControl::setText(const QString &text) {

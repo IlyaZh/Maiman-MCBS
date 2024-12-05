@@ -105,9 +105,10 @@ MainWindow::MainWindow(QWidget* parent)
   connect(ui->actionManager, &QAction::triggered, this,
           &MainWindow::createGroupManagerWidget);
   ui->actionKeepAddresses->setChecked(AppSettings::getKeepAddresses());
-  connect(ui->switchStyle, &QCheckBox::clicked, this, &MainWindow::changeStyle);
-  ui->switchStyle->setChecked(AppSettings::getDarkAppStyle());
-  changeStyle(AppSettings::getDarkAppStyle());
+  connect(ui->horizontalSlider, &QSlider::valueChanged, this,
+          &MainWindow::styleChanged);
+  ui->horizontalSlider->setValue((AppSettings::getDarkAppStyle()) ? 0 : 1);
+  styleChanged((AppSettings::getDarkAppStyle()) ? 0 : 1);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -423,25 +424,46 @@ void MainWindow::emptyNetwork() {
 }
 
 void MainWindow::NewEvent(const model::Event& event) {
-  std::get<model::events::network::StateUpdated>(event.data_).reg;
+  if (event.type_ == model::EventType::kSystemCommand) {
+    if (std::holds_alternative<model::events::network::ChangeSystemStyle>(
+            event.data_)) {
+      this->setStyleSheet(AppWidget());
+      this->update();
+      ui->menubar->setStyleSheet(menuBarWidget());
+      ui->menubar->update();
+      ui->scrollArea->setStyleSheet(StyleStorage::MainWindow::scrollWidget());
+      ui->scrollArea->update();
+      ui->scrollArea->verticalScrollBar()->setStyleSheet(
+          StyleStorage::MainWindow::scrollWidget());
+      ui->scrollArea->verticalScrollBar()->update();
+      ui->scrollFieldWidget->setStyleSheet(
+          StyleStorage::MainWindow::scrollWidget());
+      ui->scrollFieldWidget->update();
+      ui->horizontalSlider->setStyleSheet(
+          StyleStorage::MainWindow::changeStyleSlider());
+      ui->horizontalSlider->update();
+      QList<QWidget*> widgets = this->findChildren<QWidget*>();
+      for (QWidget* widget : widgets) {
+        GuiWidgetInterface* interfaceWidget =
+            dynamic_cast<GuiWidgetInterface*>(widget);
+        if (interfaceWidget) {
+          interfaceWidget->updateStyle();
+        }
+      }
+    }
+  }
 }
 
-void MainWindow::changeStyle(bool checked) {
-  auto style = (checked) ? model::events::network::StyleType::sDarkStyle
-                         : model::events::network::StyleType::sLightStyle;
-  if (checked) {
+void MainWindow::styleChanged(int value) {
+  auto style = (value == 0) ? model::events::network::StyleType::sDarkStyle
+                            : model::events::network::StyleType::sLightStyle;
+  if (value == 0) {
     AppSettings::setDarkAppStyle(true);
-  } else {
+  } else if (value == 1) {
     AppSettings::setDarkAppStyle(false);
   }
   model::Event event(model::EventType::kSystemCommand,
                      model::events::network::ChangeSystemStyle(style));
-
   emit Signal_PublishEvent(event);
-  this->setStyleSheet(AppWidget());
-  ui->menubar->setStyleSheet(menuBarWidget());
-  ui->menubar->update();
-  ui->switchStyle->setStyleSheet(changeStyleButton());
-  ui->switchStyle->update();
-  this->update();
+  MainWindow::NewEvent(event);
 }

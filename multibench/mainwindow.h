@@ -78,7 +78,7 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
   void setBothComPorts(QString port);
   void setBothBaudRates(QString baudtare);
 
-  void changeStyle(bool checked);
+  void styleChanged(int value);
 
  private:
   Ui::MainWindow* ui;

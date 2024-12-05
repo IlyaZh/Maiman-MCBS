@@ -211,10 +211,11 @@ DeviceWidget::DeviceWidget(
   ui->gridLayout->addWidget(m_deviceAddress, 0, 2);
   connect(m_deviceAddress, &InLineEdit::nameEdited, this,
           &DeviceWidget::nameEdited);
-  for (auto widget : m_widgetsTable) {
+  for (auto widget : qAsConst(m_widgetsTable)) {
     connect(widget, &GuiWidgetBase::setDataFromWidget, this,
             &DeviceWidget::acceptDataFromWidget);
   }
+  DeviceWidget::updateStyle();
   adjust();
   // TODO:: label_2, для отображения строки состояния драйвера, команда 0700
 }
@@ -347,7 +348,7 @@ void DeviceWidget::pinButtonClicked(int idx, bool state) {
 void DeviceWidget::updateValue(const model::Event& event) {
   if (std::holds_alternative<model::events::network::Answer>(event.data_)) {
     const auto& answer = std::get<model::events::network::Answer>(event.data_);
-    for (auto widget : m_widgetsTable) {
+    for (auto widget : qAsConst(m_widgetsTable)) {
       if (widget->Subscribe().contains(answer.reg_)) {
         widget->setData(answer.reg_, answer.value_);
       }

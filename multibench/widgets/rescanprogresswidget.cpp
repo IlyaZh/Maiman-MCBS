@@ -7,6 +7,7 @@
 RescanProgressWidget::RescanProgressWidget(QWidget *parent)
     : QWidget(parent), ui(new Ui::RescanProgressWidget) {
   ui->setupUi(this);
+  RescanProgressWidget::updateStyle();
 }
 
 RescanProgressWidget::~RescanProgressWidget() { delete ui; }
@@ -24,4 +25,13 @@ void RescanProgressWidget::notFound() {
   ui->infoLabel->setText("Devices not found");
 }
 
-void RescanProgressWidget::updateStyle() { this->update(); }
+void RescanProgressWidget::updateStyle() {
+  ui->label->setStyleSheet(StyleStorage::MainWindow::Rescan::name());
+  ui->descriptionLabel->setStyleSheet(
+      StyleStorage::MainWindow::Rescan::labels());
+  ui->infoLabel->setStyleSheet(StyleStorage::MainWindow::Rescan::labels());
+  ui->progressBar->setStyleSheet(
+      StyleStorage::MainWindow::Rescan::progressBar());
+  this->setStyleSheet(StyleStorage::MainWindow::Rescan::widget());
+  this->update();
+}

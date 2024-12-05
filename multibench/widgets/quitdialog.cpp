@@ -12,7 +12,7 @@ QuitDialog::QuitDialog(QWidget* parent)
   setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
   ui->buttonBox->layout()->setSpacing(9);
   ui->label->setContentsMargins(0, 0, 0, 5);
-  adjustSize();
+  //  adjustSize();
 }
 
 QuitDialog::~QuitDialog() { delete ui; }
@@ -31,4 +31,9 @@ QuitDialog* QuitDialog::createDialog(const QString& title, QString message,
   return dialog;
 }
 
-void QuitDialog::updateStyle() { this->update(); }
+void QuitDialog::updateStyle() {
+  this->setStyleSheet(StyleStorage::MainWindow::Quit::quitWidget());
+  ui->buttonBox->setStyleSheet(StyleStorage::MainWindow::Quit::buttons());
+  ui->label->setStyleSheet(StyleStorage::MainWindow::Quit::label());
+  this->update();
+}

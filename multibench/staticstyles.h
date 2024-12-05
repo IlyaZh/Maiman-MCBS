@@ -8,7 +8,31 @@ namespace StyleStorage {
 namespace MainWindow {
 const QString AppWidget();
 const QString menuBarWidget();
-const QString changeStyleButton();
+const QString scrollWidget();
+const QString changeStyleSlider();
+namespace Quit {
+const QString quitWidget();
+const QString label();
+const QString buttons();
+}  // namespace Quit
+namespace Connection {
+const QString widget();
+const QString comboBoxes();
+const QString labels();
+const QString buttons();
+}  // namespace Connection
+namespace Rescan {
+const QString widget();
+const QString name();
+const QString labels();
+const QString progressBar();
+}  // namespace Rescan
+namespace About {
+const QString widget();
+const QString credits();
+const QString logo();
+const QString buttons();
+}  // namespace About
 }  // namespace MainWindow
 namespace Device {
 const QString widget();

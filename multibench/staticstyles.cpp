@@ -102,105 +102,324 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
 )";
   }
 }
-const QString changeStyleButton() {
-  if (!AppSettings::getDarkAppStyle()) {
+
+const QString scrollWidget() {
+  if (AppSettings::getDarkAppStyle()) {
     return R"(
-    QCheckBox{
-        background-color: #FFFFFF;
-        border-radius: 11px;
-        border: 1px solid #A7A7A7;
-        width: 50px;
-        height: 24px;
-}
-    QCheckBox::indicator {
-        width: 20px;
-        height: 20px;
-    }
-
-    QCheckBox::indicator::unchecked {
-        background-color: #ffc803;
-        border-radius: 10px;
-        border: 1px solid #ffc803;
-    }
-
-    QCheckBox::indicator::checked {
-        background-color: #000000;
-        border-radius: 10px;
-        border: 1px solid #000000;
-    }
-
-    QCheckBox::indicator::unchecked {
-        /*position: absolute;*/
-        left: 2px;
-        content: "";
-        width: 19px;
-        height: 18px;
-        background-color: #ffc803;
-        border-radius: 10px;
-        transition: all 0.3s;
-    }
-
-    QCheckBox::indicator::checked {
-        /*position: absolute;*/
-        left: 26px;
-        content: "";
-        width: 19px;
-        height: 18px;
-        background-color: #000000;
-        border-radius: 10px;
-        transition: all 0.3s;
-    }
-)";
+          background: #1D1D1D;
+          color: #FFFFFF;
+ )";
   } else {
     return R"(
-QCheckBox{
-        background-color: #ffc803;
-        border-radius: 11px;
-        border: 1px solid #ffc803;
-        width: 50px;
-        height: 24px;
-}
-QCheckBox::indicator {
-        width: 20px;
-        height: 20px;
-    }
-
-    QCheckBox::indicator::unchecked {
-        background-color: #ffc803;
-        border-radius: 10px;
-        border: 1px solid #ffc803;
-    }
-
-    QCheckBox::indicator::checked {
-        background-color: #000000;
-        border-radius: 10px;
-        border: 1px solid #000000;
-    }
-
-    QCheckBox::indicator::unchecked {
-        /*position: absolute;*/
-        left: 2px;
-        content: "";
-        width: 19px;
-        height: 18px;
-        background-color: #ffc803;
-        border-radius: 10px;
-        transition: all 0.3s;
-    }
-
-    QCheckBox::indicator::checked {
-        /*position: absolute;*/
-        left: 26px;
-        content: "";
-        width: 19px;
-        height: 18px;
-        background-color: #000000;
-        border-radius: 10px;
-        transition: all 0.3s;
-    }
-)";
+          background: #FAFAFA;
+          color: #000000;
+  )";
   }
 }
+
+const QString changeStyleSlider() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        QSlider{
+        background-color: #ffc803;
+        border-radius: 12px;
+        border: 1px solid #ffc803;
+        width: 48px;
+        height: 22px;
+        }
+
+        QSlider::groove:horizontal {
+        border: 1px solid #ffc803;
+        height: 18px;
+        border-radius: 9px;
+        background: #ffc803;
+        margin-left: 2px;
+        margin-right: 2px;
+        }
+
+        QSlider::handle:horizontal {
+        background:  #000000;
+        border: 0px solid #000000;
+        width: 20px;
+        height: 19px;
+        border-radius: 9px;
+        }
+  )";
+  } else {
+    return R"(
+        QSlider{
+        background-color: #FAFAFA;
+        border-radius: 12px;
+        border: 1px solid #A7A7A7;
+        width: 48px;
+        height: 22px;
+        }
+
+        QSlider::groove:horizontal {
+        border: 1px solid #FAFAFA;
+        height: 18px;
+        border-radius: 9px;
+        background: #FAFAFA;
+        margin-left: 2px;
+        margin-right: 2px;
+        }
+
+        QSlider::handle:horizontal {
+        background:  #ffc803;
+        border: 0px solid #ffc803;
+        width: 20px;
+        height: 19px;
+        border-radius: 9px;
+        }
+  )";
+  }
+}
+namespace Quit {
+const QString quitWidget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    background: #282828;
+  )";
+  } else {
+    return R"(
+    background: #FFFFFF;
+  )";
+  }
+}
+const QString label() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    background: #282828;
+    color: #FFFFFF;
+  )";
+  } else {
+    return R"(
+    background: #FFFFFF;
+    color: #000000;
+  )";
+  }
+}
+const QString buttons() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    color: #FFFFFF;
+    background-color: #222222;
+    border: 1px solid #6b6b6b;
+    border-radius: 4px;
+    padding: 4px;
+    width: 50px
+  )";
+  } else {
+    return R"(
+    color: #000000;
+    background-color: #FFFFFF;
+    border: 1px solid #A7A7A7;
+    border-radius: 4px;
+    padding: 4px;
+    width: 50px
+
+  )";
+  }
+}
+}  // namespace Quit
+namespace Connection {
+const QString widget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        background-color: #1D1D1D;
+        color: #FFFFFF;
+  )";
+  } else {
+    return R"(
+        background-color: #FAFAFA;
+        color: #000000;
+  )";
+  }
+}
+const QString comboBoxes() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        background: rgb(51,51,51);
+        color: #ffffff;
+        border: 1px solid #FFFFFF;
+        border-radius: 4px;
+        padding-left: 10px;
+        padding-right: 10px;
+  )";
+  } else {
+    return R"(
+        background: #FAFAFA;
+        color: #000000;
+        border: 1px solid #1D1D1D;
+        border-radius: 4px;
+        padding-left: 10px;
+        padding-right: 10px;
+  )";
+  }
+}
+const QString labels() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        color: #FFFFFF;
+  )";
+  } else {
+    return R"(
+        color: #000000;
+  )";
+  }
+}
+const QString buttons() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        background: rgb(51,51,51);
+        color: #ffffff;
+        border: 1px solid #FFFFFF;
+        border-radius: 4px;
+        padding-left: 10px;
+        padding-right: 10px;
+  )";
+  } else {
+    return R"(
+        background: #FAFAFA;
+        color: #000000;
+        border: 1px solid #FFFFFF;
+        border-radius: 4px;
+        padding-left: 10px;
+        padding-right: 10px;
+  )";
+  }
+}
+}  // namespace Connection
+namespace Rescan {
+const QString widget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+          color: #1D1D1D;
+    )";
+  } else {
+    return R"(
+          color: #FAFAFA;
+    )";
+  }
+}
+const QString name() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        color: #FFFFFF;
+    )";
+  } else {
+    return R"(
+        color: #000000;
+    )";
+  }
+}
+const QString labels() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        color: #999999;
+    )";
+  } else {
+    return R"(
+        color: #999999;
+    )";
+  }
+}
+const QString progressBar() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        QProgressBar {
+        background-color: rgb(81, 81, 81);
+            border: 2px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        QProgressBar::chunk {
+            background-color: rgb(255, 255, 255);
+            border: 2px;
+            border-radius: 3px;
+        }
+    )";
+  } else {
+    return R"(
+        QProgressBar {
+        background-color: #FAFAFA;
+            border: 2px;
+            border-radius: 3px;
+            text-align: center;
+        }
+        QProgressBar::chunk {
+            background-color: #000000;
+            border: 2px;
+            border-radius: 3px;
+        }
+    )";
+  }
+}
+}  // namespace Rescan
+namespace About {
+const QString widget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        background: #333333;
+        color: #FFFFFF;
+      )";
+  } else {
+    return R"(
+        background: #FAFAFA;
+        color: #000000;
+      )";
+  }
+}
+const QString credits() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        color: #FFFFFF;
+      )";
+  } else {
+    return R"(
+        color: #000000;
+      )";
+  }
+}
+const QString logo() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        QWidget {
+            image: url(:/resources/images/maiman-logo-minimal.png);
+        }
+      )";
+  } else {
+    return R"(
+        QWidget {
+            image: url(:/resources/images/maiman-logo-minimal.png);
+        }
+      )";
+  }
+}
+const QString buttons() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+        QPushButton {
+            color: #FFFFFF;
+            background-color: #333333;
+            border: 1px solid #999999;
+            border-radius: 4px;
+            padding: 4px;
+        }
+      )";
+  } else {
+    return R"(
+        QPushButton {
+            color: #000000;
+            background-color: #E7E7E7;
+            border: 1px solid #E7E7E7;
+            border-radius: 4px;
+            padding: 4px;
+        }
+      )";
+  }
+}
+}  // namespace About
 }  // namespace MainWindow
 namespace Device {
 const QString widget() {

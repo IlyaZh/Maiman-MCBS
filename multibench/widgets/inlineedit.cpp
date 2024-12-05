@@ -109,7 +109,7 @@ InLineEdit::InLineEdit(int addr, bool isDevice)
     QLineEdit::setText(m_name);
     setFocus(Qt::FocusReason::MouseFocusReason);
   });
-  updateStyle();
+  InLineEdit::updateStyle();
 }
 
 void InLineEdit::mouseDoubleClickEvent(QMouseEvent *event) {

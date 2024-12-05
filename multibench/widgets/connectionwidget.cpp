@@ -34,6 +34,7 @@ ConnectionWidget::ConnectionWidget(QWidget* parent)
           &ConnectionWidget::comPortIsChanged);
   connect(ui->baudrateComboBox, &QComboBox::currentTextChanged, this,
           &ConnectionWidget::baudRateIsChanged);
+  ConnectionWidget::updateStyle();
 }
 
 ConnectionWidget::~ConnectionWidget() { delete ui; }
@@ -132,4 +133,18 @@ void ConnectionWidget::paintEvent(QPaintEvent*) {
   style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void ConnectionWidget::updateStyle() { this->update(); }
+void ConnectionWidget::updateStyle() {
+  ui->portLabel->setStyleSheet(StyleStorage::MainWindow::Connection::labels());
+  ui->baudrateLabel->setStyleSheet(
+      StyleStorage::MainWindow::Connection::labels());
+  ui->comPortComboBox->setStyleSheet(
+      StyleStorage::MainWindow::Connection::comboBoxes());
+  ui->baudrateComboBox->setStyleSheet(
+      StyleStorage::MainWindow::Connection::comboBoxes());
+  ui->connectComPortButton->setStyleSheet(
+      StyleStorage::MainWindow::Connection::buttons());
+  ui->refreshComPortButton->setStyleSheet(
+      StyleStorage::MainWindow::Connection::buttons());
+  this->setStyleSheet(StyleStorage::MainWindow::Connection::widget());
+  this->update();
+}
