@@ -5,33 +5,6 @@
 
 using namespace StyleStorage::Group;
 
-static const QString buttonOn =
-    "QPushButton \
-                                   { \
-                                       border: 2px solid rgb(26,26,26); \
-                                       border-radius: 20px; \
-                                       color: rgb(0,0,0); \
-                                       background: rgb(0,102,51); \
-                                   }";
-
-static const QString buttonOff =
-    "QPushButton \
-                                   { \
-                                       border: 2px solid rgb(26,26,26); \
-                                       border-radius: 20px; \
-                                       color: rgb(0,0,0); \
-                                       background: rgb(189,0,0); \
-                                   }";
-
-static const QString buttonNone =
-    "QPushButton \
-                                   { \
-                                       border: 2px solid rgb(26,26,26); \
-                                       border-radius: 20px; \
-                                       color: rgb(0,0,0); \
-                                       background: rgb(180,180,180); \
-                                   }";
-
 const int WidgetsInAppearence{2};
 
 GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
@@ -55,12 +28,10 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   ui->statusButtontable->insertWidget(1, m_statusButton);
   ui->statusButtontable->setAlignment(Qt::AlignLeft);
 
-  InLineEdit *name = new InLineEdit(m_selfAddr, false);
-  ui->nameTable->insertWidget(1, name, Qt::AlignmentFlag::AlignLeft);
+  m_name = new InLineEdit(m_selfAddr, false);
+  ui->nameTable->insertWidget(1, m_name, Qt::AlignmentFlag::AlignLeft);
   ui->nameTable->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-  connect(name, &InLineEdit::nameEdited, this,
-          [this](QString name) { m_name = name; });
   connect(ui->startButton, &QPushButton::clicked, this,
           &GroupWidget::startDevices);
   connect(ui->stopButton, &QPushButton::clicked, this,
@@ -68,7 +39,7 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   connect(m_hideButton, &QPushButton::clicked, this, &GroupWidget::hideDevices);
   connect(m_statusButton, &QPushButton::clicked, this,
           &GroupWidget::showStatus);
-  updateStyle();
+  GroupWidget::updateStyle();
 }
 
 GroupWidget::~GroupWidget() { delete ui; }
@@ -121,7 +92,7 @@ void GroupWidget::resizeWidget() {
   int maxWidth{-1};
   int widgetsCounter{0};
   int totalHeightInAppearence{0};
-  for (auto widget : qAsConst(m_groupWidgets)) {
+  for (auto &widget : qAsConst(m_groupWidgets)) {
     m_widgetLayout->removeWidget(widget);
     if (widget->width() > maxWidth) {
       maxWidth = widget->width();
@@ -193,26 +164,24 @@ void GroupWidget::setDevicesStatus(quint8 addr,
     m_status[addr].errors->removeDuplicates();
   }
   if (desc.data()->devStarted.has_value()) {
-    for (const auto &key : desc.data()->devStarted->keys()) {
-      m_status[addr].devStarted->insert(key,
-                                        desc.data()->devStarted->value(key));
+    for (auto map = desc.data()->devStarted->cbegin(),
+              end = desc.data()->devStarted->cend();
+         map != end; ++map) {
+      m_status[addr].devStarted->insert(map.key(), map.value());
     }
   }
   emit statusChanged(m_status);
 }
 
-const QString GroupWidget::getName() {
-  if (m_name.isEmpty())
-    return QString("Group %1").arg(m_selfAddr);
-  else
-    return m_name;
-}
+const QString GroupWidget::getName() { return m_name->text(); }
+
+void GroupWidget::setName(QString name) { m_name->setText(name); }
 
 int GroupWidget::getGroupAddress() { return m_selfAddr; }
 void GroupWidget::linkStatusChanged(int addr, bool status) {
   m_linked[static_cast<quint8>(addr)] = status;
   bool groupLink = true;
-  for (auto linked : m_linked) {
+  for (auto &linked : m_linked) {
     groupLink = groupLink & linked;
   }
   if (!groupLink) {
@@ -225,7 +194,7 @@ void GroupWidget::linkStatusChanged(int addr, bool status) {
 
 void GroupWidget::showStatus() {
   GroupStatusDialog *dialog = new GroupStatusDialog(this);
-  for (const auto &device : m_groupWidgets) {
+  for (auto &device : m_groupWidgets) {
     dialog->addDevice(static_cast<quint8>(device->getAddress()),
                       device->getName(), device->getModel());
   }

@@ -50,7 +50,7 @@ BinaryWidget::BinaryWidget(const Checkbox &settings,
 
   connect(ui->statusCheckbox, &QCheckBox::clicked, this,
           &BinaryWidget::checkBoxClicked);
-  updateStyle();
+  BinaryWidget::updateStyle();
 }
 
 BinaryWidget::~BinaryWidget() { delete ui; }

@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget* parent)
       m_connectionWidget(new ConnectionWidget(this)) {
   ui->setupUi(this);
 
-  setFont(Const::kApplicationDefaultFontPath);
+  //  setFont(Const::kApplicationDefaultFontPath);
 
   this->move(AppSettings::getWindowPosition());
 
@@ -108,7 +108,17 @@ MainWindow::MainWindow(QWidget* parent)
   connect(ui->horizontalSlider, &QSlider::valueChanged, this,
           &MainWindow::styleChanged);
   ui->horizontalSlider->setValue((AppSettings::getDarkAppStyle()) ? 0 : 1);
-  styleChanged((AppSettings::getDarkAppStyle()) ? 0 : 1);
+  styleChanged(0);  //((AppSettings::getDarkAppStyle()) ? 0 : 1);
+
+  QWidget* sliderContainer = new QWidget(ui->menubar);
+  QHBoxLayout* layout = new QHBoxLayout(sliderContainer);
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->addWidget(ui->horizontalSlider);
+  sliderContainer->setLayout(layout);
+  ui->menubar->setCornerWidget(sliderContainer, Qt::TopRightCorner);
+  ui->horizontalSlider->hide();
+
+  ui->actionManager->setEnabled(false);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -313,6 +323,7 @@ void MainWindow::setConnected(bool isConnected) {
   ui->menuPorts->setEnabled(!isConnected);
   ui->menuBaudrates->setEnabled(!isConnected);
   ui->actionRescan->setEnabled(isConnected);
+  ui->actionManager->setEnabled(isConnected);
   m_isConnected = isConnected;
   if (m_isConnected) {
     ui->actionConnect->setText("Disconnect");

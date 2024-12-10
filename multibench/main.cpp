@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
   wlocale = QLocale(QLocale::system());
 
   MainWindow w;
-  w.setFont(Const::kApplicationDefaultFontPath);
+  //  w.setFont(Const::kApplicationDefaultFontPath);
   w.show();
 
   GuiFactory guiFactory("device_gui.xml");
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
   ModbusProtocol modbus;
   NetworkModel model(deviceFactory, modbus);
   components::Mediator mediator;
-  ModelGuiMediator mainMediator(w, guiFactory, model);
+  //  ModelGuiMediator mainMediator(w, guiFactory, model);
   GuiMediator gui(w, guiFactory, model);
 
   mediator.Subscribe(model::EventType::kDeviceStateUpdated, &gui);

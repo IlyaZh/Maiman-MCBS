@@ -7,11 +7,18 @@
 #include "gui/guiinterface.h"
 #include "widgets/groupwidget.h"
 
-struct groupsCheckBoxes {
-  int groupAddr_;
-  QCheckBox* groupBox_;
-  QMap<quint8, QCheckBox*> subBoxes_;
-  QVBoxLayout* layout_;
+struct deviceCheckBox {
+  int d_addr;
+  QCheckBox* d_checkBox;
+  bool d_isDeleted = false;
+};
+
+struct groupCheckBoxes {
+  int g_addr;
+  QCheckBox* g_checkBox;
+  QMap<quint8, QSharedPointer<deviceCheckBox>> g_subBoxes;
+  QVBoxLayout* g_layout;
+  bool g_isDeleted = false;
 };
 
 namespace Ui {
@@ -27,28 +34,25 @@ class GroupManager : public QDialog, public GuiWidgetInterface {
                         QWidget* parent = nullptr);
   ~GroupManager();
   void updateStyle() override;
- public slots:
-  void finishGroupAction();
  private slots:
-  void createGroup();
-  void deleteGroup();
+  void addDeviceToGroup();
+  void removeDeviceFromGroup();
   void groupButtonClicked(QAbstractButton* button);
+  void createOneGroup(int g_addr, const QSet<quint8> devicesAddrs,
+                      const QString& name = "");
+  void checkBoxClicked(bool status, int addr);
  signals:
-  void createGroupWidget(QSet<quint8> addrs, int groupAddr);
-  void deleteGroupWidget(int addr);
-  void removeMemberGroup(int groupAdd, quint8 devAddr);
-  void addMemberGroup(int groupAdd, quint8 devAddr);
+  void sendAllGroups(const QMap<int, QSharedPointer<groupCheckBoxes>>& groups);
 
  private:
+  void sortWidgets();
   Ui::GroupManager* ui;
   QVBoxLayout* m_devicesFieldLayout;
   QVBoxLayout* m_groupsFieldLayout;
-  QMap<quint8, QCheckBox*> m_checkBoxes;
-  QMap<int, QSharedPointer<groupsCheckBoxes>> m_groupsTable;
+  QMap<quint8, QSharedPointer<deviceCheckBox>> m_devicesContainer;
+  QMap<int, QSharedPointer<groupCheckBoxes>> m_groupsContainer;
   const QMap<quint8, QPointer<DeviceWidget>>& m_devices;
   const QMap<int, QPointer<GroupWidget>>& m_groups;
   QButtonGroup* m_buttonGroup;
   QFont m_font;
-  void paintDevices();
-  void clearGroup(QSharedPointer<groupsCheckBoxes> group);
 };

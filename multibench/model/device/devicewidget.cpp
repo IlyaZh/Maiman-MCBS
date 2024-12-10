@@ -14,50 +14,6 @@
 #include "widgets/readparameterfactory.h"
 #include "widgets/readparameterwidget.h"
 
-const QString DeviceWidget::linkStyleOn =
-    "QLabel { \
-    background: #39CA76;\
-    border: 0px solid #1A1A1A;\
-    border-radius: 3px;\
-}";
-
-const QString DeviceWidget::linkStyleOff =
-    "QLabel { \
-    background: #FF403A;\
-    border: 1px solid #1A1A1A;\
-    border-radius: 3px;\
-}";
-
-const QString DeviceWidget::labelEnableStyle =
-    "QLabel { \
-    color: #FFFFFF;\
-    background-color: #282828;\
-}";
-
-const QString DeviceWidget::labelDisableStyle =
-    "QLabel { \
-    background-color: #282828;\
-    color: rgb(153,153,153); \
-}";
-
-static const QString buttonOn =
-    "QPushButton \
-                                   { \
-                                       border: 2px solid rgb(26,26,26); \
-                                       border-radius: 6px; \
-                                       color: rgb(0,0,0); \
-                                       background: rgb(0,102,51); \
-                                   }";
-
-static const QString buttonOff =
-    "QPushButton \
-                                   { \
-                                       border: 2px solid rgb(26,26,26); \
-                                       border-radius: 6px; \
-                                       color: rgb(0,0,0); \
-                                       background: rgb(189,0,0); \
-                                   }";
-
 DeviceWidget::DeviceWidget(
     const DeviceWidgetDesc& description,
     const QMap<quint16, QSharedPointer<DevCommand>>& commands,

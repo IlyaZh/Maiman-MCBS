@@ -7,6 +7,7 @@
 #include "gui/guiinterface.h"
 #include "model/device/devicewidget.h"
 #include "widgets/groupstatusdialog.h"
+#include "widgets/inlineedit.h"
 
 class GroupInterface;
 namespace Ui {
@@ -23,6 +24,7 @@ class GroupWidget : public QWidget, public GuiWidgetInterface {
   const QSet<quint8> getAddresses();
   void setDevicesStatus(quint8 addr, QSharedPointer<DeviceStatusGroup> desc);
   const QString getName();
+  void setName(QString name);
   int getGroupAddress();
   void linkStatusChanged(int addr, bool status);
   void updateValue(const model::Event &event);
@@ -50,8 +52,8 @@ class GroupWidget : public QWidget, public GuiWidgetInterface {
   QMap<quint8, DeviceStatusGroup> m_status;
   QSet<quint8> m_addresses;
   QMap<quint8, bool> m_linked;
+  InLineEdit *m_name;
   bool m_hideDevices = false;
   bool m_allStarted = false;
-  QString m_name{};
   int m_selfAddr = 0;
 };

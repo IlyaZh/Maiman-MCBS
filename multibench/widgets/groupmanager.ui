@@ -6,21 +6,201 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>495</width>
-    <height>420</height>
+    <width>510</width>
+    <height>488</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>420</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {	
-	background: rgb(51,51,51);
+   <string notr="true">
+	background: #1A1A1A;
 	color: rgb(255, 255, 255);
-}</string>
+</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1">
+   <property name="leftMargin">
+    <number>30</number>
+   </property>
+   <property name="topMargin">
+    <number>30</number>
+   </property>
+   <property name="rightMargin">
+    <number>30</number>
+   </property>
+   <property name="bottomMargin">
+    <number>30</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>9</number>
+   </property>
+   <item row="1" column="0" rowspan="4">
+    <layout class="QVBoxLayout" name="DevicesLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>46</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>46</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Poppins</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Chouse devise 
+ to add to the group</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::AutoText</enum>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+       <property name="indent">
+        <number>-1</number>
+       </property>
+       <property name="openExternalLinks">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QScrollArea" name="DevicesScroll">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>320</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#DevicesScroll{
+background-color: #333333;
+border-radius: 12px;
+border: 2px solid #303030;
+}</string>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaDevice">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>196</width>
+          <height>317</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>180</width>
+          <height>300</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">
+background-color: #333333;
+border-radius: 12px;
+border: 2px
+</string>
+        </property>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="1">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="0" colspan="3">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+border: 2px solid #1A1A1A;
+border-radius: 16px; 
+color: rgb(0,0,0); 
+background: rgb(180,180,180); 
+width: 80px;
+height: 30px;
+margin: 5px;
+}
+
+QPushButton:hover{
+	background-color: rgb(51, 51, 51);
+}</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+     <property name="centerButtons">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QPushButton" name="CreateGroup">
@@ -48,15 +228,29 @@
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">                                   
-border: 2px solid rgb(26,26,26); 
-border-radius: 6px; 
+        <string notr="true">QPushButton {
+border: 2px solid #1A1A1A;
+border-radius: 16px; 
 color: rgb(0,0,0); 
 background: rgb(180,180,180); 
-                                   </string>
+}
+
+QPushButton:hover{
+	background-color: rgb(51, 51, 51);
+}</string>
        </property>
        <property name="text">
-        <string>&gt;</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources.qrc">
+         <normaloff>:/resources/images/LightIconControlMask-Hide.png</normaloff>:/resources/images/LightIconControlMask-Hide.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>8</width>
+         <height>8</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -86,19 +280,121 @@ background: rgb(180,180,180);
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 2px solid rgb(26,26,26); 
-border-radius: 6px; 
+        <string notr="true">QPushButton {
+border: 2px solid #1A1A1A;
+border-radius: 16px; 
 color: rgb(0,0,0); 
-background: rgb(180,180,180); </string>
+background: rgb(180,180,180); 
+}
+
+QPushButton:hover{
+	background-color: rgb(51, 51, 51);
+}</string>
        </property>
        <property name="text">
-        <string>&lt;</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources.qrc">
+         <normaloff>:/resources/images/LightIconControlMask-Show.png</normaloff>:/resources/images/LightIconControlMask-Show.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>8</width>
+         <height>8</height>
+        </size>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="2" rowspan="4">
+    <layout class="QVBoxLayout" name="GroupsLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>46</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>46</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Poppins</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Chose device to 
+ remove from the group</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="margin">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QScrollArea" name="GroupsScroll">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>320</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#GroupsScroll{
+background-color: #333333;
+border-radius: 12px;
+border: 2px solid #303030;
+}</string>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaGroup">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>196</width>
+          <height>317</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>180</width>
+          <height>300</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #333333;
+border-radius: 12px;
+border: 2px</string>
+        </property>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -111,55 +407,26 @@ background: rgb(180,180,180); </string>
      </property>
     </spacer>
    </item>
-   <item row="2" column="1">
-    <spacer name="verticalSpacer_2">
+   <item row="1" column="1">
+    <spacer name="verticalSpacer_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>46</height>
       </size>
      </property>
     </spacer>
    </item>
-   <item row="0" column="0" rowspan="3">
-    <widget class="QScrollArea" name="DevicesScroll">
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaDevice">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>214</width>
-        <height>400</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="2" rowspan="3">
-    <widget class="QScrollArea" name="GroupsScroll">
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaGroup">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>213</width>
-        <height>400</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
-   </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

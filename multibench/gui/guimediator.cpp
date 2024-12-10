@@ -6,6 +6,8 @@
 #include "mainwindow.h"
 #include "model/device/devicewidget.h"
 #include "model/guifactory.h"
+#include "network/IDataSource.h"
+#include "network/datasourcefactory.h"
 #include "widgets/calibrationdialog.h"
 
 GuiMediator::GuiMediator(MainWindow& window, GuiFactory& factory,
@@ -15,6 +17,30 @@ GuiMediator::GuiMediator(MainWindow& window, GuiFactory& factory,
       m_factory(factory),
       m_network(networkModel) {
   factory.start();
+  connect(&networkModel, &NetworkModel::signal_setBaudrateToWindow, this,
+          &GuiMediator::setBaudrateToWindow);
+  connect(&networkModel, &NetworkModel::signal_connected, &window,
+          &MainWindow::setConnected);
+
+  connect(&window, &MainWindow::changeConnectState, this,
+          &GuiMediator::changeConnectState);
+  connect(&window, &MainWindow::refreshComPortsSignal, this,
+          &GuiMediator::refreshComPorts);
+  connect(&window, &MainWindow::tempratureUnitsChanged, &m_network,
+          &NetworkModel::temperatureUnitsChanged);
+  refreshComPorts();
+  connect(&window, &MainWindow::rescanNetwork, this, &GuiMediator::rescan);
+  connect(&window, &MainWindow::delayChanged, &networkModel,
+          &NetworkModel::setDelay);
+  connect(&window, &MainWindow::timeoutChanged, &networkModel,
+          &NetworkModel::setTimeout);
+  connect(&networkModel, &NetworkModel::signal_rescanProgress, &window,
+          &MainWindow::rescanProgress);
+
+  connect(&networkModel, &NetworkModel::signal_errorOccured, &m_window,
+          &MainWindow::slot_serialPortClosed);
+  connect(&networkModel, &NetworkModel::signal_emptyNetwork, &m_window,
+          &MainWindow::emptyNetwork);
   connect(&networkModel, &NetworkModel::signal_createWidgetFor, this,
           &GuiMediator::createWidgetFor);
   connect(&window, &MainWindow::createCalibAndLimitsWidgets, this,
@@ -66,39 +92,9 @@ void GuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id) {
 void GuiMediator::createGroupManagerWidget() {
   QPointer<GroupManager> manager(m_factory.createGroupManagerWidget(
       m_deviceWidgetsTable, m_groupWidgetsTable));
-  manager->setModal(false);
   manager->show();
-  connect(manager, &GroupManager::createGroupWidget, this,
-          &GuiMediator::createGroupWidgetFor);
-  connect(manager, &GroupManager::deleteGroupWidget, this,
-          &GuiMediator::deleteGroupWidgetFor);
-  connect(this, &GuiMediator::repaintGroupsAndDevices, manager,
-          &GroupManager::finishGroupAction);
-  connect(manager, &GroupManager::removeMemberGroup, this,
-          [this](int groupAddr, quint8 devAddr) {
-            emit modifMemberGroup(true, groupAddr, devAddr);
-          });
-  connect(manager, &GroupManager::addMemberGroup, this,
-          [this](int groupAddr, quint8 devAddr) {
-            emit modifMemberGroup(false, groupAddr, devAddr);
-          });
-}
-
-void GuiMediator::createGroupWidgetFor(const QSet<quint8>& addresses,
-                                       int groupAddr) {
-  QPointer<GroupWidget> group(m_factory.createGroupWidget(groupAddr));
-  auto addrs = addresses.values();
-  std::sort(addrs.begin(), addrs.end());
-  for (const auto addr : addrs) {
-    auto widget = m_deviceWidgetsTable.value(addr);
-    group->addGroupMember(widget);
-    m_window.removeDeviceWidget(widget);
-  }
-  m_window.addGroupWidget(group);
-  m_groupWidgetsTable.insert(group->getGroupAddress(), group);
-  connect(group, &GroupWidget::groupEvent, this,
-          &GuiMediator::Signal_PublishEvent);
-  emit repaintGroupsAndDevices();
+  connect(manager, &GroupManager::sendAllGroups, this,
+          &GuiMediator::recreateGroups);
 }
 
 void GuiMediator::deleteGroupWidgetFor(int address) {
@@ -108,25 +104,35 @@ void GuiMediator::deleteGroupWidgetFor(int address) {
     m_window.addDeviceWidget(widget);
   }
   m_groupWidgetsTable.remove(address);
-  m_window.restoreDeviceWidgets();
-
-  emit repaintGroupsAndDevices();
 }
 
-void GuiMediator::modifMemberGroup(bool isRemove, int groupAddr,
-                                   quint8 devAddr) {
-  if (isRemove) {
-    m_groupWidgetsTable.value(groupAddr)->removeGroupMember(
-        m_deviceWidgetsTable.value(devAddr));
-    m_window.addDeviceWidget(m_deviceWidgetsTable.value(devAddr));
-    m_window.restoreDeviceWidgets();
-  } else {
-    m_groupWidgetsTable.value(groupAddr)->addGroupMember(
-        m_deviceWidgetsTable.value(devAddr));
-    m_window.removeDeviceWidget(m_deviceWidgetsTable.value(devAddr));
+void GuiMediator::recreateGroups(
+    const QMap<int, QSharedPointer<groupCheckBoxes>>& groups) {
+  auto oldGroupAddr = m_groupWidgetsTable.keys();
+  if (!oldGroupAddr.isEmpty()) {
+    for (auto addr : oldGroupAddr) {
+      deleteGroupWidgetFor(addr);
+    }
   }
-
-  emit repaintGroupsAndDevices();
+  if (!groups.isEmpty()) {
+    for (auto& group : qAsConst(groups)) {
+      QPointer<GroupWidget> groupWidget(
+          m_factory.createGroupWidget(group->g_addr));
+      groupWidget->setName(group->g_checkBox->text());
+      auto addrs = group->g_subBoxes.keys();
+      std::sort(addrs.begin(), addrs.end());
+      for (auto addr : addrs) {
+        auto widget = m_deviceWidgetsTable.value(addr);
+        groupWidget->addGroupMember(widget);
+        m_window.removeDeviceWidget(widget);
+      }
+      m_window.addGroupWidget(groupWidget);
+      m_groupWidgetsTable.insert(groupWidget->getGroupAddress(), groupWidget);
+      connect(groupWidget, &GroupWidget::groupEvent, this,
+              &GuiMediator::Signal_PublishEvent);
+    }
+  }
+  m_window.restoreDeviceWidgets();
 }
 
 void GuiMediator::NewEvent(const model::Event& event) {
@@ -137,7 +143,7 @@ void GuiMediator::NewEvent(const model::Event& event) {
       if (m_calibrationDialog.contains(addr)) {
         m_calibrationDialog.value(addr)->updateValue(event);
       }
-      for (const auto& group : m_groupWidgetsTable) {
+      for (auto& group : m_groupWidgetsTable) {
         auto data = std::get<model::events::network::Answer>(event.data_);
         if (group->getAddresses().contains(data.addr_)) {
           auto status = m_factory.deviceErrorStatus(
@@ -160,10 +166,10 @@ void GuiMediator::NewEvent(const model::Event& event) {
   } else if (event.type_ == model::EventType::kSystemCommand) {
     if (std::holds_alternative<model::events::network::ChangeSystemStyle>(
             event.data_)) {
-      for (const auto& device : m_deviceWidgetsTable) {
+      for (auto& device : m_deviceWidgetsTable) {
         device->updateValue(event);
       }
-      for (const auto& group : m_groupWidgetsTable) {
+      for (auto& group : m_groupWidgetsTable) {
         group->updateValue(event);
       }
     }
@@ -181,4 +187,40 @@ void GuiMediator::clear() {
   m_deviceWidgetsTable.clear();
   m_groupWidgetsTable.clear();
   m_calibrationDialog.clear();
+}
+
+void GuiMediator::setBaudrateToWindow(QStringList baud) {
+  m_window.setBaudRates(baud);
+}
+
+void GuiMediator::refreshComPorts() {
+  QStringList ports;
+  const auto availablePorts = QSerialPortInfo::availablePorts();
+  for (const auto& port : availablePorts) {
+    ports << port.portName();
+  }
+  m_window.setComPorts(ports);
+}
+
+void GuiMediator::changeConnectState(Const::PortType type,
+                                     QVariantMap portSettings) {
+  if (m_network.isStart()) {
+    m_network.stop();
+  } else {
+    if (!portSettings.isEmpty()) {
+      AppSettings::setNetworkData(portSettings);
+
+      auto dataSource =
+          QScopedPointer<IDataSource>(DataSourceFactory::createSource(type));
+      if (dataSource) {
+        dataSource->init(portSettings);
+        m_network.start(dataSource);
+      }
+    }
+  }
+}
+
+void GuiMediator::rescan() {
+  m_network.clearNetwork();
+  m_network.rescanNetwork();
 }

@@ -10,195 +10,262 @@ GroupManager::GroupManager(const QMap<quint8, QPointer<DeviceWidget>>& devices,
       m_devices(devices),
       m_groups(groups),
       m_buttonGroup(new QButtonGroup(this)) {
+  this->setModal(true);
   ui->setupUi(this);
-  m_font.setFamily(QString::fromUtf8("Poppins"));
-  m_font.setPointSize(11);
-  m_font.setLetterSpacing(QFont::PercentageSpacing, 105);
+  //  m_font.setFamily(QString::fromUtf8("Poppins"));
+  //  m_font.setPointSize(11);
+  //  m_font.setLetterSpacing(QFont::PercentageSpacing, 105);
   m_buttonGroup->setExclusive(false);
   m_devicesFieldLayout = new QVBoxLayout(ui->scrollAreaDevice);
   m_devicesFieldLayout->setSpacing(10);
-  m_devicesFieldLayout->setContentsMargins(10, 10, 0, 0);
+  m_devicesFieldLayout->setContentsMargins(20, 20, 0, 0);
   m_devicesFieldLayout->setSizeConstraint(QLayout::SetMinimumSize);
-  m_devicesFieldLayout->setAlignment(Qt::AlignLeft);
+  m_devicesFieldLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   ui->scrollAreaDevice->setLayout(m_devicesFieldLayout);
-  ui->scrollAreaDevice->setMaximumHeight(
-      m_devicesFieldLayout->maximumSize().height());
+  //  ui->scrollAreaDevice->setMaximumHeight(
+  //      m_devicesFieldLayout->maximumSize().height());
 
   m_groupsFieldLayout = new QVBoxLayout(ui->scrollAreaGroup);
   m_groupsFieldLayout->setSpacing(10);
-  m_groupsFieldLayout->setContentsMargins(10, 10, 0, 0);
+  m_groupsFieldLayout->setContentsMargins(20, 20, 0, 0);
   m_groupsFieldLayout->setSizeConstraint(QLayout::SetMinimumSize);
-  m_groupsFieldLayout->setAlignment(Qt::AlignLeft);
+  m_groupsFieldLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   ui->scrollAreaGroup->setLayout(m_groupsFieldLayout);
-  ui->scrollAreaGroup->setMaximumHeight(
-      m_groupsFieldLayout->maximumSize().height());
+  //  ui->scrollAreaGroup->setMaximumHeight(
+  //      m_groupsFieldLayout->maximumSize().height());
 
   for (const auto& devs : m_devices) {
     auto checkBox = new QCheckBox(this);
     checkBox->setFont(m_font);
     checkBox->setText(devs->getName());
-    m_checkBoxes.insert(devs->getAddress(), checkBox);
+    checkBox->setStyleSheet(StyleStorage::Device::BinaryWidget::checkBox());
+    auto device = QSharedPointer<deviceCheckBox>::create();
+    device->d_addr = devs->getAddress();
+    device->d_checkBox = checkBox;
+    device->d_isDeleted = false;
+    m_devicesContainer.insert(devs->getAddress(), device);
     m_devicesFieldLayout->addWidget(checkBox);
+
+    connect(device->d_checkBox, &QCheckBox::clicked, this,
+            [this, device](bool checked) {
+              GroupManager::checkBoxClicked(checked, device->d_addr);
+            });
   }
 
   if (!m_groups.isEmpty()) {
-    finishGroupAction();
-  } else {
-    paintDevices();
+    for (auto& group : m_groups) {
+      createOneGroup(group->getGroupAddress(), group->getAddresses(),
+                     group->getName());
+    }
   }
+
   connect(ui->CreateGroup, &QPushButton::clicked, this,
-          &GroupManager::createGroup);
+          &GroupManager::addDeviceToGroup);
   connect(ui->DeleteGroup, &QPushButton::clicked, this,
-          &GroupManager::deleteGroup);
+          &GroupManager::removeDeviceFromGroup);
   connect(m_buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)),
           SLOT(groupButtonClicked(QAbstractButton*)));
+  connect(ui->buttonBox, &QDialogButtonBox::accepted, this,
+          &GroupManager::accept);
+  connect(ui->buttonBox, &QDialogButtonBox::rejected, this,
+          &GroupManager::reject);
+  connect(this, &GroupManager::finished, this, [this](int result) {
+    switch (result) {
+      case QDialog::Accepted: {
+        emit sendAllGroups(m_groupsContainer);
+        deleteLater();
+      } break;
+      case QDialog::Rejected: {
+        deleteLater();
+      } break;
+    }
+  });
+  GroupManager::updateStyle();
 }
 
 GroupManager::~GroupManager() { delete ui; }
-
-void GroupManager::createGroup() {
-  QSet<quint8> groupAddr;
-  for (auto& checkBox : m_checkBoxes) {
-    if (checkBox->isChecked()) {
-      checkBox->setChecked(false);
-      groupAddr.insert(m_checkBoxes.key(checkBox));
-    }
-  }
-  if (groupAddr.isEmpty()) return;
-
-  if (m_buttonGroup->checkedButton() == nullptr) {
-    auto number = 1;
-    for (const auto& group : m_groups) {
-      if (group->getGroupAddress() == number) number++;
-    }
-    emit createGroupWidget(groupAddr, number);
-  } else {
-    for (auto& group : m_groupsTable) {
-      if (group->groupBox_->isChecked()) {
-        for (auto& addr : groupAddr) {
-          auto subGroupCheckBox = new QCheckBox(this);
-          subGroupCheckBox->setFont(m_font);
-          subGroupCheckBox->setText(m_devices.value(addr)->getName());
-          group->subBoxes_.insert(m_devices.value(addr)->getAddress(),
-                                  subGroupCheckBox);
-          group->layout_->addWidget(subGroupCheckBox);
-          emit addMemberGroup(group->groupAddr_, addr);
-        }
-      }
-    }
-  }
-}
-
-void GroupManager::deleteGroup() {
-  if (m_buttonGroup->checkedButton() != nullptr) {
-    for (const auto& group : m_groupsTable.values()) {
-      if (group->groupBox_->isChecked()) {
-        clearGroup(group);
-      }
-    }
-  } else {
-    QVector<QSharedPointer<groupsCheckBoxes>> deletedGroup;
-    for (const auto& group : m_groupsTable) {
-      for (auto& check : group->subBoxes_.keys()) {
-        if (group->subBoxes_.value(check)->isChecked()) {
-          if (group->subBoxes_.size() == 1) {
-            deletedGroup.append(group);
-          } else {
-            group->layout_->removeWidget(group->subBoxes_.value(check));
-            group->subBoxes_.value(check)->deleteLater();
-            emit removeMemberGroup(group->groupAddr_, check);
-            m_checkBoxes.value(check)->show();
-          }
-        }
-      }
-    }
-    if (deletedGroup.size() != 0) {
-      for (auto& group : deletedGroup) {
-        clearGroup(group);
-      }
-    }
-  }
-}
-
-void GroupManager::clearGroup(QSharedPointer<groupsCheckBoxes> group) {
-  emit deleteGroupWidget(m_groups.value(group->groupAddr_)->getGroupAddress());
-}
-
-void GroupManager::finishGroupAction() {
-  auto groupKeys = m_groupsTable.keys();
-  for (auto& deletedGroup : groupKeys) {
-    if (!m_groups.contains(deletedGroup)) {
-      m_buttonGroup->removeButton(m_groupsTable.value(deletedGroup)->groupBox_);
-      m_groupsFieldLayout->removeWidget(
-          m_groupsTable.value(deletedGroup)->groupBox_);
-      m_groupsTable.value(deletedGroup)->groupBox_->deleteLater();
-      for (auto& check : m_groupsTable.value(deletedGroup)->subBoxes_) {
-        check->deleteLater();
-      }
-      m_groupsFieldLayout->removeItem(
-          m_groupsTable.value(deletedGroup)->layout_);
-      m_groupsTable.value(deletedGroup)->layout_->deleteLater();
-      m_groupsTable.remove(deletedGroup);
-    } else {
-      auto subGroupsKeys = m_groupsTable.value(deletedGroup)->subBoxes_.keys();
-      for (auto& addr : subGroupsKeys) {
-        if (!m_groups.value(deletedGroup)->getAddresses().contains(addr)) {
-          m_groupsTable[deletedGroup]->subBoxes_.remove(addr);
-        }
-      }
-    }
-  }
-
-  for (auto& group : m_groups) {
-    if (!m_groupsTable.contains(group->getGroupAddress())) {
-      auto groupCheckBox = new QCheckBox(this);
-      auto groupBoxes = QSharedPointer<groupsCheckBoxes>::create();
-      groupBoxes->groupBox_ = groupCheckBox;
-      groupBoxes->groupAddr_ = group->getGroupAddress();
-      groupCheckBox->setFont(m_font);
-      groupCheckBox->setText(group->getName());
-      m_buttonGroup->addButton(groupCheckBox);
-      m_groupsFieldLayout->addWidget(groupCheckBox);
-      auto groupAddrs = group->getAddresses().values();
-      groupBoxes->layout_ = new QVBoxLayout();
-      groupBoxes->layout_->setContentsMargins(30, 0, 0, 0);
-      std::sort(groupAddrs.begin(), groupAddrs.end());
-      for (auto subGroupAddr : groupAddrs) {
-        auto subGroupCheckBox = new QCheckBox(this);
-        subGroupCheckBox->setFont(m_font);
-        subGroupCheckBox->setText(m_devices.value(subGroupAddr)->getName());
-        groupBoxes->subBoxes_.insert(subGroupAddr, subGroupCheckBox);
-        groupBoxes->layout_->addWidget(subGroupCheckBox);
-      }
-      m_groupsFieldLayout->addLayout(groupBoxes->layout_);
-      m_groupsTable.insert(group->getGroupAddress(), groupBoxes);
-    }
-  }
-  paintDevices();
-}
-
-void GroupManager::paintDevices() {
-  for (auto& check : m_checkBoxes) {
-    check->show();
-  }
-  for (auto& group : m_groupsTable) {
-    for (auto& subGroupKey : group->subBoxes_.keys()) {
-      if (m_checkBoxes.contains(subGroupKey)) {
-        m_checkBoxes.value(subGroupKey)->hide();
-      }
-    }
-  }
-}
 
 void GroupManager::groupButtonClicked(QAbstractButton* button) {
   bool state = button->isChecked();
   for (auto& check : m_buttonGroup->buttons()) {
     check->setChecked(false);
   }
-  if (state)
-    button->setChecked(true);
-  else
-    button->setChecked(false);
+  if (state) button->setChecked(true);
+}
+
+void GroupManager::addDeviceToGroup() {
+  QSet<quint8> groupAddr;
+  for (auto& device : m_devicesContainer) {
+    if (device->d_checkBox->isChecked()) {
+      device->d_checkBox->setChecked(false);
+      m_devicesFieldLayout->removeWidget(device->d_checkBox);
+      groupAddr.insert(device->d_addr);
+    }
+  }
+  if (groupAddr.isEmpty()) return;
+
+  if (m_buttonGroup->checkedButton() == 0) {
+    auto number = 1;
+    if (!m_groupsContainer.isEmpty()) {
+      auto list = m_groupsContainer.keys();
+      for (auto index = list.begin(), end = list.end(); index != end; ++index) {
+        if (*index == number) number++;
+      }
+    }
+    createOneGroup(number, groupAddr);
+  } else {
+    for (auto& group : m_groupsContainer) {
+      if (group->g_checkBox->isChecked()) {
+        for (auto& addr : qAsConst(groupAddr)) {
+          group->g_subBoxes.insert(addr, m_devicesContainer.take(addr));
+          group->g_layout->addWidget(group->g_subBoxes.value(addr)->d_checkBox);
+        }
+        m_groupsFieldLayout->update();
+      }
+    }
+  }
+  sortWidgets();
+}
+
+void GroupManager::removeDeviceFromGroup() {
+  if (m_buttonGroup->checkedButton() != 0) {
+    for (auto& group : m_groupsContainer) {
+      if (group->g_checkBox->isChecked()) {
+        group->g_isDeleted = true;
+        auto addrs = group->g_subBoxes.keys();
+        auto g = group->g_subBoxes.values();
+        for (auto& device : g) {
+          group->g_layout->removeWidget(device->d_checkBox);
+        }
+        for (auto device : addrs) {
+          m_devicesContainer.insert(device, group->g_subBoxes.take(device));
+          m_devicesFieldLayout->addWidget(
+              m_devicesContainer.value(device)->d_checkBox);
+          m_devicesContainer.value(device)->d_checkBox->setChecked(false);
+        }
+      }
+    }
+  } else {
+    for (auto& group : m_groupsContainer) {
+      auto groups = group->g_subBoxes.values();
+      for (auto& subBoxes : groups) {
+        if (subBoxes->d_checkBox->isChecked()) {
+          if (group->g_subBoxes.size() == 1) {
+            group->g_isDeleted = true;
+          } else {
+            auto addr = subBoxes->d_addr;
+            group->g_layout->removeWidget(subBoxes->d_checkBox);
+            m_devicesContainer.insert(addr, group->g_subBoxes.take(addr));
+            m_devicesFieldLayout->addWidget(
+                m_devicesContainer.value(addr)->d_checkBox);
+            m_devicesContainer.value(addr)->d_checkBox->setChecked(false);
+          }
+        }
+      }
+    }
+  }
+  if (!m_groupsContainer.isEmpty()) {
+    QSet<quint8> deleted;
+    for (auto& group : m_groupsContainer) {
+      if (group->g_isDeleted == true) {
+        deleted.insert(group->g_addr);
+        m_groupsFieldLayout->removeItem(group->g_layout);
+        m_groupsFieldLayout->removeWidget(group->g_checkBox);
+        int id = m_buttonGroup->id(group->g_checkBox);
+        m_buttonGroup->button(id)->setChecked(false);
+        m_buttonGroup->removeButton(group->g_checkBox);
+        if (group->g_subBoxes.size() == 1) {
+          auto sub = group->g_subBoxes.firstKey();
+          group->g_layout->removeWidget(
+              group->g_subBoxes.value(sub)->d_checkBox);
+          m_devicesContainer.insert(sub, group->g_subBoxes.take(sub));
+          m_devicesFieldLayout->addWidget(
+              m_devicesContainer.value(sub)->d_checkBox);
+          m_devicesContainer.value(sub)->d_checkBox->setChecked(false);
+        }
+      }
+    }
+    for (auto deletedGroup : deleted) {
+      m_groupsContainer.value(deletedGroup)->g_checkBox->deleteLater();
+      m_groupsContainer.value(deletedGroup)->g_layout->deleteLater();
+      m_groupsContainer.value(deletedGroup)->g_subBoxes.clear();
+      m_groupsContainer.remove(deletedGroup);
+    }
+  }
+  sortWidgets();
+}
+
+void GroupManager::createOneGroup(int g_addr, const QSet<quint8> devicesAddrs,
+                                  const QString& name) {
+  auto groupCheckBox = new QCheckBox(this);
+  groupCheckBox->setStyleSheet(StyleStorage::Device::BinaryWidget::checkBox());
+  auto groupBoxes = QSharedPointer<groupCheckBoxes>::create();
+  groupBoxes->g_checkBox = groupCheckBox;
+  groupBoxes->g_addr = g_addr;
+  groupBoxes->g_checkBox->setFont(m_font);
+  auto g_name = (name == "") ? QString("Group %1").arg(g_addr) : name;
+  groupBoxes->g_checkBox->setText(g_name);
+  m_buttonGroup->addButton(groupBoxes->g_checkBox);
+  m_groupsFieldLayout->addWidget(groupBoxes->g_checkBox);
+  auto groupAddrs = devicesAddrs.values();
+  groupBoxes->g_layout = new QVBoxLayout();
+  groupBoxes->g_layout->setContentsMargins(30, 0, 0, 0);
+  std::sort(groupAddrs.begin(), groupAddrs.end());
+  for (auto subGroupAddr : groupAddrs) {
+    groupBoxes->g_subBoxes.insert(subGroupAddr,
+                                  m_devicesContainer.take(subGroupAddr));
+    groupBoxes->g_layout->addWidget(
+        groupBoxes->g_subBoxes.value(subGroupAddr)->d_checkBox);
+    groupBoxes->g_subBoxes.value(subGroupAddr)->d_checkBox->setChecked(false);
+  }
+  m_groupsFieldLayout->addLayout(groupBoxes->g_layout);
+  m_groupsContainer.insert(g_addr, groupBoxes);
 }
 
 void GroupManager::updateStyle() { this->update(); }
+
+void GroupManager::sortWidgets() {
+  for (auto& dev : m_devicesContainer) {
+    m_devicesFieldLayout->removeWidget(dev->d_checkBox);
+  }
+  for (auto& dev : m_devicesContainer) {
+    m_devicesFieldLayout->addWidget(dev->d_checkBox);
+  }
+  for (auto& group : m_groupsContainer) {
+    m_groupsFieldLayout->removeWidget(group->g_checkBox);
+    m_groupsFieldLayout->removeItem(group->g_layout);
+    for (auto& dev : group->g_subBoxes) {
+      group->g_layout->removeWidget(dev->d_checkBox);
+    }
+  }
+  for (auto& group : m_groupsContainer) {
+    m_groupsFieldLayout->addWidget(group->g_checkBox);
+    m_groupsFieldLayout->addLayout(group->g_layout);
+    for (auto& dev : group->g_subBoxes) {
+      group->g_layout->addWidget(dev->d_checkBox);
+    }
+  }
+}
+
+void GroupManager::checkBoxClicked(bool status, int addr) {
+  if (status) {
+    if (m_devicesContainer.contains(addr)) {
+      for (auto& group : m_groupsContainer) {
+        for (auto& dev : group->g_subBoxes) {
+          dev->d_checkBox->setChecked(false);
+        }
+      }
+    } else {
+      for (auto& group : m_groupsContainer) {
+        if (!group->g_subBoxes.contains(addr)) {
+          for (auto& dev : group->g_subBoxes) {
+            dev->d_checkBox->setChecked(false);
+          }
+        }
+      }
+      for (auto& dev : m_devicesContainer) {
+        dev->d_checkBox->setChecked(false);
+      }
+    }
+  }
+}

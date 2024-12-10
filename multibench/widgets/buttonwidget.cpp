@@ -44,6 +44,7 @@ ButtonWidget::ButtonWidget(const QString &text, const Button &button,
   m_button->setChecked(false);
   m_button->setVisible(true);
   m_layout->addWidget(m_button);
+  ButtonWidget::updateStyle();
 }
 
 ButtonWidget::~ButtonWidget(){};
