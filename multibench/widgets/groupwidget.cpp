@@ -53,6 +53,7 @@ void GroupWidget::addGroupMember(QPointer<DeviceWidget> member) {
   m_addresses.insert(static_cast<quint8>(member->getAddress()));
   auto status = DeviceStatusGroup();
   status.errors = QStringList();
+  status.interlocks = QStringList();
   status.devStarted = QMap<QString, bool>();
   m_status.insert(static_cast<quint8>(member->getAddress()), status);
   m_linked.insert(static_cast<quint8>(member->getAddress()), true);
@@ -162,6 +163,15 @@ void GroupWidget::setDevicesStatus(quint8 addr,
     m_status[addr].errors->clear();
     m_status[addr].errors->append(desc.data()->errors.value());
     m_status[addr].errors->removeDuplicates();
+  } else {
+    m_status[addr].errors->clear();
+  }
+  if (desc.data()->interlocks.has_value()) {
+    m_status[addr].interlocks->clear();
+    m_status[addr].interlocks->append(desc.data()->interlocks.value());
+    m_status[addr].interlocks->removeDuplicates();
+  } else {
+    m_status[addr].interlocks->clear();
   }
   if (desc.data()->devStarted.has_value()) {
     for (auto map = desc.data()->devStarted->cbegin(),

@@ -70,8 +70,9 @@ QSharedPointer<DeviceStatusGroup> GuiFactory::deviceErrorStatus(quint16 id,
                                                                 quint16 value) {
   auto group = new DeviceStatusGroup();
   group->errors = QStringList();
-  for (const auto& led : m_deviceWidgets[id].leds) {
-    for (const auto& mask : led.ledMasks) {
+  group->interlocks = QStringList();
+  for (auto& led : m_deviceWidgets[id].leds) {
+    for (auto& mask : led.ledMasks) {
       if (mask.code == code) {
         if (led.name == "Laser" or led.name == "TEC") {
           auto status = (value & mask.mask) ? true : false;
@@ -79,11 +80,14 @@ QSharedPointer<DeviceStatusGroup> GuiFactory::deviceErrorStatus(quint16 id,
           started.insert(led.name, status);
           group->devStarted = started;
         }
-        if (led.name == "IntLock" or led.name == "Error") {
+        if (led.name == "IntLock") {
+          if ((value & mask.mask) != 0) {
+            group->interlocks->append(mask.msg);
+          }
+        }
+        if (led.name == "Error") {
           if ((value & mask.mask) != 0) {
             group->errors->append(mask.msg);
-          } else if (value == 0) {
-            group->errors->append("None");
           }
         }
       }
@@ -92,7 +96,11 @@ QSharedPointer<DeviceStatusGroup> GuiFactory::deviceErrorStatus(quint16 id,
   if (group->errors->size() == 0) {
     group->errors.reset();
   }
-  if (group->errors.has_value() or group->devStarted.has_value())
+  if (group->interlocks->size() == 0) {
+    group->interlocks.reset();
+  }
+  if (group->errors.has_value() or group->devStarted.has_value() or
+      group->interlocks.has_value())
     return QSharedPointer<DeviceStatusGroup>(group);
   else
     return QSharedPointer<DeviceStatusGroup>();

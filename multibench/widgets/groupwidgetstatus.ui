@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>64</height>
+    <width>808</width>
+    <height>52</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,7 +18,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>1000</width>
+    <width>16777215</width>
     <height>16777215</height>
    </size>
   </property>
@@ -69,16 +69,6 @@ QLabel {
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line">
-     <property name="styleSheet">
-      <string notr="true">color:rgb(180, 180, 180);</string>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QLabel" name="nameLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -95,39 +85,28 @@ QLabel {
      <property name="maximumSize">
       <size>
        <width>80</width>
-       <height>16777215</height>
+       <height>20</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <family>Share Tech Mono</family>
+       <family>Poppins</family>
        <pointsize>14</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>NAME1234</string>
+      <string>ID: 1</string>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line_2">
-     <property name="styleSheet">
-      <string notr="true">color:rgb(80, 80, 80)</string>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="margin">
+      <number>0</number>
      </property>
     </widget>
    </item>
    <item>
     <layout class="QVBoxLayout" name="labelsLayout"/>
-   </item>
-   <item>
-    <widget class="Line" name="line_3">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QLabel" name="modelLabel">
@@ -139,66 +118,173 @@ QLabel {
      </property>
      <property name="minimumSize">
       <size>
-       <width>180</width>
+       <width>250</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>180</width>
+       <width>250</width>
        <height>16777215</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <family>Share Tech Mono</family>
+       <family>Poppins</family>
        <pointsize>14</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>MODEL:</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line_4">
-     <property name="styleSheet">
-      <string notr="true">color:rgb(80, 80, 80)</string>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <string>MODEL: SF8150 v6.4 Type 2</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QLabel" name="statusLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>280</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
-       <width>70</width>
+       <width>280</width>
        <height>16777215</height>
       </size>
      </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="ButtonText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="ButtonText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Text">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="ButtonText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
      <property name="font">
       <font>
-       <family>Share Tech Mono</family>
+       <family>Poppins</family>
        <pointsize>14</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>Status:</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="warningsLabel">
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
+      <string>Status: Errors and Warnings</string>
      </property>
     </widget>
    </item>

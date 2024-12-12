@@ -17,8 +17,6 @@ const QString GroupWidgetStatus::startedStyleOff =
         border-radius: 3px; \
 }";
 
-static const QFont standartFont = QFont("Share Tech Mono", 14);
-
 GroupWidgetStatus::GroupWidgetStatus(QWidget *parent)
     : QWidget(parent), ui(new Ui::GroupWidgetStatus) {
   ui->setupUi(this);
@@ -27,25 +25,45 @@ GroupWidgetStatus::GroupWidgetStatus(QWidget *parent)
 GroupWidgetStatus::~GroupWidgetStatus() { delete ui; }
 
 void GroupWidgetStatus::addData(DeviceStatusGroup &status) {
-  if (status.errors.has_value()) {
-    ui->warningsLabel->setText(status.errors->join(" ;"));
+  QString format(
+      R"(Status: <span style=color:'%1'>Errors and Warnings</span>)");
+  QString toolTip(
+      R"(<span style='background-color: #FFFFFF; color: #000000'>%1</span>)");
+  bool hasErrors = !status.errors->isEmpty();
+  bool hasInterlock = !status.interlocks->isEmpty();
+  if (hasErrors and hasInterlock) {
+    ui->statusLabel->setToolTip(toolTip.arg(status.errors->join(" ;") + " " +
+                                            status.interlocks->join(" ;")));
+    ui->statusLabel->setText(format.arg("#FF403A"));
+  } else if (hasErrors and !hasInterlock) {
+    ui->statusLabel->setToolTip(toolTip.arg(status.errors->join(" ;")));
+    ui->statusLabel->setText(format.arg("#FF403A"));
+  } else if (!hasErrors and hasInterlock) {
+    ui->statusLabel->setToolTip(toolTip.arg(status.interlocks->join(" ;")));
+    ui->statusLabel->setText(format.arg("#FFC803"));
+  } else {
+    ui->statusLabel->setToolTip(QString());
+    ui->statusLabel->setText(format.arg("#FFFFFF"));
   }
+
   if (status.devStarted.has_value()) {
-    auto map = status.devStarted->keys();
-    for (auto dev : map) {
-      if (!m_devs.contains(dev)) {
-        auto devLabel = new QLabel(dev);
-        devLabel->setFont(standartFont);
+    for (auto map = status.devStarted->cbegin(),
+              end = status.devStarted->cend();
+         map != end; ++map) {
+      if (!m_devs.contains(map.key())) {
+        auto devLabel = new QLabel(map.key());
+        devLabel->setFont(QFont("Poppins", 14));
         devLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        devLabel->setAlignment(Qt::AlignHCenter | Qt::AlignLeft);
         devLabel->setMaximumWidth(100);
         devLabel->setMinimumWidth(100);
         ui->labelsLayout->addWidget(devLabel);
-        m_devs.insert(dev, devLabel);
+        m_devs.insert(map.key(), devLabel);
       }
-      if (status.devStarted->value(dev)) {
-        m_devs.value(dev)->setText(dev + QString(": ON"));
+      if (map.value()) {
+        m_devs.value(map.key())->setText(map.key() + QString(": ON"));
       } else {
-        m_devs.value(dev)->setText(dev + QString(": OFF"));
+        m_devs.value(map.key())->setText(map.key() + QString(": OFF"));
       }
     }
   }

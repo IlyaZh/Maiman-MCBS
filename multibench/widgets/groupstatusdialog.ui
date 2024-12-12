@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>763</width>
+    <width>884</width>
     <height>345</height>
    </rect>
   </property>
@@ -21,7 +21,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog{
-	background: rgb(51,51,51);
+	background: #1A1A1A;
 }
 QLabel {
 	color: #fff;
@@ -47,8 +47,9 @@ QPushButton {
      </property>
      <property name="font">
       <font>
-       <family>Share Tech Mono</family>
+       <family>Poppins</family>
        <pointsize>14</pointsize>
+       <underline>true</underline>
       </font>
      </property>
      <property name="styleSheet">
@@ -58,13 +59,6 @@ QPushButton {
      </property>
      <property name="text">
       <string>Devices status:</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -90,8 +84,8 @@ QPushButton {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>745</width>
-        <height>290</height>
+        <width>866</width>
+        <height>287</height>
        </rect>
       </property>
       <property name="styleSheet">

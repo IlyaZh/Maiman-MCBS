@@ -9,6 +9,7 @@
 
 struct DeviceStatusGroup {
   std::optional<QStringList> errors;
+  std::optional<QStringList> interlocks;
   std::optional<QMap<QString, bool>> devStarted;
 };
 
