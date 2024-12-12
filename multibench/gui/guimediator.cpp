@@ -17,30 +17,7 @@ GuiMediator::GuiMediator(MainWindow& window, GuiFactory& factory,
       m_factory(factory),
       m_network(networkModel) {
   factory.start();
-  connect(&networkModel, &NetworkModel::signal_setBaudrateToWindow, this,
-          &GuiMediator::setBaudrateToWindow);
-  connect(&networkModel, &NetworkModel::signal_connected, &window,
-          &MainWindow::setConnected);
 
-  connect(&window, &MainWindow::changeConnectState, this,
-          &GuiMediator::changeConnectState);
-  connect(&window, &MainWindow::refreshComPortsSignal, this,
-          &GuiMediator::refreshComPorts);
-  connect(&window, &MainWindow::tempratureUnitsChanged, &m_network,
-          &NetworkModel::temperatureUnitsChanged);
-  refreshComPorts();
-  connect(&window, &MainWindow::rescanNetwork, this, &GuiMediator::rescan);
-  connect(&window, &MainWindow::delayChanged, &networkModel,
-          &NetworkModel::setDelay);
-  connect(&window, &MainWindow::timeoutChanged, &networkModel,
-          &NetworkModel::setTimeout);
-  connect(&networkModel, &NetworkModel::signal_rescanProgress, &window,
-          &MainWindow::rescanProgress);
-
-  connect(&networkModel, &NetworkModel::signal_errorOccured, &m_window,
-          &MainWindow::slot_serialPortClosed);
-  connect(&networkModel, &NetworkModel::signal_emptyNetwork, &m_window,
-          &MainWindow::emptyNetwork);
   connect(&networkModel, &NetworkModel::signal_createWidgetFor, this,
           &GuiMediator::createWidgetFor);
   connect(&window, &MainWindow::createCalibAndLimitsWidgets, this,
@@ -187,40 +164,4 @@ void GuiMediator::clear() {
   m_deviceWidgetsTable.clear();
   m_groupWidgetsTable.clear();
   m_calibrationDialog.clear();
-}
-
-void GuiMediator::setBaudrateToWindow(QStringList baud) {
-  m_window.setBaudRates(baud);
-}
-
-void GuiMediator::refreshComPorts() {
-  QStringList ports;
-  const auto availablePorts = QSerialPortInfo::availablePorts();
-  for (const auto& port : availablePorts) {
-    ports << port.portName();
-  }
-  m_window.setComPorts(ports);
-}
-
-void GuiMediator::changeConnectState(Const::PortType type,
-                                     QVariantMap portSettings) {
-  if (m_network.isStart()) {
-    m_network.stop();
-  } else {
-    if (!portSettings.isEmpty()) {
-      AppSettings::setNetworkData(portSettings);
-
-      auto dataSource =
-          QScopedPointer<IDataSource>(DataSourceFactory::createSource(type));
-      if (dataSource) {
-        dataSource->init(portSettings);
-        m_network.start(dataSource);
-      }
-    }
-  }
-}
-
-void GuiMediator::rescan() {
-  m_network.clearNetwork();
-  m_network.rescanNetwork();
 }

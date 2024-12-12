@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
   ModbusProtocol modbus;
   NetworkModel model(deviceFactory, modbus);
   components::Mediator mediator;
-  //  ModelGuiMediator mainMediator(w, guiFactory, model);
+  NetworkMediator mainMediator(w, guiFactory, model);
   GuiMediator gui(w, guiFactory, model);
 
   mediator.Subscribe(model::EventType::kDeviceStateUpdated, &gui);

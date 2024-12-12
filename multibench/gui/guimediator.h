@@ -42,14 +42,9 @@ class GuiMediator : public QObject, public interfaces::Subscriber {
   void dataCapture(quint8 addr, quint16 code, quint16 value);
   void deleteGroupWidgetFor(int address);
   void recreateGroups(const QMap<int, QSharedPointer<groupCheckBoxes>>& groups);
-  void refreshComPorts();
-  void changeConnectState(Const::PortType type, QVariantMap value);
-  void rescan();
-  void setBaudrateToWindow(QStringList baud);
 
  signals:
   void deletedCalibrationDialog();
   void Signal_PublishEvent(model::Event);
   void repaintGroupsAndDevices();
-  void rescanNetwork();
 };

@@ -11,30 +11,25 @@
 #include "network/datasourcefactory.h"
 #include "widgets/calibrationdialog.h"
 
-ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,
-                                   NetworkModel& networkModel, QObject* parent)
+NetworkMediator::NetworkMediator(MainWindow& window, GuiFactory& factory,
+                                 NetworkModel& networkModel, QObject* parent)
     : QObject(parent),
       m_window(window),
       m_factory(factory),
       m_network(networkModel) {
-  //  factory.start();
-  //  connect(&networkModel, &NetworkModel::signal_createWidgetFor, this,
-  //          &ModelGuiMediator::createWidgetFor);
   connect(&networkModel, &NetworkModel::signal_setBaudrateToWindow, this,
-          &ModelGuiMediator::setBaudrateToWindow);
+          &NetworkMediator::setBaudrateToWindow);
   connect(&networkModel, &NetworkModel::signal_connected, &window,
           &MainWindow::setConnected);
 
   connect(&window, &MainWindow::changeConnectState, this,
-          &ModelGuiMediator::changeConnectState);
+          &NetworkMediator::changeConnectState);
   connect(&window, &MainWindow::refreshComPortsSignal, this,
-          &ModelGuiMediator::refreshComPorts);
+          &NetworkMediator::refreshComPorts);
   connect(&window, &MainWindow::tempratureUnitsChanged, &m_network,
           &NetworkModel::temperatureUnitsChanged);
   refreshComPorts();
-  connect(&window, &MainWindow::rescanNetwork, this, &ModelGuiMediator::rescan);
-  //  connect(&window, &MainWindow::createCalibAndLimitsWidgets, this,
-  //          &ModelGuiMediator::createCalibAndLimitsWidgets);
+  connect(&window, &MainWindow::rescanNetwork, this, &NetworkMediator::rescan);
 
   connect(&window, &MainWindow::delayChanged, &networkModel,
           &NetworkModel::setDelay);
@@ -49,39 +44,11 @@ ModelGuiMediator::ModelGuiMediator(MainWindow& window, GuiFactory& factory,
           &MainWindow::emptyNetwork);
 }
 
-void ModelGuiMediator::createWidgetFor(Device* device) {
-  // TODO: пронеси Device мимо этого класса в наследуемые
-  QPointer<DeviceWidget> widget(m_factory.createDeviceWidget(
-      device->id(), device->commands(), device->converters()));
-  if (widget) {
-    widget->setAddress(static_cast<int>(device->addr()));
-    connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);
-    m_window.addDeviceWidget(widget);
-    if (m_factory.hasCalibration(device->id()) or
-        m_factory.hasLimits(device->id()))
-      m_window.addCalibrationMenu(device->addr(), device->id());
-  } else {
-    qWarning() << "Can't find device widget with id=" << device->id();
-  }
-}
-
-void ModelGuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id) {
-  if (!m_calibrationDialog.value(addr)) {
-    CalibrationDialog* dialog =
-        m_factory.createCalibrationDialog(id, m_network.getCommands(addr));
-    dialog->setModal(false);
-    dialog->show();
-    m_calibrationDialog.insert(addr, id);
-    connect(dialog, &CalibrationDialog::finished, this,
-            [this, addr]() { m_calibrationDialog.remove(addr); });
-  }
-}
-
-void ModelGuiMediator::setBaudrateToWindow(QStringList baud) {
+void NetworkMediator::setBaudrateToWindow(QStringList baud) {
   m_window.setBaudRates(baud);
 }
 
-void ModelGuiMediator::refreshComPorts() {
+void NetworkMediator::refreshComPorts() {
   QStringList ports;
   const auto availablePorts = QSerialPortInfo::availablePorts();
   for (const auto& port : availablePorts) {
@@ -90,8 +57,8 @@ void ModelGuiMediator::refreshComPorts() {
   m_window.setComPorts(ports);
 }
 
-void ModelGuiMediator::changeConnectState(Const::PortType type,
-                                          QVariantMap portSettings) {
+void NetworkMediator::changeConnectState(Const::PortType type,
+                                         QVariantMap portSettings) {
   if (m_network.isStart()) {
     m_network.stop();
   } else {
@@ -108,7 +75,7 @@ void ModelGuiMediator::changeConnectState(Const::PortType type,
   }
 }
 
-void ModelGuiMediator::rescan() {
+void NetworkMediator::rescan() {
   m_network.clearNetwork();
   m_network.rescanNetwork();
 }
