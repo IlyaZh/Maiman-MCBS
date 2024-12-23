@@ -206,7 +206,7 @@ void GroupWidget::showStatus() {
   GroupStatusDialog *dialog = new GroupStatusDialog(this);
   for (auto &device : m_groupWidgets) {
     dialog->addDevice(static_cast<quint8>(device->getAddress()),
-                      device->getName(), device->getModel());
+                      device->getModel());
   }
   dialog->setModal(false);
   dialog->show();

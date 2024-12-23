@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QLabel>
 #include <QMap>
+#include <QPushButton>
 #include <QWidget>
 
 #include "gui/guiinterface.h"
@@ -33,4 +34,7 @@ class GroupWidgetStatus : public QWidget, public GuiWidgetInterface {
   static const QString startedStyleOn;
   static const QString startedStyleOff;
   QMap<QString, QLabel *> m_devs;
+  QIcon m_iconWarning;
+  QIcon m_iconError;
+  QPushButton *m_iconHolder;
 };

@@ -9,12 +9,18 @@ QMainWindow *{
         background: #1D1D1D;
         color: #FFFFFF;
 }
+QMainWindow{
+        border: 0px solid #1A1A1A;
+        border-bottom-left-radius: 13px;
+        border-bottom-right-radius: 13px;
+}
 QMenu:hover {
         color: #969696;
 }
 
 QMenu::item:selected {
-        background-color: #515151;
+      background: #1D1D1D;
+      color: #FFC803;
 }
 
 QMenu::item:disabled {
@@ -45,30 +51,32 @@ const QString menuBarWidget() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
 QMenuBar {
-        background: rgb(51,51,51);
+        background: #282828;
         color: #fff;
 }
 
 QMenuBar::item {
         color: #fff;
-        background: rgb(51,51,51);
+        background: #282828;
 }
 
 QMenuBar::item:disabled {
-        color: #999;
+        color: #9C9C9C;
 }
 
 QMenuBar::item:selected { /* when selected using mouse or keyboard */
-      background: rgb(111,111,111);
+      background: #1D1D1D;
+      color: #FFC803;
  }
 
 QMenuBar::item:hover { /* when selected using mouse or keyboard */
-      background: rgb(111,111,111);
-     color: #eee;
+      background: #1D1D1D;
+      color: #FFC803;
  }
 
  QMenuBar::item:pressed {
-      background: rgb(31,31,31);
+      background: #1D1D1D;
+      color: #FFC803;
  }
 )";
   } else {
@@ -178,7 +186,7 @@ namespace Quit {
 const QString quitWidget() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-    background: #282828;
+    background: #1D1D1D;
   )";
   } else {
     return R"(
@@ -189,7 +197,7 @@ const QString quitWidget() {
 const QString label() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-    background: #282828;
+    background: #1D1D1D;
     color: #FFFFFF;
   )";
   } else {
@@ -202,12 +210,19 @@ const QString label() {
 const QString buttons() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
+QPushButton{
     color: #FFFFFF;
-    background-color: #222222;
+    background-color: #1D1D1D;
     border: 1px solid #6b6b6b;
-    border-radius: 4px;
-    padding: 4px;
-    width: 50px
+border-radius: 15px;
+width: 91px;
+height: 31px;
+margin: 5px;
+}
+QPushButton:hover{
+    color: #1D1D1D;
+    background-color: #FFC803;
+}
   )";
   } else {
     return R"(
@@ -239,12 +254,21 @@ const QString widget() {
 const QString comboBoxes() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-        background: rgb(51,51,51);
-        color: #ffffff;
-        border: 1px solid #FFFFFF;
-        border-radius: 4px;
-        padding-left: 10px;
-        padding-right: 10px;
+QComboBox{
+background-color: #000000;
+color: #ffffff;
+border: 1px solid #393838;
+border-radius: 5px;
+padding-left: 10px;
+padding-right: 10px;
+}
+QComboBox::drop-down{
+
+}
+QComboBox::down-arrow {
+
+}
+
   )";
   } else {
     return R"(
@@ -271,12 +295,19 @@ const QString labels() {
 const QString buttons() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-        background: rgb(51,51,51);
+QPushButton{
+        background: #1D1D1D;
         color: #ffffff;
-        border: 1px solid #FFFFFF;
-        border-radius: 4px;
+        border: 1px solid #6B6B6B;
+        border-radius: 15px;
         padding-left: 10px;
         padding-right: 10px;
+}
+QPushButton:hover{
+    color: #000000;
+    background-color: #FFC803;
+    border: 1px solid #FFC803;
+}
   )";
   } else {
     return R"(
@@ -328,15 +359,15 @@ const QString progressBar() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
         QProgressBar {
-        background-color: rgb(81, 81, 81);
-            border: 2px;
-            border-radius: 3px;
+        background-color: #4A4A4A;
+            border: 0px solid #999999;
+            border-radius: 4px;
             text-align: center;
         }
         QProgressBar::chunk {
-            background-color: rgb(255, 255, 255);
-            border: 2px;
-            border-radius: 3px;
+            background-color: #FFC803;
+            border: 0px solid #999999;
+            border-radius: 4px;
         }
     )";
   } else {
@@ -1004,6 +1035,107 @@ const QString buttonStopped() {
 }
 }  // namespace ButtonWidget
 }  // namespace Device
+namespace Calibration {
+namespace Dialog {
+const QString generalButtons() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QPushButton {
+    color: rgb(255, 255, 255);
+    background-color: #1D1D1D;
+    border: 1px solid #6B6B6B;
+    border-radius: 15px;
+    padding: 4px;
+    width: 91px;
+    height: 31px;
+}
+
+QPushButton::hover{
+color: #000000;
+    background-color: #FFC803;
+    border: 1px solid #FFC803;
+}
+)";
+  } else {
+    return R"(
+
+)";
+  }
+}
+const QString buttonEnabled() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QPushButton {
+    color: rgb(255, 255, 255);
+    background-color: #1D1D1D;
+    border: 1px solid #6B6B6B;
+    border-radius: 15px;
+    padding: 4px;
+    width: 91px;
+    height: 31px;
+}
+
+QPushButton::hover{
+    color: #000000;
+    background-color: #FFC803;
+    border: 1px solid #FFC803;
+}
+  )";
+  } else {
+    return R"(
+
+  )";
+  }
+}
+const QString buttonDisabled() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QPushButton {
+    color: rgb(255, 255, 255);
+    background-color: #6F6F6F;
+    border: 1px solid #6F6F6F;
+    border-radius: 15px;
+    padding: 4px;
+    width: 91px;
+    height: 31px;
+}
+
+QPushButton::hover{
+
+}
+  )";
+  } else {
+    return R"(
+
+  )";
+  }
+}
+}  // namespace Dialog
+namespace widget {
+const QString lineEditOk() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    QLineEdit {
+        color: #000000;
+        background: rgb(255, 255, 255);
+        border-radius: 12px;
+        padding: 5px 0;
+    }
+    QLineEdit::disabled {
+        background: rgb(255, 255, 255);
+        color: rgb(76, 93, 100);
+        border-radius: 5px;
+        padding: 5px 0;
+    }
+)";
+  } else {
+    return R"(
+
+)";
+  }
+}
+}  // namespace widget
+}  // namespace Calibration
 namespace Group {
 namespace Widget {
 const QString groupWidget() {

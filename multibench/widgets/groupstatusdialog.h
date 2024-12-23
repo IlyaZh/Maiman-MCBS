@@ -17,7 +17,7 @@ class GroupStatusDialog : public QDialog, public GuiWidgetInterface {
  public:
   explicit GroupStatusDialog(QWidget* parent = nullptr);
   ~GroupStatusDialog();
-  void addDevice(quint8 addr, const QString& name, const QString& model);
+  void addDevice(quint8 addr, const QString& model);
   void updateStyle() override;
  public slots:
   void setStatus(QMap<quint8, DeviceStatusGroup>& status);

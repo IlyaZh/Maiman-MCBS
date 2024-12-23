@@ -74,6 +74,17 @@ const QString buttonStarted();
 const QString buttonStopped();
 }  // namespace ButtonWidget
 }  // namespace Device
+namespace Calibration {
+namespace Dialog {
+const QString generalButtons();
+const QString buttonEnabled();
+const QString buttonDisabled();
+}  // namespace Dialog
+namespace widget {
+const QString lineEditOk();
+const QString lineEditError();
+}  // namespace widget
+}  // namespace Calibration
 namespace About {
 const QString widget();
 }

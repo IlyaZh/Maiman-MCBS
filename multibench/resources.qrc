@@ -23,5 +23,7 @@
         <file>resources/images/LightCheckBoxOff.png</file>
         <file>resources/images/LightCheckBoxOn.png</file>
         <file>resources/images/LightSetButton.png</file>
+        <file>resources/images/GroupError.png</file>
+        <file>resources/images/GroupWarning.png</file>
     </qresource>
 </RCC>

@@ -21,11 +21,10 @@ GroupStatusDialog::GroupStatusDialog(QWidget *parent)
 
 GroupStatusDialog::~GroupStatusDialog() { delete ui; }
 
-void GroupStatusDialog::addDevice(quint8 addr, const QString &name,
-                                  const QString &model) {
+void GroupStatusDialog::addDevice(quint8 addr, const QString &model) {
   auto device = QSharedPointer<GroupWidgetStatus>::create();
   device->setModel(model);
-  device->setName(name);
+  device->setName(QString("ID: %1").arg(addr));
   m_devicesLayout->addWidget(device.data());
   m_devices.insert(addr, device);
   resizeWidget();
