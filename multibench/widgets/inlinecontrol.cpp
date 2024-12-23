@@ -1,29 +1,5 @@
 #include "inlinecontrol.h"
 
-const QString readOnly =
-    "QLineEdit{background-color: #222222;\
-    border-radius: 12px;\
-    border: 1px solid #6B6B6B;\
-    color: rgba(255, 255, 255, 0.9);\
-    text-align: center;\
-}";
-
-const QString editValue =
-    "QLineEdit{background-color: #6B6B6B;\
-    border-radius: 12px;\
-    border: 1px solid #6B6B6B;\
-    color: rgba(255, 255, 255, 0.9);\
-    text-align: center;\
-}";
-
-const QString errorValue =
-    "QLineEdit{background-color: #FF403A;\
-    border-radius: 12px;\
-    border: 1px solid #6B6B6B;\
-    color: rgba(255, 255, 255, 0.9);\
-    text-align: center;\
-}";
-
 InLineControl::InLineControl()
     : m_icon(new QPushButton()), m_layout(new QHBoxLayout) {
   m_layout = new QHBoxLayout();

@@ -366,6 +366,7 @@ void MainWindow::getKeepAddresses() {
 void MainWindow::closeEvent(QCloseEvent* event) {
   m_Quit->show();
   event->ignore();
+  m_Quit->updateStyle();
   connect(m_Quit, &QuitDialog::accepted, this, &QCoreApplication::quit);
 }
 

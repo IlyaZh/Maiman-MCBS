@@ -6,26 +6,6 @@
 #include "widgets/plusminusgroupwidget.h"
 #include "widgets/plusminuswidget.h"
 
-const QString CalibrationDialog::styleButtonOn =
-    "QPushButton {\
-    color: rgb(255, 255, 255);\
-background-color: rgb(51, 51, 51);\
-border: 1px solid #999999;\
-border-radius: 4px;\
-padding: 4px;\
-width: 50px\
-}";
-
-const QString CalibrationDialog::styleButtonOff =
-    "QPushButton {\
-    color: rgb(255, 255, 255);\
-    background-color: rgb(153, 153, 153);\
-    border: 1px solid #999999;\
-    border-radius: 4px;\
-    padding: 4px;\
-    width: 50px\
-}";
-
 CalibrationDialog::CalibrationDialog(
     const DeviceWidgetDesc& deviceDesc,
     const QMap<quint16, QSharedPointer<DevCommand>>& commands, QWidget* parent)
@@ -157,6 +137,7 @@ CalibrationDialog::CalibrationDialog(
       } break;
     }
   });
+  CalibrationDialog::updateStyle();
 }
 
 CalibrationDialog::~CalibrationDialog() { delete ui; }
@@ -182,7 +163,9 @@ void CalibrationDialog::widgetsAreValid() {
 
   ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(state);
   ui->buttonBox->button(QDialogButtonBox::Ok)
-      ->setStyleSheet(state ? styleButtonOn : styleButtonOff);
+      ->setStyleSheet(
+          state ? StyleStorage::Calibration::Dialog::buttonEnabled()
+                : StyleStorage::Calibration::Dialog::buttonDisabled());
 }
 
 void CalibrationDialog::updateValue(const model::Event& event) {
@@ -201,4 +184,8 @@ void CalibrationDialog::updateValue(const model::Event& event) {
   }
 }
 
-void CalibrationDialog::updateStyle() { this->update(); }
+void CalibrationDialog::updateStyle() {
+  ui->buttonBox->setStyleSheet(
+      StyleStorage::Calibration::Dialog::generalButtons());
+  this->update();
+}

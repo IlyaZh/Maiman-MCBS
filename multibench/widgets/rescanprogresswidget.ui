@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -24,7 +24,7 @@
     <widget class="QLabel" name="descriptionLabel">
      <property name="font">
       <font>
-       <family>Share Tech Mono</family>
+       <family>Poppins</family>
       </font>
      </property>
      <property name="styleSheet">
@@ -50,7 +50,7 @@ color: rgb(153, 153, 153);
      </property>
      <property name="font">
       <font>
-       <family>Share Tech Mono</family>
+       <family>Poppins</family>
       </font>
      </property>
      <property name="styleSheet">
@@ -681,11 +681,17 @@ QProgressBar::chunk {
    </item>
    <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>Network scanning</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
      </property>
     </widget>
    </item>

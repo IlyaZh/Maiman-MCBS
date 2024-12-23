@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>32</height>
+    <width>688</width>
+    <height>40</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>1001</width>
-    <height>32</height>
+    <height>40</height>
    </size>
   </property>
   <property name="tabletTracking">
@@ -30,8 +30,8 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog#CalibrationAndLimitsWidget{
-background: rgb(51,51,51);
-color: rgb(255, 255, 255);
+background:#1D1D1D;
+color: #999999;
 }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -54,7 +54,7 @@ color: rgb(255, 255, 255);
      </property>
      <property name="minimumSize">
       <size>
-       <width>400</width>
+       <width>450</width>
        <height>0</height>
       </size>
      </property>
@@ -64,10 +64,15 @@ color: rgb(255, 255, 255);
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
      <property name="styleSheet">
-      <string notr="true">
-color: rgb(255, 255, 255);
-font: 16pt &quot;Share Tech Mono&quot;;</string>
+      <string notr="true">color: #999999;
+</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
@@ -77,10 +82,16 @@ font: 16pt &quot;Share Tech Mono&quot;;</string>
    <item>
     <widget class="QPushButton" name="downValue">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>25</width>
+       <height>25</height>
+      </size>
      </property>
      <property name="maximumSize">
       <size>
@@ -88,15 +99,18 @@ font: 16pt &quot;Share Tech Mono&quot;;</string>
        <height>25</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
-	background: rgb(16, 33, 40);
-	color: rgb(230, 230, 230);
-	border-radius: 5px;
-	width: 20px;
-	height: 30px;
-
-	font: 16pt &quot;Share Tech Mono&quot;;
+	background: #000000;
+	color: #FFFFFF;
+	width: 25px;
+	height: 25px;
 }
 
 QPushButton::disabled {
@@ -112,32 +126,46 @@ QPushButton::disabled {
    <item>
     <widget class="QLineEdit" name="value">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>25</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>80</width>
-       <height>30</height>
+       <height>25</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
      </property>
      <property name="styleSheet">
       <string notr="true">
 QLineEdit {
-	font: 16pt &quot;Share Tech Mono&quot;;
 	color: rgb(16, 33, 40);
 	background: rgb(255, 255, 255);
-	border-radius: 5px;
-	padding: 5px 0;
+	border-radius:12px;
+	padding: 5px;
 }
 
 QLineEdit::disabled {
 	background: rgb(255, 255, 255);
 	color: rgb(76, 93, 100);
-	border-radius: 5px;
-	padding: 5px 0;
+	border-radius: 12px;
+	padding: 5px;
 }
 </string>
      </property>
@@ -152,15 +180,15 @@ QLineEdit::disabled {
    <item>
     <widget class="QPushButton" name="upValue">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>0</width>
-       <height>0</height>
+       <width>25</width>
+       <height>25</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -169,15 +197,17 @@ QLineEdit::disabled {
        <height>25</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
-	background: rgb(16, 33, 40);
-	color: rgb(230, 230, 230);
-	border-radius: 5px;
-	width: 20px;
-	height: 30px;
-	
-	font: 16pt &quot;Share Tech Mono&quot;;
+	background: #000000;
+	color: #FFFFFF;
+	width: 25px;
+	height: 25px;
 }
 
 QPushButton::disabled {
@@ -196,8 +226,53 @@ QPushButton::disabled {
       <number>0</number>
      </property>
      <property name="leftMargin">
-      <number>10</number>
+      <number>19</number>
      </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="minParameter">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>14</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>14</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Poppins</family>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #999999</string>
+       </property>
+       <property name="text">
+        <string>Min:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QLabel" name="maxParameter">
        <property name="sizePolicy">
@@ -206,23 +281,36 @@ QPushButton::disabled {
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>14</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>14</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Poppins</family>
+         <pointsize>8</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(180, 180, 180);
-font: 8pt &quot;Share Tech Mono&quot;;</string>
+        <string notr="true">color: #999999
+</string>
        </property>
        <property name="text">
         <string>Max:</string>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="minParameter">
-       <property name="styleSheet">
-        <string notr="true">color: rgb(180, 180, 180);
-font: 8pt &quot;Share Tech Mono&quot;;</string>
-       </property>
-       <property name="text">
-        <string>Min:</string>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
        </property>
       </widget>
      </item>

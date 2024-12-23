@@ -3,43 +3,6 @@
 #include <QMouseEvent>
 using namespace StyleStorage::Device::InlineEdit;
 
-const QString readOnly =
-    "QLineEdit{background-color: #282828;\
-    color: rgb(255,255,255);\
-    border-color: #6B6B6B;\
-    border: 1px;\
-}";
-
-const QString editOnlyConnected =
-    "QLineEdit{background-color: #222222;\
-    color: #39CA76;\
-    border-color: #6B6B6B;\
-    border: 1px;\
-    border-radius: 6px; \
-}";
-
-const QString editOnlyDisconnected =
-    "QLineEdit{background-color: #222222;\
-    color: #FF403A;\
-    border-color: #6B6B6B;\
-    border: 1px;\
-    border-radius: 6px; \
-}";
-
-const QString devConnected =
-    "QLineEdit{background-color: #282828;\
-    color: #39CA76;\
-    border-color: #6B6B6B;\
-    border: 1px;\
-}";
-
-const QString devDisconnected =
-    "QLineEdit{background-color: #282828;\
-    color: #FF403A;\
-    border-color: #6B6B6B;\
-    border: 1px;\
-}";
-
 enum {
   maxLengthString = 13,
   lenghtNonEditableString = 5,
