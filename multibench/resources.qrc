@@ -25,5 +25,8 @@
         <file>resources/images/LightSetButton.png</file>
         <file>resources/images/GroupError.png</file>
         <file>resources/images/GroupWarning.png</file>
+        <file>resources/images/GroupPlug.png</file>
+        <file>resources/images/arrow-down.png</file>
+        <file>resources/images/arrow-up.png</file>
     </qresource>
 </RCC>

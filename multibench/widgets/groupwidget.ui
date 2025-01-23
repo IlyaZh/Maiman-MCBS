@@ -26,10 +26,10 @@
    <string notr="true">QWidget#GroupWidget {
 border: 2px solid rgb(26,26,26);
 border-radius: 13px;
-background: rgb(51,51,51);
+background: #1D1D1D;
 }
-QLabel {
-    color: rgb(153,153,153);
+QWidget#devicesTable{
+background:#1D1D1D;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">

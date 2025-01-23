@@ -45,12 +45,12 @@ void AboutDialog::keyReleaseEvent(QKeyEvent *event) {
 void AboutDialog::updateButtonPressed() { emit startUpdate(); }
 
 void AboutDialog::updateStyle() {
-  ui->smallInfoLabel->setStyleSheet(StyleStorage::MainWindow::About::credits());
+  //    ui->smallInfoLabel->setStyleSheet(StyleStorage::MainWindow::About::credits());
   ui->softwareInfoLabel->setStyleSheet(
       StyleStorage::MainWindow::About::credits());
-  ui->updateButton->setStyleSheet(StyleStorage::MainWindow::About::buttons());
-  ui->buttonBox->setStyleSheet(StyleStorage::MainWindow::About::buttons());
-  ui->aboutQtButton->setStyleSheet(StyleStorage::MainWindow::About::buttons());
+  //    ui->updateButton->setStyleSheet(StyleStorage::MainWindow::About::buttons());
+  //    ui->buttonBox->setStyleSheet(StyleStorage::MainWindow::About::buttons());
+  //    ui->aboutQtButton->setStyleSheet(StyleStorage::MainWindow::About::buttons());
   ui->widget->setStyleSheet(StyleStorage::MainWindow::About::logo());
   this->setStyleSheet(StyleStorage::MainWindow::About::widget());
   this->update();

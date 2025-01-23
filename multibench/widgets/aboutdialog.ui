@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>520</width>
-    <height>261</height>
+    <width>491</width>
+    <height>381</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,114 +26,28 @@
    <string>About</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: #333333;
-color: #fff;</string>
+   <string notr="true">background: #1D1D1D;
+color: #fff;
+border-bottom-left-radius: 13px;
+border-bottom-right-radius: 13px;</string>
   </property>
   <property name="modal">
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="1">
-    <widget class="QLabel" name="softwareInfoLabel">
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Инфа о версии</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QPushButton" name="updateButton">
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-	color: rgb(255, 255, 255);
-	background-color: rgb(51, 51, 51);
-	border: 1px solid #999999;
-	border-radius: 4px;
-	padding: 4px;
-}</string>
-     </property>
-     <property name="text">
-      <string>Update</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QPushButton" name="aboutQtButton">
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-	color: rgb(255, 255, 255);
-	background-color: rgb(51, 51, 51);
-	border: 1px solid #999999;
-	border-radius: 4px;
-	padding: 4px;
-}</string>
-     </property>
-     <property name="text">
-      <string>About Qt</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1" colspan="2">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="font">
-      <font>
-       <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton {
-	color: rgb(255, 255, 255);
-	background-color: rgb(51, 51, 51);
-	border: 1px solid #999999;
-	border-radius: 4px;
-	padding: 4px;
-	
-	font: 10pt &quot;Share Tech Mono&quot;;
-}</string>
-     </property>
-     <property name="locale">
-      <locale language="English" country="UnitedStates"/>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Close</set>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="0" rowspan="3">
+   <property name="leftMargin">
+    <number>40</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>40</number>
+   </property>
+   <property name="bottomMargin">
+    <number>30</number>
+   </property>
+   <item row="0" column="0" rowspan="5">
     <widget class="QWidget" name="widget" native="true">
      <property name="minimumSize">
       <size>
@@ -150,7 +64,113 @@ color: #fff;</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1" colspan="2">
+   <item row="4" column="1">
+    <widget class="QPushButton" name="aboutQtButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>108</width>
+       <height>31</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>108</width>
+       <height>31</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	color: rgb(255, 255, 255);
+	background-color:#1D1D1D;
+	border: 1px solid #6B6B6B;
+	border-radius: 15px;
+}
+QPushButton:hover{
+    color: #000000;
+    background-color: #FFC803;
+    border: 1px solid #FFC803;
+}</string>
+     </property>
+     <property name="text">
+      <string>About Qt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="softwareInfoLabel">
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Инфа о версии</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QPushButton" name="updateButton">
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	color: #FFC803;
+	background-color: #1D1D1D;
+	border: 1px solid #FFC803;
+	border-radius: 11px;
+	width: 68px;
+    height: 22px;
+}</string>
+     </property>
+     <property name="text">
+      <string>Update</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>5</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="1" colspan="3">
     <widget class="QLabel" name="smallInfoLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
@@ -160,7 +180,7 @@ color: #fff;</string>
      </property>
      <property name="font">
       <font>
-       <family>Share Tech Mono</family>
+       <family>Poppins</family>
        <pointsize>10</pointsize>
        <weight>50</weight>
        <italic>false</italic>
@@ -168,17 +188,76 @@ color: #fff;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #fff;
-font: 10pt &quot;Share Tech Mono&quot;;</string>
+      <string notr="true">color: #9A9A9A;
+font: 10pt &quot;Poppins&quot;;</string>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Development team:&lt;/span&gt;&lt;br/&gt;Temnikov Anatoly&lt;br/&gt;Verhovtsev Anrey&lt;br/&gt;Zhitenev Ilya&lt;br/&gt;Zelinskiy Kirill &lt;br/&gt;Nekrasova Evgeniya&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Website:&lt;/span&gt;&lt;br/&gt;&lt;a href=&quot;https://www.maimanelectronics.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;www.maimanelectronics.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Email:&lt;/span&gt;&lt;br/&gt;&lt;a href=&quot;mailto:info@maimanelectronics.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;info@maimanelectronics.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;body style=&quot; font-family:'Poppins'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;Development team:&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/span&gt;Temnikov Anatoly&lt;br /&gt;Verhovtsev Anrey&lt;br /&gt;Zhitenev Ilya&lt;br /&gt;Zelinskiy Kirill &lt;br /&gt;Nekrasova Evgeniya&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;Website:&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;a href=&quot;https://www.maimanelectronics.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#9a9a9a;&quot;&gt;www.maimanelectronics.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;Email:&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;a href=&quot;mailto:info@maimanelectronics.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#9a9a9a;&quot;&gt;info@maimanelectronics.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::AutoText</enum>
      </property>
      <property name="openExternalLinks">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2" colspan="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>91</width>
+       <height>31</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>200</width>
+       <height>31</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	color: rgb(255, 255, 255);
+	background-color:#1D1D1D;
+	border: 1px solid #6B6B6B;
+	border-radius: 15px;
+    width: 91px;
+    height: 31px;
+	font: 11pt &quot;Poppins&quot;;
+}
+QPushButton:hover{
+    color: #000000;
+    background-color: #FFC803;
+    border: 1px solid #FFC803;
+}</string>
+     </property>
+     <property name="locale">
+      <locale language="English" country="UnitedStates"/>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close</set>
      </property>
     </widget>
    </item>

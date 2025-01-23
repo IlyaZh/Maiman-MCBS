@@ -8,6 +8,7 @@
 #include "constants.h"
 #include "interfaces/pubsubinterface.h"
 #include "staticstyles.h"
+#include "widgets/inputdialog.h"
 
 using namespace StyleStorage::MainWindow;
 

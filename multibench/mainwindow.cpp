@@ -373,29 +373,33 @@ void MainWindow::closeEvent(QCloseEvent* event) {
 void MainWindow::callAboutDialog() { m_About->show(); }
 
 void MainWindow::setNetworkDelay() {
-  bool ok{false};
-  int delay = QInputDialog::getInt(
-      this, "Network Delay", "Delay", AppSettings::getNetworkDelay(),
-      Const::kNetworkDelayMSecs::min, Const::kNetworkDelayMSecs::max, 1, &ok);
-  if (ok) emit delayChanged(delay);
+  auto delay = new InputDialog("Network Delay", "Delay", this);
+  delay->setLimits(Const::kNetworkDelayMSecs::min,
+                   AppSettings::getNetworkDelay(),
+                   Const::kNetworkDelayMSecs::max);
+  connect(delay, &InputDialog::changesCompleted, this,
+          &MainWindow::delayChanged);
+  delay->show();
 }
 
 void MainWindow::setNetworkTimeout() {
-  bool ok{false};
-  int timeout = QInputDialog::getInt(this, "Network Timeout", "Timeout",
-                                     AppSettings::getNetworkTimeout(),
-                                     Const::kNetworkTimeoutMSecs::min,
-                                     Const::kNetworkTimeoutMSecs::max, 1, &ok);
-  if (ok) emit timeoutChanged(timeout);
+  auto timeout = new InputDialog("Network Timeout", "Timeout", this);
+  timeout->setLimits(Const::kNetworkTimeoutMSecs::min,
+                     AppSettings::getNetworkTimeout(),
+                     Const::kNetworkTimeoutMSecs::max);
+  connect(timeout, &InputDialog::changesCompleted, this,
+          &MainWindow::timeoutChanged);
+  timeout->show();
 }
 
 void MainWindow::setNetworkMaxAddress() {
-  bool ok{false};
-  int address = QInputDialog::getInt(this, "Network Max Address", "Max Address",
-                                     AppSettings::getNetworkMaxAddress(),
-                                     Const::kNetworkMaxAddress::min,
-                                     Const::kNetworkMaxAddress::max, 1, &ok);
-  if (ok) AppSettings::setNetworkMaxAddress(address);
+  auto addresses = new InputDialog("Network Max Address", "Max Address", this);
+  addresses->setLimits(Const::kNetworkMaxAddress::min,
+                       AppSettings::getNetworkMaxAddress(),
+                       Const::kNetworkMaxAddress::max);
+  connect(addresses, &InputDialog::changesCompleted, this,
+          [](int value) { AppSettings::setNetworkMaxAddress(value); });
+  addresses->show();
 }
 
 void MainWindow::triggeredRescanNetwork() {

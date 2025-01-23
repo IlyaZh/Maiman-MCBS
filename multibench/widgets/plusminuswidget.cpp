@@ -78,6 +78,8 @@ PlusMinusWidget::PlusMinusWidget(const CalibrationKoef &calibration,
   ui->value->setText(m_converter->valueStr());
   m_validator->setDecimals(m_converter->tolerance());
 
+  ui->horizontalLayout->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+
   setMax(calibration.max);
   setMin(calibration.min);
 
@@ -144,6 +146,8 @@ PlusMinusWidget::PlusMinusWidget(const Limit &limit,
   ui->value->setText(m_converter->valueStr());
   m_validator->setDecimals(m_converter->tolerance());
 
+  ui->horizontalLayout->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+
   setMax((m_converterMax.isNull()) ? limit.maxValue
                                    : m_converterMax->valueDouble());
   setMin((m_converterMin.isNull()) ? limit.minValue
@@ -195,14 +199,14 @@ double PlusMinusWidget::value() { return ui->value->text().toDouble(); }
 void PlusMinusWidget::setMin(double min) {
   minValue = min;
   m_validator->setBottom(minValue);
-  ui->minParameter->setText(QString("Min:%1").arg(minValue));
+  ui->minParameter->setText(QString("Min: %1").arg(minValue));
   validateValue();
 }
 
 void PlusMinusWidget::setMax(double max) {
   maxValue = max;
   m_validator->setTop(maxValue);
-  ui->maxParameter->setText(QString("Max:%1").arg(maxValue));
+  ui->maxParameter->setText(QString("Max: %1").arg(maxValue));
   validateValue();
 }
 

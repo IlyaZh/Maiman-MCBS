@@ -94,12 +94,21 @@ color: rgb(255, 255, 255);
          <font/>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: rgb(51,51,51);
+         <string notr="true">QComboBox{
+background-color: rgb(0, 0, 0);
 color: #ffffff;
-border: 1px solid #FFFFFF;			
-border-radius: 4px;
+border: 1px solid #393838;			
+border-radius: 5px;
 padding-left: 10px;
 padding-right: 10px;
+}
+QComboBox::drop-down{
+
+}
+QComboBox::down-arrow {
+
+}
+
 </string>
         </property>
        </widget>
@@ -174,17 +183,29 @@ QComboBox::down-arrow {
         <property name="font">
          <font>
           <family>Poppins</family>
-          <pointsize>10</pointsize>
+          <pointsize>11</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: rgb(51,51,51);
+         <string notr="true">QPushButton{
+background: #1D1D1D;
 color: #ffffff;
-border: 1px solid #FFFFFF;			
-border-radius: 4px;
+border: 1px solid #6b6b6b;			
+border-radius: 15px;
 padding-left: 10px;
 padding-right: 10px;
-</string>
+widht: 98px;
+height: 29px;
+font: 11pt &quot;Poppins&quot;;
+}
+
+QPushButton:hover{
+background: #FFC803;
+color: #000000;
+}</string>
         </property>
         <property name="text">
          <string>Connect</string>
@@ -208,17 +229,29 @@ padding-right: 10px;
         <property name="font">
          <font>
           <family>Poppins</family>
-          <pointsize>10</pointsize>
+          <pointsize>11</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: rgb(51,51,51);
+         <string notr="true">QPushButton{
+background: #1D1D1D;
 color: #ffffff;
-border: 1px solid #FFFFFF;			
-border-radius: 4px;
+border: 1px solid #6b6b6b;			
+border-radius: 15px;
 padding-left: 10px;
 padding-right: 10px;
-</string>
+widht: 98px;
+height: 29px;
+font: 11pt &quot;Poppins&quot;;
+}
+
+QPushButton:hover{
+background: #FFC803;
+color: #000000;
+}</string>
         </property>
         <property name="text">
          <string>Refresh</string>

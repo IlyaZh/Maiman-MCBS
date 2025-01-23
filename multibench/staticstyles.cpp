@@ -2,6 +2,37 @@
 
 namespace StyleStorage {
 namespace MainWindow {
+const QString AppScrollBars() {
+  return R"(
+    QScrollArea {
+        background: transparent;
+        border: none;
+    }
+    QScrollBar:vertical, QScrollBar:horizontal {
+        background: #1D1D1D;
+        width: 12px; /* Ширина вертикального */
+        height: 12px; /* Высота горизонтального */
+        margin: 0px;
+    }
+    QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+        background: #2E2E2E;
+        border-radius: 3px;
+        min-height: 20px; /* Минимальный размер для вертикального */
+        min-width: 20px;  /* Минимальный размер для горизонтального */
+    }
+    QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
+    QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+        background: none;
+        border: none;
+        width: 0px;
+        height: 0px;
+    }
+    QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical,
+    QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+        background: none;
+    }
+)";
+}
 const QString AppWidget() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
@@ -78,6 +109,8 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
       background: #1D1D1D;
       color: #FFC803;
  }
+
+
 )";
   } else {
     return R"(
@@ -391,8 +424,10 @@ namespace About {
 const QString widget() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-        background: #333333;
+        background: #1D1D1D;
         color: #FFFFFF;
+        border-bottom-left-radius: 13px;
+        border-bottom-right-radius: 13px;
       )";
   } else {
     return R"(
@@ -404,7 +439,8 @@ const QString widget() {
 const QString credits() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-        color: #FFFFFF;
+        color: #9A9A9A;
+        font: 10pt "Poppins";
       )";
   } else {
     return R"(
@@ -431,11 +467,10 @@ const QString buttons() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
         QPushButton {
-            color: #FFFFFF;
-            background-color: #333333;
-            border: 1px solid #999999;
-            border-radius: 4px;
-            padding: 4px;
+            color: rgb(255, 255, 255);
+            background-color:#1D1D1D;
+            border: 1px solid #6B6B6B;
+            border-radius: 15px;
         }
       )";
   } else {
@@ -1141,14 +1176,14 @@ namespace Widget {
 const QString groupWidget() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-      QWidget#GroupWidget {
-          border: 0px solid rgb(26,26,26);
-          border-radius: 13px;
-          background: rgb(51,51,51);
-      }
-      QLabel {
-          color: rgb(153,153,153);
-      }
+        QWidget#GroupWidget {
+        border: 2px solid #1A1A1A;
+        border-radius: 13px;
+        background: #232323;
+        }
+        QWidget#devicesTable{
+        background:#232323;
+        }
 )";
   } else {
     return R"(
@@ -1223,7 +1258,7 @@ const QString buttonInMiddle() {
 const QString hideButton() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-      border: 1px solid #1A1A1A;
+      border: 1px solid #565656;
       border-radius: 5px;
       background: #1D1D1D;
       color: #FFFFFF;
@@ -1239,8 +1274,296 @@ const QString hideButton() {
 )";
   }
 }
+namespace InlineEdit {
+const QString widgetConnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QLineEdit{background-color: #232323;
+      color: #39CA76;
+      border-color: #232323;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  } else {
+    return R"(
+      QLineEdit{background-color: #FFFFFF;
+      color: #3BBB5B;
+      border-color: #FFFFFF;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  }
+}
+const QString widgetDisconnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QLineEdit{background-color: #232323;
+      color: #FF403A;
+      border-color: #232323;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  } else {
+    return R"(
+      QLineEdit{background-color: #FFFFFF;
+      color: #FF2E27;
+      border-color: #FFFFFF;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  }
+}
+
+const QString widgetEditConnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QLineEdit{background-color: #6B6B6B;
+      color: #39CA76;
+      border-color: #6B6B6B;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  } else {
+    return R"(
+      QLineEdit{background-color: #F3F3F3;
+      color: #3BBB5B;
+      border-color: #F3F3F3;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  }
+}
+const QString widgetEditDisconnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QLineEdit{background-color: #6B6B6B;
+      color: #FF403A;
+      border-color: #6B6B6B;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  } else {
+    return R"(
+      QLineEdit{background-color: #F3F3F3;
+      color: #FF2E27;
+      border-color: #F3F3F3;
+      border: 1px;
+      border-radius: 6px;
+}
+)";
+  }
+}
+const QString button() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      border: 0px solid #232323;
+      border-radius: 3px;
+      background: #232323;
+      color: #8E8E8E;
+      padding: 0px;
+      margin-bottom: 0px;
+)";
+  } else {
+    return R"(
+      border: 1px solid #E7E7E7;
+      border-radius: 3px;
+      background: #E7E7E7;
+      color: #8E8E8E;
+      padding: 0px;
+      margin-bottom: 0px;
+)";
+  }
+}
+}  // namespace InlineEdit
 }  // namespace Widget
 namespace Manager {}
-namespace Status {}
+namespace Status {
+const QString widget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QWidget#GroupWidgetStatus{
+    border: 0px solid red;
+    border-radius: 13px;
+    background:  #000000;
+}
+)";
+  } else {
+    return R"(
+QWidget#GroupWidgetStatus{
+    border: 5px solid red;
+    border-radius: 5px;
+    background:  #000000;
+}
+
+)";
+  }
+}
+const QString labels() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    color: #FFFFFF;
+    font-size: 17px;
+    padding-top: 3px;
+    margin-left: 18px;
+  )";
+  } else {
+    return R"(
+    color: #FFFFFF;
+    font: 16px;
+  )";
+  }
+}
+
+const QString unactiveLabels() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    color: #808080;
+    font-size: 17px;
+    padding-top: 3px;
+    margin-left: 18px;
+  )";
+  } else {
+    return R"(
+    color: #FFFFFF;
+    font: 16px;
+  )";
+  }
+}
+
+const QString activeLabels() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    color: #FFFFFF;
+    font-size: 17px;
+    padding-top: 3px;
+  )";
+  } else {
+    return R"(
+    color: #FFFFFF;
+    font: 16px;
+  )";
+  }
+}
+
+const QString nameLabelOn() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QLabel{
+    color: #39CA76;
+    font-size: 17px;
+    padding-top: 3px;
+}
+    )";
+  } else {
+    return R"(
+      color: #FFFFFF;
+      font: 16px;
+    )";
+  }
+}
+const QString nameLabelOff() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QLabel{
+    color: #FF2E27;
+    font-size: 17px;
+    padding-top: 3px;
+}
+    )";
+  } else {
+    return R"(
+      color: #FFFFFF;
+      font: 16px;
+    )";
+  }
+}
+const QString linkOn() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QLabel{
+        background: #39CA76;
+        border: 1px solid #39CA76;
+        border-radius: 3px;
+}
+    )";
+  } else {
+    return R"(
+      color: #FFFFFF;
+      font: 16px;
+    )";
+  }
+}
+const QString linkOff() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QLabel{
+        background: #FF2E27;
+        border: 1px solid #FF2E27;
+        border-radius: 3px;
+}
+    )";
+  } else {
+    return R"(
+      color: #FFFFFF;
+      font: 16px;
+    )";
+  }
+}
+
+const QString warningGray() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    color: #808080;
+    font-size: 17px;
+    padding-top: 3px;
+    margin-left: 18px;
+  )";
+  } else {
+    return R"(
+    color: #FFFFFF;
+    font: 16px;
+  )";
+  }
+}
+
+const QString warningYellow() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    color: #FFC803;
+    font-size: 17px;
+    padding-top: 3px;
+    margin-left: 18px;
+  )";
+  } else {
+    return R"(
+    color: #FFFFFF;
+    font: 16px;
+  )";
+  }
+}
+
+const QString warningRed() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    color: #FF403A;
+    font-size: 17px;
+    padding-top: 3px;
+    margin-left: 18px;
+  )";
+  } else {
+    return R"(
+    color: #FFFFFF;
+    font: 16px;
+  )";
+  }
+}
+}  // namespace Status
 }  // namespace Group
 }  // namespace StyleStorage

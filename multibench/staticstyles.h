@@ -6,6 +6,7 @@
 
 namespace StyleStorage {
 namespace MainWindow {
+const QString AppScrollBars();
 const QString AppWidget();
 const QString menuBarWidget();
 const QString scrollWidget();
@@ -95,8 +96,27 @@ const QString buttonLaunched();
 const QString buttonStopped();
 const QString buttonInMiddle();
 const QString hideButton();
+namespace InlineEdit {
+const QString widgetConnected();
+const QString widgetDisconnected();
+const QString widgetEditConnected();
+const QString widgetEditDisconnected();
+const QString button();
+}  // namespace InlineEdit
 }  // namespace Widget
 namespace Manager {}
-namespace Status {}
+namespace Status {
+const QString widget();
+const QString labels();
+const QString unactiveLabels();
+const QString activeLabels();
+const QString nameLabelOn();
+const QString nameLabelOff();
+const QString linkOn();
+const QString linkOff();
+const QString warningGray();
+const QString warningYellow();
+const QString warningRed();
+}  // namespace Status
 }  // namespace Group
 }  // namespace StyleStorage

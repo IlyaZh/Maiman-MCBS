@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
   QApplication::setFont(defaultFont);
   //  QApplication::setFont(QFont("Poppins", 9));
 
+  app.setStyleSheet(StyleStorage::MainWindow::AppScrollBars());
 #ifdef QT_DEBUG
   debugMode = false;
   setlocale(LC_CTYPE, "ru-RU");

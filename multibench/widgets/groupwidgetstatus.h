@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDebug>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QMap>
 #include <QPushButton>
@@ -34,7 +35,12 @@ class GroupWidgetStatus : public QWidget, public GuiWidgetInterface {
   static const QString startedStyleOn;
   static const QString startedStyleOff;
   QMap<QString, QLabel *> m_devs;
+  QIcon m_iconPlug;
   QIcon m_iconWarning;
   QIcon m_iconError;
   QPushButton *m_iconHolder;
+  QWidget *laserStarted;
+  QWidget *tecStarted;
+  QHBoxLayout *laserLayout;
+  QHBoxLayout *tecLayout;
 };

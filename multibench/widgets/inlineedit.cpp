@@ -1,7 +1,7 @@
 #include "inlineedit.h"
 
 #include <QMouseEvent>
-using namespace StyleStorage::Device::InlineEdit;
+using namespace StyleStorage;
 
 enum {
   maxLengthString = 13,
@@ -52,7 +52,10 @@ InLineEdit::InLineEdit(int addr, bool isDevice)
   setFont(font16);
   setText(m_name);
   setReadOnly(true);
-  setStyleSheet(widgetConnected());
+  if (m_isDevice)
+    setStyleSheet(Device::InlineEdit::widgetConnected());
+  else
+    setStyleSheet(Group::Widget::InlineEdit::widgetConnected());
   setAlignment(Qt::AlignLeft);
   setContentsMargins(0, 2, 0, 0);
   if (m_isDevice)
@@ -67,8 +70,13 @@ InLineEdit::InLineEdit(int addr, bool isDevice)
   connect(m_icon, &QPushButton::clicked, this, [this]() {
     m_icon->hide();
     setReadOnly(false);
-    setStyleSheet(m_isConnected ? widgetEditConnected()
-                                : widgetEditDisconnected());
+    QString connected = m_isDevice
+                            ? Device::InlineEdit::widgetEditConnected()
+                            : Group::Widget::InlineEdit::widgetEditConnected();
+    QString disconnected =
+        m_isDevice ? Device::InlineEdit::widgetEditDisconnected()
+                   : Group::Widget::InlineEdit::widgetEditDisconnected();
+    setStyleSheet(m_isConnected ? connected : disconnected);
     QLineEdit::setText(m_name);
     setFocus(Qt::FocusReason::MouseFocusReason);
   });
@@ -78,8 +86,13 @@ InLineEdit::InLineEdit(int addr, bool isDevice)
 void InLineEdit::mouseDoubleClickEvent(QMouseEvent *event) {
   if (event->button() == Qt::LeftButton) {
     setReadOnly(false);
-    setStyleSheet(m_isConnected ? widgetEditConnected()
-                                : widgetEditDisconnected());
+    QString connected = m_isDevice
+                            ? Device::InlineEdit::widgetEditConnected()
+                            : Group::Widget::InlineEdit::widgetEditConnected();
+    QString disconnected =
+        m_isDevice ? Device::InlineEdit::widgetEditDisconnected()
+                   : Group::Widget::InlineEdit::widgetEditDisconnected();
+    setStyleSheet(m_isConnected ? connected : disconnected);
     m_icon->hide();
     QLineEdit::setText(m_name);
   }
@@ -87,7 +100,12 @@ void InLineEdit::mouseDoubleClickEvent(QMouseEvent *event) {
 
 void InLineEdit::finishedChanges() {
   setReadOnly(true);
-  setStyleSheet(m_isConnected ? widgetConnected() : widgetDisconnected());
+  QString connected = m_isDevice ? Device::InlineEdit::widgetConnected()
+                                 : Group::Widget::InlineEdit::widgetConnected();
+  QString disconnected = m_isDevice
+                             ? Device::InlineEdit::widgetDisconnected()
+                             : Group::Widget::InlineEdit::widgetDisconnected();
+  setStyleSheet(m_isConnected ? connected : disconnected);
   if (!QLineEdit::text().contains("ID:")) {
     m_name = QLineEdit::text();
     emit nameEdited(m_name, m_address);
@@ -140,7 +158,13 @@ void InLineEdit::checkTextLenght() {
 void InLineEdit::setLink(bool link) {
   if (link != m_isConnected) {
     m_isConnected = link;
-    setStyleSheet(m_isConnected ? widgetConnected() : widgetDisconnected());
+    QString connected = m_isDevice
+                            ? Device::InlineEdit::widgetConnected()
+                            : Group::Widget::InlineEdit::widgetConnected();
+    QString disconnected =
+        m_isDevice ? Device::InlineEdit::widgetDisconnected()
+                   : Group::Widget::InlineEdit::widgetDisconnected();
+    setStyleSheet(m_isConnected ? connected : disconnected);
   }
 }
 
@@ -153,8 +177,14 @@ void InLineEdit::updateStyle() {
   m_icon->setIcon((AppSettings::getDarkAppStyle()) ? m_darkButton
                                                    : m_lightButton);
   m_icon->setIconSize(QSize(14, 14));
-  m_icon->setStyleSheet(button());
+  m_icon->setStyleSheet(m_isDevice ? Device::InlineEdit::button()
+                                   : Group::Widget::InlineEdit::button());
   m_icon->update();
-  setStyleSheet(m_isConnected ? widgetConnected() : widgetDisconnected());
+  QString connected = m_isDevice ? Device::InlineEdit::widgetConnected()
+                                 : Group::Widget::InlineEdit::widgetConnected();
+  QString disconnected = m_isDevice
+                             ? Device::InlineEdit::widgetDisconnected()
+                             : Group::Widget::InlineEdit::widgetDisconnected();
+  setStyleSheet(m_isConnected ? connected : disconnected);
   this->update();
 }

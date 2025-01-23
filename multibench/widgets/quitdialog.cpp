@@ -10,8 +10,13 @@ QuitDialog::QuitDialog(QWidget* parent)
   ui->setupUi(this);
   setWindowTitle("Confirm");
   setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-  ui->buttonBox->layout()->setSpacing(9);
-  ui->label->setContentsMargins(0, 0, 0, 5);
+  ui->buttonBox->layout()->setSpacing(6);
+  ui->label->setContentsMargins(0, 0, 0, 0);
+  QFont font18("Poppins", 18);
+  font18.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font18.setPixelSize(18);
+  ui->label->setFont(font18);
+  QuitDialog::updateStyle();
   //  adjustSize();
 }
 
@@ -21,9 +26,10 @@ QuitDialog* QuitDialog::createDialog(const QString& title, QString message,
                                      QDialogButtonBox::StandardButtons buttons,
                                      int font, QWidget* parent) {
   QuitDialog* dialog = new QuitDialog(parent);
+  dialog->updateStyle();
   dialog->setWindowTitle(title);
   dialog->ui->label->setText(message);
-  dialog->ui->label->setFont(QFont("Share Tech Mono", font));
+  dialog->ui->label->setFont(QFont("Poppins", font));
   dialog->adjustSize();
   dialog->ui->buttonBox->setStandardButtons(buttons);
   dialog->show();

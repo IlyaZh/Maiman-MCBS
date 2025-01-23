@@ -13,6 +13,7 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
       m_widgetLayout(new QGridLayout()),
       m_selfAddr(groupAddr) {
   ui->setupUi(this);
+  this->setObjectName("GroupWidget");
   m_widgetLayout = new QGridLayout(ui->devicesTable);
   m_widgetLayout->setMargin(0);
   m_widgetLayout->setSpacing(10);
@@ -138,12 +139,16 @@ void GroupWidget::hideDevices(bool flag) {
     m_hideButton->setText(" " + tr("Hide Devices"));
     ui->devicesTable->setVisible(true);
     this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+    int width = this->size().rwidth();
     this->adjustSize();
+    this->setMinimumWidth(width);
   } else {
     m_hideButton->setText(" " + tr("Show Devices"));
     ui->devicesTable->setVisible(false);
     this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
+    int width = this->size().rwidth();
     this->adjustSize();
+    this->setMinimumWidth(width);
   }
 
   resizeWidget();
@@ -203,7 +208,7 @@ void GroupWidget::linkStatusChanged(int addr, bool status) {
 }
 
 void GroupWidget::showStatus() {
-  GroupStatusDialog *dialog = new GroupStatusDialog(this);
+  QPointer<GroupStatusDialog> dialog(new GroupStatusDialog());
   for (auto &device : m_groupWidgets) {
     dialog->addDevice(static_cast<quint8>(device->getAddress()),
                       device->getModel());

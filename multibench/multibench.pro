@@ -90,6 +90,7 @@ SOURCES += \
     widgets/groupwidgetstatus.cpp \
     widgets/inlinecontrol.cpp \
     widgets/inlineedit.cpp \
+    widgets/inputdialog.cpp \
     widgets/plusminusgroupwidget.cpp \
     widgets/plusminuswidget.cpp \
     widgets/quitdialog.cpp \
@@ -154,6 +155,7 @@ HEADERS += \
     widgets/groupwidgetstatus.h \
     widgets/inlinecontrol.h \
     widgets/inlineedit.h \
+    widgets/inputdialog.h \
     widgets/plusminusgroupwidget.h \
     widgets/plusminuswidget.h \
     widgets/quitdialog.h \
@@ -194,6 +196,7 @@ FORMS += \
     widgets/groupstatusdialog.ui \
     widgets/groupwidget.ui \
     widgets/groupwidgetstatus.ui \
+    widgets/inputdialog.ui \
     widgets/quitdialog.ui \
     widgets/readparameterwidget.ui \
     widgets/rescanprogresswidget.ui
