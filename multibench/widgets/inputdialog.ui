@@ -77,13 +77,13 @@ margin-right:3px;
         QSpinBox::down-arrow {
             width: 5px;
             height: 3px;
-            image: url(:/resources/images/arrow-down.png);
+            image: url(:/resources/images/black-arrow-down.png);
 background: transparent;
        }
         QSpinBox::up-arrow{
             width: 5px;
             height: 3px;
-            image: url(:/resources/images/arrow-up.png);
+            image: url(:/resources/images/black-arrow-up.png);
 background: transparent;
        }
         QSpinBox::up-button {

@@ -4,37 +4,7 @@
 #include "model/device/devicewidget.h"
 #include "ui_calibrationandlimitswidget.h"
 
-const QString PlusMinusWidget::styleSheetOK{
-    "\
-    QLineEdit {\
-        font: 16pt Share Tech Mono;\
-        color: rgb(16, 33, 40);\
-        background: rgb(255, 255, 255);\
-        border-radius: 5px;\
-        padding: 5px 0;\
-    }\
-    QLineEdit::disabled {\
-        background: rgb(255, 255, 255);\
-        color: rgb(76, 93, 100);\
-        border-radius: 5px;\
-        padding: 5px 0;\
-    }"};
-
-const QString PlusMinusWidget::styleSheetERROR{
-    "\
-    QLineEdit {\
-        font: 16pt Share Tech Mono;\
-        color: rgb(255, 0, 0);\
-        background: rgb(255, 255, 255);\
-        border-radius: 5px;\
-        padding: 5px 0;\
-}\
-    QLineEdit::disabled {\
-        background: rgb(255, 255, 255);\
-        color: rgb(255, 0, 0);\
-        border-radius: 5px;\
-        padding: 5px 0;\
-}"};
+using namespace StyleStorage::Calibration::widget;
 
 PlusMinusWidget::PlusMinusWidget(const CalibrationKoef &calibration,
                                  QSharedPointer<DevCommand> command,
@@ -220,10 +190,10 @@ void PlusMinusWidget::validateValue() {
   QString v = ui->value->text();
   int pos = 0;
   if (m_validator->validate(v, pos) == QValidator::Acceptable) {
-    ui->value->setStyleSheet(styleSheetOK);
+    ui->value->setStyleSheet(lineEditOk());
     m_state = true;
   } else {
-    ui->value->setStyleSheet(styleSheetERROR);
+    ui->value->setStyleSheet(lineEditError());
     m_state = false;
   }
 }

@@ -48,7 +48,7 @@ background:#1D1D1D;
    <item row="6" column="0" colspan="4">
     <widget class="QWidget" name="devicesTable" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+      <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>

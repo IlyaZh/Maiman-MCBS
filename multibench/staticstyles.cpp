@@ -288,7 +288,7 @@ const QString comboBoxes() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
 QComboBox{
-background-color: #000000;
+background-color: rgb(0, 0, 0);
 color: #ffffff;
 border: 1px solid #393838;
 border-radius: 5px;
@@ -296,12 +296,29 @@ padding-left: 10px;
 padding-right: 10px;
 }
 QComboBox::drop-down{
-
+background-color: rgb(0, 0, 0);
+color: #ffffff;
+border: 0px solid #393838;
+border-radius: 5px;
 }
 QComboBox::down-arrow {
-
+            width: 5px;
+            height: 3px;
+            image: url(:/resources/images/white-arrow-down.png);
+background: transparent;
 }
-
+QComboBox QAbstractItemView {
+    border: 1px solid #393838;
+    border-radius: 5px;
+    selection-background-color: #6B6B6B;
+    selection-color: black;
+    background: black;
+    color: white;
+}
+QComboBox::item:selected {
+    background: #6B6B6B;;
+    color: white;
+}
   )";
   } else {
     return R"(
@@ -1151,22 +1168,62 @@ const QString lineEditOk() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
     QLineEdit {
-        color: #000000;
-        background: rgb(255, 255, 255);
+        color: #FFFFFF;
+        background: #000000;
+        border: 1px solid #414141;
         border-radius: 12px;
-        padding: 5px 0;
+        padding-top:2px;
     }
     QLineEdit::disabled {
-        background: rgb(255, 255, 255);
-        color: rgb(76, 93, 100);
-        border-radius: 5px;
-        padding: 5px 0;
+        background: #000000;
+        color: #FFFFFF;
+        border: 1px solid #414141;
+        border-radius: 12px;
+        padding-top:2px;
+    }
+    QLineEdit:focus {
+        color: #000000;
+        background: #FFFFFF;
+        border: 1px solid #414141;
+        border-radius: 12px;
+        padding-top:2px;
     }
 )";
   } else {
     return R"(
 
 )";
+  }
+}
+const QString lineEditError() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QLineEdit {
+          color: #FF403A;
+          background: #000000;
+          border: 1px solid #414141;
+          border-radius: 12px;
+padding-top:2px;
+      }
+      QLineEdit::disabled {
+          background: #FF403A;
+          color: #FFFFFF;
+          border: 1px solid #414141;
+          border-radius: 12px;
+padding-top:2px;
+      }
+      QLineEdit:focus {
+          color: #FF403A;
+          background: #FFFFFF;
+          border: 1px solid #414141;
+          border-radius: 12px;
+padding-top:2px;
+      }
+  )";
+  } else {
+    return R"(
+
+  )";
   }
 }
 }  // namespace widget

@@ -26,7 +26,11 @@
         <file>resources/images/GroupError.png</file>
         <file>resources/images/GroupWarning.png</file>
         <file>resources/images/GroupPlug.png</file>
-        <file>resources/images/arrow-down.png</file>
-        <file>resources/images/arrow-up.png</file>
+        <file>resources/images/black-arrow-down.png</file>
+        <file>resources/images/black-arrow-left.png</file>
+        <file>resources/images/black-arrow-right.png</file>
+        <file>resources/images/black-arrow-up.png</file>
+        <file>resources/images/white-arrow-down.png</file>
+        <file>resources/images/white-arrow-up.png</file>
     </qresource>
 </RCC>

@@ -103,13 +103,16 @@ padding-left: 10px;
 padding-right: 10px;
 }
 QComboBox::drop-down{
-
+background-color: rgb(0, 0, 0);
+color: #ffffff;
+border: 0px solid #393838;			
 }
 QComboBox::down-arrow {
-
-}
-
-</string>
+            width: 5px;
+            height: 3px;
+            image: url(:/resources/images/white-arrow-down.png);
+background: transparent;
+}</string>
         </property>
        </widget>
       </item>
