@@ -8,8 +8,10 @@
 QuitDialog::QuitDialog(QWidget* parent)
     : QDialog(parent), ui(new Ui::QuitDialog) {
   ui->setupUi(this);
+  this->setModal(true);
   setWindowTitle("Confirm");
-  setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+  setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint |
+                 Qt::WindowCloseButtonHint);
   ui->buttonBox->layout()->setSpacing(6);
   ui->label->setContentsMargins(0, 0, 0, 0);
   QFont font18("Poppins", 18);

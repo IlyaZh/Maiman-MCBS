@@ -190,7 +190,12 @@ void GroupWidget::setDevicesStatus(quint8 addr,
 
 const QString GroupWidget::getName() { return m_name->text(); }
 
-void GroupWidget::setName(QString name) { m_name->setText(name); }
+void GroupWidget::setName(QString name) {
+  if (name.contains(QString("Group %1").arg(m_selfAddr)))
+    m_name->setAddress(m_selfAddr);
+  else
+    m_name->setText(name);
+}
 
 int GroupWidget::getGroupAddress() { return m_selfAddr; }
 void GroupWidget::linkStatusChanged(int addr, bool status) {

@@ -1,27 +1,6 @@
 #include "buttonwidget.h"
 
 #include <QDebug>
-static const QString buttonOn =
-    "QPushButton \
-                                   { \
-                                       border: 0px solid rgb(26,26,26); \
-                                       border-radius: 17px; \
-                                       color: rgb(0,0,0); \
-                                       text-align:center;\
-                                       padding-top: 7px;\
-                                       background: rgb(57,202,118); \
-                                   }";
-
-static const QString buttonOff =
-    "QPushButton \
-                                   { \
-                                       border: 0px solid rgb(26,26,26); \
-                                       border-radius: 17px; \
-                                       color: rgb(0,0,0); \
-                                       text-align:center;\
-                                       padding-top: 7px;\
-                                       background: rgb(255,64,58); \
-                                   }";
 
 ButtonWidget::ButtonWidget(const QString &text, const Button &button,
                            QSharedPointer<CommandConverter> converter,

@@ -10,6 +10,8 @@ const int WidgetStandartSize{55};
 GroupStatusDialog::GroupStatusDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::GroupStatusDialog) {
   ui->setupUi(this);
+  QDialog::setWindowTitle("Devices Status");
+  this->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
   setObjectName("GroupStatusDialog");
   m_devices.clear();
   m_devicesLayout = new QVBoxLayout(ui->scrollAreaWidget);

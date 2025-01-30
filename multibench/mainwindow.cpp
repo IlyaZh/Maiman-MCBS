@@ -218,7 +218,7 @@ void MainWindow::restoreDeviceWidgets() {
 }
 
 void MainWindow::addCalibrationMenu(quint8 addr, quint16 id) {
-  auto* action = new QAction(QString("ID:%1").arg(addr), this);
+  auto* action = new QAction(QString("ID: %1").arg(addr), this);
   connect(action, &QAction::triggered, this,
           [this, addr, id]() { emit createCalibAndLimitsWidgets(addr, id); });
   ui->menuCalibration->addAction(action);

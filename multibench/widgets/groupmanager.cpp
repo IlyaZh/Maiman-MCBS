@@ -11,6 +11,8 @@ GroupManager::GroupManager(const QMap<quint8, QPointer<DeviceWidget>>& devices,
       m_groups(groups),
       m_buttonGroup(new QButtonGroup(this)) {
   this->setModal(true);
+  QDialog::setWindowTitle("Group Manager");
+  this->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
   ui->setupUi(this);
   //  m_font.setFamily(QString::fromUtf8("Poppins"));
   //  m_font.setPointSize(11);

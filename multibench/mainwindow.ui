@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
+    <width>704</width>
     <height>200</height>
    </rect>
   </property>
@@ -91,7 +91,7 @@ QMenu::item:disabled {
        <enum>Qt::ScrollBarAsNeeded</enum>
       </property>
       <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
+       <enum>Qt::ScrollBarAsNeeded</enum>
       </property>
       <property name="sizeAdjustPolicy">
        <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -107,7 +107,7 @@ QMenu::item:disabled {
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>476</width>
+         <width>680</width>
          <height>110</height>
         </rect>
        </property>
@@ -210,7 +210,7 @@ QMenu::item:disabled {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>500</width>
+     <width>704</width>
      <height>20</height>
     </rect>
    </property>
@@ -317,8 +317,8 @@ QMenuBar::item:hover { /* when selected using mouse or keyboard */
    <addaction name="menuView"/>
    <addaction name="menuConnect"/>
    <addaction name="menuCalibration"/>
-   <addaction name="menuHelp"/>
    <addaction name="menuGroup_Manager"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="font">

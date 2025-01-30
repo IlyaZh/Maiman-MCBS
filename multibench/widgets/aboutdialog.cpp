@@ -6,6 +6,8 @@
 AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::AboutDialog) {
   ui->setupUi(this);
+  this->setModal(true);
+  this->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
   setWindowIcon(QIcon(":/images/logo-minimal.png"));
   // Сокрытие\показ кнопки "обновления ПО" и вывод информации о текущей версии
   // программы

@@ -1050,7 +1050,7 @@ const QString buttonStarted() {
       border-radius: 17px;
       color: #000000;
       text-align:center;
-      padding-top: 7px;
+      padding-top: 2px;
       background: #39CA76;
 )";
   } else {
@@ -1059,7 +1059,7 @@ const QString buttonStarted() {
       border-radius: 17px;
       color: #000000;
       text-align:center;
-      padding-top: 7px;
+      padding-top: 2px;
       background: #B6E9C3;
 )";
   }
@@ -1071,7 +1071,7 @@ const QString buttonStopped() {
       border-radius: 17px;
       color: #000000;
       text-align:center;
-      padding-top: 7px;
+      padding-top: 2px;
       background: #FF403A;
 )";
   } else {
@@ -1080,7 +1080,7 @@ const QString buttonStopped() {
       border-radius: 17px;
       color: #000000;
       text-align:center;
-      padding-top: 7px;
+      padding-top: 2px;
       background: #FFB6B5;
 )";
   }

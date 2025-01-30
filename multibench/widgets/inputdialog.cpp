@@ -5,6 +5,8 @@
 InputDialog::InputDialog(QString title, QString name, QWidget *parent)
     : QDialog(parent), ui(new Ui::InputDialog) {
   ui->setupUi(this);
+  this->setModal(true);
+  this->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
   QDialog::setWindowTitle(title);
   ui->label->setText(name);
   ui->spinBox->setSingleStep(m_step);

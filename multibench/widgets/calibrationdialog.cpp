@@ -12,7 +12,8 @@ CalibrationDialog::CalibrationDialog(
     : QDialog(parent), ui(new Ui::CalibrationDialog) {
   ui->setupUi(this);
   QDialog::setWindowTitle("Calibrations And Limits");
-  setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+  setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint |
+                 Qt::WindowCloseButtonHint);
   for (const auto& item : deviceDesc.calibration) {
     auto calibrationWidget =
         new PlusMinusWidget(item, commands.value(item.code));
@@ -76,8 +77,10 @@ CalibrationDialog::CalibrationDialog(
     QWidget* parent)
     : QDialog(parent), ui(new Ui::CalibrationDialog) {
   ui->setupUi(this);
+  this->setModal(true);
   QDialog::setWindowTitle("Calibrations And Limits");
-  setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+  setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint |
+                 Qt::WindowCloseButtonHint);
   for (const auto& item : deviceDesc.calibration) {
     auto calibrationWidget =
         new PlusMinusWidget(item, converters.value(item.code));
