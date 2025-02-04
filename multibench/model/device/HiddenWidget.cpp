@@ -7,10 +7,9 @@ HiddenWidget::HiddenWidget(QWidget* parent)
   ui->setupUi(this);
   m_layout = new QVBoxLayout();
   m_layout->setSpacing(0);
-  m_layout->setContentsMargins(5, 0, 5, 0);
 
   ui->widget->setLayout(m_layout);
-  updateStyle();
+  HiddenWidget::updateStyle();
 }
 
 HiddenWidget::~HiddenWidget() { delete ui; }
@@ -44,12 +43,26 @@ bool HiddenWidget::isShown() const { return m_isVisible; }
 void HiddenWidget::setShown(bool show) {
   m_isVisible = show;
   for (auto* widget : qAsConst(m_widgets)) widget->setVisible(m_isVisible);
+  if (m_isVisible) {
+    m_layout->setContentsMargins(m_margin);
+    m_layout->update();
+  } else {
+    //    m_margin = m_layout->contentsMargins();
+    m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->update();
+  }
   this->adjustSize();
 }
 
 bool HiddenWidget::isPinned() const { return m_isPinned; }
 
 void HiddenWidget::setPinned(bool pin) { m_isPinned = pin; }
+
+void HiddenWidget::setMargins(int top, int left, int bottom, int right) {
+  m_layout->setContentsMargins(top, left, bottom, right);
+  m_margin = m_layout->contentsMargins();
+  m_layout->update();
+}
 
 void HiddenWidget::updateStyle() {
   this->setStyleSheet(StyleStorage::Device::hiddenWidget());

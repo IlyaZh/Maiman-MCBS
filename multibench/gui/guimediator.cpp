@@ -54,7 +54,7 @@ void GuiMediator::createCalibAndLimitsWidgets(quint8 addr, quint16 id) {
   if (!m_calibrationDialog.value(addr)) {
     CalibrationDialog* dialog =
         m_factory.createCalibrationDialog(id, m_network.getConverters(addr));
-    dialog->setModal(false);
+    dialog->setModal(true);
     dialog->show();
     m_calibrationDialog.insert(addr, QSharedPointer<CalibrationDialog>(dialog));
     connect(dialog, &CalibrationDialog::finished, this,

@@ -11,6 +11,7 @@ const QString AppWidget();
 const QString menuBarWidget();
 const QString scrollWidget();
 const QString changeStyleSlider();
+const QString inputDialog();
 namespace Quit {
 const QString quitWidget();
 const QString label();

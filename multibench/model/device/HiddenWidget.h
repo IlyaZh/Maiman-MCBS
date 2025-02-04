@@ -22,6 +22,7 @@ class HiddenWidget : public QWidget, public GuiWidgetInterface {
   void setShown(bool show);
   bool isPinned() const;
   void setPinned(bool pin);
+  void setMargins(int top, int left, int bottom, int right);
   void updateStyle() override;
 
  private:
@@ -30,4 +31,5 @@ class HiddenWidget : public QWidget, public GuiWidgetInterface {
   bool m_isVisible{true};
   bool m_isPinned{false};
   QVBoxLayout* m_layout{nullptr};
+  QMargins m_margin;
 };

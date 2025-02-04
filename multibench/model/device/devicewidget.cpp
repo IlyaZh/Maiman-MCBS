@@ -44,13 +44,9 @@ DeviceWidget::DeviceWidget(
   // Инициализация виджетов
   QVector<ReadParameterWidget*> readOnlyWidgets;
   for (const auto& control : description.controls) {
-    auto valueCmd = m_commands.value(control.value, nullptr);
     auto valueConverter = m_converters.value(control.value, nullptr);
-    auto maxCmd = m_commands.value(control.max, nullptr);
     auto maxConverter = m_converters.value(control.max, nullptr);
-    auto minCmd = m_commands.value(control.min, nullptr);
     auto minConverter = m_converters.value(control.min, nullptr);
-    auto realCmd = m_commands.value(control.real, nullptr);
     auto realConverter = m_converters.value(control.real, nullptr);
 
     if (realConverter != nullptr and valueConverter == nullptr) {
@@ -64,7 +60,7 @@ DeviceWidget::DeviceWidget(
           new ControlWidget(control.name, valueConverter, maxConverter,
                             minConverter, realConverter, hiddenWidget);
       if (control.fixed) ++m_fixedWidgets;
-      hiddenWidget->layout()->setContentsMargins(10, 0, 0, 0);
+      hiddenWidget->setMargins(10, 0, 10, 0);
       m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
       hiddenWidget->addWidget(widget);
       if (control.name == "current") hiddenWidget->setPinned(true);
@@ -78,7 +74,7 @@ DeviceWidget::DeviceWidget(
   // Закидываем неизменяемые параметры в виджет
   if (readOnlyWidgets.count() > 0) {
     auto hiddenWidget = new HiddenWidget(this);
-    hiddenWidget->layout()->setContentsMargins(10, 16, 10, 0);
+    hiddenWidget->setMargins(10, 16, 10, 0);
     auto maxUnitsLengthIt = *std::max_element(
         std::begin(readOnlyWidgets), std::end(readOnlyWidgets),
         [=](ReadParameterWidget* widgetA, ReadParameterWidget* widgetB) {
@@ -103,11 +99,10 @@ DeviceWidget::DeviceWidget(
   for (const auto& item : qAsConst(description.checkboxes)) {
     if (!hiddenWidget) {
       hiddenWidget = new HiddenWidget(this);
-      hiddenWidget->layout()->setContentsMargins(10, 16, 10, 0);
+      hiddenWidget->setMargins(10, 16, 10, 0);
     }
-    auto cmd = m_commands.value(item.code, nullptr);
     auto converter = m_converters.value(item.code, nullptr);
-    if (cmd) {
+    if (converter) {
       auto binaryWidget = new BinaryWidget(item, converter, hiddenWidget);
       binaryWidget->setContentsMargins(10, 2, 10, 0);
       hiddenWidget->addWidget(binaryWidget);
@@ -271,22 +266,16 @@ void DeviceWidget::hideControlsButtonClicked(bool flag) {
     int pinShift = idx - 1;
     auto widget = m_widgets.at(idx);
     auto pinButton = m_pinButtons.value(pinShift, nullptr);
-    auto topMargin = widget->layout()->contentsMargins().top();
-    auto bottomMargin = widget->layout()->contentsMargins().bottom();
     if (m_hideControls) {
       if (!widget->isPinned()) {
         setConstraint(false);
         widget->setShown(false);
-        widget->layout()->setContentsMargins(0, topMargin, 0, bottomMargin);
-        widget->layout()->setSpacing(0);
         if (pinButton != nullptr) pinButton->setVisible(false);
       }
     } else {
       if (!widget->isShown()) {
         setConstraint(true);
         widget->setShown(true);
-        widget->layout()->setContentsMargins(10, topMargin, 10, bottomMargin);
-        widget->layout()->setSpacing(10);
         if (pinButton != nullptr) pinButton->setVisible(true);
       }
     }

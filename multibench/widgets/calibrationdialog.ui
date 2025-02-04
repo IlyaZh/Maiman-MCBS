@@ -17,7 +17,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Set calibration coef. dialog</string>
+   <string>Calibrations</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog{

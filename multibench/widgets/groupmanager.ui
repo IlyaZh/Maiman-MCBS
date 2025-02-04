@@ -85,7 +85,7 @@
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Chouse devise 
+        <string>Choose device 
  to add to the group</string>
        </property>
        <property name="textFormat">
@@ -337,7 +337,7 @@ QPushButton:hover{
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Chose device to 
+        <string>Choose device to 
  remove from the group</string>
        </property>
        <property name="alignment">

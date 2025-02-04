@@ -123,6 +123,7 @@ void GroupManager::addDeviceToGroup() {
           group->g_layout->addWidget(group->g_subBoxes.value(addr)->d_checkBox);
         }
         m_groupsFieldLayout->update();
+        group->g_checkBox->setChecked(false);
       }
     }
   }

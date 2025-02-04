@@ -215,6 +215,27 @@ const QString changeStyleSlider() {
   )";
   }
 }
+const QString inputDialog() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QDialog#CustomDialog{
+background-color: #1D1D1D;
+border: 0px solid red;
+border-radius: 13px;
+}
+   )";
+  } else {
+    return R"(
+QDialog{
+background-color:#1D1D1D;
+border: 0px solid #1D1D1D;
+border-bottom-left-radius: 13px;
+border-bottom-right-radius: 13px;
+}
+    )";
+  }
+}
+
 namespace Quit {
 const QString quitWidget() {
   if (AppSettings::getDarkAppStyle()) {
@@ -603,7 +624,8 @@ const QString condition() {
     return R"(
       color: #FFC803;
       background: #282828;
-      padding: 0 10px;
+    padding-left: 10px;
+    padding-top: 2px;
       border: 2px solid #1A1A1A;
       border-top-width: 0px;
       border-bottom-left-radius: 13px;
@@ -613,7 +635,8 @@ const QString condition() {
     return R"(
       color: #FFC803;
       background: #FFFFFF;
-      padding: 0 10px;
+    padding-left: 10px;
+    padding-top: 2px;
       border: 2px solid #F3F3F3;
       border-top-width: 0px;
       border-bottom-left-radius: 13px;

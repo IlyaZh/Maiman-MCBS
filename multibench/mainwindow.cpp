@@ -379,6 +379,7 @@ void MainWindow::setNetworkDelay() {
                    Const::kNetworkDelayMSecs::max);
   connect(delay, &InputDialog::changesCompleted, this,
           &MainWindow::delayChanged);
+  delay->setStyleSheet(StyleStorage::MainWindow::inputDialog());
   delay->show();
 }
 
@@ -389,6 +390,7 @@ void MainWindow::setNetworkTimeout() {
                      Const::kNetworkTimeoutMSecs::max);
   connect(timeout, &InputDialog::changesCompleted, this,
           &MainWindow::timeoutChanged);
+  timeout->setStyleSheet(StyleStorage::MainWindow::inputDialog());
   timeout->show();
 }
 
@@ -399,6 +401,7 @@ void MainWindow::setNetworkMaxAddress() {
                        Const::kNetworkMaxAddress::max);
   connect(addresses, &InputDialog::changesCompleted, this,
           [](int value) { AppSettings::setNetworkMaxAddress(value); });
+  addresses->setStyleSheet(StyleStorage::MainWindow::inputDialog());
   addresses->show();
 }
 
