@@ -119,6 +119,8 @@ MainWindow::MainWindow(QWidget* parent)
   ui->horizontalSlider->hide();
 
   ui->actionManager->setEnabled(false);
+  ui->tabWidget->tabBar()->setAutoHide(true);
+  ui->tabWidget->setMovable(true);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -170,6 +172,50 @@ void MainWindow::removeGroupWidget(GroupWidget* group) {
   m_groupWidgets.removeOne(group);
   m_workFieldLayout->removeWidget(group);
   group->deleteLater();
+
+  if (m_groupWidgets.size() > 1) {
+    auto index =
+        ui->tabWidget->indexOf(m_groupTabs.value(group->getGroupAddress()));
+    ui->tabWidget->removeTab(index);
+    m_groupTabs.remove(group->getGroupAddress());
+  } else {
+    repaintGroupToScroll();
+  }
+}
+
+void MainWindow::repaintGroupsToTabs(QPointer<GroupWidget> group) {
+  //  ui->tabWidget->tabBar()->show();
+
+  m_workFieldLayout->removeWidget(group);
+  QWidget* page = new QWidget();
+  QGridLayout* layout = new QGridLayout(page);
+  layout->addWidget(group);
+  QScrollArea* scrollArea = new QScrollArea();
+  scrollArea->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+  scrollArea->setWidget(page);
+  scrollArea->setWidgetResizable(true);
+
+  m_groupTabs.insert(group->getGroupAddress(), scrollArea);
+  ui->tabWidget->addTab(scrollArea, group->getName());
+
+  connect(group, &GroupWidget::nameEdited, this, [this, group](QString name) {
+    ui->tabWidget->setTabText(
+        ui->tabWidget->indexOf(m_groupTabs.value(group->getGroupAddress())),
+        name);
+  });
+}
+
+void MainWindow::repaintGroupToScroll() {
+  for (auto map = m_groupTabs.cbegin(), end = m_groupTabs.cend(); map != end;
+       ++map) {
+    auto index = ui->tabWidget->indexOf(map.value());
+    ui->tabWidget->removeTab(index);
+  }
+  m_groupTabs.clear();
+  //  ui->tabWidget->tabBar()->hide();
+  for (auto* group : qAsConst(m_groupWidgets)) {
+    m_workFieldLayout->addWidget(group);
+  }
 }
 
 void MainWindow::restoreDeviceWidgets() {

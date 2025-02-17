@@ -40,6 +40,7 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   connect(m_hideButton, &QPushButton::clicked, this, &GroupWidget::hideDevices);
   connect(m_statusButton, &QPushButton::clicked, this,
           &GroupWidget::showStatus);
+  connect(m_name, &InLineEdit::nameEdited, this, &GroupWidget::nameEdited);
   GroupWidget::updateStyle();
 }
 
@@ -218,7 +219,7 @@ void GroupWidget::showStatus() {
     dialog->addDevice(static_cast<quint8>(device->getAddress()),
                       device->getModel());
   }
-  dialog->setModal(false);
+  dialog->setModal(true);
   dialog->show();
   connect(this, &GroupWidget::statusChanged, dialog,
           &GroupStatusDialog::setStatus);

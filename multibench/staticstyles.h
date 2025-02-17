@@ -105,7 +105,11 @@ const QString widgetEditDisconnected();
 const QString button();
 }  // namespace InlineEdit
 }  // namespace Widget
-namespace Manager {}
+namespace Manager {
+const QString devsField();
+const QString groupsField();
+const QString checkBoxes();
+}  // namespace Manager
 namespace Status {
 const QString widget();
 const QString labels();

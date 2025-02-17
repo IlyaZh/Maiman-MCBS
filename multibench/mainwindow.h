@@ -41,6 +41,8 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
   void removeGroupWidget(GroupWidget* group);
   void setComPorts(const QStringList& portList);
   void setBaudRates(const QStringList& baudsList);
+  void repaintGroupsToTabs(QPointer<GroupWidget> group);
+  void repaintGroupToScroll();
 
   void NewEvent(const model::Event& event) override;
 
@@ -86,6 +88,7 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
   QVector<DeviceWidget*> m_workWidgets;
   QVector<GroupWidget*> m_groupWidgets;
   QGridLayout* m_workFieldLayout;
+  QMap<int, QWidget*> m_groupTabs;
   QPointer<QActionGroup> m_portGroup;
   QPointer<QActionGroup> m_baudrateGroup;
   UpdateWidget* m_updater;

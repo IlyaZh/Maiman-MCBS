@@ -477,8 +477,8 @@ const QString widget() {
 const QString credits() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-        color: #9A9A9A;
-        font: 10pt "Poppins";
+        color: #FFFFFF;
+        font: 11pt "Poppins";
       )";
   } else {
     return R"(
@@ -1463,7 +1463,130 @@ const QString button() {
 }
 }  // namespace InlineEdit
 }  // namespace Widget
-namespace Manager {}
+namespace Manager {
+const QString devsField() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QWidget#devs{
+background-color: #222222;
+border-radius: 5px;
+border: 1px solid #393838;
+}
+  )";
+  } else {
+    return R"(
+QWidget#devs{
+background-color: #222222;
+border-radius: 5px;
+border: 1px solid #393838;
+}
+  )";
+  }
+}
+
+const QString groupsField() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QWidget#groups{
+background-color: #222222;
+border-radius: 5px;
+border: 1px solid #393838;
+}
+    )";
+  } else {
+    return R"(
+QWidget#groups{
+background-color: #222222;
+border-radius: 5px;
+border: 1px solid #393838;
+}
+    )";
+  }
+}
+
+const QString checkBoxes() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QCheckBox{
+          border-color: #000000;
+          color: #999999;
+          spacing: 8;
+          font: 11pt "Poppins";
+      }
+      QCheckBox:checked {
+      color: #FFFFFF;
+      spacing: 8;
+}
+      QCheckBox::indicator {
+          width: 12px;
+          height: 12px;
+          padding-bottom: 4;
+      }
+      QCheckBox::indicator:unchecked {
+          image: url(:/resources/images/DarkCheckBoxOff.png);
+      }
+      QCheckBox::indicator:unchecked:hover {
+          image: url(:/resources/images/DarkCheckBoxOff.png);
+      }
+      QCheckBox::indicator:unchecked:pressed {
+          image: url(:/resources/images/DarkCheckBoxOff.png);
+      }
+      QCheckBox::indicator:checked {
+          image: url(:/resources/images/DarkCheckBoxOn.png);
+      }
+      QCheckBox::indicator:checked:hover {
+          image: url(:/resources/images/DarkCheckBoxOn.png);
+      }
+      QCheckBox::indicator:checked:pressed {
+          image: url(:/resources/images/DarkCheckBoxOn.png);
+      }
+      QCheckBox::indicator:indeterminate:hover {
+          image: url(:/resources/images/DarkCheckBoxOff.png);
+      }
+      QCheckBox::indicator:indeterminate:pressed {
+          image: url(:/resources/images/DarkCheckBoxOff.png);
+      }
+)";
+  } else {
+    return R"(
+      QCheckBox{
+          border-color: rgb(0, 0, 0);
+          color: #6B6B6B;
+          spacing: 8;
+      }
+      QCheckBox::indicator {
+          width: 12px;
+          height: 12px;
+          padding-bottom: 4;
+      }
+      QCheckBox::indicator:unchecked {
+          image: url(:/resources/images/LightCheckBoxOff.png);
+      }
+      QCheckBox::indicator:unchecked:hover {
+          image: url(:/resources/images/LightCheckBoxOff.png);
+      }
+      QCheckBox::indicator:unchecked:pressed {
+          image: url(:/resources/images/LightCheckBoxOff.png);
+      }
+      QCheckBox::indicator:checked {
+          image: url(:/resources/images/LightCheckBoxOn.png);
+      }
+      QCheckBox::indicator:checked:hover {
+          image: url(:/resources/images/LightCheckBoxOn.png);
+      }
+      QCheckBox::indicator:checked:pressed {
+          image: url(:/resources/images/LightCheckBoxOn.png);
+      }
+      QCheckBox::indicator:indeterminate:hover {
+          image: url(:/resources/images/LightCheckBoxOff.png);
+      }
+      QCheckBox::indicator:indeterminate:pressed {
+          image: url(:/resources/images/LightCheckBoxOff.png);
+      }
+)";
+  }
+}
+}  // namespace Manager
 namespace Status {
 const QString widget() {
   if (AppSettings::getDarkAppStyle()) {

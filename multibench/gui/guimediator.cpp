@@ -107,7 +107,14 @@ void GuiMediator::recreateGroups(
       m_groupWidgetsTable.insert(groupWidget->getGroupAddress(), groupWidget);
       connect(groupWidget, &GroupWidget::groupEvent, this,
               &GuiMediator::Signal_PublishEvent);
+
+      if (groups.size() > 1) {
+        m_window.repaintGroupsToTabs(groupWidget);
+      }
     }
+  }
+  if (groups.size() <= 1) {
+    m_window.repaintGroupToScroll();
   }
   m_window.restoreDeviceWidgets();
 }

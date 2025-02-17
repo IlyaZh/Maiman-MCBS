@@ -14,22 +14,25 @@ GroupManager::GroupManager(const QMap<quint8, QPointer<DeviceWidget>>& devices,
   QDialog::setWindowTitle("Group Manager");
   this->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
   ui->setupUi(this);
+  ui->verticalLayout->setAlignment(Qt::AlignHCenter);
   //  m_font.setFamily(QString::fromUtf8("Poppins"));
   //  m_font.setPointSize(11);
   //  m_font.setLetterSpacing(QFont::PercentageSpacing, 105);
   m_buttonGroup->setExclusive(false);
   m_devicesFieldLayout = new QVBoxLayout(ui->scrollAreaDevice);
-  m_devicesFieldLayout->setSpacing(10);
-  m_devicesFieldLayout->setContentsMargins(20, 20, 0, 0);
+  m_devicesFieldLayout->setSpacing(6);
+  m_devicesFieldLayout->setContentsMargins(18, 15, 0, 0);
   m_devicesFieldLayout->setSizeConstraint(QLayout::SetMinimumSize);
   m_devicesFieldLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   ui->scrollAreaDevice->setLayout(m_devicesFieldLayout);
+  ui->scrollAreaDevice->setObjectName("devs");
+  ui->scrollAreaGroup->setObjectName("groups");
   //  ui->scrollAreaDevice->setMaximumHeight(
   //      m_devicesFieldLayout->maximumSize().height());
 
   m_groupsFieldLayout = new QVBoxLayout(ui->scrollAreaGroup);
-  m_groupsFieldLayout->setSpacing(10);
-  m_groupsFieldLayout->setContentsMargins(20, 20, 0, 0);
+  m_groupsFieldLayout->setSpacing(6);
+  m_groupsFieldLayout->setContentsMargins(18, 15, 0, 0);
   m_groupsFieldLayout->setSizeConstraint(QLayout::SetMinimumSize);
   m_groupsFieldLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   ui->scrollAreaGroup->setLayout(m_groupsFieldLayout);
@@ -40,7 +43,7 @@ GroupManager::GroupManager(const QMap<quint8, QPointer<DeviceWidget>>& devices,
     auto checkBox = new QCheckBox(this);
     checkBox->setFont(m_font);
     checkBox->setText(devs->getName());
-    checkBox->setStyleSheet(StyleStorage::Device::BinaryWidget::checkBox());
+    checkBox->setStyleSheet(StyleStorage::Group::Manager::checkBoxes());
     auto device = QSharedPointer<deviceCheckBox>::create();
     device->d_addr = devs->getAddress();
     device->d_checkBox = checkBox;
@@ -201,7 +204,7 @@ void GroupManager::removeDeviceFromGroup() {
 void GroupManager::createOneGroup(int g_addr, const QSet<quint8> devicesAddrs,
                                   const QString& name) {
   auto groupCheckBox = new QCheckBox(this);
-  groupCheckBox->setStyleSheet(StyleStorage::Device::BinaryWidget::checkBox());
+  groupCheckBox->setStyleSheet(StyleStorage::Group::Manager::checkBoxes());
   auto groupBoxes = QSharedPointer<groupCheckBoxes>::create();
   groupBoxes->g_checkBox = groupCheckBox;
   groupBoxes->g_addr = g_addr;
@@ -212,7 +215,7 @@ void GroupManager::createOneGroup(int g_addr, const QSet<quint8> devicesAddrs,
   m_groupsFieldLayout->addWidget(groupBoxes->g_checkBox);
   auto groupAddrs = devicesAddrs.values();
   groupBoxes->g_layout = new QVBoxLayout();
-  groupBoxes->g_layout->setContentsMargins(30, 0, 0, 0);
+  groupBoxes->g_layout->setContentsMargins(21, 0, 0, 0);
   std::sort(groupAddrs.begin(), groupAddrs.end());
   for (auto subGroupAddr : groupAddrs) {
     groupBoxes->g_subBoxes.insert(subGroupAddr,
@@ -225,7 +228,15 @@ void GroupManager::createOneGroup(int g_addr, const QSet<quint8> devicesAddrs,
   m_groupsContainer.insert(g_addr, groupBoxes);
 }
 
-void GroupManager::updateStyle() { this->update(); }
+void GroupManager::updateStyle() {
+  ui->scrollAreaDevice->setStyleSheet(
+      StyleStorage::Group::Manager::devsField());
+  ui->scrollAreaDevice->update();
+  ui->scrollAreaGroup->setStyleSheet(
+      StyleStorage::Group::Manager::groupsField());
+  ui->scrollAreaGroup->update();
+  this->update();
+}
 
 void GroupManager::sortWidgets() {
   for (auto& dev : m_devicesContainer) {
