@@ -9,25 +9,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>282</width>
+    <width>300</width>
     <height>20</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+   <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>282</width>
+    <width>300</width>
     <height>20</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>282</width>
+    <width>300</width>
     <height>20</height>
    </size>
   </property>
@@ -102,7 +102,7 @@
 </string>
      </property>
      <property name="text">
-      <string>Parameter</string>
+      <string>External NTC Temperature</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -135,13 +135,13 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>43</width>
+       <width>48</width>
        <height>14</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>43</width>
+       <width>48</width>
        <height>14</height>
       </size>
      </property>
@@ -160,7 +160,7 @@
 </string>
      </property>
      <property name="text">
-      <string>0</string>
+      <string>000.0</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -180,7 +180,7 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>24</width>
        <height>14</height>
       </size>
      </property>
@@ -205,7 +205,7 @@
 </string>
      </property>
      <property name="text">
-      <string>U</string>
+      <string>UU</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

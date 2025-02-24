@@ -23,6 +23,7 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   ui->devicesTable->setLayout(m_widgetLayout);
   m_hideButton = new GroupHideButton(this);
   m_statusButton = new GroupHideButton(this);
+  m_statusButton->setCheckable(false);
   m_hideButton->setText(" " + tr("Hide Devices"));
   m_statusButton->setText(" " + tr("Status Devices"));
   ui->statusButtontable->insertWidget(0, m_hideButton);

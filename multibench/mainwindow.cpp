@@ -121,6 +121,7 @@ MainWindow::MainWindow(QWidget* parent)
   ui->actionManager->setEnabled(false);
   ui->tabWidget->tabBar()->setAutoHide(true);
   ui->tabWidget->setMovable(true);
+  ui->statusbar->setVisible(false);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -224,7 +225,7 @@ void MainWindow::restoreDeviceWidgets() {
   int totalHeightInAppearence{0};
   for (auto* widget : qAsConst(m_workWidgets)) {
     if (widget->width() > maxWidth) {
-      maxWidth = widget->width();
+      maxWidth = widget->width() + 15 * 3;
     }
   }
   std::sort(m_workWidgets.begin(), m_workWidgets.end(),
@@ -249,6 +250,7 @@ void MainWindow::restoreDeviceWidgets() {
   }
 
   auto newSize = ui->scrollArea->size();
+  qDebug() << "max" << maxWidth << " new" << newSize.width();
   int diffWidth = maxWidth - newSize.width();
   int diffHeight = totalHeightInAppearence - ui->scrollArea->height();
 
@@ -258,7 +260,7 @@ void MainWindow::restoreDeviceWidgets() {
   ui->scrollArea->resize(newSize);
 
   auto winSize = size();
-  winSize.rwidth() += diffWidth;
+  winSize.rwidth() += diffWidth + 15 * 2;
   winSize.rheight() += (diffHeight > 0) ? diffHeight : 0;
   resize(winSize);
 }

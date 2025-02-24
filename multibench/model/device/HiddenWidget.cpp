@@ -6,7 +6,7 @@ HiddenWidget::HiddenWidget(QWidget* parent)
     : QWidget(parent), ui(new Ui::HiddenWidget) {
   ui->setupUi(this);
   m_layout = new QVBoxLayout();
-  m_layout->setSpacing(0);
+  //  m_layout->setSpacing(0);
 
   ui->widget->setLayout(m_layout);
   HiddenWidget::updateStyle();
@@ -18,7 +18,7 @@ void HiddenWidget::addWidget(QWidget* newWidget) {
   m_widgets.append(newWidget);
   newWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
   m_layout->insertWidget(m_widgets.size(), newWidget);
-  newWidget->adjustSize();
+  //  newWidget->adjustSize();
   this->adjustSize();
 
   int maxWidth = 0;
@@ -32,7 +32,7 @@ void HiddenWidget::addWidget(QWidget* newWidget) {
     newSize.setHeight(size.height());
     widget->setMinimumWidth(maxWidth);
     widget->resize(newSize);
-    widget->adjustSize();
+    //    widget->adjustSize();
     widget->hide();
     widget->show();
   }

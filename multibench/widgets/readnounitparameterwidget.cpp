@@ -45,7 +45,7 @@ void ReadNoUnitParameterWidget::setup(QStringView name,
   m_layout->addWidget(m_labelValue);
   m_layout->addWidget(m_labelUnit);
 
-  this->adjustSize();
+  //  this->adjustSize();
 }
 
 void ReadNoUnitParameterWidget::setup(QStringView name,
@@ -80,6 +80,23 @@ void ReadNoUnitParameterWidget::setup(QStringView name,
 
   setValue(m_converter->valueDouble(), m_converter->tolerance());
   m_labelValue->setText("");
+
+  m_layout->setAlignment(Qt::AlignVCenter);
+  this->setMaximumSize(300, 20);
+  this->setMaximumSize(300, 20);
+  this->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum));
+  m_labelParameter->setMaximumSize(210, 20);
+  m_labelParameter->setMaximumSize(210, 20);
+  m_labelParameter->setSizePolicy(
+      QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
+  m_labelValue->setMaximumSize(54, 20);
+  m_labelValue->setMaximumSize(54, 20);
+  m_labelValue->setSizePolicy(
+      QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum));
+  m_labelUnit->setMaximumSize(24, 20);
+  m_labelUnit->setMaximumSize(24, 20);
+  m_labelUnit->setSizePolicy(
+      QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum));
 
   m_layout->addWidget(m_labelParameter);
   m_layout->addSpacerItem(new QSpacerItem(0, 20, QSizePolicy::Expanding));

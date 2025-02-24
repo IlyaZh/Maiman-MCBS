@@ -55,11 +55,8 @@ void ReadParameterWidget::setup(QStringView name,
                                 QSharedPointer<CommandConverter> cmd) {
   m_converter = cmd;
   m_layout = new QHBoxLayout(this);
-  this->setStyleSheet(
-      "QWidget {\
-    background-color: #282828;\
-    color: rgb(153,153,153);\
-}");
+  this->setObjectName("ReadParam");
+  this->setStyleSheet(StyleStorage::Device::ReadParameter::widget());
   setFont(QFont("Poppins", 12));
   m_layout->setMargin(0);
   m_layout->setSpacing(6);
@@ -80,12 +77,28 @@ void ReadParameterWidget::setup(QStringView name,
 
   setValue(m_converter->valueDouble(), m_converter->tolerance());
 
+  m_layout->setAlignment(Qt::AlignVCenter);
+  this->setMaximumSize(300, 20);
+  this->setMaximumSize(300, 20);
+  this->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum));
+  m_labelParameter->setMaximumSize(210, 20);
+  m_labelParameter->setMaximumSize(210, 20);
+  m_labelParameter->setSizePolicy(
+      QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
+  m_labelValue->setMaximumSize(54, 20);
+  m_labelValue->setMaximumSize(54, 20);
+  m_labelValue->setSizePolicy(
+      QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum));
+  m_labelUnit->setMaximumSize(24, 20);
+  m_labelUnit->setMaximumSize(24, 20);
+  m_labelUnit->setSizePolicy(
+      QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Maximum));
   m_layout->addWidget(m_labelParameter);
-  m_layout->addSpacerItem(new QSpacerItem(10, 20, QSizePolicy::Expanding));
+  m_layout->addSpacerItem(new QSpacerItem(0, 20, QSizePolicy::Expanding));
   m_layout->addWidget(m_labelValue);
   m_layout->addWidget(m_labelUnit);
 
-  this->adjustSize();
+  //  this->adjustSize();
   m_labelValue->setText("    ");  // резервируем место под 5 символов, чтоб
                                   // виджет был нужного размера
 }

@@ -25,7 +25,7 @@ static const std::array<QString, 2> kTemperatureUnitNames{"Celsius",
 enum class TemperatureUnitId { kCelsius, kFahrenheit };
 
 static const struct kNetworkDelayMSecs {
-  static const int defaultValue{300};
+  static const int defaultValue{100};
   static const int min{10};
   static const int max{1000};
 } kNetworkDelayMSecs;

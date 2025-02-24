@@ -81,8 +81,8 @@ DeviceWidget::DeviceWidget(
           return widgetA->getUnitslength() < widgetB->getUnitslength();
         });
     for (auto item : qAsConst(readOnlyWidgets)) {
-      item->setContentsMargins(0, 0, 0, 0);
       item->setUnitsLength(maxUnitsLengthIt->getUnitslength());
+      item->setContentsMargins(10, 0, 10, 0);
       hiddenWidget->addWidget(item);
       m_widgetsTable.insert(item);
       //      for (auto code : item->Subscribe()) {
@@ -104,7 +104,7 @@ DeviceWidget::DeviceWidget(
     auto converter = m_converters.value(item.code, nullptr);
     if (converter) {
       auto binaryWidget = new BinaryWidget(item, converter, hiddenWidget);
-      binaryWidget->setContentsMargins(10, 2, 10, 0);
+      binaryWidget->setContentsMargins(10, 0, 10, 0);
       hiddenWidget->addWidget(binaryWidget);
       m_widgetsTable.insert(binaryWidget);
       //      for (auto code : binaryWidget->Subscribe()) {
@@ -298,7 +298,7 @@ void DeviceWidget::updateValue(const model::Event& event) {
         widget->setData(answer.reg_, answer.value_);
       }
     }
-    adjust();
+    //    adjust();
   } else if (std::holds_alternative<model::events::network::ChangeSystemStyle>(
                  event.data_)) {
     updateStyle();
