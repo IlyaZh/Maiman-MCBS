@@ -232,14 +232,14 @@ color: #000000;
    <item row="4" column="0" colspan="3">
     <layout class="QVBoxLayout" name="calibrationLayout">
      <property name="spacing">
-      <number>14</number>
+      <number>0</number>
      </property>
     </layout>
    </item>
    <item row="1" column="0" colspan="3">
     <layout class="QVBoxLayout" name="limitsLayout">
      <property name="spacing">
-      <number>14</number>
+      <number>0</number>
      </property>
     </layout>
    </item>

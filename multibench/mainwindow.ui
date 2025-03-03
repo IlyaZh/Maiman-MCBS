@@ -73,8 +73,11 @@ QMenu::item:disabled {
     <property name="topMargin">
      <number>0</number>
     </property>
+    <property name="rightMargin">
+     <number>9</number>
+    </property>
     <property name="bottomMargin">
-     <number>0</number>
+     <number>9</number>
     </property>
     <property name="spacing">
      <number>6</number>
@@ -221,13 +224,19 @@ background: #999999;
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
         <property name="leftMargin">
-         <number>9</number>
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>9</number>
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
         </property>
         <item row="0" column="0">
          <widget class="QScrollArea" name="scrollArea">
@@ -266,8 +275,8 @@ background: #999999;
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>662</width>
-             <height>83</height>
+             <width>680</width>
+             <height>92</height>
             </rect>
            </property>
           </widget>

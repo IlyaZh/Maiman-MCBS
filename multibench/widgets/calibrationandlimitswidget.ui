@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>688</width>
+    <width>690</width>
     <height>40</height>
    </rect>
   </property>
@@ -275,15 +275,29 @@ QPushButton::disabled {
        </property>
        <property name="styleSheet">
         <string notr="true">color: #999999;
-font: 8pt &quot;Poppins&quot;;</string>
+font: 8pt &quot;Poppins&quot;;
+</string>
        </property>
        <property name="text">
-        <string>Min:</string>
+        <string>Min: 3000</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QLabel" name="maxParameter">
@@ -319,10 +333,10 @@ font: 8pt &quot;Poppins&quot;;</string>
 font: 8pt &quot;Poppins&quot;;</string>
        </property>
        <property name="text">
-        <string>Max:</string>
+        <string>Max: 5000</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>

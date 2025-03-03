@@ -265,6 +265,7 @@ const QString buttons() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
 QPushButton{
+    font: 14px"Poppins";
     color: #FFFFFF;
     background-color: #1D1D1D;
     border: 1px solid #6b6b6b;
@@ -272,6 +273,8 @@ border-radius: 15px;
 width: 91px;
 height: 31px;
 margin: 5px;
+      text-align:center;
+      padding-top: 2px;
 }
 QPushButton:hover{
     color: #1D1D1D;
@@ -601,7 +604,7 @@ const QString pinButton() {
       background: #1D1D1D;
       color: rgb(255,255,255);
       padding: 0px;
-      margin-right: 10px;
+      margin-right: 20px;
       margin-bottom: 5px;
       margin-left: 10px;
     )";
@@ -625,7 +628,7 @@ const QString condition() {
       color: #FFC803;
       background: #282828;
     padding-left: 10px;
-    padding-top: 2px;
+    padding-top: 3px;
       border: 2px solid #1A1A1A;
       border-top-width: 0px;
       border-bottom-left-radius: 13px;
@@ -1123,6 +1126,7 @@ QPushButton {
     padding: 4px;
     width: 91px;
     height: 31px;
+    font: 11pt "Poppins";
 }
 
 QPushButton::hover{
@@ -1358,7 +1362,7 @@ namespace InlineEdit {
 const QString widgetConnected() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
-      QLineEdit{background-color: #232323;
+      QLineEdit{background-color: #505050;/*232323*/
       color: #39CA76;
       border-color: #232323;
       border: 1px;

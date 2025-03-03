@@ -19,8 +19,9 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   m_widgetLayout->setSpacing(10);
   m_widgetLayout->setContentsMargins(20, 0, 0, 0);
   m_widgetLayout->setSizeConstraint(QLayout::SetMinimumSize);
-  m_widgetLayout->setAlignment(Qt::AlignLeft);
+  m_widgetLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   ui->devicesTable->setLayout(m_widgetLayout);
+  ui->gridLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   m_hideButton = new GroupHideButton(this);
   m_statusButton = new GroupHideButton(this);
   m_statusButton->setCheckable(false);
@@ -97,10 +98,12 @@ void GroupWidget::resizeWidget() {
   int widgetsCounter{0};
   int totalHeightInAppearence{0};
   for (auto &widget : qAsConst(m_groupWidgets)) {
-    m_widgetLayout->removeWidget(widget);
+    widget->adjustSize();
     if (widget->width() > maxWidth) {
       maxWidth = widget->width();
+      qDebug() << "group's widget size" << maxWidth;
     }
+    m_widgetLayout->removeWidget(widget);
   }
   std::sort(m_groupWidgets.begin(), m_groupWidgets.end(),
             [](DeviceWidget *a, DeviceWidget *b) {
@@ -122,16 +125,14 @@ void GroupWidget::resizeWidget() {
   auto newSize = ui->devicesTable->size();
   int diffWidth = maxWidth - newSize.width();
   int diffHeight = totalHeightInAppearence - ui->devicesTable->height();
-
-  newSize.rwidth() = maxWidth;
+  qDebug() << "group size" << diffWidth << maxWidth << newSize.width();
+  newSize.rwidth() = maxWidth + 15;
 
   if (diffHeight > 0) newSize.rheight() += diffHeight;
   ui->devicesTable->resize(newSize);
-
-  auto winSize = size();
-  winSize.rwidth() += diffWidth;
-  winSize.rheight() += (diffHeight > 0) ? diffHeight : 0;
-  resize(winSize);
+  ui->devicesTable->adjustSize();
+  this->adjustSize();
+  this->setMinimumSize(this->size());
 }
 
 void GroupWidget::hideDevices(bool flag) {
@@ -141,16 +142,14 @@ void GroupWidget::hideDevices(bool flag) {
     m_hideButton->setText(" " + tr("Hide Devices"));
     ui->devicesTable->setVisible(true);
     this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
-    int width = this->size().rwidth();
     this->adjustSize();
-    this->setMinimumWidth(width);
+    this->setMinimumWidth(this->size().rwidth());
   } else {
     m_hideButton->setText(" " + tr("Show Devices"));
     ui->devicesTable->setVisible(false);
-    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
-    int width = this->size().rwidth();
+    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
     this->adjustSize();
-    this->setMinimumWidth(width);
+    this->setMinimumWidth(this->size().rwidth());
   }
 
   resizeWidget();

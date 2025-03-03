@@ -29,6 +29,7 @@ InputDialog::InputDialog(QString title, QString name, QWidget *parent)
       } break;
     }
   });
+  adjustSize();
 }
 
 void InputDialog::setLimits(int min, int value, int max) {

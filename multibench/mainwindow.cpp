@@ -174,14 +174,14 @@ void MainWindow::removeGroupWidget(GroupWidget* group) {
   m_workFieldLayout->removeWidget(group);
   group->deleteLater();
 
-  if (m_groupWidgets.size() > 1) {
-    auto index =
-        ui->tabWidget->indexOf(m_groupTabs.value(group->getGroupAddress()));
-    ui->tabWidget->removeTab(index);
-    m_groupTabs.remove(group->getGroupAddress());
-  } else {
-    repaintGroupToScroll();
-  }
+  //  if (m_groupWidgets.size() > 1) {
+  //    auto index =
+  //        ui->tabWidget->indexOf(m_groupTabs.value(group->getGroupAddress()));
+  //    ui->tabWidget->removeTab(index);
+  //    m_groupTabs.remove(group->getGroupAddress());
+  //  } else {
+  //    repaintGroupToScroll();
+  //  }
 }
 
 void MainWindow::repaintGroupsToTabs(QPointer<GroupWidget> group) {
@@ -224,8 +224,9 @@ void MainWindow::restoreDeviceWidgets() {
   int widgetsCounter{0};
   int totalHeightInAppearence{0};
   for (auto* widget : qAsConst(m_workWidgets)) {
+    widget->adjustSize();
     if (widget->width() > maxWidth) {
-      maxWidth = widget->width() + 15 * 3;
+      maxWidth = widget->width();
     }
   }
   std::sort(m_workWidgets.begin(), m_workWidgets.end(),
@@ -244,6 +245,14 @@ void MainWindow::restoreDeviceWidgets() {
     }
     m_workFieldLayout->addWidget(widget);
   }
+  if (!m_groupWidgets.isEmpty()) {
+    for (auto* widget : qAsConst(m_groupWidgets)) {
+      widget->adjustSize();
+      if (widget->width() > maxWidth) {
+        maxWidth = widget->width();
+      }
+    }
+  }
 
   if (m_workWidgets.isEmpty()) {
     maxWidth = ui->scrollArea->size().rwidth();
@@ -260,7 +269,7 @@ void MainWindow::restoreDeviceWidgets() {
   ui->scrollArea->resize(newSize);
 
   auto winSize = size();
-  winSize.rwidth() += diffWidth + 15 * 2;
+  winSize.rwidth() += diffWidth;
   winSize.rheight() += (diffHeight > 0) ? diffHeight : 0;
   resize(winSize);
 }

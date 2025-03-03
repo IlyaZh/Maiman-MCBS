@@ -82,7 +82,7 @@ DeviceWidget::DeviceWidget(
         });
     for (auto item : qAsConst(readOnlyWidgets)) {
       item->setUnitsLength(maxUnitsLengthIt->getUnitslength());
-      item->setContentsMargins(10, 0, 10, 0);
+      item->setContentsMargins(0, 0, 0, 0);
       hiddenWidget->addWidget(item);
       m_widgetsTable.insert(item);
       //      for (auto code : item->Subscribe()) {
@@ -104,7 +104,7 @@ DeviceWidget::DeviceWidget(
     auto converter = m_converters.value(item.code, nullptr);
     if (converter) {
       auto binaryWidget = new BinaryWidget(item, converter, hiddenWidget);
-      binaryWidget->setContentsMargins(10, 0, 10, 0);
+      binaryWidget->setContentsMargins(0, 0, 10, 0);
       hiddenWidget->addWidget(binaryWidget);
       m_widgetsTable.insert(binaryWidget);
       //      for (auto code : binaryWidget->Subscribe()) {

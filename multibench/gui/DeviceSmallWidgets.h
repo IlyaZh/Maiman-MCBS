@@ -51,8 +51,8 @@ class DevicePinButton : public QPushButton, public GuiWidgetInterface {
     sizePolicy1.setVerticalStretch(0);
     sizePolicy1.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
     setSizePolicy(sizePolicy1);
-    setMinimumSize(QSize(16, 16));
-    setMaximumSize(QSize(16, 16));
+    setMinimumSize(QSize(26, 16));
+    setMaximumSize(QSize(26, 16));
     setMaximumHeight(20);
     m_darkButton.addFile(
         QString::fromUtf8(":/resources/images/DarkPinSymbol-disactivated.png"),
