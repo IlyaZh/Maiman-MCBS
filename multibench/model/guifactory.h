@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QtWidgets>
 
-#include "device/devicewidget.h"
+#include "device/deviceholder.h"
 #include "factories/parserworker.h"
 #include "widgets/groupmanager.h"
 #include "widgets/groupwidget.h"
@@ -19,8 +19,8 @@ class GuiFactory : public QObject {
  public:
   explicit GuiFactory(const QString& fileName, QObject* parent = nullptr);
   void start();
-  DeviceWidget* createDeviceWidget(
-      quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands,
+  DeviceHolder* createDeviceWidgetHolder(
+      quint16 id,
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters);
   CalibrationDialog* createCalibrationDialog(
       quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands);
@@ -29,7 +29,7 @@ class GuiFactory : public QObject {
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters);
   GroupWidget* createGroupWidget(int groupAddr);
   GroupManager* createGroupManagerWidget(
-      const QMap<quint8, QPointer<DeviceWidget>>& devices,
+      const QMap<quint8, QPointer<DeviceHolder>>& devices,
       const QMap<int, QPointer<GroupWidget>>& groups);
   bool hasLimits(quint16 id);
   bool hasCalibration(quint16 id);

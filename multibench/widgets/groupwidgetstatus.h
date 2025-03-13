@@ -30,6 +30,9 @@ class GroupWidgetStatus : public QWidget, public GuiWidgetInterface {
   void setLink(bool status);
   void updateStyle() override;
 
+ protected:
+  bool eventFilter(QObject *obj, QEvent *event) override;
+
  private:
   Ui::GroupWidgetStatus *ui;
   static const QString startedStyleOn;
@@ -43,4 +46,5 @@ class GroupWidgetStatus : public QWidget, public GuiWidgetInterface {
   QWidget *tecStarted;
   QHBoxLayout *laserLayout;
   QHBoxLayout *tecLayout;
+  QString m_toolTip;
 };

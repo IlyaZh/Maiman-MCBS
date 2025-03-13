@@ -29,11 +29,11 @@ void GuiFactory::start() {
   m_thread->start();
 }
 
-DeviceWidget* GuiFactory::createDeviceWidget(
-    quint16 id, const QMap<quint16, QSharedPointer<DevCommand>>& commands,
+DeviceHolder* GuiFactory::createDeviceWidgetHolder(
+    quint16 id,
     const QMap<quint16, QSharedPointer<CommandConverter>>& converters) {
   if (m_deviceWidgets.contains(id)) {
-    return new DeviceWidget(m_deviceWidgets[id], commands, converters);
+    return new DeviceHolder(m_deviceWidgets[id], converters);
   }
   return nullptr;
 }
@@ -60,7 +60,7 @@ GroupWidget* GuiFactory::createGroupWidget(int groupAddr) {
 }
 
 GroupManager* GuiFactory::createGroupManagerWidget(
-    const QMap<quint8, QPointer<DeviceWidget>>& devices,
+    const QMap<quint8, QPointer<DeviceHolder>>& devices,
     const QMap<int, QPointer<GroupWidget>>& groups) {
   return new GroupManager(devices, groups);
 }

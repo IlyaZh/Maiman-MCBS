@@ -12,7 +12,7 @@
 class GuiFactory;
 class MainWindow;
 class Device;
-class DeviceWidget;
+class DeviceHolder;
 class PlusMinusWidget;
 class CalibrationDialog;
 struct groupCheckBoxes;
@@ -32,7 +32,7 @@ class GuiMediator : public QObject, public interfaces::Subscriber {
   GuiFactory& m_factory;
   NetworkModel& m_network;
   QMap<quint8, QSharedPointer<CalibrationDialog>> m_calibrationDialog;
-  QMap<quint8, QPointer<DeviceWidget>> m_deviceWidgetsTable;
+  QMap<quint8, QPointer<DeviceHolder>> m_deviceWidgetsTable;
   QMap<int, QPointer<GroupWidget>> m_groupWidgetsTable;
 
  private slots:

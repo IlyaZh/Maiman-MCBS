@@ -48,7 +48,7 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
 
 GroupWidget::~GroupWidget() { delete ui; }
 
-void GroupWidget::addGroupMember(QPointer<DeviceWidget> member) {
+void GroupWidget::addGroupMember(QPointer<DeviceHolder> member) {
   //  if (member == this) return;
   //  m_widgetLayout->addWidget(member);
   m_groupWidgets.append(member);
@@ -63,7 +63,7 @@ void GroupWidget::addGroupMember(QPointer<DeviceWidget> member) {
   m_linked.insert(static_cast<quint8>(member->getAddress()), true);
 }
 
-void GroupWidget::removeGroupMember(QPointer<DeviceWidget> member) {
+void GroupWidget::removeGroupMember(QPointer<DeviceHolder> member) {
   //  if (member == this) return;
   emit closeGroupStatusDialog();
   m_widgetLayout->removeWidget(member);
@@ -101,12 +101,11 @@ void GroupWidget::resizeWidget() {
     widget->adjustSize();
     if (widget->width() > maxWidth) {
       maxWidth = widget->width();
-      qDebug() << "group's widget size" << maxWidth;
     }
     m_widgetLayout->removeWidget(widget);
   }
   std::sort(m_groupWidgets.begin(), m_groupWidgets.end(),
-            [](DeviceWidget *a, DeviceWidget *b) {
+            [](DeviceHolder *a, DeviceHolder *b) {
               return a->getAddress() < b->getAddress();
             });
   for (auto widget : qAsConst(m_groupWidgets)) {

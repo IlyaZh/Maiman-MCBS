@@ -80,6 +80,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     model/device/HiddenWidget.cpp \
+    model/device/devicefoldedwidget.cpp \
+    model/device/deviceholder.cpp \
     modelguimediator.cpp \
     staticstyles.cpp \
     widgets/buttonwidget.cpp \
@@ -142,6 +144,8 @@ HEADERS += \
     factories/xmlparser.h \
     mainwindow.h \
     model/device/HiddenWidget.h \
+    model/device/devicefoldedwidget.h \
+    model/device/deviceholder.h \
     model/event.h \
   model/events/network.h \
     modelguimediator.h \
@@ -185,6 +189,7 @@ HEADERS += \
 FORMS += \
     mainwindow.ui \
     model/device/HiddenWidget.ui \
+    model/device/devicefoldedwidget.ui \
     widgets/aboutdialog.ui \
     widgets/calibrationandlimitswidget.ui \
     widgets/calibrationdialog.ui \

@@ -54,47 +54,49 @@ GroupWidgetStatus::GroupWidgetStatus(QWidget *parent)
   ui->horizontalLayout->addWidget(tecStarted);
 
   GroupWidgetStatus::updateStyle();
+
+  ui->statusLabel->installEventFilter(this);
+  m_iconHolder->installEventFilter(this);
+  m_toolTip =
+      R"(<span style='background-color: #FFFFFF; color: #000000'>%1</span>)";
 }
 
 GroupWidgetStatus::~GroupWidgetStatus() { delete ui; }
 
 void GroupWidgetStatus::addData(DeviceStatusGroup &status) {
-  //  QString format(R"(<span style=color:'%1'>Warning</span>)");
   QString toolTip(
       R"(<span style='background-color: #FFFFFF; color: #000000'>%1</span>)");
-  bool hasErrors = !status.errors->isEmpty();
-  bool hasInterlock = !status.interlocks->isEmpty();
-  if (hasErrors and hasInterlock) {
-    ui->statusLabel->setToolTip(toolTip.arg(status.errors->join("\n") + "\n" +
-                                            status.interlocks->join("\n")));
-    ui->statusLabel->setStyleSheet(Status::warningRed());
-    ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_iconHolder->setToolTip(toolTip.arg(status.errors->join("\n") + "\n" +
-                                         status.interlocks->join("\n")));
-    m_iconHolder->setIcon(m_iconError);
+  qDebug() << "GROUP" << status.devStarted->keys() << status.errors.value()
+           << status.interlocks.value();
+  if (status.errors.has_value() or status.interlocks.has_value()) {
+    bool hasErrors = !status.errors->isEmpty();
+    bool hasInterlock = !status.interlocks->isEmpty();
+    if (hasErrors and hasInterlock) {
+      m_toolTip = toolTip.arg(status.errors->join("\n") + "\n" +
+                              status.interlocks->join("\n"));
+      ui->statusLabel->setStyleSheet(Status::warningRed());
+      ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+      m_iconHolder->setIcon(m_iconError);
 
-  } else if (hasErrors and !hasInterlock) {
-    ui->statusLabel->setToolTip(toolTip.arg(status.errors->join("\n")));
-    ui->statusLabel->setStyleSheet(Status::warningRed());
-    ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_iconHolder->setToolTip(toolTip.arg(status.errors->join("\n")));
-    m_iconHolder->setIcon(m_iconError);
+    } else if (hasErrors and !hasInterlock) {
+      m_toolTip = toolTip.arg(status.errors->join("\n"));
+      ui->statusLabel->setStyleSheet(Status::warningRed());
+      ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+      m_iconHolder->setIcon(m_iconError);
 
-  } else if (!hasErrors and hasInterlock) {
-    ui->statusLabel->setToolTip(toolTip.arg(status.interlocks->join("\n")));
-    ui->statusLabel->setStyleSheet(Status::warningYellow());
-    ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_iconHolder->setToolTip(toolTip.arg(status.interlocks->join("\n")));
-    m_iconHolder->setIcon(m_iconWarning);
+    } else if (!hasErrors and hasInterlock) {
+      m_toolTip = toolTip.arg(status.interlocks->join("\n"));
+      ui->statusLabel->setStyleSheet(Status::warningYellow());
+      ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+      m_iconHolder->setIcon(m_iconWarning);
 
-  } else {
-    ui->statusLabel->setToolTip(QString());
-    ui->statusLabel->setStyleSheet(Status::warningGray());
-    ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    m_iconHolder->setToolTip(QString());
-    m_iconHolder->setIcon(m_iconPlug);
+    } else {
+      m_toolTip = "";
+      ui->statusLabel->setStyleSheet(Status::warningGray());
+      ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+      m_iconHolder->setIcon(m_iconPlug);
+    }
   }
-
   if (status.devStarted.has_value()) {
     for (auto map = status.devStarted->cbegin(),
               end = status.devStarted->cend();
@@ -126,20 +128,6 @@ void GroupWidgetStatus::addData(DeviceStatusGroup &status) {
                                                    QSizePolicy::Fixed));
         }
         m_devs.insert(map.key(), devLabel);
-        //        QWidget *cell = new QWidget;
-        //        cell->setFixedSize(84, 24);  // Установи фиксированный размер
-        //        ячейки auto devLabel = new QLabel(map.key(), cell);
-        //        devLabel->setStyleSheet(StyleStorage::Group::Status::labels());
-        //        devLabel->setFont(QFont("Poppins", 14));
-        //        devLabel->setSizePolicy(QSizePolicy::Fixed,
-        //        QSizePolicy::Fixed); devLabel->setAlignment(Qt::AlignHCenter |
-        //        Qt::AlignLeft); devLabel->setFixedSize(84, 24); QVBoxLayout
-        //        *cellLayout = new QVBoxLayout(cell);
-        //        cellLayout->addWidget(devLabel);
-        //        cellLayout->setContentsMargins(0, 0, 0, 0);  // Убираем
-        //        отступы cellLayout->setAlignment(Qt::AlignLeft);
-        //        ui->horizontalLayout->addWidget(cell);
-        //        m_devs.insert(map.key(), devLabel);
       }
       if (map.value()) {
         m_devs.value(map.key())->setText(QString("ON "));
@@ -175,4 +163,13 @@ void GroupWidgetStatus::updateStyle() {
   setStyleSheet(Status::widget());
   //  ui->modelLabel->setStyleSheet(Status::labels());
   this->update();
+}
+
+bool GroupWidgetStatus::eventFilter(QObject *obj, QEvent *event) {
+  if ((obj == ui->statusLabel || obj == m_iconHolder) &&
+      (event->type() == QEvent::Enter)) {
+    QToolTip::showText(QCursor::pos(), m_toolTip, this);
+    return true;
+  }
+  return QWidget::eventFilter(obj, event);
 }

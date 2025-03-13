@@ -10,7 +10,7 @@
 
 #include "appsettings.h"
 #include "constants.h"
-#include "model/device/devicewidget.h"
+#include "model/device/deviceholder.h"
 #include "staticstyles.h"
 #include "ui_mainwindow.h"
 #include "widgets/aboutdialog.h"
@@ -147,16 +147,16 @@ void MainWindow::tcpTriggered() {
   emit changeConnectState(Const::PortType::kTCP, networkMap);
 }
 
-void MainWindow::addDeviceWidget(DeviceWidget* widget) {
+void MainWindow::addDeviceWidget(DeviceHolder* widget) {
   if (!m_workWidgets.contains(widget)) {
     widget->setParent(this);
     m_workWidgets.append(widget);
-    connect(widget, &DeviceWidget::nameEdited, this,
+    connect(widget, &DeviceHolder::nameEdited, this,
             &MainWindow::deviceNameChanged);
   }
 }
 
-void MainWindow::removeDeviceWidget(DeviceWidget* widget) {
+void MainWindow::removeDeviceWidget(DeviceHolder* widget) {
   if (!m_workWidgets.contains(widget)) return;
   m_workWidgets.removeOne(widget);
 }
@@ -230,7 +230,7 @@ void MainWindow::restoreDeviceWidgets() {
     }
   }
   std::sort(m_workWidgets.begin(), m_workWidgets.end(),
-            [](DeviceWidget* a, DeviceWidget* b) {
+            [](DeviceHolder* a, DeviceHolder* b) {
               return a->getAddress() < b->getAddress();
             });
   for (auto* widget : qAsConst(m_workWidgets)) {
@@ -259,7 +259,6 @@ void MainWindow::restoreDeviceWidgets() {
   }
 
   auto newSize = ui->scrollArea->size();
-  qDebug() << "max" << maxWidth << " new" << newSize.width();
   int diffWidth = maxWidth - newSize.width();
   int diffHeight = totalHeightInAppearence - ui->scrollArea->height();
 

@@ -16,7 +16,7 @@ class AboutDialog;
 class UpdateWidget;
 // class CalibrationMenu;
 class PlusMinusWidget;
-class DeviceWidget;
+class DeviceHolder;
 class RescanProgressWidget;
 class QuitDialog;
 class ConnectionWidget;
@@ -34,8 +34,8 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
  public:
   MainWindow(QWidget* parent = nullptr);
   ~MainWindow() override;
-  void addDeviceWidget(DeviceWidget* widget);
-  void removeDeviceWidget(DeviceWidget* widget);
+  void addDeviceWidget(DeviceHolder* widget);
+  void removeDeviceWidget(DeviceHolder* widget);
   void restoreDeviceWidgets();
   void addGroupWidget(GroupWidget* group);
   void removeGroupWidget(GroupWidget* group);
@@ -85,7 +85,7 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
 
  private:
   Ui::MainWindow* ui;
-  QVector<DeviceWidget*> m_workWidgets;
+  QVector<DeviceHolder*> m_workWidgets;
   QVector<GroupWidget*> m_groupWidgets;
   QGridLayout* m_workFieldLayout;
   QMap<int, QWidget*> m_groupTabs;

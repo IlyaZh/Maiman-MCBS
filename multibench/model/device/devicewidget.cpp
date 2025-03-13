@@ -16,13 +16,11 @@
 
 DeviceWidget::DeviceWidget(
     const DeviceWidgetDesc& description,
-    const QMap<quint16, QSharedPointer<DevCommand>>& commands,
     const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
     QWidget* parent)
     : QWidget(parent),
       ui(new Ui::DeviceWidget),
       m_buttons(description.buttons),
-      m_commands(commands),
       m_converters(converters),
       m_widgetLayout(new QGridLayout()),
       m_deviceAddress(new InLineEdit(0)) {
@@ -32,7 +30,6 @@ DeviceWidget::DeviceWidget(
   font14.setPixelSize(14);
   ui->modelLabel->setText(QString("Model: %1").arg(description.name));
   ui->modelLabel->setFont(font14);
-  m_id = description.id;
 
   // Инициализация кнопки (Hide controls)
   auto m_hideControlsButton = new DeviceHideButton(this);
@@ -131,7 +128,7 @@ DeviceWidget::DeviceWidget(
   for (const auto& button : qAsConst(description.buttons)) {
     QPointer<ButtonWidget> pButton;
     if (button.name.compare("laser", Qt::CaseInsensitive) == 0 &&
-        m_commands.contains(button.code)) {
+        m_converters.contains(button.code)) {
       auto converter = m_converters.value(button.code);
       m_laserButton = new ButtonWidget("Laser", button, converter, this);
       pButton = m_laserButton;
@@ -173,15 +170,8 @@ DeviceWidget::DeviceWidget(
 
 DeviceWidget::~DeviceWidget() { delete ui; }
 
-void DeviceWidget::setAddress(int addr) {
-  m_address = addr;
-  m_deviceAddress->setAddress(addr);
-}
-
-int DeviceWidget::getAddress() const { return m_address; }
-int DeviceWidget::getId() const { return m_id; }
+void DeviceWidget::setAddress(int addr) { m_deviceAddress->setAddress(addr); }
 QString DeviceWidget::getName() const { return m_deviceAddress->text(); }
-QString DeviceWidget::getModel() const { return ui->modelLabel->text(); }
 
 void DeviceWidget::setLink(bool link) {
   ui->linkLabel->setStyleSheet(link ? StyleStorage::Device::linkConnected()
@@ -230,33 +220,35 @@ void DeviceWidget::setTecButton(quint16 value) {
 }
 
 void DeviceWidget::laserButtonClicked() {
-  auto search =
-      std::find_if(m_buttons.begin(), m_buttons.end(),
-                   [](const auto& button) { return (button.name == "Laser"); });
-  if (search != m_buttons.end()) {
-    auto laserButton = search.value();
-    auto cmd = m_commands.value(laserButton.code, 0);
-    if (cmd) {
-      cmd->setFromWidget((cmd->valueInt() & laserButton.mask)
-                             ? laserButton.offCommand
-                             : laserButton.onCommand);
-    }
-  }
+  //  auto search =
+  //      std::find_if(m_buttons.begin(), m_buttons.end(),
+  //                   [](const auto& button) { return (button.name == "Laser");
+  //                   });
+  //  if (search != m_buttons.end()) {
+  //    auto laserButton = search.value();
+  //    auto cmd = m_commands.value(laserButton.code, 0);
+  //    if (cmd) {
+  //      cmd->setFromWidget((cmd->valueInt() & laserButton.mask)
+  //                             ? laserButton.offCommand
+  //                             : laserButton.onCommand);
+  //    }
+  //  }
 }
 
 void DeviceWidget::tecButtonClicked() {
-  auto search =
-      std::find_if(m_buttons.begin(), m_buttons.end(),
-                   [](const auto& button) { return (button.name == "TEC"); });
-  if (search != m_buttons.end()) {
-    auto laserButton = search.value();
-    auto cmd = m_commands.value(laserButton.code, 0);
-    if (cmd) {
-      cmd->setFromWidget((cmd->valueInt() & laserButton.mask)
-                             ? laserButton.offCommand
-                             : laserButton.onCommand);
-    }
-  }
+  //  auto search =
+  //      std::find_if(m_buttons.begin(), m_buttons.end(),
+  //                   [](const auto& button) { return (button.name == "TEC");
+  //                   });
+  //  if (search != m_buttons.end()) {
+  //    auto laserButton = search.value();
+  //    auto cmd = m_commands.value(laserButton.code, 0);
+  //    if (cmd) {
+  //      cmd->setFromWidget((cmd->valueInt() & laserButton.mask)
+  //                             ? laserButton.offCommand
+  //                             : laserButton.onCommand);
+  //    }
+  //  }
 }
 
 void DeviceWidget::hideControlsButtonClicked(bool flag) {
@@ -281,6 +273,7 @@ void DeviceWidget::hideControlsButtonClicked(bool flag) {
     }
   }
   adjust();
+  emit hideWidget();
 }
 
 void DeviceWidget::pinButtonClicked(int idx, bool state) {

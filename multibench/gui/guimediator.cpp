@@ -31,13 +31,13 @@ void GuiMediator::createWidgetFor(Device* device) {
   // TODO: пронеси Device мимо этого класса в наследуемые
   //  m_converters.createConverters(device->addr(),
   //                                m_network.getCommands(device->addr()));
-  QPointer<DeviceWidget> widget(m_factory.createDeviceWidget(
-      device->id(), device->commands(), device->converters()));
+  QPointer<DeviceHolder> widget(
+      m_factory.createDeviceWidgetHolder(device->id(), device->converters()));
   if (widget) {
     m_deviceWidgetsTable.insert(device->addr(), widget);
     widget->setAddress(static_cast<int>(device->addr()));
     //    connect(device, &Device::linkChanged, widget, &DeviceWidget::setLink);
-    connect(widget, &DeviceWidget::acceptDataFromWidget, this,
+    connect(widget, &DeviceHolder::acceptDataFromWidget, this,
             [this, device](quint16 code, quint16 value) {
               dataCapture(device->addr(), code, value);
             });

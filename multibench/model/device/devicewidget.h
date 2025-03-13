@@ -104,14 +104,10 @@ class DeviceWidget : public QWidget,
  public:
   explicit DeviceWidget(
       const DeviceWidgetDesc& description,
-      const QMap<quint16, QSharedPointer<DevCommand>>& commands,
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
       QWidget* parent = nullptr);
   ~DeviceWidget() override;
   void setAddress(int addr);
-  int getAddress() const;
-  int getId() const;
-  QString getModel() const;
   QString getName() const;
   void setConstraint(bool state);
   void updateValue(const model::Event& event);
@@ -125,13 +121,12 @@ class DeviceWidget : public QWidget,
   void nameEdited(QString name, int addr);
   void dataIncome(QSharedPointer<CommandConverter> command);
   void acceptDataFromWidget(quint16 code, quint16 value);
+  void hideWidget();
 
  private:
   Ui::DeviceWidget* ui;
   const QMap<quint16, Button>& m_buttons;
-  QMap<quint16, QVariant> m_values;
   QVector<HiddenWidget*> m_widgets;
-  QMap<quint16, QSharedPointer<DevCommand>> m_commands;
   QMap<quint16, QSharedPointer<CommandConverter>> m_converters;
   QGridLayout* m_widgetLayout;
   QMap<quint16, BinaryWidget*> m_binaryWidgets;
@@ -142,17 +137,9 @@ class DeviceWidget : public QWidget,
   DeviceCondition* m_deviceCondition;
   InLineEdit* m_deviceAddress;
   int m_fixedWidgets{0};
-  //  QHash<quint8, GuiWidgetBase*> m_widgetsTable;
   QSet<GuiWidgetBase*> m_widgetsTable;
-  int m_address = 0;
-  int m_id = 0;
   void paintEvent(QPaintEvent*) override;
   void adjust();
-
-  static const QString linkStyleOn;
-  static const QString linkStyleOff;
-  static const QString labelEnableStyle;
-  static const QString labelDisableStyle;
 
  private slots:
   void setLaserButton(quint16 value);

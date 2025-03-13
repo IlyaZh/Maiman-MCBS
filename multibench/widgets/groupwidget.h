@@ -5,7 +5,7 @@
 #include "group/GroupInterface.h"
 #include "gui/DeviceSmallWidgets.h"
 #include "gui/guiinterface.h"
-#include "model/device/devicewidget.h"
+#include "model/device/deviceholder.h"
 #include "widgets/groupstatusdialog.h"
 #include "widgets/inlineedit.h"
 
@@ -19,8 +19,8 @@ class GroupWidget : public QWidget, public GuiWidgetInterface {
  public:
   explicit GroupWidget(int groupAddr, QWidget *parent = nullptr);
   ~GroupWidget() override;
-  void addGroupMember(QPointer<DeviceWidget> member);
-  void removeGroupMember(QPointer<DeviceWidget> member);
+  void addGroupMember(QPointer<DeviceHolder> member);
+  void removeGroupMember(QPointer<DeviceHolder> member);
   const QSet<quint8> getAddresses();
   void setDevicesStatus(quint8 addr, QSharedPointer<DeviceStatusGroup> desc);
   const QString getName();
@@ -48,7 +48,7 @@ class GroupWidget : public QWidget, public GuiWidgetInterface {
   QPushButton *m_hideButton;
   QPushButton *m_statusButton;
   QGridLayout *m_widgetLayout;
-  QList<QPointer<DeviceWidget>> m_groupWidgets;
+  QList<QPointer<DeviceHolder>> m_groupWidgets;
   QMap<quint8, DeviceStatusGroup> m_status;
   QSet<quint8> m_addresses;
   QMap<quint8, bool> m_linked;

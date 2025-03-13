@@ -29,7 +29,7 @@ class GroupManager : public QDialog, public GuiWidgetInterface {
   Q_OBJECT
 
  public:
-  explicit GroupManager(const QMap<quint8, QPointer<DeviceWidget>>& devices,
+  explicit GroupManager(const QMap<quint8, QPointer<DeviceHolder>>& devices,
                         const QMap<int, QPointer<GroupWidget>>& groups,
                         QWidget* parent = nullptr);
   ~GroupManager();
@@ -51,7 +51,7 @@ class GroupManager : public QDialog, public GuiWidgetInterface {
   QVBoxLayout* m_groupsFieldLayout;
   QMap<quint8, QSharedPointer<deviceCheckBox>> m_devicesContainer;
   QMap<int, QSharedPointer<groupCheckBoxes>> m_groupsContainer;
-  const QMap<quint8, QPointer<DeviceWidget>>& m_devices;
+  const QMap<quint8, QPointer<DeviceHolder>>& m_devices;
   const QMap<int, QPointer<GroupWidget>>& m_groups;
   QButtonGroup* m_buttonGroup;
   QFont m_font;
