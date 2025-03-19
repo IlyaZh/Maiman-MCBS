@@ -82,6 +82,7 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
   void setBothBaudRates(QString baudtare);
 
   void styleChanged(int value);
+  void styleChangedBetweenStates(bool state);
 
  private:
   Ui::MainWindow* ui;

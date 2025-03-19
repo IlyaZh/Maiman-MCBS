@@ -45,6 +45,10 @@ QMainWindow{
         border-bottom-left-radius: 13px;
         border-bottom-right-radius: 13px;
 }
+QMenu {
+        background: #1D1D1D;
+        color: #FFFFFF;
+}
 QMenu:hover {
         color: #969696;
 }
@@ -78,6 +82,57 @@ QMenu::item:disabled {
 )";
   }
 }
+
+const QString AppWidgetAfterConnect() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QMainWindow *{
+        background: #474747;
+        color: #FFFFFF;
+}
+QMainWindow{
+        border: 0px solid #1A1A1A;
+        border-bottom-left-radius: 13px;
+        border-bottom-right-radius: 13px;
+}
+QMenu {
+        background: #1D1D1D;
+        color: #FFFFFF;
+}
+QMenu:hover {
+        color: #969696;
+}
+
+QMenu::item:selected {
+      background: #1D1D1D;
+      color: #FFC803;
+}
+
+QMenu::item:disabled {
+        color: #787878;
+}
+)";
+  } else {
+    return R"(
+QMainWindow *{
+        background: #FAFAFA;
+        color: #000000;
+}
+QMenu:hover {
+        color: #969696;
+}
+
+QMenu::item:selected {
+        background-color: #E7E7E7;
+}
+
+QMenu::item:disabled {
+        color: #FAFAFA;
+}
+)";
+  }
+}
+
 const QString menuBarWidget() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
@@ -154,6 +209,92 @@ const QString scrollWidget() {
     return R"(
           background: #FAFAFA;
           color: #000000;
+  )";
+  }
+}
+
+const QString scrollWidgetAfterConnect() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+          background: #474747;
+          color: #FFFFFF;
+ )";
+  } else {
+    return R"(
+          background: #FAFAFA;
+          color: #000000;
+  )";
+  }
+}
+
+const QString tabWidget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QTabWidget{
+ border: 0px solid #444;
+ background: #1D1D1D;
+}
+
+QTabWidget::pane {
+ border: 0px solid #444;
+ background: #1D1D1D;
+}
+ QTabBar::tab {
+background: #1D1D1D;
+color: white;
+padding: 6px;
+border: 0px solid #555;
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;
+    font: 8pt "Poppins";
+}
+ QTabBar::tab:selected {
+ background: #474747;
+ border-bottom: 2px solid  #ffcc00;
+ }
+ QTabBar::tab:hover {
+background: #999999;
+}
+ )";
+  } else {
+    return R"(
+
+  )";
+  }
+}
+
+const QString tabWidgetAfterConnect() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+QTabWidget{
+ border: 0px solid #444;
+ background: #474747;
+}
+
+QTabWidget::pane {
+ border: 0px solid #444;
+ background: #1D1D1D;
+}
+ QTabBar::tab {
+background: #474747;
+color: white;
+padding: 6px;
+border: 0px solid #555;
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;
+    font: 8pt "Poppins";
+}
+ QTabBar::tab:selected {
+ background: #474747;
+ border-bottom: 2px solid  #ffcc00;
+ }
+ QTabBar::tab:hover {
+background: #999999;
+}
+ )";
+  } else {
+    return R"(
+
   )";
   }
 }
@@ -626,13 +767,10 @@ const QString condition() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
       color: #FFC803;
-      background: #282828;
+      background-color: none;
     padding-left: 10px;
     padding-top: 3px;
-      border: 2px solid #1A1A1A;
-      border-top-width: 0px;
-      border-bottom-left-radius: 13px;
-      border-bottom-right-radius: 13px;
+      border: 0px solid #1A1A1A;
 )";
   } else {
     return R"(

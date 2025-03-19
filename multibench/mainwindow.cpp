@@ -296,6 +296,7 @@ void MainWindow::rescanProgress(int current, int total, int success) {
         m_progressWidget->notFound();
       }
     }
+    styleChangedBetweenStates(m_isConnected);
     restoreDeviceWidgets();
   } else if (m_progressWidget) {
     m_progressWidget->setProgress(current, total, success);
@@ -406,6 +407,7 @@ void MainWindow::setConnected(bool isConnected) {
     ui->menuCalibration->clear();
     adjustSize();
     emit clearWidgets();
+    styleChangedBetweenStates(m_isConnected);
   }
 }
 
@@ -541,4 +543,21 @@ void MainWindow::styleChanged(int value) {
                      model::events::network::ChangeSystemStyle(style));
   emit Signal_PublishEvent(event);
   MainWindow::NewEvent(event);
+}
+
+void MainWindow::styleChangedBetweenStates(bool state) {
+  if (state) {
+    this->setStyleSheet(AppWidgetAfterConnect());
+    ui->tabWidget->setStyleSheet(tabWidgetAfterConnect());
+    ui->scrollArea->setStyleSheet(
+        StyleStorage::MainWindow::scrollWidgetAfterConnect());
+    ui->scrollFieldWidget->setStyleSheet(
+        StyleStorage::MainWindow::scrollWidgetAfterConnect());
+  } else {
+    this->setStyleSheet(AppWidget());
+    ui->tabWidget->setStyleSheet(tabWidget());
+    ui->scrollArea->setStyleSheet(StyleStorage::MainWindow::scrollWidget());
+    ui->scrollFieldWidget->setStyleSheet(
+        StyleStorage::MainWindow::scrollWidget());
+  }
 }

@@ -116,7 +116,8 @@ SOURCES += \
     absoluteToleranceCompare.cpp \
     widgets/binarywidget.cpp \
     widgets/controlwidget.cpp \
-    widgets/readparameterwidget.cpp
+    widgets/readparameterwidget.cpp \
+    widgets/warningwidget.cpp
 
 HEADERS += \
     DataThread.h \
@@ -184,7 +185,8 @@ HEADERS += \
 #    tests/test_modbus/test_modbus.h \
     widgets/binarywidget.h \
     widgets/controlwidget.h \
-    widgets/readparameterwidget.h
+    widgets/readparameterwidget.h \
+    widgets/warningwidget.h
 
 FORMS += \
     mainwindow.ui \

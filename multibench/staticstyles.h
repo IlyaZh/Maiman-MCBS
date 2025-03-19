@@ -8,8 +8,12 @@ namespace StyleStorage {
 namespace MainWindow {
 const QString AppScrollBars();
 const QString AppWidget();
+const QString AppWidgetAfterConnect();
 const QString menuBarWidget();
 const QString scrollWidget();
+const QString scrollWidgetAfterConnect();
+const QString tabWidget();
+const QString tabWidgetAfterConnect();
 const QString changeStyleSlider();
 const QString inputDialog();
 namespace Quit {

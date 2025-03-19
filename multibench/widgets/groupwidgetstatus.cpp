@@ -64,28 +64,27 @@ GroupWidgetStatus::GroupWidgetStatus(QWidget *parent)
 GroupWidgetStatus::~GroupWidgetStatus() { delete ui; }
 
 void GroupWidgetStatus::addData(DeviceStatusGroup &status) {
-  QString toolTip(
-      R"(<span style='background-color: #FFFFFF; color: #000000'>%1</span>)");
+  QString toolTip(R"(<span style='white-space:pre'>%1</span>)");
   qDebug() << "GROUP" << status.devStarted->keys() << status.errors.value()
            << status.interlocks.value();
   if (status.errors.has_value() or status.interlocks.has_value()) {
     bool hasErrors = !status.errors->isEmpty();
     bool hasInterlock = !status.interlocks->isEmpty();
     if (hasErrors and hasInterlock) {
-      m_toolTip = toolTip.arg(status.errors->join("\n") + "\n" +
-                              status.interlocks->join("\n"));
+      m_toolTip = toolTip.arg(status.errors->join("\r\n") + "\r\n" +
+                              status.interlocks->join("\r\n"));
       ui->statusLabel->setStyleSheet(Status::warningRed());
       ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
       m_iconHolder->setIcon(m_iconError);
 
     } else if (hasErrors and !hasInterlock) {
-      m_toolTip = toolTip.arg(status.errors->join("\n"));
+      m_toolTip = toolTip.arg(status.errors->join("\r\n"));
       ui->statusLabel->setStyleSheet(Status::warningRed());
       ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
       m_iconHolder->setIcon(m_iconError);
 
     } else if (!hasErrors and hasInterlock) {
-      m_toolTip = toolTip.arg(status.interlocks->join("\n"));
+      m_toolTip = toolTip.arg(status.interlocks->join("\r\n"));
       ui->statusLabel->setStyleSheet(Status::warningYellow());
       ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
       m_iconHolder->setIcon(m_iconWarning);
