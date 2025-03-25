@@ -8,6 +8,7 @@
 #include "model/device/deviceholder.h"
 #include "widgets/groupstatusdialog.h"
 #include "widgets/inlineedit.h"
+#include "widgets/warningwidget.h"
 
 class GroupInterface;
 namespace Ui {
@@ -49,11 +50,12 @@ class GroupWidget : public QWidget, public GuiWidgetInterface {
   QPushButton *m_statusButton;
   QGridLayout *m_widgetLayout;
   QList<QPointer<DeviceHolder>> m_groupWidgets;
-  QMap<quint8, DeviceStatusGroup> m_status;
+  QMap<quint8, QSharedPointer<DeviceStatusGroup>> m_status;
   QSet<quint8> m_addresses;
   QMap<quint8, bool> m_linked;
   InLineEdit *m_name;
   bool m_hideDevices = false;
   bool m_allStarted = false;
   int m_selfAddr = 0;
+  WarningWidget *m_warning;
 };

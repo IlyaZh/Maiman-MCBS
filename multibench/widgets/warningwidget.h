@@ -1,0 +1,60 @@
+#ifndef WARNINGWIDGET_H
+#define WARNINGWIDGET_H
+
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPushButton>
+#include <QWidget>
+
+#include "gui/guiinterface.h"
+struct DeviceStatusGroup {
+  std::optional<QStringList> errors;
+  std::optional<bool> isError;
+  std::optional<QStringList> interlocks;
+  std::optional<bool> isInterlock;
+};
+
+class CustomTooltip : public QLabel {
+ public:
+  explicit CustomTooltip(QWidget *parent = nullptr) : QLabel(parent) {
+    setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint);
+    setStyleSheet(
+        "color: black; background-color: yellow; border: 1px solid black; "
+        "padding: 5px;");
+    setAlignment(Qt::AlignCenter);
+    hide();
+  }
+
+  void showTooltip(const QString &text, const QPoint &pos) {
+    setText(text);
+    adjustSize();
+    move(pos);
+    show();
+  }
+
+  void hideTooltip() { hide(); }
+};
+
+class WarningWidget : public QWidget, public GuiWidgetInterface {
+  Q_OBJECT
+ public:
+  explicit WarningWidget(QWidget *parent = nullptr);
+  void addData(DeviceStatusGroup &status);
+  void addDevicesData(QMap<quint8, QSharedPointer<DeviceStatusGroup>> &status);
+  void updateStyle() override;
+
+ protected:
+  bool eventFilter(QObject *obj, QEvent *event) override;
+
+ private:
+  QHBoxLayout *m_layout;
+  QIcon m_iconPlug;
+  QIcon m_iconWarning;
+  QIcon m_iconError;
+  QPushButton *m_iconHolder;
+  QLabel *m_warning;
+  QString m_toolTip;
+  CustomTooltip *m_customToolTip;
+};
+
+#endif  // WARNINGWIDGET_H

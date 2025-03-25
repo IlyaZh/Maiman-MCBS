@@ -8,12 +8,7 @@
 #include <QWidget>
 
 #include "gui/guiinterface.h"
-
-struct DeviceStatusGroup {
-  std::optional<QStringList> errors;
-  std::optional<QStringList> interlocks;
-  std::optional<QMap<QString, bool>> devStarted;
-};
+#include "widgets/warningwidget.h"
 
 namespace Ui {
 class GroupWidgetStatus;

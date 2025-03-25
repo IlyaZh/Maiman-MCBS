@@ -123,17 +123,17 @@ void GuiMediator::NewEvent(const model::Event& event) {
   if (event.type_ == model::EventType::kDeviceStateUpdated) {
     if (std::holds_alternative<model::events::network::Answer>(event.data_)) {
       auto addr = std::get<model::events::network::Answer>(event.data_).addr_;
+      auto data = std::get<model::events::network::Answer>(event.data_);
+      auto status = m_factory.deviceErrorStatus(
+          m_deviceWidgetsTable[data.addr_]->getId(), data.reg_, data.value_);
       m_deviceWidgetsTable.value(addr)->updateValue(event);
+      m_deviceWidgetsTable.value(addr)->setDevicesStatus(addr, status);
       if (m_calibrationDialog.contains(addr)) {
         m_calibrationDialog.value(addr)->updateValue(event);
       }
       for (auto& group : m_groupWidgetsTable) {
-        auto data = std::get<model::events::network::Answer>(event.data_);
-        if (group->getAddresses().contains(data.addr_)) {
-          auto status = m_factory.deviceErrorStatus(
-              m_deviceWidgetsTable[data.addr_]->getId(), data.reg_,
-              data.value_);
-          group->setDevicesStatus(data.addr_, status);
+        if (group->getAddresses().contains(addr)) {
+          group->setDevicesStatus(addr, status);
         }
       }
     } else if (std::holds_alternative<model::events::network::DeviceLinkStatus>(

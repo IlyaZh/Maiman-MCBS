@@ -27,12 +27,14 @@ class DeviceHolder : public QWidget, public GuiWidgetInterface {
   void setConstraint(bool state);
   void updateValue(const model::Event& event);
   void updateStyle() override;
+  void setDevicesStatus(quint8 addr, QSharedPointer<DeviceStatusGroup> desc);
  public slots:
   void setLink(bool link);
  signals:
   void nameEdited(QString name, int addr);
   void dataIncome(QSharedPointer<CommandConverter> command);
   void acceptDataFromWidget(quint16 code, quint16 value);
+  void statusChanged(DeviceStatusGroup& status);
  private slots:
   void hideControlsButtonClicked();
   void showWidgetButtonClicked();
@@ -46,6 +48,7 @@ class DeviceHolder : public QWidget, public GuiWidgetInterface {
   int m_address = 0;
   int m_id = 0;
   QString m_name;
+  DeviceStatusGroup m_status;
 };
 
 #endif  // DEVICEHOLDER_H

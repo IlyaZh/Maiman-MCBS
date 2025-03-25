@@ -65,8 +65,7 @@ GroupWidgetStatus::~GroupWidgetStatus() { delete ui; }
 
 void GroupWidgetStatus::addData(DeviceStatusGroup &status) {
   QString toolTip(R"(<span style='white-space:pre'>%1</span>)");
-  qDebug() << "GROUP" << status.devStarted->keys() << status.errors.value()
-           << status.interlocks.value();
+  qDebug() << "GROUP" << status.errors.value() << status.interlocks.value();
   if (status.errors.has_value() or status.interlocks.has_value()) {
     bool hasErrors = !status.errors->isEmpty();
     bool hasInterlock = !status.interlocks->isEmpty();
@@ -94,45 +93,6 @@ void GroupWidgetStatus::addData(DeviceStatusGroup &status) {
       ui->statusLabel->setStyleSheet(Status::warningGray());
       ui->statusLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
       m_iconHolder->setIcon(m_iconPlug);
-    }
-  }
-  if (status.devStarted.has_value()) {
-    for (auto map = status.devStarted->cbegin(),
-              end = status.devStarted->cend();
-         map != end; ++map) {
-      if (!m_devs.contains(map.key())) {
-        auto devLabel = new QLabel();
-        devLabel->setStyleSheet(Status::activeLabels());
-        devLabel->setFont(QFont("Poppins", 14));
-        devLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        devLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-        auto nameLabel = new QLabel(map.key() + ": ");
-        nameLabel->setStyleSheet(Status::unactiveLabels());
-        nameLabel->setFont(QFont("Poppins", 14));
-        nameLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        nameLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-        if (map.key() == "Laser") {
-          devLabel->setFixedSize(39, 24);
-          nameLabel->setFixedSize(73, 24);
-          laserLayout->addWidget(nameLabel);
-          laserLayout->addWidget(devLabel);
-          laserLayout->addSpacerItem(new QSpacerItem(
-              0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed));
-        } else if (map.key() == "TEC") {
-          nameLabel->setFixedSize(66, 24);
-          devLabel->setFixedSize(46, 24);
-          tecLayout->addWidget(nameLabel);
-          tecLayout->addWidget(devLabel);
-          tecLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding,
-                                                   QSizePolicy::Fixed));
-        }
-        m_devs.insert(map.key(), devLabel);
-      }
-      if (map.value()) {
-        m_devs.value(map.key())->setText(QString("ON "));
-      } else {
-        m_devs.value(map.key())->setText(QString("OFF"));
-      }
     }
   }
 }

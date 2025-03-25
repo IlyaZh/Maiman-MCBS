@@ -30,6 +30,10 @@ DeviceHolder::DeviceHolder(
             m_name = name;
             emit nameEdited(name, addr);
           });
+  connect(this, &DeviceHolder::statusChanged, m_foldedWidget,
+          &DeviceFoldedWidget::setStatus);
+  m_status.errors = QStringList();
+  m_status.interlocks = QStringList();
 }
 
 DeviceHolder::~DeviceHolder() {}
@@ -73,4 +77,27 @@ void DeviceHolder::showWidgetButtonClicked() {
   m_foldedWidget->hide();
   m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
   this->adjustSize();
+}
+
+void DeviceHolder::setDevicesStatus(quint8 addr,
+                                    QSharedPointer<DeviceStatusGroup> desc) {
+  if (addr != m_address) return;
+  if (desc.isNull()) return;
+  if (desc.data()->isError.has_value() and desc.data()->isError) {
+    m_status.errors->clear();
+    if (desc.data()->errors.has_value())
+      m_status.errors->append(desc.data()->errors.value());
+    m_status.errors->removeDuplicates();
+  } else {
+    m_status.errors->clear();
+  }
+  if (desc.data()->isInterlock.has_value() and desc.data()->isInterlock) {
+    m_status.interlocks->clear();
+    if (desc.data()->interlocks.has_value())
+      m_status.interlocks->append(desc.data()->interlocks.value());
+    m_status.interlocks->removeDuplicates();
+  } else {
+    m_status.interlocks->clear();
+  }
+  emit statusChanged(m_status);
 }

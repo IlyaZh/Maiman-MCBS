@@ -14,6 +14,8 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
       m_selfAddr(groupAddr) {
   ui->setupUi(this);
   this->setObjectName("GroupWidget");
+  m_warning = new WarningWidget();
+  ui->launchTable->addWidget(m_warning);
   m_widgetLayout = new QGridLayout(ui->devicesTable);
   m_widgetLayout->setMargin(0);
   m_widgetLayout->setSpacing(10);
@@ -55,11 +57,6 @@ void GroupWidget::addGroupMember(QPointer<DeviceHolder> member) {
   resizeWidget();
   emit closeGroupStatusDialog();
   m_addresses.insert(static_cast<quint8>(member->getAddress()));
-  auto status = DeviceStatusGroup();
-  status.errors = QStringList();
-  status.interlocks = QStringList();
-  status.devStarted = QMap<QString, bool>();
-  m_status.insert(static_cast<quint8>(member->getAddress()), status);
   m_linked.insert(static_cast<quint8>(member->getAddress()), true);
 }
 
@@ -163,29 +160,29 @@ void GroupWidget::paintEvent(QPaintEvent *) {
 
 void GroupWidget::setDevicesStatus(quint8 addr,
                                    QSharedPointer<DeviceStatusGroup> desc) {
+  if (!m_addresses.contains(addr)) return;
   if (desc.isNull()) return;
-  if (desc.data()->errors.has_value()) {
-    m_status[addr].errors->clear();
-    m_status[addr].errors->append(desc.data()->errors.value());
-    m_status[addr].errors->removeDuplicates();
+  if (!m_status.contains(addr)) {
+    m_status.insert(addr, desc);
+  }
+  if (desc.data()->isError.has_value() and desc.data()->isError) {
+    m_status[addr]->errors->clear();
+    if (desc.data()->errors.has_value())
+      m_status[addr]->errors->append(desc.data()->errors.value());
+    m_status[addr]->errors->removeDuplicates();
   } else {
-    m_status[addr].errors->clear();
+    m_status[addr]->errors->clear();
   }
-  if (desc.data()->interlocks.has_value()) {
-    m_status[addr].interlocks->clear();
-    m_status[addr].interlocks->append(desc.data()->interlocks.value());
-    m_status[addr].interlocks->removeDuplicates();
+  if (desc.data()->isInterlock.has_value() and desc.data()->isInterlock) {
+    m_status[addr]->interlocks->clear();
+    if (desc.data()->interlocks.has_value())
+      m_status[addr]->interlocks->append(desc.data()->interlocks.value());
+    m_status[addr]->interlocks->removeDuplicates();
   } else {
-    m_status[addr].interlocks->clear();
+    m_status[addr]->interlocks->clear();
   }
-  if (desc.data()->devStarted.has_value()) {
-    for (auto map = desc.data()->devStarted->cbegin(),
-              end = desc.data()->devStarted->cend();
-         map != end; ++map) {
-      m_status[addr].devStarted->insert(map.key(), map.value());
-    }
-  }
-  emit statusChanged(m_status);
+  //  emit statusChanged(m_status);
+  m_warning->addDevicesData(m_status);
 }
 
 const QString GroupWidget::getName() { return m_name->text(); }
