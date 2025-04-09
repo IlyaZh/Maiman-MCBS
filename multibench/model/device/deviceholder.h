@@ -8,7 +8,6 @@
 #include "model/device/devicewidget.h"
 
 class DeviceWidget;
-struct DeviceWidgetDesc;
 
 class DeviceHolder : public QWidget, public GuiWidgetInterface {
   Q_OBJECT
@@ -36,7 +35,7 @@ class DeviceHolder : public QWidget, public GuiWidgetInterface {
   void acceptDataFromWidget(quint16 code, quint16 value);
   void statusChanged(DeviceStatusGroup& status);
  private slots:
-  void hideControlsButtonClicked();
+  void hideControlsButtonClicked(QMap<QString, bool>& widgets);
   void showWidgetButtonClicked();
 
  private:

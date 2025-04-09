@@ -40,6 +40,11 @@ const QString logo();
 const QString buttons();
 }  // namespace About
 }  // namespace MainWindow
+namespace FoldedDevice {
+const QString widget();
+const QString labelNameConnected();
+const QString labelNameDisconnected();
+}  // namespace FoldedDevice
 namespace Device {
 const QString widget();
 const QString hiddenWidget();
@@ -78,6 +83,8 @@ const QString maxAndMinLabels();
 namespace ButtonWidget {
 const QString buttonStarted();
 const QString buttonStopped();
+const QString smallButtonStarted();
+const QString smallButtonStopped();
 }  // namespace ButtonWidget
 }  // namespace Device
 namespace Calibration {

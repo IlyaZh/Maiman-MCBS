@@ -1,7 +1,7 @@
 #include "buttonwidget.h"
 
 #include <QDebug>
-
+enum { bigW = 243, bigH = 36, smallW = 128, smallH = 29 };
 ButtonWidget::ButtonWidget(const QString &text, const Button &button,
                            QSharedPointer<CommandConverter> converter,
                            QWidget *parent)
@@ -28,11 +28,28 @@ ButtonWidget::ButtonWidget(const QString &text, const Button &button,
 
 ButtonWidget::~ButtonWidget(){};
 
+void ButtonWidget::setSize(bool isSmall) {
+  m_isSmall = isSmall;
+  if (isSmall) {
+    m_button->setMinimumSize(smallW, smallH);
+    m_button->setMaximumSize(smallW, smallH);
+  } else {
+    m_button->setMinimumSize(bigW, bigH);
+    m_button->setMaximumSize(bigW, bigH);
+  }
+}
+
 void ButtonWidget::setData(quint16 code, quint16 data) {
   if (code != m_converter->code()) return;
   m_converter->setValue(data);
-  m_button->setStyleSheet(((data & m_description.mask) != 0) ? buttonStarted()
-                                                             : buttonStopped());
+  if (m_isSmall) {
+    m_button->setStyleSheet(((data & m_description.mask) != 0)
+                                ? smallButtonStarted()
+                                : smallButtonStopped());
+  } else {
+    m_button->setStyleSheet(
+        ((data & m_description.mask) != 0) ? buttonStarted() : buttonStopped());
+  }
 }
 
 void ButtonWidget::buttonClicked() {
@@ -48,8 +65,16 @@ QVector<quint16> ButtonWidget::Subscribe() {
 }
 
 void ButtonWidget::updateStyle() {
-  m_button->setStyleSheet(((m_converter->valueInt() & m_description.mask) != 0)
-                              ? buttonStarted()
-                              : buttonStopped());
+  if (m_isSmall) {
+    m_button->setStyleSheet(
+        ((m_converter->valueInt() & m_description.mask) != 0)
+            ? smallButtonStarted()
+            : smallButtonStopped());
+  } else {
+    m_button->setStyleSheet(
+        ((m_converter->valueInt() & m_description.mask) != 0)
+            ? buttonStarted()
+            : buttonStopped());
+  }
   this->update();
 }

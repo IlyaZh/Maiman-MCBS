@@ -669,6 +669,59 @@ const QString buttons() {
 }
 }  // namespace About
 }  // namespace MainWindow
+namespace FoldedDevice {
+const QString widget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      QWidget#DeviceFoldedWidget {
+      border: 2px solid #1A1A1A;
+      border-radius: 13px;
+      background:  #282828;
+      }
+      QWidget#widgetsLayout{
+      background-color: #282828;
+}
+)";
+  } else {
+    return R"(
+      QWidget#DeviceFoldedWidget {
+      border: 2px solid #F3F3F3;
+      border-radius: 13px;
+      background:  #FFFFFF;
+      }
+      QWidget#widgetsLayout{
+      background-color: #FFFFFF;
+      }
+)";
+  }
+}
+const QString labelNameConnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      background:  transparent;
+      color: #39CA76;
+)";
+  } else {
+    return R"(
+      background:  transparent;
+      color: #3BBB5B;
+)";
+  }
+}
+const QString labelNameDisconnected() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      background:  transparent;
+      color: #FF403A;
+)";
+  } else {
+    return R"(
+      background:  transparent;
+      color: #FF2E27;
+)";
+  }
+}
+}  // namespace FoldedDevice
 namespace Device {
 const QString widget() {
   if (AppSettings::getDarkAppStyle()) {
@@ -1249,6 +1302,48 @@ const QString buttonStopped() {
 )";
   }
 }
+const QString smallButtonStarted() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      border: 0px solid #1A1A1A;
+      border-radius: 14px;
+      color: #000000;
+      text-align:center;
+      padding-top: 2px;
+      background: #39CA76;
+)";
+  } else {
+    return R"(
+      border: 2px solid #3BBB5B;
+      border-radius: 14px;
+      color: #000000;
+      text-align:center;
+      padding-top: 2px;
+      background: #B6E9C3;
+)";
+  }
+}
+const QString smallButtonStopped() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      border: 0px solid #1A1A1A;
+      border-radius: 14px;
+      color: #000000;
+      text-align:center;
+      padding-top: 2px;
+      background: #FF403A;
+)";
+  } else {
+    return R"(
+      border: 2px solid #FA3D3A;
+      border-radius: 14px;
+      color: #000000;
+      text-align:center;
+      padding-top: 2px;
+      background: #FFB6B5;
+)";
+  }
+}
 }  // namespace ButtonWidget
 }  // namespace Device
 namespace Calibration {
@@ -1424,17 +1519,19 @@ const QString buttonLaunched() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
       border: 0px solid #39CA76;
-      border-radius: 17px;
+      border-radius: 16px;
       color: rgb(0,0,0);
       background: #39CA76;
+      padding-top: 2px;
       text-align:center;
 )";
   } else {
     return R"(
       border: 2px solid #3BBB5B;
-      border-radius: 17px;
+      border-radius: 16px;
       color: rgb(0,0,0);
       background: #B6E9C3;
+      padding-top: 2px;
       text-align:center;
 )";
   }
@@ -1443,17 +1540,19 @@ const QString buttonStopped() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
       border: 0px solid #FF403A;
-      border-radius: 17px;
+      border-radius: 16px;
       color: #000000;
       background: #FF403A;
+      padding-top: 2px;
       text-align:center;
 )";
   } else {
     return R"(
       border: 2px solid #FA3D3A;
-      border-radius: 17px;
+      border-radius: 16px;
       color: #000000;
       background: #FFB6B5;
+      padding-top: 2px;
       text-align:center;
 )";
   }
@@ -1462,17 +1561,19 @@ const QString buttonInMiddle() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
       border: 0px solid #DEDDDD;
-      border-radius: 17px;
+      border-radius: 16px;
       color: #000000;
       background: #DEDDDD;
+      padding-top: 2px;
       text-align:center;
 )";
   } else {
     return R"(
       border: 2px solid #BBBBBB;
-      border-radius: 17px;
+      border-radius: 16px;
       color: #000000;
       background: #EAEAEA;
+      padding-top: 2px;
       text-align:center;
 )";
   }
@@ -1866,6 +1967,7 @@ const QString warningGray() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
     color: #808080;
+    background: transparent;
     font-size: 17px;
     padding-top: 3px;
     margin-left: 18px;
@@ -1882,8 +1984,9 @@ const QString warningYellow() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
     color: #FFC803;
+    background: transparent;
     font-size: 17px;
-    padding-top: 3px;
+    padding-top: 1px;
     margin-left: 18px;
   )";
   } else {
@@ -1898,8 +2001,9 @@ const QString warningRed() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
     color: #FF403A;
+    background: transparent;
     font-size: 17px;
-    padding-top: 3px;
+    padding-top: 1px;
     margin-left: 18px;
   )";
   } else {

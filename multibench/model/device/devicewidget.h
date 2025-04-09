@@ -8,6 +8,7 @@
 #include "gui/DeviceSmallWidgets.h"
 #include "gui/guiinterface.h"
 #include "gui/guimediator.h"
+#include "model/device/DeviceWidgetDesc.h"
 #include "widgets/buttonwidget.h"
 #include "widgets/inlineedit.h"
 
@@ -18,80 +19,6 @@ class HiddenWidget;
 class DeviceCondition;
 class ButtonWidget;
 class CommandConverter;
-
-struct Content {
-  QString fileName;
-  QString description;
-  QString link;
-};
-
-struct Control {
-  quint16 min = 0;
-  quint16 max = 0;
-  quint16 value = 0;
-  quint16 real = 0;
-  QString name;
-  bool fixed{false};
-};
-
-struct Limit {
-  quint16 code;
-  double minValue{0};
-  double maxValue{0};
-  quint16 minCode{0};
-  quint16 maxCode{0};
-  quint16 pairCode{0};
-  bool isPairMin{true};
-  QString name;
-};
-
-struct CalibrationKoef {
-  quint16 code;
-  double min;
-  double max;
-  QString name;
-};
-
-struct Checkbox {
-  quint16 code = 0;
-  quint16 onCommand = 0;
-  quint16 offCommand = 0;
-  quint16 mask = 0;
-  QString name;
-};
-
-struct Button {
-  QString name;
-  quint16 code = 0;
-  quint16 mask = 0;
-  quint16 onCommand = 0;
-  quint16 offCommand = 0;
-};
-
-struct LedMask {
-  quint16 code = 0;
-  quint16 mask = 0;
-  QColor defaultColor;
-  QColor maskColor;
-  QString msg;
-};
-
-struct Led {
-  QString name;
-  QVector<LedMask> ledMasks;
-};
-
-struct DeviceWidgetDesc {
-  uint id;
-  QString name = "Unknown device";
-  Content content;
-  QVector<Limit> limits;
-  QVector<CalibrationKoef> calibration;
-  QVector<Control> controls;
-  QVector<Checkbox> checkboxes;
-  QMap<quint16, Button> buttons;
-  QVector<Led> leds;
-};
 
 namespace Ui {
 class DeviceWidget;
@@ -121,12 +48,13 @@ class DeviceWidget : public QWidget,
   void nameEdited(QString name, int addr);
   void dataIncome(QSharedPointer<CommandConverter> command);
   void acceptDataFromWidget(quint16 code, quint16 value);
-  void hideWidget();
+  void hideWidget(QMap<QString, bool>& widgets);
 
  private:
   Ui::DeviceWidget* ui;
   const QMap<quint16, Button>& m_buttons;
   QVector<HiddenWidget*> m_widgets;
+  QMap<int, QString> m_pinnedWidgets;
   QMap<quint16, QSharedPointer<CommandConverter>> m_converters;
   QGridLayout* m_widgetLayout;
   QMap<quint16, BinaryWidget*> m_binaryWidgets;
@@ -142,10 +70,6 @@ class DeviceWidget : public QWidget,
   void adjust();
 
  private slots:
-  void setLaserButton(quint16 value);
-  void setTecButton(quint16 value);
-  void laserButtonClicked();
-  void tecButtonClicked();
   void hideControlsButtonClicked(bool flag);
   void pinButtonClicked(int idx, bool state);
 };

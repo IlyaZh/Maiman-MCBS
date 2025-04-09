@@ -18,6 +18,7 @@ class ButtonWidget : public GuiWidgetBase, public GuiWidgetInterface {
   void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
   void updateStyle() override;
+  void setSize(bool isSmall);
 
  private:
   QHBoxLayout *m_layout{nullptr};
@@ -25,6 +26,7 @@ class ButtonWidget : public GuiWidgetBase, public GuiWidgetInterface {
   const Button &m_description;
   QVector<quint16> m_codes;
   QPushButton *m_button{nullptr};
+  bool m_isSmall = false;
  private slots:
   void buttonClicked();
 };

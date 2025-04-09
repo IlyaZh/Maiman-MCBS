@@ -15,7 +15,7 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   ui->setupUi(this);
   this->setObjectName("GroupWidget");
   m_warning = new WarningWidget();
-  ui->launchTable->addWidget(m_warning);
+  ui->launchTable->addWidget(m_warning, Qt::AlignLeft);
   m_widgetLayout = new QGridLayout(ui->devicesTable);
   m_widgetLayout->setMargin(0);
   m_widgetLayout->setSpacing(10);
@@ -29,12 +29,13 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   m_statusButton->setCheckable(false);
   m_hideButton->setText(" " + tr("Hide Devices"));
   m_statusButton->setText(" " + tr("Status Devices"));
-  ui->statusButtontable->insertWidget(0, m_hideButton);
-  ui->statusButtontable->insertWidget(1, m_statusButton);
+  ui->statusButtontable->insertWidget(1, m_hideButton);
+  ui->statusButtontable->insertWidget(2, m_statusButton);
   ui->statusButtontable->setAlignment(Qt::AlignLeft);
-
-  m_name = new InLineEdit(m_selfAddr, false);
-  ui->nameTable->insertWidget(1, m_name, Qt::AlignmentFlag::AlignLeft);
+  m_name = QString("Group %1").arg(m_selfAddr);
+  ui->labelName->setText(m_name);
+  //  m_name = new InLineEdit(m_selfAddr, false);
+  //  ui->nameTable->insertWidget(1, m_name, Qt::AlignmentFlag::AlignLeft);
   ui->nameTable->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
   connect(ui->startButton, &QPushButton::clicked, this,
@@ -44,7 +45,7 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   connect(m_hideButton, &QPushButton::clicked, this, &GroupWidget::hideDevices);
   connect(m_statusButton, &QPushButton::clicked, this,
           &GroupWidget::showStatus);
-  connect(m_name, &InLineEdit::nameEdited, this, &GroupWidget::nameEdited);
+  //  connect(m_name, &InLineEdit::nameEdited, this, &GroupWidget::nameEdited);
   GroupWidget::updateStyle();
 }
 
@@ -185,13 +186,15 @@ void GroupWidget::setDevicesStatus(quint8 addr,
   m_warning->addDevicesData(m_status);
 }
 
-const QString GroupWidget::getName() { return m_name->text(); }
+const QString GroupWidget::getName() { return m_name; }
 
 void GroupWidget::setName(QString name) {
-  if (name.contains(QString("Group %1").arg(m_selfAddr)))
-    m_name->setAddress(m_selfAddr);
-  else
-    m_name->setText(name);
+  m_name = name;
+  ui->labelName->setText(m_name);
+  //  if (name.contains(QString("Group %1").arg(m_selfAddr)))
+  //    m_name->setAddress(m_selfAddr);
+  //  else
+  //    m_name->setText(name);
 }
 
 int GroupWidget::getGroupAddress() { return m_selfAddr; }

@@ -53,7 +53,8 @@ class GroupWidget : public QWidget, public GuiWidgetInterface {
   QMap<quint8, QSharedPointer<DeviceStatusGroup>> m_status;
   QSet<quint8> m_addresses;
   QMap<quint8, bool> m_linked;
-  InLineEdit *m_name;
+  //  InLineEdit *m_name;
+  QString m_name;
   bool m_hideDevices = false;
   bool m_allStarted = false;
   int m_selfAddr = 0;

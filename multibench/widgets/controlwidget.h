@@ -34,7 +34,7 @@ class ControlWidget : public GuiWidgetBase, public GuiWidgetInterface {
   void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
   void updateStyle() override;
-
+  QString getName();
  private slots:
   void setValue();
   void setMaxValue();

@@ -267,3 +267,5 @@ void ControlWidget::updateStyle() {
   m_controlLine->updateStyle();
   this->update();
 }
+
+QString ControlWidget::getName() { return ui->WidgetName->text(); }

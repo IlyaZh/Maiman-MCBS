@@ -86,6 +86,7 @@ SOURCES += \
     staticstyles.cpp \
     widgets/buttonwidget.cpp \
     widgets/calibrationdialog.cpp \
+    widgets/foldedcontrolwidget.cpp \
     widgets/groupmanager.cpp \
     widgets/groupstatusdialog.cpp \
     widgets/groupwidget.cpp \
@@ -133,6 +134,7 @@ HEADERS += \
     gui/guiinterface.h \
     gui/guimediator.h \
   interfaces/pubsubinterface.h \
+    model/device/DeviceWidgetDesc.h \
     model/device/devicecondition.h \
     appsettings.h \
     datasource.h \
@@ -154,6 +156,7 @@ HEADERS += \
     staticstyles.h \
     widgets/buttonwidget.h \
     widgets/calibrationdialog.h \
+    widgets/foldedcontrolwidget.h \
     widgets/groupmanager.h \
     widgets/groupstatusdialog.h \
     widgets/groupwidget.h \
@@ -199,6 +202,7 @@ FORMS += \
     model/device/devicewidget.ui \
     widgets/binarywidget.ui \
     widgets/controlwidget.ui \
+    widgets/foldedcontrolwidget.ui \
     widgets/groupmanager.ui \
     widgets/groupstatusdialog.ui \
     widgets/groupwidget.ui \

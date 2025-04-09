@@ -6,40 +6,185 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>58</height>
+    <width>669</width>
+    <height>71</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>71</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>71</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">      QWidget#DeviceFoldedWidget {
+      border: 2px solid #1A1A1A;
+      border-radius: 13px;
+      background:  #282828;
+      }
+      QWidget#widgetsLayout{
+      background-color: #282828;
+}</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="2" rowspan="3">
-    <layout class="QHBoxLayout" name="buttonsLayout"/>
-   </item>
-   <item row="0" column="3">
-    <widget class="QPushButton" name="showButton">
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="2" rowspan="2">
+    <widget class="QLabel" name="Label">
+     <property name="font">
+      <font>
+       <family>Poppins Medium</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+background: transparent;</string>
+     </property>
      <property name="text">
-      <string>PushButton</string>
+      <string>MODEL:</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1" rowspan="3">
-    <layout class="QHBoxLayout" name="widgetsLayout"/>
+   <item row="0" column="6" rowspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="showButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>88</width>
+         <height>21</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>88</width>
+         <height>21</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"> border: 2px solid #1A1A1A;
+background-color: #1D1D1D;
+color: #FFFFFF;</string>
+       </property>
+       <property name="text">
+        <string>Maximise</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="linkLabel">
+   <item row="0" column="1" rowspan="3">
+    <widget class="QLabel" name="nameLabel">
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins Medium</family>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+background: transparent;</string>
+     </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string>Group 111</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="modelLabel">
+    <widget class="QLabel" name="linkLabel">
+     <property name="minimumSize">
+      <size>
+       <width>14</width>
+       <height>14</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>14</width>
+       <height>14</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+    background: #FF403A;
+    border: 1px solid #1A1A1A;
+    border-radius: 3px;
+}c</string>
+     </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string/>
      </property>
     </widget>
+   </item>
+   <item row="0" column="5" rowspan="3">
+    <layout class="QHBoxLayout" name="buttonsLayout"/>
+   </item>
+   <item row="0" column="3" rowspan="3">
+    <layout class="QHBoxLayout" name="widgetsLayout"/>
+   </item>
+   <item row="2" column="2">
+    <widget class="QLabel" name="modelLabel">
+     <property name="font">
+      <font>
+       <family>Poppins Medium</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>SF</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

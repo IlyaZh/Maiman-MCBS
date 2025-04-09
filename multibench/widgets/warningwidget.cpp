@@ -10,6 +10,9 @@ WarningWidget::WarningWidget(QWidget *parent) : QWidget(parent) {
   m_iconHolder = new QPushButton(this);
   m_warning = new QLabel(this);
   m_layout = new QHBoxLayout(this);
+  setMaximumSize(90, 21);
+  setMinimumSize(90, 21);
+  setStyleSheet(R"(background: transparent;)");
   QFont font12("Poppins", 14);
   font12.setLetterSpacing(QFont::PercentageSpacing, 105);
   font12.setPixelSize(18);
@@ -64,8 +67,11 @@ void WarningWidget::addData(DeviceStatusGroup &status) {
   bool hasErrors = !status.errors->isEmpty();
   bool hasInterlock = !status.interlocks->isEmpty();
   if (hasErrors and hasInterlock) {
-    m_toolTip = toolTip.arg(status.errors->join("<br>") + "<br>" +
-                            status.interlocks->join("<br>"));
+    m_toolTip = toolTip.arg(QString(R"(<font color=#FF403A>%1</font>)")
+                                .arg(status.errors->join("<br>")) +
+                            "<br>" +
+                            QString(R"(<font color=#FFC803>%1</font>)")
+                                .arg(status.interlocks->join("<br>")));
     m_warning->setVisible(true);
     m_warning->setStyleSheet(Status::warningRed());
     m_warning->setText("Error");
@@ -73,7 +79,8 @@ void WarningWidget::addData(DeviceStatusGroup &status) {
     m_iconHolder->setIcon(m_iconError);
 
   } else if (hasErrors and !hasInterlock) {
-    m_toolTip = toolTip.arg(status.errors->join("\r\n"));
+    m_toolTip = toolTip.arg(QString(R"(<font color=#FF403A>%1</font>)")
+                                .arg(status.errors->join("<br>")));
     m_warning->setVisible(true);
     m_warning->setStyleSheet(Status::warningRed());
     m_warning->setText("Error");
@@ -81,7 +88,8 @@ void WarningWidget::addData(DeviceStatusGroup &status) {
     m_iconHolder->setIcon(m_iconError);
 
   } else if (!hasErrors and hasInterlock) {
-    m_toolTip = toolTip.arg(status.interlocks->join("\r\n"));
+    m_toolTip = toolTip.arg(QString(R"(<font color=#FFC803>%1</font>)")
+                                .arg(status.interlocks->join("<br>")));
     m_warning->setVisible(true);
     m_warning->setStyleSheet(Status::warningYellow());
     m_warning->setText("Warning");
@@ -111,14 +119,22 @@ void WarningWidget::addDevicesData(
     allErrors |= hasErrors;
     allInterlock |= hasInterlock;
     if (hasErrors and hasInterlock) {
-      devs.append(dev.arg(it.key()).arg(it.value()->errors->join("; ") +
-                                        it.value()->interlocks->join("; ")));
+      devs.append(
+          dev.arg(it.key()).arg(QString(R"(<font color=#FF403A>%1</font>)")
+                                    .arg(it.value()->errors->join(" ")) +
+                                " " +
+                                QString(R"(<font color=#FFC803>%1</font>)")
+                                    .arg(it.value()->interlocks->join(" "))));
 
     } else if (hasErrors and !hasInterlock) {
-      devs.append(dev.arg(it.key()).arg(it.value()->errors->join("; ")));
+      devs.append(
+          dev.arg(it.key()).arg(QString(R"(<font color=#FF403A>%1</font>)")
+                                    .arg(it.value()->errors->join(" "))));
 
     } else if (!hasErrors and hasInterlock) {
-      devs.append(dev.arg(it.key()).arg(it.value()->interlocks->join("; ")));
+      devs.append(
+          dev.arg(it.key()).arg(QString(R"(<font color=#FFC803>%1</font>)")
+                                    .arg(it.value()->interlocks->join(" "))));
 
     } else {
       dev = "";

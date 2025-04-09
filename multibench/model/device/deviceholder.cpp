@@ -9,7 +9,7 @@ DeviceHolder::DeviceHolder(
       m_converters(converters),
       m_widgetLayout(new QVBoxLayout()),
       m_expandedWidget(new DeviceWidget(m_description, m_converters)),
-      m_foldedWidget(new DeviceFoldedWidget()) {
+      m_foldedWidget(new DeviceFoldedWidget(m_description, m_converters)) {
   m_id = m_description.id;
   this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
   m_widgetLayout->setMargin(0);
@@ -20,6 +20,8 @@ DeviceHolder::DeviceHolder(
   m_foldedWidget->hide();
   this->setLayout(m_widgetLayout);
   connect(m_expandedWidget, &DeviceWidget::acceptDataFromWidget, this,
+          &DeviceHolder::acceptDataFromWidget);
+  connect(m_foldedWidget, &DeviceFoldedWidget::acceptDataFromWidget, this,
           &DeviceHolder::acceptDataFromWidget);
   connect(m_expandedWidget, &DeviceWidget::hideWidget, this,
           &DeviceHolder::hideControlsButtonClicked);
@@ -41,6 +43,7 @@ DeviceHolder::~DeviceHolder() {}
 void DeviceHolder::updateValue(const model::Event& event) {
   if (std::holds_alternative<model::events::network::Answer>(event.data_)) {
     m_expandedWidget->updateValue(event);
+    m_foldedWidget->updateValue(event);
   } else if (std::holds_alternative<model::events::network::ChangeSystemStyle>(
                  event.data_)) {
     updateStyle();
@@ -50,6 +53,7 @@ void DeviceHolder::updateValue(const model::Event& event) {
 void DeviceHolder::setAddress(int addr) {
   m_address = addr;
   m_expandedWidget->setAddress(m_address);
+  m_foldedWidget->setAddress(m_address);
   m_name = m_expandedWidget->getName();
 }
 
@@ -61,13 +65,19 @@ QString DeviceHolder::getModel() const { return m_description.name; }
 
 void DeviceHolder::updateStyle() { m_expandedWidget->updateStyle(); }
 
-void DeviceHolder::setLink(bool link) { m_expandedWidget->setLink(link); }
+void DeviceHolder::setLink(bool link) {
+  m_expandedWidget->setLink(link);
+  m_foldedWidget->setLink(link);
+}
 void DeviceHolder::setConstraint(bool state) {
   m_expandedWidget->setConstraint(state);
 }
 
-void DeviceHolder::hideControlsButtonClicked() {
+void DeviceHolder::hideControlsButtonClicked(QMap<QString, bool>& widgets) {
   m_expandedWidget->hide();
+  m_foldedWidget->setMinimumWidth(m_expandedWidget->maximumWidth());
+  m_foldedWidget->setMinimumWidth(m_expandedWidget->minimumWidth());
+  m_foldedWidget->setPinnedWidgets(widgets);
   m_foldedWidget->show();
   m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
   this->adjustSize();

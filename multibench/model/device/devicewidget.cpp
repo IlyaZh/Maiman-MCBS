@@ -56,16 +56,16 @@ DeviceWidget::DeviceWidget(
       auto widget =
           new ControlWidget(control.name, valueConverter, maxConverter,
                             minConverter, realConverter, hiddenWidget);
-      if (control.fixed) ++m_fixedWidgets;
       hiddenWidget->setMargins(10, 0, 10, 0);
       m_widgetLayout->addWidget(hiddenWidget, 1, m_widgets.size());
       hiddenWidget->addWidget(widget);
-      if (control.name == "current") hiddenWidget->setPinned(true);
+      if (control.fixed) {
+        ++m_fixedWidgets;
+        hiddenWidget->setPinned(true);
+      }
+      m_pinnedWidgets.insert(m_widgets.size(), widget->getName());
       m_widgets.append(hiddenWidget);
       m_widgetsTable.insert(widget);
-      //      for (auto code : widget->Subscribe()) {
-      //        m_widgetsTable.insert(code, widget);
-      //      }
     }
   }
   // Закидываем неизменяемые параметры в виджет
@@ -203,77 +203,37 @@ void DeviceWidget::setConstraint(bool state) {
 
 // private slots
 
-void DeviceWidget::setLaserButton(quint16 value) {
-  for (const auto& button : qAsConst(m_buttons)) {
-    if (button.name == "Laser") {
-      m_laserButton->setData(button.code, value);
-    }
-  }
-}
-
-void DeviceWidget::setTecButton(quint16 value) {
-  for (const auto& button : qAsConst(m_buttons)) {
-    if (button.name == "TEC") {
-      m_laserButton->setData(button.code, value);
-    }
-  }
-}
-
-void DeviceWidget::laserButtonClicked() {
-  //  auto search =
-  //      std::find_if(m_buttons.begin(), m_buttons.end(),
-  //                   [](const auto& button) { return (button.name == "Laser");
-  //                   });
-  //  if (search != m_buttons.end()) {
-  //    auto laserButton = search.value();
-  //    auto cmd = m_commands.value(laserButton.code, 0);
-  //    if (cmd) {
-  //      cmd->setFromWidget((cmd->valueInt() & laserButton.mask)
-  //                             ? laserButton.offCommand
-  //                             : laserButton.onCommand);
-  //    }
-  //  }
-}
-
-void DeviceWidget::tecButtonClicked() {
-  //  auto search =
-  //      std::find_if(m_buttons.begin(), m_buttons.end(),
-  //                   [](const auto& button) { return (button.name == "TEC");
-  //                   });
-  //  if (search != m_buttons.end()) {
-  //    auto laserButton = search.value();
-  //    auto cmd = m_commands.value(laserButton.code, 0);
-  //    if (cmd) {
-  //      cmd->setFromWidget((cmd->valueInt() & laserButton.mask)
-  //                             ? laserButton.offCommand
-  //                             : laserButton.onCommand);
-  //    }
-  //  }
-}
-
 void DeviceWidget::hideControlsButtonClicked(bool flag) {
   m_hideControls = flag;
-
+  QMap<QString, bool> widgets;
   for (int idx = m_fixedWidgets; idx < m_widgets.count(); ++idx) {
-    int pinShift = idx - 1;
     auto widget = m_widgets.at(idx);
-    auto pinButton = m_pinButtons.value(pinShift, nullptr);
-    if (m_hideControls) {
-      if (!widget->isPinned()) {
-        setConstraint(false);
-        widget->setShown(false);
-        if (pinButton != nullptr) pinButton->setVisible(false);
-      }
+    if (widget->isPinned()) {
+      widgets.insert(m_pinnedWidgets.value(idx), true);
     } else {
-      if (!widget->isShown()) {
-        setConstraint(true);
-        widget->setShown(true);
-        if (pinButton != nullptr) pinButton->setVisible(true);
-      }
+      widgets.insert(m_pinnedWidgets.value(idx), false);
     }
   }
-  adjust();
-  emit hideWidget();
+  //  for (int idx = m_fixedWidgets; idx < m_widgets.count(); ++idx) {
+  //    int pinShift = idx - 1;
+  //    auto widget = m_widgets.at(idx);
+  //    auto pinButton = m_pinButtons.value(pinShift, nullptr);
+  //    if (m_hideControls) {
+  //      if (!widget->isPinned()) {
+  //        setConstraint(false);
+  //        widget->setShown(false);
+  //        if (pinButton != nullptr) pinButton->setVisible(false);
+  //      }
+  //    } else {
+  //      if (!widget->isShown()) {
+  //        setConstraint(true);
+  //        widget->setShown(true);
+  //        if (pinButton != nullptr) pinButton->setVisible(true);
+  //      }
+  //    }
+  //  }
+  //  adjust();
+  emit hideWidget(widgets);
 }
 
 void DeviceWidget::pinButtonClicked(int idx, bool state) {
