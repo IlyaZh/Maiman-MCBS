@@ -1,5 +1,16 @@
 #include "deviceholder.h"
 
+#include "device/devicecommand.h"
+#include "model/device/HiddenWidget.h"
+#include "model/device/devicecondition.h"
+#include "ui_devicewidget.h"
+#include "widgets/binarywidget.h"
+#include "widgets/controlwidget.h"
+#include "widgets/foldedcontrolwidget.h"
+#include "widgets/inlineedit.h"
+#include "widgets/readparameterfactory.h"
+#include "widgets/readparameterwidget.h"
+
 DeviceHolder::DeviceHolder(
     const DeviceWidgetDesc& description,
     const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
@@ -7,11 +18,116 @@ DeviceHolder::DeviceHolder(
     : QWidget(parent),
       m_description(description),
       m_converters(converters),
-      m_widgetLayout(new QVBoxLayout()),
-      m_expandedWidget(new DeviceWidget(m_description, m_converters)),
-      m_foldedWidget(new DeviceFoldedWidget(m_description, m_converters)) {
+      m_widgetLayout(new QVBoxLayout()) {
   m_id = m_description.id;
+
+  QVector<ReadParameterWidget*> readOnlyWidgets;
+  for (const auto& control : m_description.controls) {
+    auto valueConverter = m_converters.value(control.value, nullptr);
+    auto maxConverter = m_converters.value(control.max, nullptr);
+    auto minConverter = m_converters.value(control.min, nullptr);
+    auto realConverter = m_converters.value(control.real, nullptr);
+
+    if (realConverter != nullptr and valueConverter == nullptr) {
+      readOnlyWidgets.append(ReadParameterFactory::createReadParameter(
+          control.name, realConverter));
+    } else {
+      auto hiddenWidget = new HiddenWidget(this);
+      auto widget =
+          new ControlWidget(control.name, valueConverter, maxConverter,
+                            minConverter, realConverter, hiddenWidget);
+      hiddenWidget->setMargins(10, 0, 10, 0);
+      hiddenWidget->addWidget(widget);
+      auto foldedWidget = new FoldedControlWidget(control.name, valueConverter,
+                                                  realConverter, this);
+      foldedWidget->setContentsMargins(10, 0, 10, 0);
+      if (control.fixed) {
+        hiddenWidget->setPinned(true);
+        foldedWidget->setPinned(true);
+      }
+      m_widgets.append(hiddenWidget);
+      m_widgetsTable.insert(widget);
+      m_foldedWidgets.append(foldedWidget);
+      m_widgetsTable.insert(foldedWidget);
+      connect(hiddenWidget, &HiddenWidget::pinned, foldedWidget,
+              [foldedWidget](bool pin) { foldedWidget->setPinned(pin); });
+    }
+  }
+  if (readOnlyWidgets.count() > 0) {
+    auto hiddenWidget = new HiddenWidget(this);
+    hiddenWidget->setMargins(10, 16, 10, 0);
+    auto maxUnitsLengthIt = *std::max_element(
+        std::begin(readOnlyWidgets), std::end(readOnlyWidgets),
+        [=](ReadParameterWidget* widgetA, ReadParameterWidget* widgetB) {
+          return widgetA->getUnitslength() < widgetB->getUnitslength();
+        });
+    for (auto item : qAsConst(readOnlyWidgets)) {
+      item->setUnitsLength(maxUnitsLengthIt->getUnitslength());
+      item->setContentsMargins(0, 0, 0, 0);
+      hiddenWidget->addWidget(item);
+      m_widgetsTable.insert(item);
+    }
+    m_widgets.append(hiddenWidget);
+    readOnlyWidgets.clear();
+  }
+  QPointer<HiddenWidget> hiddenWidget;
+  for (const auto& item : qAsConst(description.checkboxes)) {
+    if (!hiddenWidget) {
+      hiddenWidget = new HiddenWidget(this);
+      hiddenWidget->setMargins(10, 16, 10, 0);
+    }
+    auto converter = m_converters.value(item.code, nullptr);
+    if (converter) {
+      auto binaryWidget = new BinaryWidget(item, converter, hiddenWidget);
+      binaryWidget->setContentsMargins(0, 0, 0, 0);
+      hiddenWidget->addWidget(binaryWidget);
+      m_widgetsTable.insert(binaryWidget);
+    }
+  }
+  if (hiddenWidget) {
+    m_widgets.append(hiddenWidget);
+  }
+  m_deviceCondition = new DeviceCondition(m_converters, description.leds, this);
+  m_widgetsTable.insert(m_deviceCondition);
+
+  m_expandedWidget = new DeviceWidget(m_widgets, m_deviceCondition);
+  m_foldedWidget = new DeviceFoldedWidget(m_foldedWidgets);
+  m_expandedWidget->setModel(m_description.name);
+  m_foldedWidget->setModel(m_description.name);
+
+  for (const auto& button : qAsConst(description.buttons)) {
+    QPointer<ButtonWidget> pButton;
+    QPointer<ButtonWidget> pSmallButton;
+    if (button.name.compare("laser", Qt::CaseInsensitive) == 0 &&
+        m_converters.contains(button.code)) {
+      auto converter = m_converters.value(button.code);
+      pButton = new ButtonWidget("Laser", button, converter, this);
+      m_buttonWidgets.append(pButton);
+      m_widgetsTable.insert(pButton);
+      pSmallButton = new ButtonWidget("Laser", button, converter, this);
+      pSmallButton->setSize(true);
+      m_buttonWidgets.append(pSmallButton);
+      m_widgetsTable.insert(pSmallButton);
+    } else if (button.name.compare("TEC", Qt::CaseInsensitive) == 0) {
+      auto converter = m_converters.value(button.code);
+      pButton = new ButtonWidget("TEC", button, converter, this);
+      m_buttonWidgets.append(pButton);
+      m_widgetsTable.insert(pButton);
+      pSmallButton = new ButtonWidget("TEC", button, converter, this);
+      pSmallButton->setSize(true);
+      m_buttonWidgets.append(pSmallButton);
+      m_widgetsTable.insert(pSmallButton);
+    }
+    if (pButton) {
+      m_expandedWidget->setButton(pButton);
+      m_foldedWidget->setButton(pSmallButton);
+    }
+  }
   this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+  for (auto widget : qAsConst(m_widgetsTable)) {
+    connect(widget, &GuiWidgetBase::setDataFromWidget, this,
+            &DeviceHolder::acceptDataFromWidget);
+  }
   m_widgetLayout->setMargin(0);
   m_widgetLayout->setSpacing(0);
   m_widgetLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
@@ -42,8 +158,12 @@ DeviceHolder::~DeviceHolder() {}
 
 void DeviceHolder::updateValue(const model::Event& event) {
   if (std::holds_alternative<model::events::network::Answer>(event.data_)) {
-    m_expandedWidget->updateValue(event);
-    m_foldedWidget->updateValue(event);
+    const auto& answer = std::get<model::events::network::Answer>(event.data_);
+    for (auto widget : qAsConst(m_widgetsTable)) {
+      if (widget->Subscribe().contains(answer.reg_)) {
+        widget->setData(answer.reg_, answer.value_);
+      }
+    }
   } else if (std::holds_alternative<model::events::network::ChangeSystemStyle>(
                  event.data_)) {
     updateStyle();
@@ -73,20 +193,23 @@ void DeviceHolder::setConstraint(bool state) {
   m_expandedWidget->setConstraint(state);
 }
 
-void DeviceHolder::hideControlsButtonClicked(QMap<QString, bool>& widgets) {
+void DeviceHolder::hideControlsButtonClicked() {
   m_expandedWidget->hide();
-  m_foldedWidget->setMinimumWidth(m_expandedWidget->maximumWidth());
-  m_foldedWidget->setMinimumWidth(m_expandedWidget->minimumWidth());
-  m_foldedWidget->setPinnedWidgets(widgets);
+  m_widgetSize = m_expandedWidget->size();
+  m_foldedWidget->setMinimumWidth(m_widgetSize.rwidth());
+  m_foldedWidget->setMaximumWidth(m_widgetSize.rwidth());
+  m_foldedWidget->setVisibleWidget();
   m_foldedWidget->show();
   m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
-  this->adjustSize();
+  //  this->adjustSize();
 }
 void DeviceHolder::showWidgetButtonClicked() {
+  m_expandedWidget->setMinimumWidth(m_widgetSize.rwidth());
+  m_expandedWidget->setMaximumWidth(m_widgetSize.rwidth());
   m_expandedWidget->show();
   m_foldedWidget->hide();
   m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
-  this->adjustSize();
+  //  this->adjustSize();
 }
 
 void DeviceHolder::setDevicesStatus(quint8 addr,

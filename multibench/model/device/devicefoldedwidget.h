@@ -20,14 +20,14 @@ class DeviceFoldedWidget : public QWidget, public GuiWidgetInterface {
 
  public:
   explicit DeviceFoldedWidget(
-      const DeviceWidgetDesc &description,
-      const QMap<quint16, QSharedPointer<CommandConverter>> &converters,
+      const QVector<FoldedControlWidget *> &foldedWidgets,
       QWidget *parent = nullptr);
   ~DeviceFoldedWidget();
   void setAddress(int addr);
-  void updateValue(const model::Event &event);
   void updateStyle() override;
-  void setPinnedWidgets(QMap<QString, bool> &widgets);
+  void setButton(QPointer<ButtonWidget> pButton);
+  void setVisibleWidget();
+  void setModel(QString model);
  signals:
   void showWidget();
   void acceptDataFromWidget(quint16 code, quint16 value);
@@ -37,14 +37,9 @@ class DeviceFoldedWidget : public QWidget, public GuiWidgetInterface {
 
  private:
   Ui::DeviceFoldedWidget *ui;
-  const QMap<quint16, Button> &m_buttons;
-  QMap<quint16, QSharedPointer<CommandConverter>> m_converters;
-  QSet<FoldedControlWidget *> m_folded;
   QHBoxLayout *m_widgetLayout;
+  const QVector<FoldedControlWidget *> &m_foldedWidgets;
   WarningWidget *m_warning;
-  QSet<GuiWidgetBase *> m_widgetsTable;
-  ButtonWidget *m_laserButton{nullptr};
-  ButtonWidget *m_tecButton{nullptr};
 };
 
 #endif  // DEVICEFOLDEDWIDGET_H

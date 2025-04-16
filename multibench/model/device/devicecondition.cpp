@@ -5,11 +5,11 @@
 
 DeviceCondition::DeviceCondition(
     const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
-    const QVector<Led>& Leds, QLabel* label, QWidget* parent)
+    const QVector<Led>& Leds, QWidget* parent)
     : GuiWidgetBase(parent),
       m_converters(converters),
       m_Leds(Leds),
-      m_Label(label) {
+      m_Label(new QLabel()) {
   for (int idleds = 0; idleds < m_Leds.count(); ++idleds) {
     auto led = m_Leds.at(idleds);
     for (int idled = 0; idled < led.ledMasks.count(); ++idled) {
@@ -39,8 +39,8 @@ void DeviceCondition::setStateText(uint value, LedMask led) {
 
 void DeviceCondition::setData(quint16 code, quint16 data) {
   if (m_codes.contains(code)) {
-    for (auto led : m_Leds) {
-      for (auto ledMask : led.ledMasks) {
+    for (auto led : qAsConst(m_Leds)) {
+      for (auto ledMask : qAsConst(led.ledMasks)) {
         if (ledMask.code == code) {
           QString msg = ledMask.msg;
           if (ledMask.code == 0x4 or ledMask.code == 0x7A) msg = "";
@@ -62,3 +62,5 @@ void DeviceCondition::updateStyle() {
   m_Label->setStyleSheet(StyleStorage::Device::condition());
   m_Label->update();
 }
+
+void DeviceCondition::bindLabel(QLabel* label) { m_Label = label; }

@@ -22,6 +22,10 @@ class FoldedControlWidget : public GuiWidgetBase, public GuiWidgetInterface {
   QVector<quint16> Subscribe() override;
   void updateStyle() override;
   QString getName();
+  bool isPinned();
+  void setShown();
+ public slots:
+  void setPinned(bool pin);
 
  private:
   Ui::FoldedControlWidget *ui;
@@ -29,6 +33,7 @@ class FoldedControlWidget : public GuiWidgetBase, public GuiWidgetInterface {
   QSharedPointer<CommandConverter> m_ValueConv;
   QVector<quint16> m_codes;
   QString m_name;
+  bool m_isPinned = false;
 };
 
 #endif  // FOLDEDCONTROLWIDGET_H

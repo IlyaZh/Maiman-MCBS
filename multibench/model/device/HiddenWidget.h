@@ -22,8 +22,10 @@ class HiddenWidget : public QWidget, public GuiWidgetInterface {
   void setShown(bool show);
   bool isPinned() const;
   void setPinned(bool pin);
-  void setMargins(int top, int left, int bottom, int right);
+  void setMargins(int left, int top, int right, int bottom);
   void updateStyle() override;
+ signals:
+  void pinned(bool pin);
 
  private:
   Ui::HiddenWidget* ui;

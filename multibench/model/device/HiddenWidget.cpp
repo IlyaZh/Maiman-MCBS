@@ -56,10 +56,13 @@ void HiddenWidget::setShown(bool show) {
 
 bool HiddenWidget::isPinned() const { return m_isPinned; }
 
-void HiddenWidget::setPinned(bool pin) { m_isPinned = pin; }
+void HiddenWidget::setPinned(bool pin) {
+  m_isPinned = pin;
+  emit pinned(m_isPinned);
+}
 
-void HiddenWidget::setMargins(int top, int left, int bottom, int right) {
-  m_layout->setContentsMargins(top, left, bottom, right);
+void HiddenWidget::setMargins(int left, int top, int right, int bottom) {
+  m_layout->setContentsMargins(left, top, right, bottom);
   m_margin = m_layout->contentsMargins();
   m_layout->update();
 }

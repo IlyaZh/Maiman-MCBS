@@ -20,9 +20,9 @@ FoldedControlWidget::FoldedControlWidget(QStringView name,
   ui->realLabel->setFont(font10);
   ui->setLabel->setFont(font10);
   if (m_RealConv.isNull()) {
-    ui->realLabel->setVisible(false);
+    ui->setLabel->setVisible(false);
   } else {
-    ui->realLabel->setVisible(true);
+    ui->setLabel->setVisible(true);
   }
 }
 
@@ -37,7 +37,7 @@ void FoldedControlWidget::setData(quint16 code, quint16 data) {
     ui->setLabel->setText(
         QString("Set: %1 %2").arg(value, m_ValueConv->unit()));
     if (m_RealConv.isNull()) {
-      ui->setLabel->setText(QString("%1 %2").arg(value, m_ValueConv->unit()));
+      ui->realLabel->setText(QString("%1 %2").arg(value, m_ValueConv->unit()));
     }
   } else if (code == m_RealConv->code()) {
     m_RealConv->setValue(data);
@@ -55,3 +55,7 @@ QVector<quint16> FoldedControlWidget::Subscribe() {
 }
 
 void FoldedControlWidget::updateStyle() { this->update(); }
+
+void FoldedControlWidget::setPinned(bool pin) { m_isPinned = pin; }
+
+void FoldedControlWidget::setShown() { this->setVisible(m_isPinned); }

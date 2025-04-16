@@ -36,8 +36,14 @@
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>24</number>
+   </property>
    <property name="topMargin">
     <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>24</number>
    </property>
    <property name="bottomMargin">
     <number>9</number>
@@ -45,32 +51,18 @@
    <property name="verticalSpacing">
     <number>0</number>
    </property>
-   <item row="0" column="2" rowspan="2">
-    <widget class="QLabel" name="Label">
-     <property name="font">
-      <font>
-       <family>Poppins Medium</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(255, 255, 255);
-background: transparent;</string>
-     </property>
-     <property name="text">
-      <string>MODEL:</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="6" rowspan="3">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
       <number>0</number>
      </property>
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
      <item>
       <widget class="QPushButton" name="showButton">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -87,6 +79,11 @@ background: transparent;</string>
          <height>21</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <family>Poppins</family>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true"> border: 2px solid #1A1A1A;
 background-color: #1D1D1D;
@@ -101,6 +98,12 @@ color: #FFFFFF;</string>
    </item>
    <item row="0" column="1" rowspan="3">
     <widget class="QLabel" name="nameLabel">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>100</width>
@@ -118,7 +121,10 @@ color: #FFFFFF;</string>
 background: transparent;</string>
      </property>
      <property name="text">
-      <string>Group 111</string>
+      <string>ID: 111</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
@@ -156,6 +162,18 @@ background: transparent;</string>
    </item>
    <item row="2" column="2">
     <widget class="QLabel" name="modelLabel">
+     <property name="minimumSize">
+      <size>
+       <width>110</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>110</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <family>Poppins Medium</family>
@@ -166,7 +184,10 @@ background: transparent;</string>
       <string notr="true">color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
-      <string>SF</string>
+      <string>SF8025-WT v2.0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
      </property>
     </widget>
    </item>
@@ -185,6 +206,38 @@ background: transparent;</string>
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="0" column="2" rowspan="2">
+    <widget class="QLabel" name="Label">
+     <property name="minimumSize">
+      <size>
+       <width>110</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>110</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins Medium</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #7D7D7D;
+background: transparent;</string>
+     </property>
+     <property name="text">
+      <string>MODEL:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

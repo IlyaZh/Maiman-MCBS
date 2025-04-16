@@ -8,6 +8,13 @@
 #include "model/device/devicewidget.h"
 
 class DeviceWidget;
+class ControlWidget;
+class BinaryWidget;
+class HiddenWidget;
+class DeviceCondition;
+class ButtonWidget;
+class CommandConverter;
+class FoldedControlWidget;
 
 class DeviceHolder : public QWidget, public GuiWidgetInterface {
   Q_OBJECT
@@ -35,7 +42,7 @@ class DeviceHolder : public QWidget, public GuiWidgetInterface {
   void acceptDataFromWidget(quint16 code, quint16 value);
   void statusChanged(DeviceStatusGroup& status);
  private slots:
-  void hideControlsButtonClicked(QMap<QString, bool>& widgets);
+  void hideControlsButtonClicked();
   void showWidgetButtonClicked();
 
  private:
@@ -44,10 +51,17 @@ class DeviceHolder : public QWidget, public GuiWidgetInterface {
   QVBoxLayout* m_widgetLayout;
   QPointer<DeviceWidget> m_expandedWidget;
   QPointer<DeviceFoldedWidget> m_foldedWidget;
+  QVector<ButtonWidget*> m_buttonWidgets;
+  QVector<BinaryWidget*> m_binaryWidgets;
+  DeviceCondition* m_deviceCondition;
+  QSet<GuiWidgetBase*> m_widgetsTable;
+  QVector<HiddenWidget*> m_widgets;
+  QVector<FoldedControlWidget*> m_foldedWidgets;
   int m_address = 0;
   int m_id = 0;
   QString m_name;
   DeviceStatusGroup m_status;
+  QSize m_widgetSize;
 };
 
 #endif  // DEVICEHOLDER_H

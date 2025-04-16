@@ -18,10 +18,10 @@ class CustomTooltip : public QLabel {
  public:
   explicit CustomTooltip(QWidget *parent = nullptr) : QLabel(parent) {
     setWindowFlags(Qt::ToolTip | Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground);
+    //    setAttribute(Qt::WA_TranslucentBackground);
     setStyleSheet(
-        "color: white; background-color: #000000; border: 1px solid "
-        "#474747;border-radius: 3px; "
+        "color: white; background-color: #1D1D1D; border: 1px solid "
+        "#848484;border-radius: 0px; "
         "padding: 5px;");
     setAlignment(Qt::AlignCenter);
     hide();

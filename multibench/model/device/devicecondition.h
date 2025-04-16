@@ -14,8 +14,9 @@ class DeviceCondition : public GuiWidgetBase, public GuiWidgetInterface {
  public:
   explicit DeviceCondition(
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
-      const QVector<Led>& Leds, QLabel* label, QWidget* parent = nullptr);
+      const QVector<Led>& Leds, QWidget* parent = nullptr);
   ~DeviceCondition() override;
+  void bindLabel(QLabel* label);
   void setData(quint16 code, quint16 data) override;
   QVector<quint16> Subscribe() override;
   void updateStyle() override;
