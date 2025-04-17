@@ -11,13 +11,41 @@ class DeviceHideButton : public QPushButton, public GuiWidgetInterface {
     setIconSize(QSize(9, 9));
     m_darkButton.addFile(
         QString::fromUtf8(":/resources/images/DarkIconControlMask-Hide.png"),
-        QSize(16, 16), QIcon::Normal, QIcon::Off);
-    m_darkButton.addFile(
-        QString::fromUtf8(":/resources/images/DarkIconControlMask-Show.png"),
         QSize(16, 16), QIcon::Normal, QIcon::On);
     m_lightButton.addFile(
         QString::fromUtf8(":/resources/images/LightIconControlMask-Hide.png"),
-        QSize(16, 16), QIcon::Normal, QIcon::Off);
+        QSize(16, 16), QIcon::Normal, QIcon::On);
+    setObjectName(QString::fromUtf8("hideControlButton"));
+    setMinimumSize(QSize(106, 35));
+    setMaximumSize(QSize(106, 35));
+    QFont font1;
+    font1.setFamily(QString::fromUtf8("Poppins"));
+    font1.setPixelSize(10);
+    font1.setLetterSpacing(QFont::PercentageSpacing, 105);
+    setFont(font1);
+    updateStyle();
+  }
+  void updateStyle() override {
+    setIconSize(QSize(9, 9));
+    setIcon((AppSettings::getDarkAppStyle()) ? m_darkButton : m_lightButton);
+    this->setStyleSheet(StyleStorage::Device::hideButton());
+    this->update();
+  }
+
+ private:
+  QIcon m_darkButton;
+  QIcon m_lightButton;
+};
+
+class DeviceShowButton : public QPushButton, public GuiWidgetInterface {
+ public:
+  explicit DeviceShowButton(QWidget* parent = nullptr) : QPushButton(parent) {
+    setCheckable(true);
+    setChecked(false);
+    setIconSize(QSize(9, 9));
+    m_darkButton.addFile(
+        QString::fromUtf8(":/resources/images/DarkIconControlMask-Show.png"),
+        QSize(16, 16), QIcon::Normal, QIcon::On);
     m_lightButton.addFile(
         QString::fromUtf8(":/resources/images/LightIconControlMask-Show.png"),
         QSize(16, 16), QIcon::Normal, QIcon::On);

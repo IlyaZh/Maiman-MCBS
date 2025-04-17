@@ -700,11 +700,15 @@ const QString labelNameConnected() {
     return R"(
       background:  transparent;
       color: #39CA76;
+margin-left: 8px;
+padding-top: 2px;
 )";
   } else {
     return R"(
       background:  transparent;
       color: #3BBB5B;
+margin-left: 8px;
+padding-top: 2px;
 )";
   }
 }
@@ -713,11 +717,15 @@ const QString labelNameDisconnected() {
     return R"(
       background:  transparent;
       color: #FF403A;
+margin-left: 8px;
+padding-top: 2px;
 )";
   } else {
     return R"(
       background:  transparent;
       color: #FF2E27;
+margin-left: 8px;
+padding-top: 2px;
 )";
   }
 }
@@ -798,8 +806,9 @@ const QString pinButton() {
       background: #1D1D1D;
       color: rgb(255,255,255);
       padding: 0px;
+      margin-top: 10px;
       margin-right: 20px;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       margin-left: 10px;
     )";
   } else {

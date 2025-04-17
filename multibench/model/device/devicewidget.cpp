@@ -30,12 +30,18 @@ DeviceWidget::DeviceWidget(const QVector<HiddenWidget*>& widgets,
   deviceCondition->setParent(this);
   // Инициализация кнопки (Hide controls)
   auto m_hideControlsButton = new DeviceHideButton(this);
-  m_hideControlsButton->setText(" " + tr("Hide controls"));
+  m_hideControlsButton->setText(" " + tr("Minimize"));
   connect(m_hideControlsButton, &QPushButton::clicked, this,
           &DeviceWidget::hideWidget);
-  m_widgetLayout->addWidget(m_hideControlsButton, 0, 0, Qt::AlignLeft);
+  ui->hideControlsLayout->setAlignment(Qt::AlignRight | Qt::AlignTop);
+  ui->hideControlsLayout->addWidget(m_hideControlsButton, Qt::AlignRight);
   for (int i = 0; i < m_widgets.size(); i++) {
-    m_widgetLayout->addWidget(m_widgets.at(i), 1, i, Qt::AlignTop);
+    if (m_widgets.at(i)->whichWWidgetInside() == Control) {
+      m_widgetLayout->addWidget(m_widgets.at(i), 1, i, Qt::AlignBottom);
+    } else {
+      m_widgetLayout->addWidget(m_widgets.at(i), 1, i, Qt::AlignTop);
+    }
+
     if (m_widgets.at(i)->isPinned()) m_fixedWidgets++;
     QList<QWidget*> widgets = m_widgets.at(i)->findChildren<QWidget*>();
     for (QWidget* widget : widgets) {

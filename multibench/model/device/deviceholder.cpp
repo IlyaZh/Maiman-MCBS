@@ -38,6 +38,7 @@ DeviceHolder::DeviceHolder(
                             minConverter, realConverter, hiddenWidget);
       hiddenWidget->setMargins(10, 0, 10, 0);
       hiddenWidget->addWidget(widget);
+      hiddenWidget->defineWidget(WidgetInside::Control);
       auto foldedWidget = new FoldedControlWidget(control.name, valueConverter,
                                                   realConverter, this);
       foldedWidget->setContentsMargins(10, 0, 10, 0);
@@ -55,7 +56,7 @@ DeviceHolder::DeviceHolder(
   }
   if (readOnlyWidgets.count() > 0) {
     auto hiddenWidget = new HiddenWidget(this);
-    hiddenWidget->setMargins(10, 16, 10, 0);
+    hiddenWidget->setMargins(10, 36, 10, 0);
     auto maxUnitsLengthIt = *std::max_element(
         std::begin(readOnlyWidgets), std::end(readOnlyWidgets),
         [=](ReadParameterWidget* widgetA, ReadParameterWidget* widgetB) {
@@ -67,6 +68,7 @@ DeviceHolder::DeviceHolder(
       hiddenWidget->addWidget(item);
       m_widgetsTable.insert(item);
     }
+    hiddenWidget->defineWidget(WidgetInside::Read);
     m_widgets.append(hiddenWidget);
     readOnlyWidgets.clear();
   }
@@ -74,13 +76,14 @@ DeviceHolder::DeviceHolder(
   for (const auto& item : qAsConst(description.checkboxes)) {
     if (!hiddenWidget) {
       hiddenWidget = new HiddenWidget(this);
-      hiddenWidget->setMargins(10, 16, 10, 0);
+      hiddenWidget->setMargins(10, 36, 10, 0);
     }
     auto converter = m_converters.value(item.code, nullptr);
     if (converter) {
       auto binaryWidget = new BinaryWidget(item, converter, hiddenWidget);
       binaryWidget->setContentsMargins(0, 0, 0, 0);
       hiddenWidget->addWidget(binaryWidget);
+      hiddenWidget->defineWidget(WidgetInside::Binary);
       m_widgetsTable.insert(binaryWidget);
     }
   }

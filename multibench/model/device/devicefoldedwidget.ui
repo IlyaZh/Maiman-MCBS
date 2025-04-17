@@ -10,6 +10,12 @@
     <height>71</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="minimumSize">
    <size>
     <width>0</width>
@@ -51,51 +57,6 @@
    <property name="verticalSpacing">
     <number>0</number>
    </property>
-   <item row="0" column="6" rowspan="3">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="leftMargin">
-      <number>10</number>
-     </property>
-     <item>
-      <widget class="QPushButton" name="showButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>88</width>
-         <height>21</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>88</width>
-         <height>21</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Poppins</family>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"> border: 2px solid #1A1A1A;
-background-color: #1D1D1D;
-color: #FFFFFF;</string>
-       </property>
-       <property name="text">
-        <string>Maximise</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="1" rowspan="3">
     <widget class="QLabel" name="nameLabel">
      <property name="minimumSize">
@@ -118,7 +79,9 @@ color: #FFFFFF;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(255, 255, 255);
-background: transparent;</string>
+background: transparent;
+margin-left: 3px;
+padding-top: 2px;</string>
      </property>
      <property name="text">
       <string>ID: 111</string>
@@ -181,13 +144,14 @@ background: transparent;</string>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(255, 255, 255);</string>
+      <string notr="true">color: rgb(255, 255, 255);
+padding-bottom:5px;</string>
      </property>
      <property name="text">
       <string>SF8025-WT v2.0</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
@@ -207,7 +171,7 @@ background: transparent;</string>
      </property>
     </spacer>
    </item>
-   <item row="0" column="2" rowspan="2">
+   <item row="0" column="2">
     <widget class="QLabel" name="Label">
      <property name="minimumSize">
       <size>
@@ -229,15 +193,26 @@ background: transparent;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: #7D7D7D;
-background: transparent;</string>
+background: transparent;
+padding-top: 5px;</string>
      </property>
      <property name="text">
       <string>MODEL:</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
+   </item>
+   <item row="0" column="6" rowspan="3">
+    <layout class="QHBoxLayout" name="showControlsLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>10</number>
+     </property>
+    </layout>
    </item>
   </layout>
  </widget>

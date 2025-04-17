@@ -32,5 +32,7 @@
         <file>resources/images/black-arrow-up.png</file>
         <file>resources/images/white-arrow-down.png</file>
         <file>resources/images/white-arrow-up.png</file>
+        <file>resources/images/LightIconControlMask-Left.png</file>
+        <file>resources/images/LightIconControlMask-Right.png</file>
     </qresource>
 </RCC>

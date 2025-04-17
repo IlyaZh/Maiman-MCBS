@@ -6,8 +6,6 @@ HiddenWidget::HiddenWidget(QWidget* parent)
     : QWidget(parent), ui(new Ui::HiddenWidget) {
   ui->setupUi(this);
   m_layout = new QVBoxLayout();
-  //  m_layout->setSpacing(0);
-
   ui->widget->setLayout(m_layout);
   HiddenWidget::updateStyle();
 }
@@ -71,3 +69,11 @@ void HiddenWidget::updateStyle() {
   this->setStyleSheet(StyleStorage::Device::hiddenWidget());
   this->update();
 }
+
+void HiddenWidget::setSpacerSize(int w, int h, QSizePolicy::Policy hData,
+                                 QSizePolicy::Policy vData) {
+  ui->verticalSpacer->changeSize(w, h, hData, vData);
+}
+
+void HiddenWidget::defineWidget(WidgetInside inside) { m_inside = inside; }
+WidgetInside HiddenWidget::whichWWidgetInside() { return m_inside; }

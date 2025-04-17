@@ -16,6 +16,12 @@ DeviceFoldedWidget::DeviceFoldedWidget(
   setAttribute(Qt::WA_StyledBackground, true);
   //  ui->modelLabel->setText(description.name);
   m_warning = new WarningWidget();
+  auto m_showControlsButton = new DeviceShowButton(this);
+  m_showControlsButton->setText(" " + tr("Maximize"));
+  connect(m_showControlsButton, &QPushButton::clicked, this,
+          &DeviceFoldedWidget::showWidget);
+  ui->showControlsLayout->addWidget(m_showControlsButton);
+  ui->showControlsLayout->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
   ui->buttonsLayout->setSpacing(6);
   ui->buttonsLayout->addWidget(m_warning);
   ui->buttonsLayout->setAlignment(m_warning, Qt::AlignVCenter | Qt::AlignRight);
@@ -28,8 +34,6 @@ DeviceFoldedWidget::DeviceFoldedWidget(
   }
   // m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
   ui->widgetsLayout->addLayout(m_widgetLayout);
-  connect(ui->showButton, &QPushButton::clicked, this,
-          &DeviceFoldedWidget::showWidget);
   DeviceFoldedWidget::updateStyle();
 }
 
