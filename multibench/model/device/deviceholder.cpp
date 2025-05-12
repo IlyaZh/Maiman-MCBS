@@ -11,6 +11,8 @@
 #include "widgets/readparameterfactory.h"
 #include "widgets/readparameterwidget.h"
 
+enum { foldedHeight = 71, expandedHeight = 240 };
+
 DeviceHolder::DeviceHolder(
     const DeviceWidgetDesc& description,
     const QMap<quint16, QSharedPointer<CommandConverter>>& converters,
@@ -18,8 +20,13 @@ DeviceHolder::DeviceHolder(
     : QWidget(parent),
       m_description(description),
       m_converters(converters),
-      m_widgetLayout(new QVBoxLayout()) {
+      m_widgetLayout(new QVBoxLayout()),
+      m_stacked(new QStackedLayout(this)) {
   m_id = m_description.id;
+  this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+  //  this->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+  //  setAttribute(Qt::WA_StyledBackground);
+  //  this->setStyleSheet("background: transparent;");
 
   QVector<ReadParameterWidget*> readOnlyWidgets;
   for (const auto& control : m_description.controls) {
@@ -131,13 +138,19 @@ DeviceHolder::DeviceHolder(
     connect(widget, &GuiWidgetBase::setDataFromWidget, this,
             &DeviceHolder::acceptDataFromWidget);
   }
-  m_widgetLayout->setMargin(0);
-  m_widgetLayout->setSpacing(0);
+  m_stacked->addWidget(m_expandedWidget);
+  m_stacked->addWidget(m_foldedWidget);
+
+  m_stacked->setCurrentWidget(m_expandedWidget);
+  //  m_stacked->layout()->setSizeConstraint(QLayout::SetMinimumSize);
+  m_stacked->setMargin(0);
+  m_stacked->setSpacing(0);
   m_widgetLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-  m_widgetLayout->addWidget(m_expandedWidget);
-  m_widgetLayout->addWidget(m_foldedWidget);
-  m_foldedWidget->hide();
-  this->setLayout(m_widgetLayout);
+  m_widgetLayout->setSizeConstraint(QLayout::SetMinimumSize);
+  //  m_widgetLayout->addWidget(m_stacked);
+  //  m_widgetLayout->addWidget(m_foldedWidget);
+  //  m_foldedWidget->hide();
+  this->setLayout(m_stacked);
   connect(m_expandedWidget, &DeviceWidget::acceptDataFromWidget, this,
           &DeviceHolder::acceptDataFromWidget);
   connect(m_foldedWidget, &DeviceFoldedWidget::acceptDataFromWidget, this,
@@ -149,6 +162,7 @@ DeviceHolder::DeviceHolder(
   connect(m_expandedWidget, &DeviceWidget::nameEdited, this,
           [this](QString name, int addr) {
             m_name = name;
+            if (name.isEmpty()) m_name = QString("ID: %1").arg(addr);
             emit nameEdited(name, addr);
           });
   connect(this, &DeviceHolder::statusChanged, m_foldedWidget,
@@ -197,22 +211,52 @@ void DeviceHolder::setConstraint(bool state) {
 }
 
 void DeviceHolder::hideControlsButtonClicked() {
-  m_expandedWidget->hide();
-  m_widgetSize = m_expandedWidget->size();
-  m_foldedWidget->setMinimumWidth(m_widgetSize.rwidth());
-  m_foldedWidget->setMaximumWidth(m_widgetSize.rwidth());
+  m_isHide = true;
+  m_stacked->setCurrentWidget(m_foldedWidget);
+
+  m_widgetSize = QSize(m_foldedWidget->minimumSize().width(), foldedHeight);
+  setMinimumSize(m_widgetSize);
+  resize(m_widgetSize);
   m_foldedWidget->setVisibleWidget();
-  m_foldedWidget->show();
-  m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
-  //  this->adjustSize();
+  QWidget* current = m_stacked->currentWidget();
+  if (current) {
+    // Ширину НЕ трогаем
+    setMinimumHeight(foldedHeight);
+    setMaximumHeight(foldedHeight);
+
+    // Ширина — по политике, например:
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+    updateGeometry();  // позволяет родителю пересчитать layout
+  }
+  qDebug() << "SizeHint:" << m_stacked->currentWidget()->sizeHint();
+  qDebug() << "Window size before:" << this->size();
+  this->adjustSize();
+  qDebug() << "Window size after:" << this->size();
+  emit hideStatus(m_isHide);
 }
 void DeviceHolder::showWidgetButtonClicked() {
-  m_expandedWidget->setMinimumWidth(m_widgetSize.rwidth());
-  m_expandedWidget->setMaximumWidth(m_widgetSize.rwidth());
-  m_expandedWidget->show();
-  m_foldedWidget->hide();
-  m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
-  //  this->adjustSize();
+  m_isHide = false;
+  m_stacked->setCurrentWidget(m_expandedWidget);
+  m_widgetSize = QSize(m_expandedWidget->minimumSize().width(), expandedHeight);
+  setMinimumSize(m_widgetSize);
+  resize(m_widgetSize);
+  QWidget* current = m_stacked->currentWidget();
+  if (current) {
+    // Ширину НЕ трогаем
+    setMinimumHeight(expandedHeight);
+    setMaximumHeight(expandedHeight);
+
+    // Ширина — по политике, например:
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+    updateGeometry();  // позволяет родителю пересчитать layout
+  }
+  qDebug() << "SizeHint:" << m_stacked->currentWidget()->sizeHint();
+  qDebug() << "Window size before:" << this->size();
+  this->adjustSize();
+  qDebug() << "Window size after:" << this->size();
+  emit hideStatus(m_isHide);
 }
 
 void DeviceHolder::setDevicesStatus(quint8 addr,
@@ -237,3 +281,5 @@ void DeviceHolder::setDevicesStatus(quint8 addr,
   }
   emit statusChanged(m_status);
 }
+
+bool DeviceHolder::isHide() { return m_isHide; }

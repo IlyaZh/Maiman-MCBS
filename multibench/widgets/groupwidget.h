@@ -36,15 +36,18 @@ class GroupWidget : public QWidget, public GuiWidgetInterface {
   void statusChanged(QMap<quint8, DeviceStatusGroup> &status);
   void linkChanged(int addr, bool status);
   void closeGroupStatusDialog();
+  void sizeChanged();
  private slots:
   void startDevices();
   void stopDevices();
   void hideDevices(bool flag);
   void showStatus();
+  void isHiddenWidget(bool state);
 
  private:
   void resizeWidget();
   void paintEvent(QPaintEvent *) override;
+  bool findHiddenDevices();
   Ui::GroupWidget *ui;
   QPushButton *m_hideButton;
   QPushButton *m_statusButton;

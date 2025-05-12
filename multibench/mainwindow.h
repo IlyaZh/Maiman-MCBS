@@ -68,6 +68,7 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
   void rescanProgress(int current, int total, int success);
   void slot_serialPortClosed(const QString& msg);
   void emptyNetwork();
+  void adjust();
  private slots:
   void comTriggered();
   void tcpTriggered();

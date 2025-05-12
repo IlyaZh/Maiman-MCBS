@@ -66,7 +66,7 @@ DeviceWidget::DeviceWidget(const QVector<HiddenWidget*>& widgets,
   // m_widgetLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
   ui->widgetBox->setLayout(m_widgetLayout);
   m_hideControlsButton->setVisible(!m_widgets.isEmpty());
-  ui->gridLayout->addWidget(m_deviceAddress, 0, 2);
+  ui->gridLayout->addWidget(m_deviceAddress, 0, 1);
   connect(m_deviceAddress, &InLineEdit::nameEdited, this,
           &DeviceWidget::nameEdited);
   DeviceWidget::updateStyle();

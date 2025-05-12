@@ -41,6 +41,8 @@ void GuiMediator::createWidgetFor(Device* device) {
             [this, device](quint16 code, quint16 value) {
               dataCapture(device->addr(), code, value);
             });
+    connect(widget, &DeviceHolder::hideStatus, this,
+            [this]() { m_window.adjust(); });
     m_window.addDeviceWidget(widget);
     if (m_factory.hasCalibration(device->id()) or
         m_factory.hasLimits(device->id()))
@@ -107,7 +109,8 @@ void GuiMediator::recreateGroups(
       m_groupWidgetsTable.insert(groupWidget->getGroupAddress(), groupWidget);
       connect(groupWidget, &GroupWidget::groupEvent, this,
               &GuiMediator::Signal_PublishEvent);
-
+      connect(groupWidget, &GroupWidget::sizeChanged, this,
+              [this]() { m_window.adjust(); });
       //      if (groups.size() > 1) {
       //        m_window.repaintGroupsToTabs(groupWidget);
       //      }

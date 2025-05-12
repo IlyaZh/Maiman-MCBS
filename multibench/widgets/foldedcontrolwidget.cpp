@@ -2,6 +2,8 @@
 
 #include "ui_foldedcontrolwidget.h"
 
+using namespace StyleStorage::FoldedDevice;
+
 FoldedControlWidget::FoldedControlWidget(QStringView name,
                                          QSharedPointer<CommandConverter> Value,
                                          QSharedPointer<CommandConverter> Real,
@@ -21,8 +23,12 @@ FoldedControlWidget::FoldedControlWidget(QStringView name,
   ui->setLabel->setFont(font10);
   if (m_RealConv.isNull()) {
     ui->setLabel->setVisible(false);
+    ui->setLabel->setStyleSheet(whiteLabel());
+    ui->realLabel->setStyleSheet(whiteLabel());
   } else {
     ui->setLabel->setVisible(true);
+    ui->setLabel->setStyleSheet(greyLabel());
+    ui->realLabel->setStyleSheet(whiteLabel());
   }
 }
 

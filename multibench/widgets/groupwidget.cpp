@@ -16,10 +16,10 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   this->setObjectName("GroupWidget");
   m_warning = new WarningWidget();
   ui->launchTable->addWidget(m_warning, Qt::AlignLeft);
-  m_widgetLayout = new QGridLayout(ui->devicesTable);
+  m_widgetLayout = new QGridLayout(this);
   m_widgetLayout->setMargin(0);
   m_widgetLayout->setSpacing(10);
-  m_widgetLayout->setContentsMargins(20, 0, 0, 0);
+  m_widgetLayout->setContentsMargins(0, 0, 0, 0);
   m_widgetLayout->setSizeConstraint(QLayout::SetMinimumSize);
   m_widgetLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   ui->devicesTable->setLayout(m_widgetLayout);
@@ -28,7 +28,7 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   m_statusButton = new GroupHideButton(this);
   m_statusButton->setCheckable(false);
   m_hideButton->setText(" " + tr("Hide Devices"));
-  m_statusButton->setText(" " + tr("Status Devices"));
+  m_statusButton->setText(" " + tr("Minimize All"));
   ui->statusButtontable->insertWidget(1, m_hideButton);
   ui->statusButtontable->insertWidget(2, m_statusButton);
   ui->statusButtontable->setAlignment(Qt::AlignLeft);
@@ -47,6 +47,7 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
           &GroupWidget::showStatus);
   //  connect(m_name, &InLineEdit::nameEdited, this, &GroupWidget::nameEdited);
   GroupWidget::updateStyle();
+  findHiddenDevices();
 }
 
 GroupWidget::~GroupWidget() { delete ui; }
@@ -55,10 +56,14 @@ void GroupWidget::addGroupMember(QPointer<DeviceHolder> member) {
   //  if (member == this) return;
   //  m_widgetLayout->addWidget(member);
   m_groupWidgets.append(member);
+  qDebug() << "add new member" << member->size() << member->sizeHint();
   resizeWidget();
+  qDebug() << "add new member" << member->size() << member->sizeHint();
   emit closeGroupStatusDialog();
   m_addresses.insert(static_cast<quint8>(member->getAddress()));
   m_linked.insert(static_cast<quint8>(member->getAddress()), true);
+  connect(member, &DeviceHolder::hideStatus, this,
+          &GroupWidget::isHiddenWidget);
 }
 
 void GroupWidget::removeGroupMember(QPointer<DeviceHolder> member) {
@@ -69,6 +74,8 @@ void GroupWidget::removeGroupMember(QPointer<DeviceHolder> member) {
   m_addresses.remove(static_cast<quint8>(member->getAddress()));
   m_status.remove(static_cast<quint8>(member->getAddress()));
   m_linked.remove(static_cast<quint8>(member->getAddress()));
+  disconnect(member, &DeviceHolder::hideStatus, this,
+             &GroupWidget::isHiddenWidget);
 }
 
 const QSet<quint8> GroupWidget::getAddresses() { return m_addresses; }
@@ -92,7 +99,7 @@ void GroupWidget::stopDevices() {
 }
 
 void GroupWidget::resizeWidget() {
-  int maxWidth{-1};
+  int maxWidth{-1}, maxHeight{0};
   int widgetsCounter{0};
   int totalHeightInAppearence{0};
   for (auto &widget : qAsConst(m_groupWidgets)) {
@@ -108,28 +115,33 @@ void GroupWidget::resizeWidget() {
             });
   for (auto widget : qAsConst(m_groupWidgets)) {
     widget->setConstraint(true);
-    widget->setMinimumSize(maxWidth, widget->height());
-
+    widget->resize(maxWidth, widget->height());
+    maxHeight += widget->height();
     if (widgetsCounter < WidgetsInAppearence) {
       ++widgetsCounter;
-      totalHeightInAppearence += widget->height();
+      totalHeightInAppearence += widget->minimumHeight();
       if (widgetsCounter > 0)
         totalHeightInAppearence += m_widgetLayout->spacing();
     }
+    //    qDebug() << "Holder valid:" << widget->size() << widget->sizeHint();
+    //    widget->setStyleSheet("background: green;");
     m_widgetLayout->addWidget(widget);
   }
-
+  maxHeight += m_widgetLayout->spacing() * (m_widgetLayout->count() - 1);
+  //  ui->devicesTable->setMinimumHeight(100);
+  //  ui->devicesTable->setStyleSheet("background: red;");
+  //  this->setStyleSheet("background: blue;");
   auto newSize = ui->devicesTable->size();
-  int diffWidth = maxWidth - newSize.width();
-  int diffHeight = totalHeightInAppearence - ui->devicesTable->height();
-  qDebug() << "group size" << diffWidth << maxWidth << newSize.width();
+  //  int diffHeight = totalHeightInAppearence - ui->devicesTable->height();
   newSize.rwidth() = maxWidth + 15;
 
-  if (diffHeight > 0) newSize.rheight() += diffHeight;
+  newSize.rheight() = maxHeight;
   ui->devicesTable->resize(newSize);
   ui->devicesTable->adjustSize();
+  ui->devicesTable->update();
   this->adjustSize();
   this->setMinimumSize(this->size());
+  qDebug() << "group size" << ui->devicesTable->size() << this->size();
 }
 
 void GroupWidget::hideDevices(bool flag) {
@@ -138,13 +150,13 @@ void GroupWidget::hideDevices(bool flag) {
   if (!m_hideDevices) {
     m_hideButton->setText(" " + tr("Hide Devices"));
     ui->devicesTable->setVisible(true);
-    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
+    //    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
     this->adjustSize();
     this->setMinimumWidth(this->size().rwidth());
   } else {
     m_hideButton->setText(" " + tr("Show Devices"));
     ui->devicesTable->setVisible(false);
-    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
+    //    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
     this->adjustSize();
     this->setMinimumWidth(this->size().rwidth());
   }
@@ -213,19 +225,16 @@ void GroupWidget::linkStatusChanged(int addr, bool status) {
 }
 
 void GroupWidget::showStatus() {
-  QPointer<GroupStatusDialog> dialog(new GroupStatusDialog());
-  for (auto &device : m_groupWidgets) {
-    dialog->addDevice(static_cast<quint8>(device->getAddress()),
-                      device->getModel());
+  if (findHiddenDevices()) {
+    for (auto device : qAsConst(m_groupWidgets)) {
+      device->showWidgetButtonClicked();
+    }
+  } else {
+    for (auto device : qAsConst(m_groupWidgets)) {
+      device->hideControlsButtonClicked();
+    }
   }
-  dialog->setModal(true);
-  dialog->show();
-  connect(this, &GroupWidget::statusChanged, dialog,
-          &GroupStatusDialog::setStatus);
-  connect(this, &GroupWidget::linkChanged, dialog,
-          &GroupStatusDialog::deviceLinkChanged);
-  connect(this, &GroupWidget::closeGroupStatusDialog, dialog,
-          &GroupStatusDialog::deleteLater);
+  resizeWidget();
 }
 
 void GroupWidget::updateValue(const model::Event &event) {
@@ -255,4 +264,32 @@ void GroupWidget::updateStyle() {
     ui->startButton->setStyleSheet(Widget::buttonInMiddle());
     ui->stopButton->setStyleSheet(Widget::buttonStopped());
   }
+}
+
+bool GroupWidget::findHiddenDevices() {
+  bool isHidden = false;
+  for (auto device : qAsConst(m_groupWidgets)) {
+    if (device->isHide()) {
+      isHidden = true;
+    }
+  }
+  if (isHidden) {
+    m_statusButton->setText(" " + tr("Maximize All"));
+  } else {
+    m_statusButton->setText(" " + tr("Minimize All"));
+  }
+  return isHidden;
+}
+
+void GroupWidget::isHiddenWidget(bool state) {
+  if (state) {
+    findHiddenDevices();
+  } else {
+    findHiddenDevices();
+  }
+  resizeWidget();
+  ui->devicesTable->adjustSize();
+  qDebug() << "adjust" << ui->devicesTable->size()
+           << ui->devicesTable->sizeHint();
+  emit sizeChanged();
 }

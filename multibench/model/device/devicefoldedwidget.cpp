@@ -22,7 +22,7 @@ DeviceFoldedWidget::DeviceFoldedWidget(
           &DeviceFoldedWidget::showWidget);
   ui->showControlsLayout->addWidget(m_showControlsButton);
   ui->showControlsLayout->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
-  ui->buttonsLayout->setSpacing(6);
+  ui->buttonsLayout->setSpacing(12);
   ui->buttonsLayout->addWidget(m_warning);
   ui->buttonsLayout->setAlignment(m_warning, Qt::AlignVCenter | Qt::AlignRight);
   ui->widgetsLayout->setAlignment(Qt::AlignVCenter | Qt::AlignRight);

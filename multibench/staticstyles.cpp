@@ -729,6 +729,32 @@ padding-top: 2px;
 )";
   }
 }
+const QString whiteLabel() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      background:  transparent;
+      color: #FFFFFF;
+)";
+  } else {
+    return R"(
+      background:  transparent;
+      color: #FF2E27;
+)";
+  }
+}
+const QString greyLabel() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      background:  transparent;
+      color: #7D7D7D;
+)";
+  } else {
+    return R"(
+      background:  transparent;
+      color: #FF2E27;
+)";
+  }
+}
 }  // namespace FoldedDevice
 namespace Device {
 const QString widget() {
@@ -851,8 +877,10 @@ const QString model() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
       QLabel#modelLabel{
-      color:#FFFFFF;
-      background-color: #282828;
+        color: rgb(255, 255, 255);
+        background: transparent;
+        padding-bottom: 4px;
+        font: 57 15px "Poppins Medium";
       }
 )";
   } else {

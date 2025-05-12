@@ -561,3 +561,12 @@ void MainWindow::styleChangedBetweenStates(bool state) {
         StyleStorage::MainWindow::scrollWidget());
   }
 }
+
+void MainWindow::adjust() {
+  //  for (auto* widget : qAsConst(m_workWidgets)) {
+  //    widget->setMinimumSize(1500, 150);
+  //    widget->resize(1500, 150);
+  //  }
+  ui->scrollFieldWidget->adjustSize();
+  ui->scrollArea->widget()->adjustSize();
+}

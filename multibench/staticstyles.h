@@ -44,6 +44,8 @@ namespace FoldedDevice {
 const QString widget();
 const QString labelNameConnected();
 const QString labelNameDisconnected();
+const QString whiteLabel();
+const QString greyLabel();
 }  // namespace FoldedDevice
 namespace Device {
 const QString widget();
