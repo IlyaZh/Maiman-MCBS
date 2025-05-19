@@ -834,7 +834,7 @@ const QString pinButton() {
       padding: 0px;
       margin-top: 10px;
       margin-right: 20px;
-      margin-bottom: 6px;
+      margin-bottom: 10px;
       margin-left: 10px;
     )";
   } else {
@@ -855,8 +855,8 @@ const QString condition() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
       color: #FFC803;
-      background-color: none;
-    padding-left: 10px;
+      background-color: transparent;
+    padding-left: 0px;
     padding-top: 3px;
       border: 0px solid #1A1A1A;
 )";
@@ -2050,6 +2050,58 @@ const QString warningRed() {
   )";
   }
 }
+
+const QString warningGrayInv() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    color: #808080;
+    background: transparent;
+    font-size: 17px;
+    padding-top: 3px;
+    margin-left: 0px;
+  )";
+  } else {
+    return R"(
+    color: #FFFFFF;
+    font: 16px;
+  )";
+  }
+}
+
+const QString warningYellowInv() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    color: #FFC803;
+    background: transparent;
+    font-size: 17px;
+    padding-top: 1px;
+    margin-left: 0px;
+  )";
+  } else {
+    return R"(
+    color: #FFFFFF;
+    font: 16px;
+  )";
+  }
+}
+
+const QString warningRedInv() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+    color: #FF403A;
+    background: transparent;
+    font-size: 17px;
+    padding-top: 1px;
+    margin-left: 0px;
+  )";
+  } else {
+    return R"(
+    color: #FFFFFF;
+    font: 16px;
+  )";
+  }
+}
+
 }  // namespace Status
 }  // namespace Group
 }  // namespace StyleStorage

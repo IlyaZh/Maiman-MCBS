@@ -145,9 +145,8 @@ QLabel {
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(239,255,10);
-font: &quot;://resources/fonts/ShareTechMono-Regular.ttf&quot;;
-background: rgb(40,40,40);
-padding: 0 10px;
+background: transparen;
+padding: 0px;
 border: 0px solid #1A1A1A;
 </string>
      </property>

@@ -41,6 +41,7 @@ class WarningWidget : public QWidget, public GuiWidgetInterface {
   Q_OBJECT
  public:
   explicit WarningWidget(QWidget *parent = nullptr);
+  explicit WarningWidget(bool inv, QWidget *parent = nullptr);
   void addData(DeviceStatusGroup &status);
   void addDevicesData(QMap<quint8, QSharedPointer<DeviceStatusGroup>> &status);
   void updateStyle() override;
@@ -57,6 +58,7 @@ class WarningWidget : public QWidget, public GuiWidgetInterface {
   QLabel *m_warning;
   QString m_toolTip;
   CustomTooltip *m_customToolTip;
+  bool m_isInv = false;
 };
 
 #endif  // WARNINGWIDGET_H

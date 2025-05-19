@@ -135,6 +135,9 @@ const QString linkOff();
 const QString warningGray();
 const QString warningYellow();
 const QString warningRed();
+const QString warningGrayInv();
+const QString warningYellowInv();
+const QString warningRedInv();
 }  // namespace Status
 }  // namespace Group
 }  // namespace StyleStorage

@@ -49,7 +49,7 @@ void FoldedControlWidget::setData(quint16 code, quint16 data) {
     m_RealConv->setValue(data);
     if (m_RealConv)
       ui->realLabel->setText(
-          QString("Real :%1 %2")
+          QString("Real: %1 %2")
               .arg(m_RealConv->valueStr(), m_ValueConv->unit()));
   }
 }

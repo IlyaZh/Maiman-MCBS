@@ -268,7 +268,11 @@ void MainWindow::restoreDeviceWidgets() {
   ui->scrollArea->resize(newSize);
 
   auto winSize = size();
-  winSize.rwidth() += diffWidth;
+  qDebug() << "win size" << winSize << diffWidth
+           << ui->centralwidget->layout()->contentsMargins();
+  winSize.rwidth() +=
+      (diffWidth + ui->centralwidget->layout()->contentsMargins().left() +
+       ui->centralwidget->layout()->contentsMargins().right());
   winSize.rheight() += (diffHeight > 0) ? diffHeight : 0;
   resize(winSize);
 }
