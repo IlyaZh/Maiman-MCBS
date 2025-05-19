@@ -167,6 +167,8 @@ DeviceHolder::DeviceHolder(
           });
   connect(this, &DeviceHolder::statusChanged, m_foldedWidget,
           &DeviceFoldedWidget::setStatus);
+  connect(this, &DeviceHolder::statusChanged, m_deviceCondition,
+          &DeviceCondition::addData);
   m_status.errors = QStringList();
   m_status.interlocks = QStringList();
 }

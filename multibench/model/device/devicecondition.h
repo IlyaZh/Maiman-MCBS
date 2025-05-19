@@ -21,7 +21,8 @@ class DeviceCondition : public GuiWidgetBase, public GuiWidgetInterface {
   QVector<quint16> Subscribe() override;
   void updateStyle() override;
  signals:
-
+ public slots:
+  void addData(DeviceStatusGroup& status);
  private slots:
   void setStateText(uint value, LedMask led);
 
@@ -31,6 +32,7 @@ class DeviceCondition : public GuiWidgetBase, public GuiWidgetInterface {
   QPointer<QLabel> m_Label;
   QVector<quint16> m_codes;
   QStringList m_states;
+  QString m_message;
 };
 
 #endif  // DEVICECONDITION_H

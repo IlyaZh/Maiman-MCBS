@@ -45,15 +45,40 @@ void DeviceCondition::setData(quint16 code, quint16 data) {
           QString msg = ledMask.msg;
           if (ledMask.code == 0x4 or ledMask.code == 0x7A) msg = "";
           if ((data & ledMask.mask) != 0) {
-            if (!m_Label->text().contains(msg)) m_states.append(msg);
+            // if (!m_Label->text().contains(msg)) m_states.append(msg);
           } else {
-            if (m_Label->text().contains(msg)) m_states.removeOne(msg);
+            // if (m_Label->text().contains(msg)) m_states.removeOne(msg);
           }
-          m_Label->setText(m_states.join("; "));
+          // m_Label->setText(m_states.join("; "));
         }
       }
     }
   }
+}
+
+void DeviceCondition::addData(DeviceStatusGroup& status) {
+  QString msg(R"(%1)");
+  bool hasErrors = !status.errors->isEmpty();
+  bool hasInterlock = !status.interlocks->isEmpty();
+  if (hasErrors and hasInterlock) {
+    m_message = msg.arg(QString(R"(<font color=#FF403A>%1</font>)")
+                            .arg(status.errors->join("; ")) +
+                        "; " +
+                        QString(R"(<font color=#FFC803>%1</font>)")
+                            .arg(status.interlocks->join("; ")));
+
+  } else if (hasErrors and !hasInterlock) {
+    m_message = msg.arg(QString(R"(<font color=#FF403A>%1</font>)")
+                            .arg(status.errors->join("; ")));
+
+  } else if (!hasErrors and hasInterlock) {
+    m_message = msg.arg(QString(R"(<font color=#FFC803>%1</font>)")
+                            .arg(status.interlocks->join("; ")));
+
+  } else {
+    m_message = "";
+  }
+  m_Label->setText(m_message);
 }
 
 QVector<quint16> DeviceCondition::Subscribe() { return m_codes; }

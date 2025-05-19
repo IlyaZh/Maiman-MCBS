@@ -21,14 +21,19 @@ FoldedControlWidget::FoldedControlWidget(QStringView name,
   ui->nameLabel->setFont(font10);
   ui->realLabel->setFont(font10);
   ui->setLabel->setFont(font10);
+
   if (m_RealConv.isNull()) {
     ui->setLabel->setVisible(false);
     ui->setLabel->setStyleSheet(whiteLabel());
     ui->realLabel->setStyleSheet(whiteLabel());
+    this->setMinimumSize(QSize(100, 40));
+    resize(QSize(100, 40));
   } else {
     ui->setLabel->setVisible(true);
     ui->setLabel->setStyleSheet(greyLabel());
     ui->realLabel->setStyleSheet(whiteLabel());
+    this->setMinimumSize(QSize(260, 40));
+    resize(QSize(260, 40));
   }
 }
 
