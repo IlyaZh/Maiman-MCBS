@@ -78,6 +78,9 @@ void GroupHolder::setDevicesStatus(quint8 addr,
   if (!m_status.contains(addr)) {
     m_status.insert(addr, desc);
   }
+  if (desc.data()->isStarted.has_value()) {
+    m_status[addr]->isStarted = desc.data()->isStarted;
+  }
   if (desc.data()->isError.has_value() and desc.data()->isError) {
     m_status[addr]->errors->clear();
     if (desc.data()->errors.has_value())

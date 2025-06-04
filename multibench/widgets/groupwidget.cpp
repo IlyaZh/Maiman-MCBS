@@ -172,6 +172,21 @@ void GroupWidget::paintEvent(QPaintEvent *) {
 void GroupWidget::addDevicesData(
     QMap<quint8, QSharedPointer<DeviceStatusGroup>> &status) {
   m_warning->addDevicesData(status);
+  QVector<bool> devs;
+  for (const auto &data : qAsConst(status)) {
+    devs.append(data->isStarted.value());
+  }
+  bool all = devs.at(0);
+  for (int i = 1; i < devs.size(); i++) {
+    all &= devs.at(i);
+  }
+  if (all) {
+    ui->startButton->setStyleSheet(Widget::buttonLaunched());
+    ui->stopButton->setStyleSheet(Widget::buttonInMiddle());
+  } else {
+    ui->startButton->setStyleSheet(Widget::buttonInMiddle());
+    ui->stopButton->setStyleSheet(Widget::buttonStopped());
+  }
 }
 
 void GroupWidget::setName(QString name) { ui->labelName->setText(name); }
@@ -208,13 +223,6 @@ void GroupWidget::updateStyle() {
       interfaceWidget->updateStyle();
     }
   }
-  //  if (m_allStarted) {
-  //    ui->startButton->setStyleSheet(Widget::buttonLaunched());
-  //    ui->stopButton->setStyleSheet(Widget::buttonInMiddle());
-  //  } else {
-  //    ui->startButton->setStyleSheet(Widget::buttonInMiddle());
-  //    ui->stopButton->setStyleSheet(Widget::buttonStopped());
-  //  }
 }
 
 bool GroupWidget::findHiddenDevices() {
@@ -222,9 +230,6 @@ bool GroupWidget::findHiddenDevices() {
   bool isHidden = true;
   for (auto device : qAsConst(m_groupWidgets)) {
     isHidden &= device->isHide();
-    //    if (device->isHide()) {
-    //      isHidden = true;
-    //    }
   }
   if (isHidden) {
     m_statusButton->setText(" " + tr("Maximize all"));

@@ -166,18 +166,6 @@ void MainWindow::addGroupWidget(GroupHolder* group) {
   group->setParent(this);
   m_groupWidgets.append(group);
   m_workFieldLayout->addWidget(group);
-  for (int i = 0; i < m_workFieldLayout->count(); ++i) {
-    QLayoutItem* item = m_workFieldLayout->itemAt(i);
-    if (item->widget() == group) {
-      int row, column, rowSpan, columnSpan;
-      m_workFieldLayout->getItemPosition(i, &row, &column, &rowSpan,
-                                         &columnSpan);
-      qDebug() << "Widget found at row:" << row;
-      m_workFieldLayout->setRowStretch(row, 1);
-      m_workFieldLayout->setRowMinimumHeight(row, 110);
-      break;
-    }
-  }
 }
 
 void MainWindow::removeGroupWidget(GroupHolder* group) {

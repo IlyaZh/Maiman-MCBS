@@ -39,6 +39,21 @@ void GroupWidgetFolded::setName(QString name) { ui->labelName->setText(name); }
 void GroupWidgetFolded::addDevicesData(
     QMap<quint8, QSharedPointer<DeviceStatusGroup>> &status) {
   m_warning->addDevicesData(status);
+  QVector<bool> devs;
+  for (const auto &data : qAsConst(status)) {
+    devs.append(data->isStarted.value());
+  }
+  bool all = devs.at(0);
+  for (int i = 1; i < devs.size(); i++) {
+    all &= devs.at(i);
+  }
+  if (all) {
+    ui->startButton->setStyleSheet(Widget::buttonLaunched());
+    ui->stopButton->setStyleSheet(Widget::buttonInMiddle());
+  } else {
+    ui->startButton->setStyleSheet(Widget::buttonInMiddle());
+    ui->stopButton->setStyleSheet(Widget::buttonStopped());
+  }
 }
 
 void GroupWidgetFolded::updateStyle() {

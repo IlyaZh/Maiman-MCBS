@@ -86,6 +86,13 @@ QSharedPointer<DeviceStatusGroup> GuiFactory::deviceErrorStatus(quint16 id,
             group->errors->append(mask.msg);
           }
         }
+        if (led.name == "Laser") {
+          if ((value & mask.mask) != 0) {
+            group->isStarted = true;
+          } else {
+            group->isStarted = false;
+          }
+        }
       }
     }
   }
@@ -96,7 +103,8 @@ QSharedPointer<DeviceStatusGroup> GuiFactory::deviceErrorStatus(quint16 id,
     group->interlocks.reset();
   }
   if (group->errors.has_value() or group->interlocks.has_value() or
-      group->isError.has_value() or group->isInterlock.has_value())
+      group->isError.has_value() or group->isInterlock.has_value() or
+      group->isStarted.has_value())
     return QSharedPointer<DeviceStatusGroup>(group);
   else
     return QSharedPointer<DeviceStatusGroup>();

@@ -12,6 +12,7 @@ struct DeviceStatusGroup {
   std::optional<bool> isError;
   std::optional<QStringList> interlocks;
   std::optional<bool> isInterlock;
+  std::optional<bool> isStarted;
 };
 
 class CustomTooltip : public QLabel {

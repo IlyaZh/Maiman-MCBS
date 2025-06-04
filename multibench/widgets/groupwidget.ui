@@ -92,11 +92,12 @@ background:#1D1D1D;
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 2px solid rgb(26,26,26); 
-border-radius: 6px; 
-color: rgb(0,0,0); 
-background: rgb(180,180,180); 
-</string>
+        <string notr="true">      border: 0px solid #DEDDDD;
+      border-radius: 16px;
+      color: #000000;
+      background: #DEDDDD;
+      padding-top: 2px;
+      text-align:center;</string>
        </property>
        <property name="text">
         <string>Start</string>
@@ -130,10 +131,12 @@ background: rgb(180,180,180);
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: 2px solid rgb(26,26,26); 
-border-radius: 6px; 
-color: rgb(0,0,0); 
-background: rgb(189,0,0); </string>
+        <string notr="true">      border: 0px solid #FF403A;
+      border-radius: 16px;
+      color: #000000;
+      background: #FF403A;
+      padding-top: 2px;
+      text-align:center;</string>
        </property>
        <property name="text">
         <string>Stop</string>
