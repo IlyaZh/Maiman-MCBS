@@ -87,9 +87,11 @@ SOURCES += \
     widgets/buttonwidget.cpp \
     widgets/calibrationdialog.cpp \
     widgets/foldedcontrolwidget.cpp \
+    widgets/groupholder.cpp \
     widgets/groupmanager.cpp \
     widgets/groupstatusdialog.cpp \
     widgets/groupwidget.cpp \
+    widgets/groupwidgetfolded.cpp \
     widgets/groupwidgetstatus.cpp \
     widgets/inlinecontrol.cpp \
     widgets/inlineedit.cpp \
@@ -157,9 +159,11 @@ HEADERS += \
     widgets/buttonwidget.h \
     widgets/calibrationdialog.h \
     widgets/foldedcontrolwidget.h \
+    widgets/groupholder.h \
     widgets/groupmanager.h \
     widgets/groupstatusdialog.h \
     widgets/groupwidget.h \
+    widgets/groupwidgetfolded.h \
     widgets/groupwidgetstatus.h \
     widgets/inlinecontrol.h \
     widgets/inlineedit.h \
@@ -206,6 +210,7 @@ FORMS += \
     widgets/groupmanager.ui \
     widgets/groupstatusdialog.ui \
     widgets/groupwidget.ui \
+    widgets/groupwidgetfolded.ui \
     widgets/groupwidgetstatus.ui \
     widgets/inputdialog.ui \
     widgets/quitdialog.ui \

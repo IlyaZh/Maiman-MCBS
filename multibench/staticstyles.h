@@ -106,6 +106,7 @@ const QString widget();
 namespace Group {
 namespace Widget {
 const QString groupWidget();
+const QString groupFoldedWidget();
 const QString buttonLaunched();
 const QString buttonStopped();
 const QString buttonInMiddle();

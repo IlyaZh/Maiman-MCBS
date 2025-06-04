@@ -145,8 +145,8 @@ DeviceHolder::DeviceHolder(
   //  m_stacked->layout()->setSizeConstraint(QLayout::SetMinimumSize);
   m_stacked->setMargin(0);
   m_stacked->setSpacing(0);
-  m_widgetLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-  m_widgetLayout->setSizeConstraint(QLayout::SetMinimumSize);
+  //  m_widgetLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+  //  m_widgetLayout->setSizeConstraint(QLayout::SetMinimumSize);
   //  m_widgetLayout->addWidget(m_stacked);
   //  m_widgetLayout->addWidget(m_foldedWidget);
   //  m_foldedWidget->hide();

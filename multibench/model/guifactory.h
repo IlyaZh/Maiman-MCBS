@@ -6,8 +6,8 @@
 
 #include "device/deviceholder.h"
 #include "factories/parserworker.h"
+#include "widgets/groupholder.h"
 #include "widgets/groupmanager.h"
-#include "widgets/groupwidget.h"
 
 class DevCommand;
 class CalibrationDialog;
@@ -27,10 +27,10 @@ class GuiFactory : public QObject {
   CalibrationDialog* createCalibrationDialog(
       quint16 id,
       const QMap<quint16, QSharedPointer<CommandConverter>>& converters);
-  GroupWidget* createGroupWidget(int groupAddr);
+  GroupHolder* createGroupWidget(int groupAddr);
   GroupManager* createGroupManagerWidget(
       const QMap<quint8, QPointer<DeviceHolder>>& devices,
-      const QMap<int, QPointer<GroupWidget>>& groups);
+      const QMap<int, QPointer<GroupHolder>>& groups);
   bool hasLimits(quint16 id);
   bool hasCalibration(quint16 id);
   QSharedPointer<DeviceStatusGroup> deviceErrorStatus(quint16 id, quint16 code,

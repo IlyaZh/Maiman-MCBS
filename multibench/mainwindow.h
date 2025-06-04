@@ -20,7 +20,7 @@ class DeviceHolder;
 class RescanProgressWidget;
 class QuitDialog;
 class ConnectionWidget;
-class GroupWidget;
+class GroupHolder;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -37,11 +37,11 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
   void addDeviceWidget(DeviceHolder* widget);
   void removeDeviceWidget(DeviceHolder* widget);
   void restoreDeviceWidgets();
-  void addGroupWidget(GroupWidget* group);
-  void removeGroupWidget(GroupWidget* group);
+  void addGroupWidget(GroupHolder* group);
+  void removeGroupWidget(GroupHolder* group);
   void setComPorts(const QStringList& portList);
   void setBaudRates(const QStringList& baudsList);
-  void repaintGroupsToTabs(QPointer<GroupWidget> group);
+  void repaintGroupsToTabs(QPointer<GroupHolder> group);
   void repaintGroupToScroll();
 
   void NewEvent(const model::Event& event) override;
@@ -88,7 +88,7 @@ class MainWindow : public QMainWindow, public interfaces::Subscriber {
  private:
   Ui::MainWindow* ui;
   QVector<DeviceHolder*> m_workWidgets;
-  QVector<GroupWidget*> m_groupWidgets;
+  QVector<GroupHolder*> m_groupWidgets;
   QGridLayout* m_workFieldLayout;
   QMap<int, QWidget*> m_groupTabs;
   QPointer<QActionGroup> m_portGroup;

@@ -1552,6 +1552,27 @@ const QString groupWidget() {
 )";
   }
 }
+
+const QString groupFoldedWidget() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+          QWidget#GroupWidgetFolded {
+          border: 2px solid #1A1A1A;
+          border-radius: 13px;
+          background: #232323;
+          }
+  )";
+  } else {
+    return R"(
+        QWidget#GroupWidgetFolded {
+            border: 0px solid #FAFAFA;
+            border-radius: 13px;
+            background: #FAFAFA;
+        }
+  )";
+  }
+}
+
 const QString buttonLaunched() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(

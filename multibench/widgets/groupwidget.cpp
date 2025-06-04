@@ -7,11 +7,10 @@ using namespace StyleStorage::Group;
 
 const int WidgetsInAppearence{2};
 
-GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
+GroupWidget::GroupWidget(QWidget *parent)
     : QWidget(parent),
       ui(new Ui::GroupWidget),
-      m_widgetLayout(new QGridLayout()),
-      m_selfAddr(groupAddr) {
+      m_widgetLayout(new QGridLayout()) {
   ui->setupUi(this);
   this->setObjectName("GroupWidget");
   m_warning = new WarningWidget(true);
@@ -33,17 +32,13 @@ GroupWidget::GroupWidget(int groupAddr, QWidget *parent)
   ui->statusButtontable->insertWidget(1, m_hideButton);
   ui->statusButtontable->insertWidget(2, m_statusButton);
   ui->statusButtontable->setAlignment(Qt::AlignLeft);
-  m_name = QString("Group %1").arg(m_selfAddr);
-  ui->labelName->setText(m_name);
   //  m_name = new InLineEdit(m_selfAddr, false);
   //  ui->nameTable->insertWidget(1, m_name, Qt::AlignmentFlag::AlignLeft);
   ui->nameTable->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-  connect(ui->startButton, &QPushButton::clicked, this,
-          &GroupWidget::startDevices);
-  connect(ui->stopButton, &QPushButton::clicked, this,
-          &GroupWidget::stopDevices);
-  connect(m_hideButton, &QPushButton::clicked, this, &GroupWidget::hideDevices);
+  connect(ui->startButton, &QPushButton::clicked, this, &GroupWidget::startAll);
+  connect(ui->stopButton, &QPushButton::clicked, this, &GroupWidget::stopAll);
+  connect(m_hideButton, &QPushButton::clicked, this, &GroupWidget::hideWidget);
   connect(m_statusButton, &QPushButton::clicked, this,
           &GroupWidget::showStatus);
   //  connect(m_name, &InLineEdit::nameEdited, this, &GroupWidget::nameEdited);
@@ -61,8 +56,6 @@ void GroupWidget::addGroupMember(QPointer<DeviceHolder> member) {
   isHiddenWidget(true);
   qDebug() << "add new member" << member->size() << member->sizeHint();
   emit closeGroupStatusDialog();
-  m_addresses.insert(static_cast<quint8>(member->getAddress()));
-  m_linked.insert(static_cast<quint8>(member->getAddress()), true);
   connect(member, &DeviceHolder::hideStatus, this,
           &GroupWidget::isHiddenWidget);
 }
@@ -72,32 +65,9 @@ void GroupWidget::removeGroupMember(QPointer<DeviceHolder> member) {
   emit closeGroupStatusDialog();
   m_widgetLayout->removeWidget(member);
   m_groupWidgets.removeOne(member);
-  m_addresses.remove(static_cast<quint8>(member->getAddress()));
-  m_status.remove(static_cast<quint8>(member->getAddress()));
-  m_linked.remove(static_cast<quint8>(member->getAddress()));
   disconnect(member, &DeviceHolder::hideStatus, this,
              &GroupWidget::isHiddenWidget);
   isHiddenWidget(true);
-}
-
-const QSet<quint8> GroupWidget::getAddresses() { return m_addresses; }
-
-void GroupWidget::startDevices() {
-  auto command = model::events::network::CommandType::kStartDevices;
-  m_allStarted = true;
-  emit groupEvent(
-      GroupCommandFactory::createGroupCommand(m_addresses, command));
-  ui->startButton->setStyleSheet(Widget::buttonLaunched());
-  ui->stopButton->setStyleSheet(Widget::buttonInMiddle());
-}
-
-void GroupWidget::stopDevices() {
-  auto command = model::events::network::CommandType::kStopDevices;
-  m_allStarted = false;
-  emit groupEvent(
-      GroupCommandFactory::createGroupCommand(m_addresses, command));
-  ui->startButton->setStyleSheet(Widget::buttonInMiddle());
-  ui->stopButton->setStyleSheet(Widget::buttonStopped());
 }
 
 void GroupWidget::resizeWidget() {
@@ -154,20 +124,44 @@ void GroupWidget::hideDevices(bool flag) {
     m_statusButton->setVisible(true);
     ui->devicesTable->setVisible(true);
     //    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
-    this->adjustSize();
+    setMinimumHeight(0);
+    setMaximumHeight(QWIDGETSIZE_MAX);
+    //    this->adjustSize();
     this->setMinimumWidth(this->size().rwidth());
+    updateGeometry();
   } else {
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_hideButton->setText(" " + tr("Show group"));
     m_statusButton->setVisible(false);
     ui->devicesTable->setVisible(false);
-    //    this->layout()->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
-    this->adjustSize();
+    setMinimumHeight(110);
+    setMaximumHeight(110);
     this->setMinimumWidth(this->size().rwidth());
+    resize(width(), 110);
+    updateGeometry();
   }
-
-  resizeWidget();
+  // resizeWidget();
 }
 
+void GroupWidget::resizeEvent(QResizeEvent *event) {
+  qDebug() << "GroupWidget resized to" << event->size();
+  QWidget::resizeEvent(event);
+}
+QSize GroupWidget::sizeHint() const {
+  if (m_hideDevices) {
+    return QSize(QWidget::sizeHint().width(), 110);
+  } else {
+    return QWidget::sizeHint();  // автоматическое подстраивание под содержимое
+  }
+}
+
+QSize GroupWidget::minimumSizeHint() const {
+  if (m_hideDevices) {
+    return QSize(QWidget::minimumSizeHint().width(), 110);
+  } else {
+    return QWidget::minimumSizeHint();
+  }
+}
 void GroupWidget::paintEvent(QPaintEvent *) {
   QStyleOption opt;
   opt.init(this);
@@ -175,57 +169,19 @@ void GroupWidget::paintEvent(QPaintEvent *) {
   style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void GroupWidget::setDevicesStatus(quint8 addr,
-                                   QSharedPointer<DeviceStatusGroup> desc) {
-  if (!m_addresses.contains(addr)) return;
-  if (desc.isNull()) return;
-  if (!m_status.contains(addr)) {
-    m_status.insert(addr, desc);
-  }
-  if (desc.data()->isError.has_value() and desc.data()->isError) {
-    m_status[addr]->errors->clear();
-    if (desc.data()->errors.has_value())
-      m_status[addr]->errors->append(desc.data()->errors.value());
-    m_status[addr]->errors->removeDuplicates();
-  } else {
-    m_status[addr]->errors->clear();
-  }
-  if (desc.data()->isInterlock.has_value() and desc.data()->isInterlock) {
-    m_status[addr]->interlocks->clear();
-    if (desc.data()->interlocks.has_value())
-      m_status[addr]->interlocks->append(desc.data()->interlocks.value());
-    m_status[addr]->interlocks->removeDuplicates();
-  } else {
-    m_status[addr]->interlocks->clear();
-  }
-  //  emit statusChanged(m_status);
-  m_warning->addDevicesData(m_status);
+void GroupWidget::addDevicesData(
+    QMap<quint8, QSharedPointer<DeviceStatusGroup>> &status) {
+  m_warning->addDevicesData(status);
 }
 
-const QString GroupWidget::getName() { return m_name; }
+void GroupWidget::setName(QString name) { ui->labelName->setText(name); }
 
-void GroupWidget::setName(QString name) {
-  m_name = name;
-  ui->labelName->setText(m_name);
-  //  if (name.contains(QString("Group %1").arg(m_selfAddr)))
-  //    m_name->setAddress(m_selfAddr);
-  //  else
-  //    m_name->setText(name);
-}
-
-int GroupWidget::getGroupAddress() { return m_selfAddr; }
-void GroupWidget::linkStatusChanged(int addr, bool status) {
-  m_linked[static_cast<quint8>(addr)] = status;
-  bool groupLink = true;
-  for (auto &linked : m_linked) {
-    groupLink = groupLink & linked;
-  }
-  if (!groupLink) {
+void GroupWidget::linkStatusChanged(bool status) {
+  if (!status) {
     ui->linkLabel->setStyleSheet(StyleStorage::Device::linkDisconnected());
   } else {
     ui->linkLabel->setStyleSheet(StyleStorage::Device::linkConnected());
   }
-  emit linkChanged(addr, status);
 }
 
 void GroupWidget::showStatus() {
@@ -241,15 +197,6 @@ void GroupWidget::showStatus() {
   resizeWidget();
 }
 
-void GroupWidget::updateValue(const model::Event &event) {
-  if (event.type_ == model::EventType::kSystemCommand) {
-    if (std::holds_alternative<model::events::network::ChangeSystemStyle>(
-            event.data_)) {
-      updateStyle();
-    }
-  }
-}
-
 void GroupWidget::updateStyle() {
   this->setStyleSheet(Widget::groupWidget());
   this->update();
@@ -261,13 +208,13 @@ void GroupWidget::updateStyle() {
       interfaceWidget->updateStyle();
     }
   }
-  if (m_allStarted) {
-    ui->startButton->setStyleSheet(Widget::buttonLaunched());
-    ui->stopButton->setStyleSheet(Widget::buttonInMiddle());
-  } else {
-    ui->startButton->setStyleSheet(Widget::buttonInMiddle());
-    ui->stopButton->setStyleSheet(Widget::buttonStopped());
-  }
+  //  if (m_allStarted) {
+  //    ui->startButton->setStyleSheet(Widget::buttonLaunched());
+  //    ui->stopButton->setStyleSheet(Widget::buttonInMiddle());
+  //  } else {
+  //    ui->startButton->setStyleSheet(Widget::buttonInMiddle());
+  //    ui->stopButton->setStyleSheet(Widget::buttonStopped());
+  //  }
 }
 
 bool GroupWidget::findHiddenDevices() {

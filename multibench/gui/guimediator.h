@@ -33,7 +33,7 @@ class GuiMediator : public QObject, public interfaces::Subscriber {
   NetworkModel& m_network;
   QMap<quint8, QSharedPointer<CalibrationDialog>> m_calibrationDialog;
   QMap<quint8, QPointer<DeviceHolder>> m_deviceWidgetsTable;
-  QMap<int, QPointer<GroupWidget>> m_groupWidgetsTable;
+  QMap<int, QPointer<GroupHolder>> m_groupWidgetsTable;
 
  private slots:
   void createWidgetFor(Device* device);

@@ -48,6 +48,9 @@ background:#1D1D1D;
    <property name="topMargin">
     <number>25</number>
    </property>
+   <property name="rightMargin">
+    <number>30</number>
+   </property>
    <property name="bottomMargin">
     <number>25</number>
    </property>

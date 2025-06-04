@@ -18,28 +18,21 @@ class GroupWidget;
 class GroupWidget : public QWidget, public GuiWidgetInterface {
   Q_OBJECT
  public:
-  explicit GroupWidget(int groupAddr, QWidget *parent = nullptr);
+  explicit GroupWidget(QWidget *parent = nullptr);
   ~GroupWidget() override;
   void addGroupMember(QPointer<DeviceHolder> member);
   void removeGroupMember(QPointer<DeviceHolder> member);
-  const QSet<quint8> getAddresses();
-  void setDevicesStatus(quint8 addr, QSharedPointer<DeviceStatusGroup> desc);
-  const QString getName();
   void setName(QString name);
-  int getGroupAddress();
-  void linkStatusChanged(int addr, bool status);
-  void updateValue(const model::Event &event);
+  void linkStatusChanged(bool status);
   void updateStyle() override;
+  void addDevicesData(QMap<quint8, QSharedPointer<DeviceStatusGroup>> &status);
  signals:
-  void groupEvent(model::Event);
-  void nameEdited(QString name, int addr);
-  void statusChanged(QMap<quint8, DeviceStatusGroup> &status);
-  void linkChanged(int addr, bool status);
   void closeGroupStatusDialog();
   void sizeChanged();
+  void startAll(bool checked);
+  void stopAll(bool checked);
+  bool hideWidget(bool flag);
  private slots:
-  void startDevices();
-  void stopDevices();
   void hideDevices(bool flag);
   void showStatus();
   void isHiddenWidget(bool state);
@@ -47,19 +40,16 @@ class GroupWidget : public QWidget, public GuiWidgetInterface {
  private:
   void resizeWidget();
   void paintEvent(QPaintEvent *) override;
+  void resizeEvent(QResizeEvent *event) override;
+  QSize sizeHint() const override;
+  QSize minimumSizeHint() const override;
   bool findHiddenDevices();
   Ui::GroupWidget *ui;
   QPushButton *m_hideButton;
   QPushButton *m_statusButton;
   QGridLayout *m_widgetLayout;
   QList<QPointer<DeviceHolder>> m_groupWidgets;
-  QMap<quint8, QSharedPointer<DeviceStatusGroup>> m_status;
-  QSet<quint8> m_addresses;
-  QMap<quint8, bool> m_linked;
   //  InLineEdit *m_name;
-  QString m_name;
   bool m_hideDevices = false;
-  bool m_allStarted = false;
-  int m_selfAddr = 0;
   WarningWidget *m_warning;
 };

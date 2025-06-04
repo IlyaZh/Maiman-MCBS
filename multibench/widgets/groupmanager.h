@@ -5,7 +5,7 @@
 
 #include "constants.h"
 #include "gui/guiinterface.h"
-#include "widgets/groupwidget.h"
+#include "widgets/groupholder.h"
 
 struct deviceCheckBox {
   int d_addr;
@@ -30,7 +30,7 @@ class GroupManager : public QDialog, public GuiWidgetInterface {
 
  public:
   explicit GroupManager(const QMap<quint8, QPointer<DeviceHolder>>& devices,
-                        const QMap<int, QPointer<GroupWidget>>& groups,
+                        const QMap<int, QPointer<GroupHolder>>& groups,
                         QWidget* parent = nullptr);
   ~GroupManager();
   void updateStyle() override;
@@ -52,7 +52,7 @@ class GroupManager : public QDialog, public GuiWidgetInterface {
   QMap<quint8, QSharedPointer<deviceCheckBox>> m_devicesContainer;
   QMap<int, QSharedPointer<groupCheckBoxes>> m_groupsContainer;
   const QMap<quint8, QPointer<DeviceHolder>>& m_devices;
-  const QMap<int, QPointer<GroupWidget>>& m_groups;
+  const QMap<int, QPointer<GroupHolder>>& m_groups;
   QButtonGroup* m_buttonGroup;
   QFont m_font;
 };

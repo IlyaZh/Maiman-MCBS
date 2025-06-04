@@ -95,7 +95,7 @@ void GuiMediator::recreateGroups(
   }
   if (!groups.isEmpty()) {
     for (auto& group : qAsConst(groups)) {
-      QPointer<GroupWidget> groupWidget(
+      QPointer<GroupHolder> groupWidget(
           m_factory.createGroupWidget(group->g_addr));
       groupWidget->setName(group->g_checkBox->text());
       auto addrs = group->g_subBoxes.keys();
@@ -107,10 +107,10 @@ void GuiMediator::recreateGroups(
       }
       m_window.addGroupWidget(groupWidget);
       m_groupWidgetsTable.insert(groupWidget->getGroupAddress(), groupWidget);
-      connect(groupWidget, &GroupWidget::groupEvent, this,
+      connect(groupWidget, &GroupHolder::groupEvent, this,
               &GuiMediator::Signal_PublishEvent);
-      connect(groupWidget, &GroupWidget::sizeChanged, this,
-              [this]() { m_window.adjust(); });
+      //      connect(groupWidget, &GroupWidget::sizeChanged, this,
+      //              [this]() { m_window.adjust(); });
       //      if (groups.size() > 1) {
       //        m_window.repaintGroupsToTabs(groupWidget);
       //      }

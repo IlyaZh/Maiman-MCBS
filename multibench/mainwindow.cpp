@@ -161,14 +161,26 @@ void MainWindow::removeDeviceWidget(DeviceHolder* widget) {
   m_workWidgets.removeOne(widget);
 }
 
-void MainWindow::addGroupWidget(GroupWidget* group) {
+void MainWindow::addGroupWidget(GroupHolder* group) {
   if (m_groupWidgets.contains(group)) return;
   group->setParent(this);
   m_groupWidgets.append(group);
   m_workFieldLayout->addWidget(group);
+  for (int i = 0; i < m_workFieldLayout->count(); ++i) {
+    QLayoutItem* item = m_workFieldLayout->itemAt(i);
+    if (item->widget() == group) {
+      int row, column, rowSpan, columnSpan;
+      m_workFieldLayout->getItemPosition(i, &row, &column, &rowSpan,
+                                         &columnSpan);
+      qDebug() << "Widget found at row:" << row;
+      m_workFieldLayout->setRowStretch(row, 1);
+      m_workFieldLayout->setRowMinimumHeight(row, 110);
+      break;
+    }
+  }
 }
 
-void MainWindow::removeGroupWidget(GroupWidget* group) {
+void MainWindow::removeGroupWidget(GroupHolder* group) {
   if (!m_groupWidgets.contains(group)) return;
   m_groupWidgets.removeOne(group);
   m_workFieldLayout->removeWidget(group);
@@ -184,7 +196,7 @@ void MainWindow::removeGroupWidget(GroupWidget* group) {
   //  }
 }
 
-void MainWindow::repaintGroupsToTabs(QPointer<GroupWidget> group) {
+void MainWindow::repaintGroupsToTabs(QPointer<GroupHolder> group) {
   //  ui->tabWidget->tabBar()->show();
 
   m_workFieldLayout->removeWidget(group);
@@ -199,7 +211,7 @@ void MainWindow::repaintGroupsToTabs(QPointer<GroupWidget> group) {
   m_groupTabs.insert(group->getGroupAddress(), scrollArea);
   ui->tabWidget->addTab(scrollArea, group->getName());
 
-  connect(group, &GroupWidget::nameEdited, this, [this, group](QString name) {
+  connect(group, &GroupHolder::nameEdited, this, [this, group](QString name) {
     ui->tabWidget->setTabText(
         ui->tabWidget->indexOf(m_groupTabs.value(group->getGroupAddress())),
         name);

@@ -3,7 +3,7 @@
 #include "ui_groupmanager.h"
 
 GroupManager::GroupManager(const QMap<quint8, QPointer<DeviceHolder>>& devices,
-                           const QMap<int, QPointer<GroupWidget>>& groups,
+                           const QMap<int, QPointer<GroupHolder>>& groups,
                            QWidget* parent)
     : QDialog(parent),
       ui(new Ui::GroupManager),
