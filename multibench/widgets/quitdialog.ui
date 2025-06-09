@@ -59,16 +59,16 @@ QPushButton {
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>18</number>
+    <number>20</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>15</number>
    </property>
    <property name="rightMargin">
-    <number>18</number>
+    <number>20</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>10</number>
    </property>
    <item>
     <widget class="QLabel" name="label">
@@ -106,18 +106,30 @@ QPushButton {
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="font">
       <font>
-       <family>Share Tech Mono</family>
-       <pointsize>10</pointsize>
+       <family>Poppins</family>
+       <pointsize>14</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(255,255, 255);
-background-color: rgb(51,51, 51);
-border: 1px solid rgb(180,180,180);
-border-radius: 4px;</string>
+      <string notr="true">QPushButton{
+    font: 14px&quot;Poppins Medium&quot;;
+    color: #FFFFFF;
+    background-color: #1D1D1D;
+    border: 1px solid #6b6b6b;
+border-radius: 15px;
+width: 89px;
+height: 29px;
+margin: 7px;
+      text-align:center;
+      padding-bottom: 2px;
+}
+QPushButton:hover{
+    color: #1D1D1D;
+    background-color: #FFC803;
+}</string>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>

@@ -88,7 +88,7 @@ background:#1D1D1D;
        <property name="font">
         <font>
          <family>Poppins</family>
-         <pointsize>14</pointsize>
+         <pointsize>13</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -127,7 +127,7 @@ background:#1D1D1D;
        <property name="font">
         <font>
          <family>Poppins</family>
-         <pointsize>14</pointsize>
+         <pointsize>13</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -205,12 +205,16 @@ background:#1D1D1D;
        <property name="font">
         <font>
          <family>Poppins Medium</family>
-         <pointsize>16</pointsize>
+         <pointsize>-1</pointsize>
+         <weight>7</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background: transparent;
-color: #FFFFFF;</string>
+color: #FFFFFF;
+font: 57 22px &quot;Poppins Medium&quot;;</string>
        </property>
        <property name="text">
         <string>Group 111</string>

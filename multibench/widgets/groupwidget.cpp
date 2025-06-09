@@ -23,10 +23,12 @@ GroupWidget::GroupWidget(QWidget *parent)
   m_widgetLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
   ui->devicesTable->setLayout(m_widgetLayout);
   ui->gridLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-  m_hideButton = new GroupHideButton(this);
-  m_statusButton = new GroupHideButton(this);
+  m_hideButton = new GroupHideButton(buttonClass::up, this);
+  m_statusButton = new GroupHideButton(buttonClass::both, this);
 
-  m_statusButton->setChecked(true);
+  m_statusButton->setChecked(false);
+  m_hideButton->setCheckable(false);
+  m_hideButton->setChecked(false);
   m_hideButton->setText(" " + tr("Hide group"));
   m_statusButton->setText(" " + tr("Minimize all"));
   ui->statusButtontable->insertWidget(1, m_hideButton);
@@ -226,14 +228,15 @@ void GroupWidget::updateStyle() {
 }
 
 bool GroupWidget::findHiddenDevices() {
-  m_statusButton->setChecked(true);
   bool isHidden = true;
   for (auto device : qAsConst(m_groupWidgets)) {
     isHidden &= device->isHide();
   }
   if (isHidden) {
+    m_statusButton->setChecked(true);
     m_statusButton->setText(" " + tr("Maximize all"));
   } else {
+    m_statusButton->setChecked(false);
     m_statusButton->setText(" " + tr("Minimize all"));
   }
   return isHidden;

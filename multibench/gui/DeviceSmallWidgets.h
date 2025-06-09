@@ -3,6 +3,8 @@
 
 #include "gui/guiinterface.h"
 
+enum buttonClass { up = 0, down = 1, both = 2 };
+
 class DeviceHideButton : public QPushButton, public GuiWidgetInterface {
  public:
   explicit DeviceHideButton(QWidget* parent = nullptr) : QPushButton(parent) {
@@ -112,22 +114,52 @@ class DevicePinButton : public QPushButton, public GuiWidgetInterface {
 
 class GroupHideButton : public QPushButton, public GuiWidgetInterface {
  public:
-  explicit GroupHideButton(QWidget* parent = nullptr) : QPushButton(parent) {
+  explicit GroupHideButton(buttonClass button, QWidget* parent = nullptr)
+      : QPushButton(parent) {
     setCheckable(true);
     setChecked(false);
     setIconSize(QSize(9, 9));
-    m_darkButton.addFile(
-        QString::fromUtf8(":/resources/images/DarkIconControlMask-Hide.png"),
-        QSize(16, 16), QIcon::Normal, QIcon::Off);
-    m_darkButton.addFile(
-        QString::fromUtf8(":/resources/images/DarkIconControlMask-Show.png"),
-        QSize(16, 16), QIcon::Normal, QIcon::On);
-    m_lightButton.addFile(
-        QString::fromUtf8(":/resources/images/LightIconControlMask-Hide.png"),
-        QSize(16, 16), QIcon::Normal, QIcon::Off);
-    m_lightButton.addFile(
-        QString::fromUtf8(":/resources/images/LightIconControlMask-Show.png"),
-        QSize(16, 16), QIcon::Normal, QIcon::On);
+    switch (button) {
+      case up: {
+        m_darkButton.addFile(
+            QString::fromUtf8(
+                ":/resources/images/DarkIconControlMask-Hide.png"),
+            QSize(16, 16), QIcon::Normal);
+        m_lightButton.addFile(
+            QString::fromUtf8(
+                ":/resources/images/LightIconControlMask-Hide.png"),
+            QSize(16, 16), QIcon::Normal);
+      } break;
+      case down: {
+        m_darkButton.addFile(
+            QString::fromUtf8(
+                ":/resources/images/DarkIconControlMask-Show.png"),
+            QSize(16, 16), QIcon::Normal);
+        m_lightButton.addFile(
+            QString::fromUtf8(
+                ":/resources/images/LightIconControlMask-Show.png"),
+            QSize(16, 16), QIcon::Normal);
+      } break;
+      case both: {
+        m_darkButton.addFile(
+            QString::fromUtf8(
+                ":/resources/images/DarkIconControlMask-Hide.png"),
+            QSize(16, 16), QIcon::Normal, QIcon::Off);
+        m_darkButton.addFile(
+            QString::fromUtf8(
+                ":/resources/images/DarkIconControlMask-Show.png"),
+            QSize(16, 16), QIcon::Normal, QIcon::On);
+        m_lightButton.addFile(
+            QString::fromUtf8(
+                ":/resources/images/LightIconControlMask-Hide.png"),
+            QSize(16, 16), QIcon::Normal, QIcon::Off);
+        m_lightButton.addFile(
+            QString::fromUtf8(
+                ":/resources/images/LightIconControlMask-Show.png"),
+            QSize(16, 16), QIcon::Normal, QIcon::On);
+      } break;
+    }
+
     setObjectName(QString::fromUtf8("hideGroupButton"));
     setMinimumSize(QSize(122, 21));
     setMaximumSize(QSize(122, 21));

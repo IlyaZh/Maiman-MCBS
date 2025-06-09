@@ -11,7 +11,9 @@ GroupWidgetFolded::GroupWidgetFolded(QWidget *parent)
   setAttribute(Qt::WA_StyledBackground, true);
   m_warning = new WarningWidget(true);
   ui->launchTable->addWidget(m_warning, Qt::AlignLeft);
-  m_showButton = new GroupHideButton(this);
+  m_showButton = new GroupHideButton(buttonClass::down, this);
+  m_showButton->setChecked(true);
+  m_showButton->setCheckable(false);
   m_showButton->setText(" " + tr("Show group"));
   ui->statusButtontable->insertWidget(1, m_showButton);
   ui->statusButtontable->setAlignment(Qt::AlignLeft);

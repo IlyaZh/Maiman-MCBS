@@ -406,16 +406,16 @@ const QString buttons() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
 QPushButton{
-    font: 14px"Poppins";
+    font: 14px"Poppins Medium";
     color: #FFFFFF;
     background-color: #1D1D1D;
     border: 1px solid #6b6b6b;
 border-radius: 15px;
-width: 91px;
-height: 31px;
+width: 89px;
+height: 29px;
 margin: 5px;
       text-align:center;
-      padding-top: 2px;
+      padding-top: 1px;
 }
 QPushButton:hover{
     color: #1D1D1D;
@@ -1582,6 +1582,7 @@ const QString buttonLaunched() {
       background: #39CA76;
       padding-top: 2px;
       text-align:center;
+      font: 57 13pt "Poppins";
 )";
   } else {
     return R"(
@@ -1603,6 +1604,7 @@ const QString buttonStopped() {
       background: #FF403A;
       padding-top: 2px;
       text-align:center;
+font: 57 13pt "Poppins";
 )";
   } else {
     return R"(
@@ -1624,6 +1626,7 @@ const QString buttonInMiddle() {
       background: #DEDDDD;
       padding-top: 2px;
       text-align:center;
+font: 57 13pt "Poppins";
 )";
   } else {
     return R"(

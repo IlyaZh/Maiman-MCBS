@@ -71,7 +71,7 @@ QMenu::item:disabled {
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <property name="topMargin">
-     <number>9</number>
+     <number>0</number>
     </property>
     <property name="rightMargin">
      <number>9</number>
@@ -276,7 +276,7 @@ background: #999999;
              <x>0</x>
              <y>0</y>
              <width>680</width>
-             <height>83</height>
+             <height>92</height>
             </rect>
            </property>
           </widget>
