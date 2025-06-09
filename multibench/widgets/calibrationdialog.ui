@@ -37,16 +37,16 @@ QLabe {
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
-    <number>48</number>
+    <number>45</number>
    </property>
    <property name="topMargin">
-    <number>31</number>
+    <number>35</number>
    </property>
    <property name="rightMargin">
-    <number>48</number>
+    <number>25</number>
    </property>
    <property name="bottomMargin">
-    <number>31</number>
+    <number>25</number>
    </property>
    <property name="spacing">
     <number>6</number>
@@ -79,6 +79,8 @@ QLabe {
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(255, 255, 255);
+padding-left: 1px;
+
 </string>
      </property>
      <property name="text">
@@ -100,7 +102,7 @@ QLabe {
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>15</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
@@ -152,7 +154,7 @@ QLabe {
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(255, 255, 255);
-</string>
+padding-left: 1px;</string>
      </property>
      <property name="text">
       <string>Limits</string>
@@ -200,6 +202,9 @@ QLabe {
 	padding: 4px;
 	width: 91px;
     height: 31px;
+	
+	font: 57 10pt &quot;Poppins Medium&quot;;
+	padding-bottom:2px;
 }
 
 QPushButton::hover{
@@ -234,12 +239,21 @@ color: #000000;
      <property name="spacing">
       <number>0</number>
      </property>
+     <property name="leftMargin">
+      <number>1</number>
+     </property>
+     <property name="bottomMargin">
+      <number>15</number>
+     </property>
     </layout>
    </item>
    <item row="1" column="0" colspan="3">
     <layout class="QVBoxLayout" name="limitsLayout">
      <property name="spacing">
       <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>1</number>
      </property>
     </layout>
    </item>

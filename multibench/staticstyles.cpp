@@ -1396,7 +1396,8 @@ QPushButton {
     padding: 4px;
     width: 91px;
     height: 31px;
-    font: 11pt "Poppins";
+    font: 57 10pt "Poppins Medium";
+    padding-bottom:2px;
 }
 
 QPushButton::hover{
@@ -1422,6 +1423,8 @@ QPushButton {
     padding: 4px;
     width: 91px;
     height: 31px;
+    font: 57 10pt "Poppins Medium";
+    padding-bottom:2px;
 }
 
 QPushButton::hover{
@@ -1447,6 +1450,8 @@ QPushButton {
     padding: 4px;
     width: 91px;
     height: 31px;
+    font: 57 10pt "Poppins Medium";
+    padding-bottom:2px;
 }
 
 QPushButton::hover{
@@ -1468,21 +1473,22 @@ const QString lineEditOk() {
         color: #FFFFFF;
         background: #000000;
         border: 1px solid #414141;
-        border-radius: 12px;
+        border-radius: 11px;
         padding-top:2px;
+    font: 11pt "Poppins";
     }
     QLineEdit::disabled {
         background: #000000;
         color: #FFFFFF;
         border: 1px solid #414141;
-        border-radius: 12px;
+        border-radius: 11px;
         padding-top:2px;
     }
     QLineEdit:focus {
         color: #000000;
         background: #FFFFFF;
         border: 1px solid #414141;
-        border-radius: 12px;
+        border-radius: 11px;
         padding-top:2px;
     }
 )";
@@ -1499,21 +1505,22 @@ const QString lineEditError() {
           color: #FF403A;
           background: #000000;
           border: 1px solid #414141;
-          border-radius: 12px;
+          border-radius: 11px;
 padding-top:2px;
+    font: 11pt "Poppins";
       }
       QLineEdit::disabled {
           background: #FF403A;
           color: #FFFFFF;
           border: 1px solid #414141;
-          border-radius: 12px;
+          border-radius: 11px;
 padding-top:2px;
       }
       QLineEdit:focus {
           color: #FF403A;
           background: #FFFFFF;
           border: 1px solid #414141;
-          border-radius: 12px;
+          border-radius: 11px;
 padding-top:2px;
       }
   )";

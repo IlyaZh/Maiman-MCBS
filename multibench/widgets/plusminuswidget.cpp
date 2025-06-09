@@ -66,6 +66,7 @@ PlusMinusWidget::PlusMinusWidget(const CalibrationKoef &calibration,
           &PlusMinusWidget::rejectedEdit);
   connect(ui->value, &QLineEdit::editingFinished, this,
           &PlusMinusWidget::inputCompleted);
+  PlusMinusWidget::updateStyle();
 }
 
 PlusMinusWidget::PlusMinusWidget(const Limit &limit,
@@ -136,6 +137,7 @@ PlusMinusWidget::PlusMinusWidget(const Limit &limit,
           &PlusMinusWidget::rejectedEdit);
   connect(ui->value, &QLineEdit::editingFinished, this,
           &PlusMinusWidget::inputCompleted);
+  PlusMinusWidget::updateStyle();
 }
 
 PlusMinusWidget::~PlusMinusWidget() { delete ui; }
@@ -242,4 +244,7 @@ void PlusMinusWidget::setData(quint16 code, quint16 data) {
   }
 }
 
-void PlusMinusWidget::updateStyle() { this->update(); }
+void PlusMinusWidget::updateStyle() {
+  validateValue();
+  this->update();
+}
