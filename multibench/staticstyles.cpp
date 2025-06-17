@@ -918,7 +918,7 @@ const QString linkDisconnected() {
     return R"(
     QLabel {
     background: #FF403A;
-    border: 1px solid #1A1A1A;
+    border: 0px solid #1A1A1A;
     border-radius: 3px;
 }
 )";
@@ -1538,9 +1538,9 @@ const QString groupWidget() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
         QWidget#GroupWidget {
-        border: 2px solid #1A1A1A;
+        border: 2px solid #1D1D1D;
         border-radius: 13px;
-        background: #232323;
+        background: #1D1D1D;
         }
         QWidget#devicesTable{
         background:#232323;
@@ -1564,9 +1564,9 @@ const QString groupFoldedWidget() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
           QWidget#GroupWidgetFolded {
-          border: 2px solid #1A1A1A;
+          border: 2px solid #1D1D1D;
           border-radius: 13px;
-          background: #232323;
+          background: #1D1D1D;
           }
   )";
   } else {
@@ -1662,6 +1662,21 @@ const QString hideButton() {
       background: #E6E6E6;
       color: #000000;
       text-align:center;
+)";
+  }
+}
+const QString showButton() {
+  if (AppSettings::getDarkAppStyle()) {
+    return R"(
+      border: 1px solid #383838;
+      border-radius: 5px;
+      background: #2A2A2A;
+      color: #FFFFFF;
+      text-align:center;
+)";
+  } else {
+    return R"(
+
 )";
   }
 }

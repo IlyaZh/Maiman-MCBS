@@ -2115,7 +2115,7 @@
 			<CheckBox code=\"0004\"
         				onCommand=\"2000\"
         				offCommand=\"1000\"
-        				mask=\"0080\">Ignore IntLock</CheckBox>
+                                        mask=\"0080\">Ignore IntLock</CheckBox>
 		</Checkboxes>
 		<Buttons>
 			<Button

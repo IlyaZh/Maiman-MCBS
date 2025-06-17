@@ -9,19 +9,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>499</width>
+    <width>508</width>
     <height>74</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>427</width>
+    <width>0</width>
     <height>74</height>
    </size>
   </property>
@@ -206,7 +206,7 @@ QSpinBox::down-button:pressed {
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>40</width>
+       <width>20</width>
        <height>20</height>
       </size>
      </property>
@@ -222,13 +222,13 @@ QSpinBox::down-button:pressed {
      </property>
      <property name="minimumSize">
       <size>
-       <width>168</width>
+       <width>196</width>
        <height>31</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>168</width>
+       <width>196</width>
        <height>31</height>
       </size>
      </property>
@@ -246,7 +246,8 @@ QSpinBox::down-button:pressed {
     border-radius: 15px;
     width: 89px;
     height: 29px;
-    font: 12px &quot;Poppins&quot;;
+    font: 14px &quot;Poppins&quot;;
+padding-top: 2px;
 }
 
 QPushButton:hover {

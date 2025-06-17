@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>1500</width>
     <height>71</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1000</width>
+    <width>1500</width>
     <height>71</height>
    </size>
   </property>
@@ -57,50 +57,18 @@
    <property name="verticalSpacing">
     <number>0</number>
    </property>
-   <item row="1" column="0">
-    <widget class="QLabel" name="linkLabel">
-     <property name="minimumSize">
-      <size>
-       <width>14</width>
-       <height>14</height>
-      </size>
+   <item row="0" column="6" rowspan="3">
+    <layout class="QHBoxLayout" name="showControlsLayout">
+     <property name="spacing">
+      <number>0</number>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>14</width>
-       <height>14</height>
-      </size>
+     <property name="leftMargin">
+      <number>10</number>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QLabel {
-    background: #FF403A;
-    border: 1px solid #1A1A1A;
-    border-radius: 3px;
-}c</string>
+     <property name="topMargin">
+      <number>6</number>
      </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="4">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::MinimumExpanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="3" rowspan="3">
-    <layout class="QHBoxLayout" name="widgetsLayout"/>
+    </layout>
    </item>
    <item row="0" column="2">
     <widget class="QLabel" name="Label">
@@ -139,56 +107,8 @@ font: 57 15px &quot;Poppins Medium&quot;;</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1" rowspan="3">
-    <widget class="QLabel" name="nameLabel">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Poppins Medium</family>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: rgb(255, 255, 255);
-background: transparent;
-margin-left: 3px;
-padding-top: 2px;</string>
-     </property>
-     <property name="text">
-      <string>ID: 111</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="6" rowspan="3">
-    <layout class="QHBoxLayout" name="showControlsLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="leftMargin">
-      <number>10</number>
-     </property>
-    </layout>
-   </item>
-   <item row="0" column="5" rowspan="3">
-    <layout class="QHBoxLayout" name="buttonsLayout">
-     <property name="spacing">
-      <number>12</number>
-     </property>
-    </layout>
+   <item row="0" column="3" rowspan="3">
+    <layout class="QHBoxLayout" name="widgetsLayout"/>
    </item>
    <item row="1" column="2" rowspan="2">
     <widget class="QLabel" name="modelLabel">
@@ -226,6 +146,93 @@ font: 57 15px &quot;Poppins Medium&quot;;</string>
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
+   </item>
+   <item row="0" column="4">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="5" rowspan="3">
+    <layout class="QHBoxLayout" name="buttonsLayout">
+     <property name="spacing">
+      <number>12</number>
+     </property>
+    </layout>
+   </item>
+   <item row="0" column="0" rowspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="linkLabel">
+       <property name="minimumSize">
+        <size>
+         <width>14</width>
+         <height>14</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>14</width>
+         <height>14</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    background: #FF403A;
+    border: 1px solid #1A1A1A;
+    border-radius: 3px;
+}c</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="nameLabel">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Poppins Medium</family>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 255, 255);
+background: transparent;
+margin-left: 3px;
+padding-top: 2px;</string>
+       </property>
+       <property name="text">
+        <string>ID: 111</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

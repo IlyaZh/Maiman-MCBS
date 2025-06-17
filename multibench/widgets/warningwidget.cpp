@@ -13,7 +13,7 @@ WarningWidget::WarningWidget(QWidget *parent) : QWidget(parent) {
   setMaximumSize(90, 21);
   setMinimumSize(90, 21);
   setStyleSheet(R"(background: transparent;)");
-  QFont font12("Poppins", 14);
+  QFont font12("Poppins", 12);
   font12.setLetterSpacing(QFont::PercentageSpacing, 105);
   font12.setPixelSize(18);
   m_warning->setFont(font12);
@@ -51,10 +51,10 @@ WarningWidget::WarningWidget(bool inv, QWidget *parent)
   m_iconHolder = new QPushButton(this);
   m_warning = new QLabel(this);
   m_layout = new QHBoxLayout(this);
-  setMaximumSize(90, 21);
-  setMinimumSize(90, 21);
-  setStyleSheet(R"(background: transparent;)");
-  QFont font12("Poppins", 14);
+  setMaximumSize(90, 32);
+  setMinimumSize(90, 32);
+  setStyleSheet(R"(background: transparent; margin-top:3px;)");
+  QFont font12("Poppins", 12);
   font12.setLetterSpacing(QFont::PercentageSpacing, 105);
   font12.setPixelSize(18);
   m_warning->setFont(font12);
@@ -67,8 +67,8 @@ WarningWidget::WarningWidget(bool inv, QWidget *parent)
   m_iconError.addFile(QString::fromUtf8(":/resources/images/GroupError.png"),
                       QSize(16, 16), QIcon::Normal, QIcon::On);
   m_iconHolder->setIcon(m_iconPlug);
-  m_iconHolder->setIconSize(QSize(16, 16));
-  m_iconHolder->setFixedSize(16, 16);
+  m_iconHolder->setIconSize(QSize(16, 32));
+  m_iconHolder->setFixedSize(16, 32);
   m_iconHolder->setStyleSheet("border: 0px;");
 
   m_layout->addWidget(m_iconHolder);

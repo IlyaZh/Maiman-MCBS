@@ -10,6 +10,7 @@ class InLineControl : public QLineEdit, public GuiWidgetInterface {
  public:
   explicit InLineControl();
   void mouseDoubleClickEvent(QMouseEvent* event) override;
+  void focusOutEvent(QFocusEvent* event) override;
   void setText(const QString& text);
   void setActiveStyle();
   void setInactiveStyle();

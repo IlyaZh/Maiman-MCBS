@@ -54,7 +54,7 @@ MainWindow::MainWindow(QWidget* parent)
   m_workFieldLayout = new QGridLayout(ui->scrollFieldWidget);
   m_workFieldLayout->setMargin(0);
   m_workFieldLayout->setSpacing(20);
-  m_workFieldLayout->setContentsMargins(0, 20, 0, 20);
+  m_workFieldLayout->setContentsMargins(0, 10, 0, 10);
   m_workFieldLayout->setSizeConstraint(QLayout::SetMinimumSize);
   m_workFieldLayout->setAlignment(Qt::AlignLeft);
   ui->scrollFieldWidget->setLayout(m_workFieldLayout);

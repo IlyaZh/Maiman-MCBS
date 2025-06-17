@@ -24,6 +24,7 @@ void messageToFile(QtMsgType type, const QMessageLogContext &context,
                    const QString &msg);
 
 int main(int argc, char *argv[]) {
+  QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
   QApplication app(argc, argv);
 
   QFontDatabase::addApplicationFont(Const::kApplicationDefaultFontPath);

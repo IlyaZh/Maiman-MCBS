@@ -19,6 +19,9 @@ InLineControl::InLineControl()
   m_icon->setMinimumSize(38, 19);
   m_icon->setMaximumSize(38, 19);
   m_icon->setCheckable(false);
+  m_icon->setFocusPolicy(Qt::NoFocus);
+  m_icon->setAutoDefault(false);
+  m_icon->setDefault(false);
   m_layout->addWidget(m_icon, 0, Qt::AlignRight | Qt::AlignVCenter);
   m_icon->hide();
   this->setLayout(m_layout);
@@ -41,12 +44,21 @@ InLineControl::InLineControl()
 }
 
 void InLineControl::mouseDoubleClickEvent(QMouseEvent *event) {
+  QLineEdit::mouseDoubleClickEvent(event);
   if (event->button() == Qt::LeftButton) {
     setReadOnly(false);
     setActiveStyle();
     m_icon->show();
-    QLineEdit::setText(m_value);
+    QLineEdit::setText(this->text());
   }
+}
+
+void InLineControl::focusOutEvent(QFocusEvent *event) {
+  if (!isReadOnly()) {
+    setText(m_value);
+    setReadOnly(true);
+  }
+  QLineEdit::focusOutEvent(event);
 }
 
 void InLineControl::finishedChanges() {

@@ -48,6 +48,7 @@ class DeviceHolder : public QWidget, public GuiWidgetInterface {
   void hideStatus(bool state);
 
  private:
+  void checkMinSize();
   const DeviceWidgetDesc& m_description;
   QMap<quint16, QSharedPointer<CommandConverter>> m_converters;
   QVBoxLayout* m_widgetLayout;

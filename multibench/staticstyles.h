@@ -111,6 +111,7 @@ const QString buttonLaunched();
 const QString buttonStopped();
 const QString buttonInMiddle();
 const QString hideButton();
+const QString showButton();
 namespace InlineEdit {
 const QString widgetConnected();
 const QString widgetDisconnected();

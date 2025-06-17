@@ -228,10 +228,10 @@ void DeviceHolder::hideControlsButtonClicked() {
 
     // Ширина — по политике, например:
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
     updateGeometry();  // позволяет родителю пересчитать layout
   }
-  qDebug() << "SizeHint:" << m_stacked->currentWidget()->sizeHint();
+  qDebug() << "F SizeHint:" << m_stacked->currentWidget()->sizeHint()
+           << m_foldedWidget->minimumSize();
   qDebug() << "Window size before:" << this->size();
   this->adjustSize();
   qDebug() << "Window size after:" << this->size();
@@ -251,14 +251,28 @@ void DeviceHolder::showWidgetButtonClicked() {
 
     // Ширина — по политике, например:
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
     updateGeometry();  // позволяет родителю пересчитать layout
   }
-  qDebug() << "SizeHint:" << m_stacked->currentWidget()->sizeHint();
+  qDebug() << "E SizeHint:" << m_stacked->currentWidget()->sizeHint()
+           << m_expandedWidget->minimumSize();
   qDebug() << "Window size before:" << this->size();
   this->adjustSize();
   qDebug() << "Window size after:" << this->size();
   emit hideStatus(m_isHide);
+}
+
+void DeviceHolder::checkMinSize() {
+  QSet<int> size;
+
+  size.insert(this->minimumSize().width());
+  size.insert(m_expandedWidget->minimumSize().width());
+  size.insert(m_foldedWidget->minimumSize().width());
+
+  auto max = std::max_element(size.begin(), size.end());
+  qDebug() << "min size" << size.values() << "max :" << *max;
+  m_foldedWidget->setMaximumWidth(*max);
+  m_expandedWidget->setMinimumWidth(*max);
+  this->setMaximumWidth(*max);
 }
 
 void DeviceHolder::setDevicesStatus(quint8 addr,
