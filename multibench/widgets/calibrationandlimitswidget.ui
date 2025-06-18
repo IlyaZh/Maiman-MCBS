@@ -67,13 +67,17 @@ color: #999999;
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>14</pointsize>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">color: #999999;
 padding-top: 3px;
-margin-left: 1px;</string>
+margin-left: 1px;
+font: 18px &quot;Poppins&quot;;</string>
      </property>
      <property name="text">
       <string>TEC temperature warning upper limit</string>
@@ -102,8 +106,11 @@ margin-left: 1px;</string>
      </property>
      <property name="font">
       <font>
-       <family>MS Shell Dlg 2</family>
-       <pointsize>12</pointsize>
+       <family>Poppins</family>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -113,8 +120,9 @@ margin-left: 1px;</string>
 	width: 25px;
 	height: 25px;
 	border-radius:3px;
-padding-bottom:3px;
+padding-top:1px;
 padding-left: 2px;
+	font: 12px &quot;Poppins&quot;;
 }
 
 QPushButton::disabled {
@@ -150,7 +158,7 @@ QPushButton::disabled {
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>11</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -163,7 +171,7 @@ QPushButton::disabled {
         border: 1px solid #414141;
         border-radius: 11px;
 padding-top:1px;
-	font: 11pt &quot;Poppins&quot;;
+	font: 14px &quot;Poppins&quot;;
     }
     QLineEdit::disabled {
         background: #000000;
@@ -208,7 +216,11 @@ padding-top:1px;
      </property>
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
+       <family>Poppins</family>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -218,8 +230,9 @@ padding-top:1px;
 	width: 25px;
 	height: 25px;
 	border-radius:3px;
-	padding-top:2px;
+	padding-top:0px;
     padding-left: 2px;
+	font: 12px &quot;Poppins&quot;;
 }
 
 QPushButton::disabled {
@@ -269,7 +282,7 @@ QPushButton::disabled {
        <property name="font">
         <font>
          <family>Poppins</family>
-         <pointsize>8</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -277,7 +290,7 @@ QPushButton::disabled {
        </property>
        <property name="styleSheet">
         <string notr="true">color: #999999;
-font: 8pt &quot;Poppins&quot;;
+font: 10px &quot;Poppins&quot;;
 </string>
        </property>
        <property name="text">
@@ -324,7 +337,7 @@ font: 8pt &quot;Poppins&quot;;
        <property name="font">
         <font>
          <family>Poppins</family>
-         <pointsize>8</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -332,7 +345,7 @@ font: 8pt &quot;Poppins&quot;;
        </property>
        <property name="styleSheet">
         <string notr="true">color: #999999;
-font: 8pt &quot;Poppins&quot;;</string>
+font: 10px &quot;Poppins&quot;;</string>
        </property>
        <property name="text">
         <string>Max: 5000</string>

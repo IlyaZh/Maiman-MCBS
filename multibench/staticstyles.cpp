@@ -98,6 +98,7 @@ QMainWindow{
 QMenu {
         background: #1D1D1D;
         color: #FFFFFF;
+        font: 11px "Poppins";
 }
 QMenu:hover {
         color: #969696;
@@ -139,11 +140,13 @@ const QString menuBarWidget() {
 QMenuBar {
         background: #282828;
         color: #fff;
+        font: 11px "Poppins";
 }
 
 QMenuBar::item {
         color: #fff;
         background: #282828;
+        font: 11px "Poppins";
 }
 
 QMenuBar::item:disabled {
@@ -246,7 +249,7 @@ padding: 6px;
 border: 0px solid #555;
 border-top-left-radius: 5px;
 border-top-right-radius: 5px;
-    font: 8pt "Poppins";
+    font: 10px "Poppins";
 }
  QTabBar::tab:selected {
  background: #474747;
@@ -282,7 +285,7 @@ padding: 6px;
 border: 0px solid #555;
 border-top-left-radius: 5px;
 border-top-right-radius: 5px;
-    font: 8pt "Poppins";
+    font: 10px "Poppins";
 }
  QTabBar::tab:selected {
  background: #474747;
@@ -382,6 +385,7 @@ const QString quitWidget() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
     background: #1D1D1D;
+font: 18px "Poppins";
   )";
   } else {
     return R"(
@@ -622,7 +626,7 @@ const QString credits() {
   if (AppSettings::getDarkAppStyle()) {
     return R"(
         color: #FFFFFF;
-        font: 11pt "Poppins";
+        font: 14px "Poppins";
       )";
   } else {
     return R"(
@@ -1396,7 +1400,7 @@ QPushButton {
     padding: 4px;
     width: 91px;
     height: 31px;
-    font: 57 10pt "Poppins Medium";
+    font: 57 13px "Poppins Medium";
     padding-bottom:2px;
 }
 
@@ -1423,7 +1427,7 @@ QPushButton {
     padding: 4px;
     width: 91px;
     height: 31px;
-    font: 57 10pt "Poppins Medium";
+    font: 57 13px "Poppins Medium";
     padding-bottom:2px;
 }
 
@@ -1450,7 +1454,7 @@ QPushButton {
     padding: 4px;
     width: 91px;
     height: 31px;
-    font: 57 10pt "Poppins Medium";
+    font: 57 13px "Poppins Medium";
     padding-bottom:2px;
 }
 
@@ -1475,7 +1479,7 @@ const QString lineEditOk() {
         border: 1px solid #414141;
         border-radius: 11px;
         padding-top:2px;
-    font: 11pt "Poppins";
+    font: 14px "Poppins";
     }
     QLineEdit::disabled {
         background: #000000;
@@ -1507,7 +1511,7 @@ const QString lineEditError() {
           border: 1px solid #414141;
           border-radius: 11px;
 padding-top:2px;
-    font: 11pt "Poppins";
+    font: 14px "Poppins";
       }
       QLineEdit::disabled {
           background: #FF403A;
@@ -1589,7 +1593,7 @@ const QString buttonLaunched() {
       background: #39CA76;
       padding-top: 2px;
       text-align:center;
-      font: 57 13pt "Poppins";
+      font: 57 16px "Poppins";
 )";
   } else {
     return R"(
@@ -1611,7 +1615,7 @@ const QString buttonStopped() {
       background: #FF403A;
       padding-top: 2px;
       text-align:center;
-font: 57 13pt "Poppins";
+font: 57 16px "Poppins";
 )";
   } else {
     return R"(
@@ -1633,7 +1637,7 @@ const QString buttonInMiddle() {
       background: #DEDDDD;
       padding-top: 2px;
       text-align:center;
-font: 57 13pt "Poppins";
+font: 57 16px "Poppins";
 )";
   } else {
     return R"(
@@ -1837,7 +1841,7 @@ const QString checkBoxes() {
           border-color: #000000;
           color: #999999;
           spacing: 8;
-          font: 11pt "Poppins";
+          font: 14px "Poppins";
       }
       QCheckBox:checked {
       color: #FFFFFF;

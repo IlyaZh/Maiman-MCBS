@@ -57,7 +57,10 @@ void ReadParameterWidget::setup(QStringView name,
   m_layout = new QHBoxLayout(this);
   this->setObjectName("ReadParam");
   this->setStyleSheet(StyleStorage::Device::ReadParameter::widget());
-  setFont(QFont("Poppins", 12));
+  QFont font12("Poppins", 12);
+  font12.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font12.setPixelSize(16);
+  setFont(font12);
   m_layout->setMargin(0);
   m_layout->setSpacing(6);
   m_labelParameter->setAlignment(Qt::AlignLeft);
@@ -66,6 +69,7 @@ void ReadParameterWidget::setup(QStringView name,
   m_labelParameter->setText(name.toString());
   QFont font11("Poppins", 11);
   font11.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font11.setPixelSize(14);
   m_labelParameter->setFont(font11);
   m_labelValue->setFont(font11);
   m_labelUnit->setFont(font11);

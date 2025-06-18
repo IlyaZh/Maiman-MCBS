@@ -18,6 +18,7 @@ ButtonWidget::ButtonWidget(const QString &text, const Button &button,
   m_button->setMaximumWidth(234);
   QFont font14("Poppins", 14);
   font14.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font14.setPixelSize(18);
   m_button->setFont(font14);
   m_button->setStyleSheet(buttonStopped());
   m_button->setChecked(false);

@@ -214,15 +214,19 @@ font: 57 15px &quot;Poppins Medium&quot;;</string>
        </property>
        <property name="font">
         <font>
-         <family>Poppins Medium</family>
-         <pointsize>16</pointsize>
+         <family>Poppins</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(255, 255, 255);
 background: transparent;
 margin-left: 3px;
-padding-top: 2px;</string>
+padding-top: 2px;
+font: 21px &quot;Poppins&quot;;</string>
        </property>
        <property name="text">
         <string>ID: 111</string>

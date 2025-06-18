@@ -41,6 +41,7 @@ BinaryWidget::BinaryWidget(const Checkbox &settings,
   //  ui->statusCheckbox->setIcon(icon1);
   QFont font11("Poppins", 11);
   font11.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font11.setPixelSize(14);
   ui->statusCheckbox->setFont(font11);
   if (converter) {
     setValue(converter->valueInt());

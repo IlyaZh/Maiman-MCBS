@@ -85,7 +85,10 @@
        <property name="font">
         <font>
          <family>Poppins</family>
-         <pointsize>8</pointsize>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -93,7 +96,8 @@
 background-color: #1D1D1D;
 padding: 0px;
 margin: 0px;
-alignment-baseline=&quot;middle&quot;;</string>
+alignment-baseline=&quot;middle&quot;;
+font: 10px &quot;Poppins&quot;;</string>
        </property>
        <property name="text">
         <string>Choose device 
@@ -199,7 +203,7 @@ background: #1D1D1D;
 width: 90px;
 height: 30px;
 margin: 5px;
-	font: 11pt &quot;Poppins&quot;;
+	font: 14px &quot;Poppins&quot;;
 }
 
 QPushButton:hover{
@@ -354,7 +358,10 @@ QPushButton:hover{
        <property name="font">
         <font>
          <family>Poppins</family>
-         <pointsize>8</pointsize>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -362,7 +369,8 @@ QPushButton:hover{
 background-color: #1D1D1D;
 padding: 0px;
 margin: 0px;
-alignment-baseline=&quot;middle&quot;;</string>
+alignment-baseline=&quot;middle&quot;;
+font: 10px &quot;Poppins&quot;;</string>
        </property>
        <property name="text">
         <string>Choose device to 

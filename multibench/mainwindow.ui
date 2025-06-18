@@ -276,7 +276,7 @@ background: #999999;
              <x>0</x>
              <y>0</y>
              <width>680</width>
-             <height>92</height>
+             <height>89</height>
             </rect>
            </property>
           </widget>
@@ -294,16 +294,23 @@ background: #999999;
      <x>0</x>
      <y>0</y>
      <width>704</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="font">
-    <font/>
+    <font>
+     <family>Poppins</family>
+     <pointsize>-1</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
    </property>
    <property name="styleSheet">
     <string notr="true">QMenuBar {
 	background: rgb(51,51,51);
 	color: #fff;
+	font: 11px &quot;Poppins&quot;;
 }
 
 QMenuBar::item {

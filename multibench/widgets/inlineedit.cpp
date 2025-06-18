@@ -49,6 +49,7 @@ InLineEdit::InLineEdit(int addr, bool isDevice)
   this->setLayout(m_layout);
   QFont font16("Poppins Medium", 16);
   font16.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font16.setPixelSize(21);
   setFont(font16);
   setText(m_name);
   setReadOnly(true);

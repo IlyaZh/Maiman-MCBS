@@ -18,10 +18,10 @@ DeviceCondition::DeviceCondition(
       if (!m_codes.contains(ledmask.code)) m_codes.append(ledmask.code);
     }
   }
-  //  QFont font12("Poppins", 12);
-  //  font12.setLetterSpacing(QFont::PercentageSpacing, 105);
-  //  font12.setPointSize(12);
-  //  label->setFont(font12);
+  QFont font12("Poppins", 12);
+  font12.setLetterSpacing(QFont::PercentageSpacing, 105);
+  font12.setPointSize(16);
+  m_Label->setFont(font12);
 }
 
 DeviceCondition::~DeviceCondition() {}

@@ -74,12 +74,16 @@ QLabe {
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>18</pointsize>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(255, 255, 255);
 padding-left: 1px;
+	font: 24px &quot;Poppins&quot;;
 
 </string>
      </property>
@@ -146,7 +150,7 @@ padding-left: 1px;
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>18</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -154,7 +158,8 @@ padding-left: 1px;
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(255, 255, 255);
-padding-left: 1px;</string>
+padding-left: 1px;
+	font: 24px &quot;Poppins&quot;;</string>
      </property>
      <property name="text">
       <string>Limits</string>
@@ -203,7 +208,7 @@ padding-left: 1px;</string>
 	width: 91px;
     height: 31px;
 	
-	font: 57 10pt &quot;Poppins Medium&quot;;
+	font: 57 13px &quot;Poppins Medium&quot;;
 	padding-bottom:2px;
 }
 

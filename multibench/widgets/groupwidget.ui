@@ -246,7 +246,10 @@ font: 57 22px &quot;Poppins Medium&quot;;</string>
        <property name="font">
         <font>
          <family>Poppins</family>
-         <pointsize>13</pointsize>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -255,7 +258,8 @@ font: 57 22px &quot;Poppins Medium&quot;;</string>
       color: #000000;
       background: #DEDDDD;
       padding-top: 2px;
-      text-align:center;</string>
+      text-align:center;
+font: 16px &quot;Poppins&quot;;</string>
        </property>
        <property name="text">
         <string>Start</string>
@@ -285,7 +289,10 @@ font: 57 22px &quot;Poppins Medium&quot;;</string>
        <property name="font">
         <font>
          <family>Poppins</family>
-         <pointsize>13</pointsize>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -294,7 +301,8 @@ font: 57 22px &quot;Poppins Medium&quot;;</string>
       color: #000000;
       background: #FF403A;
       padding-top: 2px;
-      text-align:center;</string>
+      text-align:center;
+font: 16px &quot;Poppins&quot;;</string>
        </property>
        <property name="text">
         <string>Stop</string>

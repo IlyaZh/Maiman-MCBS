@@ -100,8 +100,14 @@ border-bottom-right-radius: 13px;</string>
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>12</pointsize>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 16px &quot;Poppins&quot;;</string>
      </property>
      <property name="text">
       <string>Инфа о версии</string>
@@ -119,7 +125,7 @@ border-bottom-right-radius: 13px;</string>
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>10</pointsize>
+       <pointsize>-1</pointsize>
        <weight>50</weight>
        <italic>false</italic>
        <bold>false</bold>
@@ -127,10 +133,10 @@ border-bottom-right-radius: 13px;</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: #9A9A9A;
-font: 10pt &quot;Poppins&quot;;</string>
+font: 13px &quot;Poppins&quot;;</string>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;body style=&quot; font-family:'Poppins'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+      <string>&lt;html&gt;&lt;body style=&quot; font-family:'Poppins'; font-size:13px; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height: 0.8; letter-spacing: 0.05em;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;Development team:&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/span&gt;Temnikov Anatoly&lt;br /&gt;Verhovtsev Anrey&lt;br /&gt;Zhitenev Ilya&lt;br /&gt;Zelinskiy Kirill &lt;br /&gt;Nekrasova Evgeniya&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height: 0.8; letter-spacing: 0.05em&quot;&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;Website:&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;a href=&quot;https://www.maimanelectronics.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#9a9a9a;&quot;&gt;www.maimanelectronics.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height: 0.8; letter-spacing: 0.05em&quot;&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;Email:&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/span&gt;&lt;a href=&quot;mailto:info@maimanelectronics.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#9a9a9a;&quot;&gt;info@maimanelectronics.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -151,7 +157,10 @@ font: 10pt &quot;Poppins&quot;;</string>
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>8</pointsize>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -162,6 +171,7 @@ font: 10pt &quot;Poppins&quot;;</string>
 	border-radius: 11px;
 	width: 68px;
     height: 22px;
+	font: 10px &quot;Poppins&quot;;
 }</string>
      </property>
      <property name="text">
@@ -219,7 +229,7 @@ font: 10pt &quot;Poppins&quot;;</string>
 	border-radius: 15px;
     width: 91px;
     height: 31px;
-	font: 11pt &quot;Poppins&quot;;
+	font: 14px &quot;Poppins&quot;;
 }
 QPushButton:hover{
     color: #000000;
@@ -261,7 +271,10 @@ QPushButton:hover{
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>11</pointsize>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -270,6 +283,7 @@ QPushButton:hover{
 	background-color:#1D1D1D;
 	border: 1px solid #6B6B6B;
 	border-radius: 15px;
+	font: 14px &quot;Poppins&quot;;
 }
 QPushButton:hover{
     color: #000000;

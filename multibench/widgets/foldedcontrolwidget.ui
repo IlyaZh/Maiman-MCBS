@@ -28,8 +28,14 @@
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>10</pointsize>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 13px &quot;Poppins&quot;;</string>
      </property>
      <property name="text">
       <string>Set: 1200,0 mA</string>
@@ -41,8 +47,14 @@
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>10</pointsize>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 13px &quot;Poppins&quot;;</string>
      </property>
      <property name="text">
       <string>Real: 0000,0 mA</string>
@@ -54,11 +66,15 @@
      <property name="font">
       <font>
        <family>Poppins</family>
-       <pointsize>10</pointsize>
+       <pointsize>-1</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(125, 125, 125);</string>
+      <string notr="true">color: rgb(125, 125, 125);
+font: 13px &quot;Poppins&quot;;</string>
      </property>
      <property name="text">
       <string>TextLabel</string>
